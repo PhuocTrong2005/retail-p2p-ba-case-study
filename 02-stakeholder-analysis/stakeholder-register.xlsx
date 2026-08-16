@@ -1,0 +1,18 @@
+# Stakeholder Register
+
+| ID     | Stakeholder                | Role in P2P                          | Main Responsibilities                                                                 | Main Needs / Expectations                                             | Influence | Interest |
+| ------ | -------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --------- | -------- |
+| STK-01 | Store Employee / Requester | Purchase requester                   | Identify purchasing needs, create and submit PR                                       | Simple PR creation, clear status tracking, fewer manual steps         | Low       | High     |
+| STK-02 | Store Manager              | Business approver / Cost owner       | Review business need and approve or reject PR                                         | Clear request information, budget visibility, fast approval process   | Medium    | High     |
+| STK-03 | Procurement Officer        | Buyer / Operational procurement user | Review approved PR, select approved supplier, create and manage PO                    | Centralized information, reduced duplicate entry, clear workflow      | Medium    | High     |
+| STK-04 | Procurement Manager        | Procurement Process Owner            | Oversee procurement activities, enforce procurement rules, participate in PO approval | Process control, approval visibility, procurement KPIs                | High      | High     |
+| STK-05 | Warehouse Staff            | Goods receiver                       | Receive goods and record Goods Receipt                                                | Clear PO reference, simple receipt recording, discrepancy capture     | Low       | High     |
+| STK-06 | AP Accountant              | Invoice processing user              | Record supplier invoices, perform 3-way matching, investigate mismatches              | Accurate PO/GR data, automated matching, clear exception workflow     | Medium    | High     |
+| STK-07 | Finance Manager            | Financial Control Owner              | Oversee budget control, financial approval and payment approval                       | Budget compliance, financial visibility, transaction traceability     | High      | High     |
+| STK-08 | CFO                        | Executive Sponsor                    | Provide sponsorship and oversee financial governance                                  | Cost control, process performance, compliance and reliable reporting  | High      | Medium   |
+| STK-09 | Internal Audit             | Governance stakeholder               | Review process controls and transaction history                                       | Complete audit trail, segregation of duties and evidence of approval  | Medium    | Medium   |
+| STK-10 | IT Team                    | Supporting stakeholder               | Support system implementation, access control and integration                         | Stable requirements, clear integration boundaries and maintainability | Medium    | Medium   |
+| STK-11 | Supplier                   | External business stakeholder        | Receive PO, deliver goods and provide supplier invoice                                | Accurate PO information, clear communication and timely processing    | Low       | Medium   |
+
+---
+

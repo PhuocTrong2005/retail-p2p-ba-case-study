@@ -85,9 +85,9 @@ The Supplier is modeled as an external participant because it operates outside N
 
 ## 4. As-Is BPMN
 
-![NovaRetail Procure-to-Pay As-Is BPMN](./bpmn/p2p-as-is.png)
+![NovaRetail Procure-to-Pay As-Is BPMN](03-as-is-analysis/bpmn/BPMN As-Is Process Analysis..drawio.png)
 
-[Open the editable Draw.io diagram](./bpmn/p2p-as-is.drawio)
+[Open the editable Draw.io diagram](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%22VZPugXlF1knfDJKrDQvl%22%7D)
 
 The BPMN model represents the current process rather than the proposed future solution.
 

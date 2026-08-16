@@ -234,9 +234,9 @@ The project does not include a Supplier Portal. Supplier communication is theref
 
 ## 5. To-Be BPMN Model
 
-![NovaRetail Procure-to-Pay To-Be BPMN](./bpmn/p2p-to-be.png)
+![NovaRetail Procure-to-Pay To-Be BPMN](./bpmn/bpmn-to-be.png)
 
-[Open editable Draw.io source](./bpmn/p2p-to-be.drawio)
+[Open editable Draw.io source](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%227rj9JjKxnc1GWHhbU-Dz%22%7D)
 
 The BPMN model distinguishes between:
 

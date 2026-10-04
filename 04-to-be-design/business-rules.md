@@ -78,16 +78,18 @@ The business rules are grouped into the following areas:
 
 A Purchase Requisition must contain all required information before it can be submitted.
 
-Required information may include:
+For this case-study baseline, the required information at submission is:
 
 * requester;
 * requesting store or department;
 * cost center;
 * item or service description;
 * requested quantity;
-* estimated price;
+* estimated unit price;
 * required date;
 * business justification.
+
+An incomplete PR may be saved as a draft but must not be submitted. The field-level assumptions for PR header versus line-item data, validation, and source are defined in [SRS Section 2.1](../07-software-requirements/srs.md#21-purchase-requisition-field-baseline). This list is an analysis assumption for the case study, not a stakeholder-confirmed NovaRetail policy.
 
 ### Rationale
 

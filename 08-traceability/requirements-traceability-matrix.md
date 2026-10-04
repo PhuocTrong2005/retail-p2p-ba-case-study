@@ -6,14 +6,25 @@ This compact matrix traces the modeled business problem through objectives, busi
 
 | Pain point | Objective | BRQ | FR(s) | Use case(s) | Acceptance criterion(s) |
 | --- | --- | --- | --- | --- | --- |
-| PP-01 PO approval delay | OBJ-01 | BRQ-05 | FR-06, FR-07 | UC-03, UC-04 | AC-06–AC-08 |
-| PP-02 Fragmented data | OBJ-03 | BRQ-01, BRQ-06 | FR-04, FR-08, FR-09, FR-14 | UC-03, UC-05, UC-06, UC-10 | AC-06, AC-09, AC-11 |
-| PP-03 Manual three-way matching | OBJ-04 | BRQ-08 | FR-09–FR-11 | UC-06, UC-07 | AC-11–AC-14 |
-| PP-04 Limited PR/PO status | OBJ-03 | BRQ-07 | FR-14 | UC-10 | Future verification against FR-14 |
-| PP-05 Limited audit trail | OBJ-05 | BRQ-09 | FR-15; NFR-02 | UC-01–UC-09, UC-11 | AC-04, AC-05, AC-08, AC-13, AC-16, AC-17 |
+| PP-01 PO approval delay | OBJ-01 | BRQ-05 | FR-06, FR-07 | UC-03, UC-04 | AC-07–AC-09 |
+| PP-02 Fragmented data | OBJ-03 | BRQ-01, BRQ-06 | FR-04, FR-08, FR-09, FR-14 | UC-03, UC-05, UC-06, UC-10 | AC-07, AC-10, AC-12, AC-21 |
+| PP-03 Manual three-way matching | OBJ-04 | BRQ-08 | FR-09–FR-11 | UC-06, UC-07 | AC-12–AC-15 |
+| PP-04 Limited PR/PO status | OBJ-03 | BRQ-07 | FR-14 | UC-10 | AC-21 |
+| PP-05 Limited audit trail | OBJ-05 | BRQ-09 | FR-15; NFR-02 | UC-01–UC-09, UC-11 | AC-04–AC-06, AC-09, AC-14, AC-17, AC-18, AC-22 |
 | PP-06 Inconsistent budget control | OBJ-04 | BRQ-03 | FR-02 | UC-01, UC-02 | AC-02, AC-03 |
-| PP-07 Repeated data entry | OBJ-02 | BRQ-02, BRQ-06 | FR-01, FR-04 | UC-01, UC-03 | AC-01, AC-06 |
-| In-scope reporting need | OBJ-01, OBJ-03, OBJ-04, OBJ-05 | BRQ-11 | FR-16 | UC-12 | Future verification against FR-16 |
+| PP-07 Repeated data entry | OBJ-02 | BRQ-02, BRQ-06 | FR-01, FR-04 | UC-01, UC-03 | AC-01, AC-07 |
+| In-scope reporting need | OBJ-01, OBJ-03, OBJ-04, OBJ-05 | BRQ-11 | FR-16 | UC-12 | AC-23, AC-24 |
+
+Cross-cutting verification criteria: AC-19 covers supplier eligibility; AC-20 covers access control under configured permissions.
+## Additional AC-to-requirement coverage
+
+| Requirement | Acceptance criterion(s) | Coverage |
+| --- | --- | --- |
+| FR-05 | AC-19 | Rejects suppliers that are inactive or ineligible in the approved Supplier Master. |
+| NFR-01 | AC-20, AC-23, AC-24 | Enforces configured access restrictions for transactions and reports. |
+| FR-14 | AC-21 | Verifies current permitted status and available linked transaction references. |
+| FR-15; NFR-02 | AC-22 | Verifies audit history identifies the transaction, actor, action, and timestamp. |
+| FR-16 | AC-23, AC-24 | Verifies filtered report results and the no-data outcome. |
 
 ## BRQ coverage check
 

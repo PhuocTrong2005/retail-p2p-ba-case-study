@@ -195,7 +195,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 2. The Store Manager selects **Return for Revision**.
 3. The system records the return decision and relevant reason/comment.
 4. The PR is returned to the Requester.
-5. The Requester revises and resubmits the PR through UC-01.
+5. The Requester revises and resubmits the PR through UC-01, which repeats required-field and applicable budget validation before it is routed for approval.
 
 ### Postconditions
 
@@ -209,6 +209,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 - Budget validation is completed before this Use Case.
 - The Store Manager performs the business approval decision, not the automated budget control.
+- A rejected PR does not use the return-and-resubmit path. Reopening a rejected PR requires a separate business policy, which is not defined in this case study.
 
 ---
 

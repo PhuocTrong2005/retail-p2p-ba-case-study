@@ -16,9 +16,9 @@ The document is organized as follows:
 
 ---
 
-## 2. UC-00 — P2P System Use Case Overview
+## UC-00 — P2P System Use Case Overview
 
-![UC-00 — P2P System Use Case Overview](./diagrams/use-case/UC-00.drawio.png)
+![UC-00 — P2P System Use Case Overview](../assets/diagrams/exports/system/use-case/UC-00.drawio.png)
 
 ### 2.1 System Boundary
 
@@ -69,7 +69,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-01 — Create and Submit Purchase Requisition
 
-![UC-01 — Create and Submit Purchase Requisition](./diagrams/use-case/UC-01.drawio.png)
+![UC-01 — Create and Submit Purchase Requisition](../assets/diagrams/exports/system/use-case/UC-01.drawio.png)
 
 ### Use Case Summary
 
@@ -149,7 +149,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-02 — Review Purchase Requisition
 
-![UC-02 — Review Purchase Requisition](./diagrams/use-case/UC-02.drawio.png)
+![UC-02 — Review Purchase Requisition](../assets/diagrams/exports/system/use-case/UC-02.drawio.png)
 
 ### Use Case Summary
 
@@ -214,7 +214,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-03 — Create and Submit Purchase Order
 
-![UC-03 — Create and Submit Purchase Order](./diagrams/use-case/UC-03.drawio.png)
+![UC-03 — Create and Submit Purchase Order](../assets/diagrams/exports/system/use-case/UC-03.drawio.png)
 
 ### Use Case Summary
 
@@ -283,7 +283,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-04 — Review Purchase Order
 
-![UC-04 — Review Purchase Order](./diagrams/use-case/UC-04.drawio.png)
+![UC-04 — Review Purchase Order](../assets/diagrams/exports/system/use-case/UC-04.drawio.png)
 
 ### Use Case Summary
 
@@ -367,7 +367,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-05 — Record Goods Receipt
 
-![UC-05 — Record Goods Receipt](./diagrams/use-case/UC-05.drawio.png)
+![UC-05 — Record Goods Receipt](../assets/diagrams/exports/system/use-case/UC-05.drawio.png)
 
 ### Use Case Summary
 
@@ -426,7 +426,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-06 — Process Supplier Invoice
 
-![UC-06 — Process Supplier Invoice](./diagrams/use-case/UC-06.drawio.png)
+![UC-06 — Process Supplier Invoice](../assets/diagrams/exports/system/use-case/UC-06.drawio.png)
 
 ### Use Case Summary
 
@@ -493,7 +493,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-07 — Resolve Matching Exception
 
-![UC-07 — Resolve Matching Exception](./diagrams/use-case/UC-07.drawio.png)
+![UC-07 — Resolve Matching Exception](../assets/diagrams/exports/system/use-case/UC-07.drawio.png)
 
 ### Use Case Summary
 
@@ -566,7 +566,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-08 — Prepare Payment Request
 
-![UC-08 — Prepare Payment Request](./diagrams/use-case/UC-08.drawio.png)
+![UC-08 — Prepare Payment Request](../assets/diagrams/exports/system/use-case/UC-08.drawio.png)
 
 ### Use Case Summary
 
@@ -628,7 +628,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-09 — Review Payment Request
 
-![UC-09 — Review Payment Request](./diagrams/use-case/UC-09.drawio.png)
+![UC-09 — Review Payment Request](../assets/diagrams/exports/system/use-case/UC-09.drawio.png)
 
 ### Use Case Summary
 
@@ -682,7 +682,7 @@ The system supports Purchase Requisition creation and approval, budget validatio
 
 ## UC-10 — View Transaction Status
 
-![UC-10 — View Transaction Status](./diagrams/use-case/UC-10.drawio.png)
+![UC-10 — View Transaction Status](../assets/diagrams/exports/system/use-case/UC-10.drawio.png)
 
 ### Use Case Summary
 
@@ -752,7 +752,7 @@ Actual visibility may vary by role and permission.
 
 ## UC-11 — Review Transaction History
 
-![UC-11 — Review Transaction History](./diagrams/use-case/UC-11.drawio.png)
+![UC-11 — Review Transaction History](../assets/diagrams/exports/system/use-case/UC-11.drawio.png)
 
 ### Use Case Summary
 
@@ -805,7 +805,7 @@ Actual visibility may vary by role and permission.
 
 ## UC-12 — View Procurement Reports
 
-![UC-12 — View Procurement Reports](./diagrams/use-case/UC-12.drawio.png)
+![UC-12 — View Procurement Reports](../assets/diagrams/exports/system/use-case/UC-12.drawio.png)
 
 ### Use Case Summary
 

@@ -1,4 +1,6 @@
 # Business Case Description
+
+> **Phase navigation:** Purpose: establish the case context, problem, objectives, and scope. Contents: this overview, [problem statement](./problem-statement.md), [project objectives](./project-objectives.md), and [scope](./scope.md). Next: [02 — Stakeholder Analysis](../02-stakeholder-analysis/README.md).
 ## 1. Company Background
 NovaRetail JSC là chuỗi bán lẻ hàng tiêu dùng hoạt động tại Việt Nam, hiện có 35 cửa hàng, 2 kho trung tâm, khoảng 650 nhân viên và hơn 120 nhà cung cấp. Doanh nghiệp xử lý trung bình khoảng 1.200 Purchase Orders mỗi tháng, với các phòng ban chính tham gia quy trình mua sắm gồm Store Operations, Procurement, Warehouse, Finance & Accounting.
 ## 2. Current Procurement Context
@@ -9,4 +11,4 @@ Trong quy trình hiện tại, dữ liệu phải được trao đổi và nhậ
 Mô hình vận hành hiện tại tạo ra nhiều vấn đề như chậm phê duyệt, nhập liệu lặp lại, khó theo dõi trạng thái Purchase Order, sai lệch dữ liệu, thiếu một hệ thống procurement tập trung và hạn chế khả năng audit trail. Ngoài ra, việc dữ liệu nằm phân tán giữa nhiều công cụ và bộ phận khiến doanh nghiệp thiếu khả năng theo dõi quy trình theo thời gian thực.
 ## 5. Need for Change
 Dự án được khởi động nhằm phân tích và tái thiết kế quy trình Procure-to-Pay theo hướng chuẩn hóa và tập trung hơn. Giải pháp mục tiêu là xây dựng một Procurement Management System hỗ trợ phối hợp giữa Store, Procurement, Warehouse và Finance, đồng thời giảm thao tác thủ công, tăng độ chính xác dữ liệu, rút ngắn thời gian phê duyệt và cải thiện khả năng kiểm soát chi phí cũng như audit.
-![RichPicture](RichPic-NavaRetail.png)
+![RichPicture](../assets/images/novaretail-rich-picture.png)

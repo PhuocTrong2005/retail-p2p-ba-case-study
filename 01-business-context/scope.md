@@ -543,7 +543,7 @@ Users participating in the process are assumed to have identifiable business rol
 * Procurement Officer;
 * Procurement Manager;
 * Warehouse Staff;
-* Accountant;
+* AP Accountant;
 * Finance Manager.
 
 ---

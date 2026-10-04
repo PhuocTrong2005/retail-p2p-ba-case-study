@@ -1,5 +1,7 @@
 # Business Requirements
 
+> **Phase navigation:** Purpose: establish the business requirement baseline. Contents: [BRD](./business-requirements-document.md), [requirements catalog](./requirements-catalog.md), and a proposed [review/validation framework](./approval-and-signoff.md) (no actual sign-off recorded). Next: [06 — System Analysis](../06-system-analysis/README.md).
+
 ## Overview
 
 This section defines the business-level requirements for the **NovaRetail JSC Procure-to-Pay Process Optimization** project.
@@ -17,7 +19,7 @@ The Business Requirements are derived from the analysis completed in the previou
 - To-Be process design;
 - business rules.
 
-The purpose of this section is to convert the identified business needs into a structured and traceable requirement baseline before detailed system requirements are defined.
+The purpose of this section is to convert identified business needs into a structured, traceable business-requirement baseline.
 
 The requirements in this folder focus on:
 
@@ -27,7 +29,7 @@ rather than:
 
 > **How the software should technically implement those needs**
 
-Detailed Functional Requirements, Use Cases, and Software Requirements will be developed in later project stages.
+Detailed Use Cases are in [Phase 06](../06-system-analysis/README.md); Functional and Non-Functional Requirements are in [Phase 07](../07-software-requirements/README.md).
 
 ---
 

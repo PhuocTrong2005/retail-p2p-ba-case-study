@@ -15,7 +15,7 @@ The requirements are derived from:
 * To-Be process improvements;
 * business rules.
 
-The catalog establishes the initial **Business Requirement baseline** before the requirements are decomposed into Functional Requirements, Use Cases, and Software Requirements.
+The catalog establishes the **Business Requirement baseline** that is decomposed into Use Cases in [Phase 06](../06-system-analysis/README.md) and Functional/Non-Functional Requirements in [Phase 07](../07-software-requirements/README.md).
 
 > **Note:** NovaRetail JSC is a fictional organization created for this Business Analysis portfolio case study. All process volumes, targets, and operational scenarios are simulated.
 
@@ -50,7 +50,11 @@ The project uses the following naming convention across its analysis artifacts:
 | NFR    | Non-Functional Requirement |
 | UC     | Use Case                   |
 
-This convention will later support end-to-end Requirements Traceability.
+This convention supports end-to-end [requirements traceability](../08-traceability/requirements-traceability-matrix.md).
+
+### Objective measure alignment
+
+For OBJ-03, the 95% target means the percentage of in-scope P2P transactions managed through the centralized process. It is separate from the 100% PR/PO status-visibility target and does not measure information accessibility.
 
 ---
 
@@ -82,6 +86,7 @@ Priority represents **business importance**, not implementation complexity or de
 | BRQ-08 | Controlled Three-Way Matching and Exception Handling | High     | OBJ-04            |
 | BRQ-09 | Transaction and Approval Traceability                | High     | OBJ-05            |
 | BRQ-10 | Controlled Payment Request Approval                  | High     | OBJ-04            |
+| BRQ-11 | Basic Procurement Reporting                          | Medium   | OBJ-01, OBJ-03, OBJ-04, OBJ-05 |
 
 ---
 
@@ -699,6 +704,44 @@ The following remain outside scope:
 
 ---
 
+## BRQ-11 — Basic Procurement Reporting
+
+### Requirement
+
+> NovaRetail requires authorized managers to view basic operational procurement reports or summaries for process monitoring.
+
+### Business Rationale
+
+Basic procurement reporting is explicitly included in the project scope and is needed to review the redesigned process. It is a distinct business need, not merely a status-view feature.
+
+### Priority
+
+**Medium**
+
+### Source
+
+* Project Scope — Procurement Reporting
+* To-Be process monitoring needs
+* UC-12 — View Procurement Reports
+
+### Related Objectives
+
+* OBJ-01 — Shorten the Purchase Order Approval Cycle
+* OBJ-03 — Improve Procurement Visibility and Data Consistency
+* OBJ-04 — Strengthen Purchasing and Invoice Controls
+* OBJ-05 — Improve Transaction Traceability
+
+### Related Business Rules
+
+* BR-25 — Transaction Status
+* BR-27 — Role-Based Actions
+
+### Business Success Direction
+
+Authorized managers should be able to review basic operational information such as PR/PO status, pending approvals, GR and invoice status, matching exceptions, and Payment Request status. Report layout, KPI formulas, filters, exports, and chart design remain for later definition.
+
+---
+
 # 6. Requirement-to-Objective Matrix
 
 | Business Requirement | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 |
@@ -713,6 +756,7 @@ The following remain outside scope:
 | BRQ-08               |        |        |        |    ✓   |        |
 | BRQ-09               |        |        |        |        |    ✓   |
 | BRQ-10               |        |        |        |    ✓   |        |
+| BRQ-11               |    ✓   |        |    ✓   |    ✓   |    ✓   |
 
 ---
 
@@ -730,6 +774,7 @@ The following remain outside scope:
 | BRQ-08      |       |       |   ✓   |       |       |       |       |
 | BRQ-09      |       |       |       |   ✓   |   ✓   |       |       |
 | BRQ-10      |       |       |   ✓   |       |       |       |       |
+| BRQ-11      |   ✓   |       |       |   ✓   |   ✓   |       |       |
 
 BRQ-04 is primarily derived from the agreed purchasing-control scope rather than from one of the seven identified As-Is pain points.
 
@@ -749,6 +794,7 @@ BRQ-04 is primarily derived from the agreed purchasing-control scope rather than
 | BRQ-08      | RC-03 — Lack of integrated document data and matching capability    |
 | BRQ-09      | RC-01 and RC-02                                                     |
 | BRQ-10      | Payment-control requirement dependent on completed invoice controls |
+| BRQ-11      | In-scope operational reporting need                                 |
 
 ---
 
@@ -790,8 +836,11 @@ Data Reuse and Transaction Linkage
         ├── BRQ-08
         │   Three-Way Matching
         │
-        └── BRQ-09
-            Traceability
+        ├── BRQ-09
+        │   Traceability
+        │
+        └── BRQ-11
+            Basic Reporting
 ```
 
 ---
@@ -859,8 +908,9 @@ Detailed system behavior will be defined in later analysis stages.
 | BRQ-08 | Matching rules, tolerance, exception types and resolution flow |
 | BRQ-09 | Audit events, history fields and access rules                  |
 | BRQ-10 | Payment Request data and approval behavior                     |
+| BRQ-11 | Report subjects, authorized access, KPI definitions, filters, and presentation |
 
-These areas will later be decomposed into Functional Requirements and Use Cases.
+These areas are decomposed into the [SRS](../07-software-requirements/srs.md) and [System Analysis](../06-system-analysis/README.md); the listed detailed choices remain subject to the open decisions and later design work.
 
 ---
 
@@ -888,10 +938,10 @@ These decisions should be validated rather than invented solely to complete docu
 The initial BRD requirement baseline contains:
 
 ```text
-10 Business Requirements
+11 Business Requirements
 
 9 High Priority
-1 Medium Priority
+2 Medium Priority
 0 Low Priority
 ```
 
@@ -980,16 +1030,16 @@ The Business Requirements Catalog establishes the `BRQ` layer of this model.
 
 | Item                             | Status          |
 | -------------------------------- | --------------- |
-| BRQ-01 to BRQ-10 identified      | Complete        |
+| BRQ-01 to BRQ-11 identified      | Complete        |
 | Business priorities assigned     | Complete        |
 | Business-objective mapping       | Complete        |
 | Pain-point mapping               | Complete        |
 | Root-cause/control mapping       | Complete        |
 | Business-rule references         | Complete        |
-| Detailed Functional Requirements | Not yet defined |
-| Detailed Use Cases               | Not yet defined |
-| Acceptance Criteria              | Not yet defined |
-| Final RTM                        | Future stage    |
+| Detailed Functional Requirements | Defined in Phase 07 |
+| Detailed Use Cases               | Defined in Phase 06 |
+| Acceptance Criteria              | Defined in Phase 07 |
+| Final RTM                        | Compact baseline in Phase 08 |
 
 ---
 

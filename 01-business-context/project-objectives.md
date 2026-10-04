@@ -89,7 +89,7 @@ The redesigned process should provide a more consistent view of procurement tran
 **Targets:**
 
 * 100% of PR and PO transactions should have a visible processing status.
-* At least 95% of procurement transactions should be managed through the centralized process.
+* At least 95% of in-scope Procure-to-Pay transactions should be managed through the centralized process.
 
 ---
 
@@ -155,7 +155,9 @@ Key actions include:
 | ------ | --------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
 | OBJ-01 | Shorten PO approval cycle                           | Average PO approval time                               | < 1 business day                             |
 | OBJ-02 | Reduce repetitive manual data entry                 | Manual data-entry touchpoints                          | ≤ 1 primary entry point                      |
-| OBJ-03 | Improve procurement visibility and data consistency | PR/PO status coverage and centralized transaction rate | 100% status visibility; ≥ 95% centralized    |
+| OBJ-03 | Improve procurement visibility and data consistency | PR/PO status coverage; centralized in-scope P2P transaction rate | 100% status visibility; ≥ 95% centralized |
+
+For OBJ-03, the 95% target measures the share of in-scope P2P transactions managed through the centralized process. It is separate from the 100% PR/PO status-visibility measure.
 | OBJ-04 | Strengthen purchasing and invoice controls          | Budget check rate and automated matching rate          | 100% budget checks; ≥ 80% automated matching |
 | OBJ-05 | Improve transaction traceability                    | Transactions with complete audit history               | 100%                                         |
 

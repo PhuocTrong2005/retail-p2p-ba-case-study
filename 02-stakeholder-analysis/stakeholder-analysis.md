@@ -44,7 +44,7 @@ Stakeholders who perform day-to-day Procure-to-Pay activities.
 * Store Employee / Requester
 * Procurement Officer
 * Warehouse Staff
-* Accounts Payable Accountant
+* AP Accountant
 
 ### Supporting and External Stakeholders
 
@@ -393,19 +393,21 @@ Although Procurement Officers and AP Accountants may not have the highest organi
 
 ## Monitor
 
-**Lower direct influence / Moderate interest**
+**Low or medium influence / Moderate interest**
 
 * Supplier
+* Internal Audit
+* IT Team
 
-Communication should focus on changes that affect PO receipt, delivery information, or invoice processing.
+This classification now matches the stakeholder register's Power–Interest Grid: STK-09 and STK-10 are both medium influence / medium interest and therefore sit in the Monitor quadrant. It describes engagement intensity, not the value of specialist input.
 
-Because Supplier Portal functionality is outside the project scope, supplier involvement in system design is limited.
+Supplier communication should focus on changes that affect PO receipt, delivery information, or invoice processing. Because Supplier Portal functionality is outside the project scope, supplier involvement in system design is limited.
 
 ---
 
 ## Special Consultative Stakeholders
 
-The following stakeholders should not be treated purely based on their Power–Interest quadrant because they provide specialist input.
+The following stakeholders remain in the Monitor quadrant for engagement planning but require targeted specialist consultation.
 
 ### Internal Audit
 

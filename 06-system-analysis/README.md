@@ -1,8 +1,10 @@
 # 06 — System Analysis
 
+> **Phase navigation:** Purpose: model system actors and user goals without designing software. Contents: use cases, activity diagrams, and system-boundary analysis. Next: [07 — Software Requirements](../07-software-requirements/README.md).
+
 ## 1. Overview
 
-This section translates the approved business requirements and To-Be Procure-to-Pay process into a structured **system interaction model** for the proposed **Procurement Management System**.
+This section translates the business-requirement baseline and To-Be Procure-to-Pay process into a structured **system interaction model** for the proposed **Procurement Management System**.
 
 The analysis focuses on:
 
@@ -77,26 +79,28 @@ The following elements are intentionally not modeled as direct system actors:
 
 The overview diagram presents the major system goals and their primary actors without reproducing the full end-to-end business sequence already documented in BPMN.
 
-![P2P System Use Case Overview](./diagrams/use-case/UC-00.drawio.png)
+![P2P System Use Case Overview](../assets/diagrams/exports/system/use-case/UC-00.drawio.png)
 
 > Use Case relationships describe actor goals and system interaction. Process sequence is modeled separately in BPMN and Activity Diagrams.
+
+Rendered diagrams are stored in shared assets. The repository contains [external editor URL references](../assets/diagrams/editable-references/) rather than local editable Draw.io source files.
 
 ### 4.2 Use Case Catalog
 
 | ID | Use Case | Primary Actor | Diagram |
 |---|---|---|---|
-| UC-01 | Create and Submit Purchase Requisition | Requester / Store Employee | [View](./diagrams/use-case/UC-01.drawio.png) |
-| UC-02 | Review Purchase Requisition | Store Manager | [View](./diagrams/use-case/UC-02.drawio.png) |
-| UC-03 | Create and Submit Purchase Order | Procurement Officer | [View](./diagrams/use-case/UC-03.drawio.png) |
-| UC-04 | Review Purchase Order | Procurement Manager | [View](./diagrams/use-case/UC-04.drawio.png) |
-| UC-05 | Record Goods Receipt | Warehouse Staff | [View](./diagrams/use-case/UC-05.drawio.png) |
-| UC-06 | Process Supplier Invoice | AP Accountant | [View](./diagrams/use-case/UC-06.drawio.png) |
-| UC-07 | Resolve Matching Exception | AP Accountant | [View](./diagrams/use-case/UC-07.drawio.png) |
-| UC-08 | Prepare Payment Request | AP Accountant | [View](./diagrams/use-case/UC-08.drawio.png) |
-| UC-09 | Review Payment Request | Finance Manager | [View](./diagrams/use-case/UC-09.drawio.png) |
-| UC-10 | View Transaction Status | Authorized Operational Users | [View](./diagrams/use-case/UC-10.drawio.png) |
-| UC-11 | Review Transaction History | Authorized Reviewers / Internal Audit | [View](./diagrams/use-case/UC-11.drawio.png) |
-| UC-12 | View Procurement Reports | Procurement Manager / Finance Manager | [View](./diagrams/use-case/UC-12.drawio.png) |
+| UC-01 | Create and Submit Purchase Requisition | Requester / Store Employee | [View](../assets/diagrams/exports/system/use-case/UC-01.drawio.png) |
+| UC-02 | Review Purchase Requisition | Store Manager | [View](../assets/diagrams/exports/system/use-case/UC-02.drawio.png) |
+| UC-03 | Create and Submit Purchase Order | Procurement Officer | [View](../assets/diagrams/exports/system/use-case/UC-03.drawio.png) |
+| UC-04 | Review Purchase Order | Procurement Manager | [View](../assets/diagrams/exports/system/use-case/UC-04.drawio.png) |
+| UC-05 | Record Goods Receipt | Warehouse Staff | [View](../assets/diagrams/exports/system/use-case/UC-05.drawio.png) |
+| UC-06 | Process Supplier Invoice | AP Accountant | [View](../assets/diagrams/exports/system/use-case/UC-06.drawio.png) |
+| UC-07 | Resolve Matching Exception | AP Accountant | [View](../assets/diagrams/exports/system/use-case/UC-07.drawio.png) |
+| UC-08 | Prepare Payment Request | AP Accountant | [View](../assets/diagrams/exports/system/use-case/UC-08.drawio.png) |
+| UC-09 | Review Payment Request | Finance Manager | [View](../assets/diagrams/exports/system/use-case/UC-09.drawio.png) |
+| UC-10 | View Transaction Status | Authorized Operational Users | [View](../assets/diagrams/exports/system/use-case/UC-10.drawio.png) |
+| UC-11 | Review Transaction History | Authorized Reviewers / Internal Audit | [View](../assets/diagrams/exports/system/use-case/UC-11.drawio.png) |
+| UC-12 | View Procurement Reports | Procurement Manager / Finance Manager | [View](../assets/diagrams/exports/system/use-case/UC-12.drawio.png) |
 
 ### 4.3 Detailed Use Case Specifications
 
@@ -133,7 +137,7 @@ This diagram covers:
 - Approve / Reject / Return for Revision outcomes;
 - correction and resubmission loops.
 
-![Activity Diagram — PR Approval Flow](./diagrams/activity/activity-pr-approval.png)
+![Activity Diagram — PR Approval Flow](../assets/diagrams/exports/system/activity/activity-pr-approval.png)
 
 **Key control:** Budget validation must succeed before the PR can proceed to business approval.
 
@@ -152,7 +156,7 @@ This diagram covers:
 - return, correction, and resubmission;
 - PO finalization after all required approvals.
 
-![Activity Diagram — PO Approval Flow](./diagrams/activity/activity-po-approval.png)
+![Activity Diagram — PO Approval Flow](../assets/diagrams/exports/system/activity/activity-po-approval.png)
 
 **Key control:** Finance approval is conditional and is required only when the applicable approval criteria are met.
 
@@ -172,7 +176,7 @@ This diagram covers:
 - re-running the match;
 - eligibility for Payment Request preparation.
 
-![Activity Diagram — Invoice Matching & Exception Handling](./diagrams/activity/activity-invoice-matching.png)
+![Activity Diagram — Invoice Matching & Exception Handling](../assets/diagrams/exports/system/activity/activity-invoice-matching.png)
 
 **Key control:** An invoice cannot proceed through the normal payment-preparation path until the applicable matching controls have been satisfied.
 
@@ -264,30 +268,13 @@ This mapping provides the bridge from the Business Requirements Document to the 
 ## 9. Deliverables
 
 ```text
-06-system-analysis/
-├── README.md
-├── use-case-specifications.md
-│
-└── diagrams/
-    ├── use-case/
-    │   ├── UC-00.drawio.png
-    │   ├── UC-01.drawio.png
-    │   ├── UC-02.drawio.png
-    │   ├── UC-03.drawio.png
-    │   ├── UC-04.drawio.png
-    │   ├── UC-05.drawio.png
-    │   ├── UC-06.drawio.png
-    │   ├── UC-07.drawio.png
-    │   ├── UC-08.drawio.png
-    │   ├── UC-09.drawio.png
-    │   ├── UC-10.drawio.png
-    │   ├── UC-11.drawio.png
-    │   └── UC-12.drawio.png
-    │
-    └── activity/
-        ├── activity-pr-approval.png
-        ├── activity-po-approval.png
-        └── activity-invoice-matching.png
+assets/diagrams/
+├── exports/system/
+│   ├── use-case/     # UC-00 through UC-12 PNG exports
+│   └── activity/     # three activity-diagram PNG exports
+└── editable-references/
+    ├── system-use-case-diagram-url.txt
+    └── system-activity-diagram-url.txt
 ```
 
 ---
@@ -296,7 +283,7 @@ This mapping provides the bridge from the Business Requirements Document to the 
 
 The System Analysis establishes **what users need to accomplish with the Procurement Management System and how the key workflows behave**.
 
-The next stage will translate this analysis into the **Software Requirements Specification (SRS)**:
+The subsequent **Software Requirements Specification (SRS)** translates this analysis into:
 
 ```text
 Business Requirement (BRQ)
@@ -312,4 +299,4 @@ Acceptance Criteria
 Traceability / Validation
 ```
 
-The SRS will define detailed Functional and Non-Functional Requirements without changing the business scope established in the BRD and System Analysis.
+The [SRS](../07-software-requirements/srs.md) defines detailed Functional and Non-Functional Requirements without changing the business scope established in the BRD and System Analysis.

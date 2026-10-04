@@ -1,5 +1,7 @@
 # To-Be Procure-to-Pay Process Design
 
+> **Phase navigation:** Purpose: define the future process and its controls. Contents: To-Be BPMN, business rules, comparison, and improvement map. Next: [05 — Business Requirements](../05-brd/README.md).
+
 ## Overview
 
 This section presents the proposed future-state Procure-to-Pay process for **NovaRetail JSC**, a fictional retail company used for this Business Analysis case study.
@@ -234,9 +236,11 @@ The project does not include a Supplier Portal. Supplier communication is theref
 
 ## 5. To-Be BPMN Model
 
-![NovaRetail Procure-to-Pay To-Be BPMN](./bpmn/bpmn-to-be.png)
+![NovaRetail Procure-to-Pay To-Be BPMN](../assets/diagrams/exports/to-be/p2p-to-be.png)
 
-[Open editable Draw.io source](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%227rj9JjKxnc1GWHhbU-Dz%22%7D)
+[Open the external diagram-editor reference](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%227rj9JjKxnc1GWHhbU-Dz%22%7D)
+
+The repository contains the rendered export and a [reference URL](../assets/diagrams/editable-references/to-be-p2p-diagram-url.txt); it does not contain a local editable Draw.io source file.
 
 The BPMN model distinguishes between:
 
@@ -1093,8 +1097,8 @@ The To-Be design is supported by the following artifacts.
 
 | Artifact                                                   | Description                                             |
 | ---------------------------------------------------------- | ------------------------------------------------------- |
-| [`bpmn/p2p-to-be.png`](./bpmn/p2p-to-be.png)               | To-Be BPMN diagram for GitHub viewing                   |
-| [`bpmn/p2p-to-be.drawio`](./bpmn/p2p-to-be.drawio)         | Editable BPMN source                                    |
+| [To-Be BPMN export](../assets/diagrams/exports/to-be/p2p-to-be.png) | Rendered BPMN diagram |
+| [External editor reference](../assets/diagrams/editable-references/to-be-p2p-diagram-url.txt) | URL reference; not a local editable BPMN source |
 | [`improvement-map.md`](./improvement-map.md)               | Traceability from As-Is problems to To-Be improvements  |
 | [`business-rules.md`](./business-rules.md)                 | Business rules controlling the future process           |
 | [`as-is-to-be-comparison.md`](./as-is-to-be-comparison.md) | Summary comparison between current and future processes |

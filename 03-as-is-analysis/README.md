@@ -1,5 +1,7 @@
 # As-Is Procure-to-Pay Process Analysis
 
+> **Phase navigation:** Purpose: model the current process and analyze its problems. Contents: As-Is BPMN, pain points, and root causes. Next: [04 — To-Be Design](../04-to-be-design/README.md).
+
 ## 1. Analysis Purpose
 
 This section analyzes NovaRetail's current Procure-to-Pay process to understand how purchasing activities are performed across Store Operations, Procurement, Warehouse, and Finance & Accounting.
@@ -85,9 +87,11 @@ The Supplier is modeled as an external participant because it operates outside N
 
 ## 4. As-Is BPMN
 
-![NovaRetail Procure-to-Pay As-Is BPMN](./bpmn/bpmn-as-is.png)
+![NovaRetail Procure-to-Pay As-Is BPMN](../assets/diagrams/exports/as-is/p2p-as-is.png)
 
-[Open the editable Draw.io diagram](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%22VZPugXlF1knfDJKrDQvl%22%7D)
+[Open the external diagram-editor reference](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%22VZPugXlF1knfDJKrDQvl%22%7D)
+
+The repository contains the rendered export and a [reference URL](../assets/diagrams/editable-references/as-is-p2p-diagram-url.txt); it does not contain a local editable Draw.io source file.
 
 The BPMN model represents the current process rather than the proposed future solution.
 

@@ -1,0 +1,3408 @@
+<!DOCTYPE html>
+<html lang="vi">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Wireframe PR · NovaRetail
+  </title>
+  <link href="styles.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header class="top">
+   <div class="top-inner">
+    <div class="brand">
+     NovaRetail
+    </div>
+    <div class="header-context">
+     <span class="requester-context">
+      Người yêu cầu · REQ-01
+     </span>
+     <span class="manager-context">
+      Quản lý cửa hàng · MGR-01
+     </span>
+     · Đơn vị mẫu
+    </div>
+    <div class="header-time">
+     Thời gian mô phỏng
+     <time datetime="2026-10-10T12:00:00+07:00">
+      10/10/2026 12:00 (UTC+07:00)
+     </time>
+    </div>
+   </div>
+  </header>
+  <div class="review-bar">
+   <div class="review-inner">
+    <span class="wire-note">
+     Wireframe — thao tác nghiệp vụ chưa được triển khai
+    </span>
+    <details class="scenario">
+     <summary>
+      Xem kịch bản
+     </summary>
+     <div class="scenario-panel">
+      <p>
+       Liên kết chỉ đổi góc xem. Nút nghiệp vụ là mẫu tĩnh. Các tình huống riêng không thay số liệu tại mốc ban đầu.
+      </p>
+      <div class="scenario-group">
+       <strong>
+        Bốn màn hình chính
+       </strong>
+       <div class="scenario-links">
+        <a href="#scr01">
+         Danh sách PR
+        </a>
+        <a href="#scr02">
+         Tạo PR
+        </a>
+        <a href="#scr03">
+         Chi tiết PR
+        </a>
+        <a href="#scr04">
+         Hàng đợi quản lý
+        </a>
+       </div>
+      </div>
+      <div class="scenario-group">
+       <strong>
+        Form và kết quả gửi
+       </strong>
+       <div class="scenario-links">
+        <a href="#draft">
+         Nháp chưa đủ
+        </a>
+        <a href="#submit-error">
+         Gửi thiếu trường
+        </a>
+        <a href="#budget-error">
+         Không đủ ngân sách
+        </a>
+        <a href="#budget-unavailable">
+         Nguồn không khả dụng
+        </a>
+        <a href="#returned">
+         Trả lại / chỉnh sửa
+        </a>
+        <a href="#resubmit-error">
+         Xem lỗi khi gửi lại
+        </a>
+       </div>
+      </div>
+      <div class="scenario-group">
+       <strong>
+        Chi tiết và quyết định
+       </strong>
+       <div class="scenario-links">
+        <a href="#waiting">
+         PR-A chờ xem xét
+        </a>
+        <a href="#waiting-c">
+         PR-C vòng 2
+        </a>
+        <a href="#approved">
+         PR-D đã duyệt
+        </a>
+        <a href="#rejected">
+         PR-E đã từ chối
+        </a>
+        <a href="#manager-review">
+         Quản lý xem PR-A
+        </a>
+        <a href="#manager-review-c">
+         Quản lý xem PR-C
+        </a>
+        <a href="#manager-return">
+         Thiếu lý do trả lại
+        </a>
+        <a href="#manager-reject">
+         Xác nhận từ chối
+        </a>
+       </div>
+      </div>
+      <div class="scenario-group">
+       <strong>
+        Hàng đợi và dữ liệu thiếu
+       </strong>
+       <div class="scenario-links">
+        <a href="#queue-empty">
+         Hàng đợi trống
+        </a>
+        <a href="#metric-empty">
+         Không có dữ liệu
+        </a>
+        <a href="#metric-unknown">
+         Không xác định
+        </a>
+       </div>
+      </div>
+     </div>
+    </details>
+   </div>
+  </div>
+  <main class="shell">
+   <section aria-labelledby="scr01-title" class="view" data-role="requester" data-screen="PR-SCR-01" id="scr01">
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="scr01-title">
+       PR của tôi
+      </h1>
+      <a class="btn" href="#scr02">
+       Tạo PR
+      </a>
+     </div>
+     <p>
+      REQ-01 · Chỉ các yêu cầu của bạn trong Đơn vị mẫu.
+     </p>
+    </div>
+    <div class="panel">
+     <div class="field search-row">
+      <label for="search-pr">
+       Tìm theo mã PR hoặc nhu cầu
+      </label>
+      <input aria-describedby="search-note" id="search-pr" placeholder="Ví dụ: PR-B" type="search"/>
+      <span class="hint" id="search-note">
+       Ô tìm kiếm minh họa, chưa lọc danh sách.
+      </span>
+     </div>
+     <div class="table-wrap">
+      <table aria-describedby="scr01-document-note" class="list-table">
+       <caption class="sr-only">
+        PR của REQ-01 trong Đơn vị mẫu
+       </caption>
+       <thead>
+        <tr>
+         <th scope="col">
+          Mã PR
+         </th>
+         <th scope="col">
+          Mô tả ngắn
+         </th>
+         <th scope="col">
+          Tình trạng
+         </th>
+         <th scope="col">
+          Bước tiếp theo
+         </th>
+         <th scope="col">
+          Thao tác
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td>
+          <strong>
+           PR-A
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          <span class="badge">
+           Chờ xem xét
+          </span>
+         </td>
+         <td>
+          Đợi quản lý xem xét
+         </td>
+         <td>
+          <a href="#waiting">
+           Xem chi tiết
+          </a>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           PR-B
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          <span class="badge return">
+           Chờ chỉnh sửa
+          </span>
+         </td>
+         <td>
+          Chỉnh sửa và gửi lại
+         </td>
+         <td>
+          <a href="#returned">
+           Chỉnh sửa
+          </a>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           PR-C
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          <span class="badge">
+           Chờ xem xét
+          </span>
+         </td>
+         <td>
+          Đợi quản lý xem xét · vòng 2
+         </td>
+         <td>
+          <a href="#waiting-c">
+           Xem chi tiết
+          </a>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           PR-D
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          <span class="badge approved">
+           Đã duyệt
+          </span>
+         </td>
+         <td>
+          Sẵn sàng cho Mua hàng
+         </td>
+         <td>
+          <a href="#approved">
+           Xem chi tiết
+          </a>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           PR-E
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          <span class="badge reject">
+           Đã từ chối
+          </span>
+         </td>
+         <td>
+          Kết thúc, không mở lại
+         </td>
+         <td>
+          <a href="#rejected">
+           Xem chi tiết
+          </a>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p class="small muted" id="scr01-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <p style="margin-top:14px">
+      <a href="#draft">
+       Mở bản nháp minh họa
+      </a>
+     </p>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="scr02-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="scr02">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="scr02-title">
+       Tạo yêu cầu mua hàng
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge draft">
+       Nháp
+      </span>
+      <span>
+       Chưa chuyển Quản lý cửa hàng xem xét.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="scr02-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi; có thể lưu nháp khi chưa đầy đủ.
+      </strong>
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="scr02-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="scr02-required-note scr02-owner-readonly" aria-required="true" id="scr02-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="scr02-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="scr02-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="scr02-required-note scr02-unit-readonly" aria-required="true" id="scr02-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="scr02-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="scr02-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <select aria-describedby="scr02-required-note" aria-required="true" id="scr02-cost">
+        <option value="">
+         Chưa chọn
+        </option>
+        <option selected="" value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="scr02-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="scr02-required-note" aria-required="true" id="scr02-date" placeholder="dd/mm/yyyy" type="text" value="15/10/2026"/>
+      </div>
+     </div>
+     <div class="field">
+      <label for="scr02-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi)
+       </span>
+      </label>
+      <textarea aria-describedby="scr02-required-note" aria-required="true" id="scr02-reason" placeholder="">[Lý do nghiệp vụ mẫu]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="scr02-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="scr02-required-note" aria-required="true" id="scr02-item" placeholder="" type="text" value="[Mô tả hàng hóa mẫu]"/>
+      </div>
+      <div class="field">
+       <label for="scr02-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="scr02-qty-hint scr02-required-note" aria-required="true" id="scr02-qty" inputmode="decimal" placeholder="" type="text" value="2"/>
+       <span class="hint" id="scr02-qty-hint">
+        Lớn hơn 0.
+       </span>
+      </div>
+      <div class="field">
+       <label for="scr02-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="scr02-price-hint scr02-required-note" aria-required="true" id="scr02-price" inputmode="decimal" placeholder="" type="text" value="100000"/>
+       <span class="hint" id="scr02-price-hint">
+        <span class="money-hint">
+         100.000 VND
+        </span>
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Lưu nháp khi chưa đủ thông tin; Gửi PR để chuyển xem xét.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu nháp
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="draft-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="draft">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="draft-title">
+       Tiếp tục bản nháp
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge draft">
+       Nháp
+      </span>
+      <span>
+       Chưa chuyển Quản lý cửa hàng xem xét.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="draft-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi; có thể lưu nháp khi chưa đầy đủ.
+      </strong>
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="draft-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="draft-required-note draft-owner-readonly" aria-required="true" id="draft-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="draft-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="draft-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="draft-required-note draft-unit-readonly" aria-required="true" id="draft-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="draft-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="draft-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <select aria-describedby="draft-required-note" aria-required="true" id="draft-cost">
+        <option selected="" value="">
+         Chưa chọn
+        </option>
+        <option value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="draft-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="draft-required-note" aria-required="true" id="draft-date" placeholder="dd/mm/yyyy" type="text" value=""/>
+      </div>
+     </div>
+     <div class="field">
+      <label for="draft-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi)
+       </span>
+      </label>
+      <textarea aria-describedby="draft-required-note" aria-required="true" id="draft-reason" placeholder="">[Nội dung đang nhập]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="draft-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="draft-required-note" aria-required="true" id="draft-item" placeholder="" type="text" value="[Mô tả đang nhập]"/>
+      </div>
+      <div class="field">
+       <label for="draft-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="draft-qty-hint draft-required-note" aria-required="true" id="draft-qty" inputmode="decimal" placeholder="" type="text" value="2"/>
+       <span class="hint" id="draft-qty-hint">
+        Lớn hơn 0.
+       </span>
+      </div>
+      <div class="field">
+       <label for="draft-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="draft-price-hint draft-required-note" aria-required="true" id="draft-price" inputmode="decimal" placeholder="" type="text" value=""/>
+       <span class="hint" id="draft-price-hint">
+        Nhập số, không dùng dấu phân nhóm.
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Lưu nháp khi chưa đủ thông tin; Gửi PR để chuyển xem xét.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu nháp
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="submit-error-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="submit-error">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="submit-error-title">
+       Kiểm tra thông tin PR
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge draft">
+       Nháp
+      </span>
+      <span>
+       Chưa chuyển Quản lý cửa hàng xem xét.
+      </span>
+     </div>
+    </div>
+    <div class="callout error" role="alert">
+     <strong>
+      Chưa thể gửi PR: 3 trường cần sửa
+     </strong>
+     <ul>
+      <li>
+       <a class="error-link" href="#submit-error-cost">
+        Chọn trung tâm chi phí
+       </a>
+      </li>
+      <li>
+       <a class="error-link" href="#submit-error-date">
+        Nhập ngày cần hàng hợp lệ
+       </a>
+      </li>
+      <li>
+       <a class="error-link" href="#submit-error-price">
+        Nhập đơn giá ước tính
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="submit-error-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi; có thể lưu nháp khi chưa đầy đủ.
+      </strong>
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="submit-error-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="submit-error-required-note submit-error-owner-readonly" aria-required="true" id="submit-error-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="submit-error-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="submit-error-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="submit-error-required-note submit-error-unit-readonly" aria-required="true" id="submit-error-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="submit-error-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field has-error">
+       <label for="submit-error-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <select aria-describedby="submit-error-cost-error submit-error-required-note" aria-invalid="true" aria-required="true" id="submit-error-cost">
+        <option selected="" value="">
+         Chưa chọn
+        </option>
+        <option value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+       <span class="error-text" id="submit-error-cost-error">
+        Chọn trung tâm chi phí
+       </span>
+      </div>
+      <div class="field has-error">
+       <label for="submit-error-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="submit-error-date-error submit-error-required-note" aria-invalid="true" aria-required="true" id="submit-error-date" placeholder="dd/mm/yyyy" type="text" value="29/02/2026"/>
+       <span class="error-text" id="submit-error-date-error">
+        Nhập ngày cần hàng hợp lệ
+       </span>
+      </div>
+     </div>
+     <div class="field">
+      <label for="submit-error-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi)
+       </span>
+      </label>
+      <textarea aria-describedby="submit-error-required-note" aria-required="true" id="submit-error-reason" placeholder="">[Nội dung đang nhập]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="submit-error-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="submit-error-required-note" aria-required="true" id="submit-error-item" placeholder="" type="text" value="[Mô tả đang nhập]"/>
+      </div>
+      <div class="field">
+       <label for="submit-error-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="submit-error-qty-hint submit-error-required-note" aria-required="true" id="submit-error-qty" inputmode="decimal" placeholder="" type="text" value="2"/>
+       <span class="hint" id="submit-error-qty-hint">
+        Lớn hơn 0.
+       </span>
+      </div>
+      <div class="field has-error">
+       <label for="submit-error-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="submit-error-price-hint submit-error-price-error submit-error-required-note" aria-invalid="true" aria-required="true" id="submit-error-price" inputmode="decimal" placeholder="" type="text" value=""/>
+       <span class="hint" id="submit-error-price-hint">
+        Nhập số, không dùng dấu phân nhóm.
+       </span>
+       <span class="error-text" id="submit-error-price-error">
+        Nhập đơn giá ước tính
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Lưu nháp khi chưa đủ thông tin; Gửi PR để chuyển xem xét.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu nháp
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="budget-error-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="budget-error">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="budget-error-title">
+       Kiểm tra ngân sách
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge draft">
+       Nháp
+      </span>
+      <span>
+       Chưa chuyển Quản lý cửa hàng xem xét.
+      </span>
+     </div>
+    </div>
+    <div class="callout error">
+     <strong>
+      Không đủ ngân sách — PR chưa được gửi
+     </strong>
+     <p>
+      Chỉnh sửa thông tin nếu cần rồi thử gửi lại. PR vẫn là Nháp và chưa chuyển xem xét.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="budget-error-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi; có thể lưu nháp khi chưa đầy đủ.
+      </strong>
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="budget-error-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-error-required-note budget-error-owner-readonly" aria-required="true" id="budget-error-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="budget-error-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="budget-error-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-error-required-note budget-error-unit-readonly" aria-required="true" id="budget-error-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="budget-error-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="budget-error-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <select aria-describedby="budget-error-required-note" aria-required="true" id="budget-error-cost">
+        <option value="">
+         Chưa chọn
+        </option>
+        <option selected="" value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="budget-error-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-error-required-note" aria-required="true" id="budget-error-date" placeholder="dd/mm/yyyy" type="text" value="15/10/2026"/>
+      </div>
+     </div>
+     <div class="field">
+      <label for="budget-error-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi)
+       </span>
+      </label>
+      <textarea aria-describedby="budget-error-required-note" aria-required="true" id="budget-error-reason" placeholder="">[Lý do nghiệp vụ mẫu]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="budget-error-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-error-required-note" aria-required="true" id="budget-error-item" placeholder="" type="text" value="[Mô tả hàng hóa mẫu]"/>
+      </div>
+      <div class="field">
+       <label for="budget-error-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-error-qty-hint budget-error-required-note" aria-required="true" id="budget-error-qty" inputmode="decimal" placeholder="" type="text" value="2"/>
+       <span class="hint" id="budget-error-qty-hint">
+        Lớn hơn 0.
+       </span>
+      </div>
+      <div class="field">
+       <label for="budget-error-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-error-price-hint budget-error-required-note" aria-required="true" id="budget-error-price" inputmode="decimal" placeholder="" type="text" value="100000"/>
+       <span class="hint" id="budget-error-price-hint">
+        <span class="money-hint">
+         100.000 VND
+        </span>
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Lưu nháp khi chưa đủ thông tin; Gửi PR để chuyển xem xét.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu nháp
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="budget-unavailable-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="budget-unavailable">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="budget-unavailable-title">
+       Kiểm tra ngân sách
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge draft">
+       Nháp
+      </span>
+      <span>
+       Chưa chuyển Quản lý cửa hàng xem xét.
+      </span>
+     </div>
+    </div>
+    <div class="callout warn">
+     <strong>
+      Nguồn dữ liệu ngân sách không khả dụng
+     </strong>
+     <p>
+      Chưa thể kết luận đủ hay thiếu ngân sách. Giữ nội dung hiện tại và dùng Gửi PR để thử lại khi nguồn sẵn sàng.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="budget-unavailable-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi; có thể lưu nháp khi chưa đầy đủ.
+      </strong>
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="budget-unavailable-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-unavailable-required-note budget-unavailable-owner-readonly" aria-required="true" id="budget-unavailable-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="budget-unavailable-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="budget-unavailable-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-unavailable-required-note budget-unavailable-unit-readonly" aria-required="true" id="budget-unavailable-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="budget-unavailable-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="budget-unavailable-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <select aria-describedby="budget-unavailable-required-note" aria-required="true" id="budget-unavailable-cost">
+        <option value="">
+         Chưa chọn
+        </option>
+        <option selected="" value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="budget-unavailable-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-unavailable-required-note" aria-required="true" id="budget-unavailable-date" placeholder="dd/mm/yyyy" type="text" value="15/10/2026"/>
+      </div>
+     </div>
+     <div class="field">
+      <label for="budget-unavailable-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi)
+       </span>
+      </label>
+      <textarea aria-describedby="budget-unavailable-required-note" aria-required="true" id="budget-unavailable-reason" placeholder="">[Lý do nghiệp vụ mẫu]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="budget-unavailable-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-unavailable-required-note" aria-required="true" id="budget-unavailable-item" placeholder="" type="text" value="[Mô tả hàng hóa mẫu]"/>
+      </div>
+      <div class="field">
+       <label for="budget-unavailable-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-unavailable-qty-hint budget-unavailable-required-note" aria-required="true" id="budget-unavailable-qty" inputmode="decimal" placeholder="" type="text" value="2"/>
+       <span class="hint" id="budget-unavailable-qty-hint">
+        Lớn hơn 0.
+       </span>
+      </div>
+      <div class="field">
+       <label for="budget-unavailable-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi)
+        </span>
+       </label>
+       <input aria-describedby="budget-unavailable-price-hint budget-unavailable-required-note" aria-required="true" id="budget-unavailable-price" inputmode="decimal" placeholder="" type="text" value="100000"/>
+       <span class="hint" id="budget-unavailable-price-hint">
+        <span class="money-hint">
+         100.000 VND
+        </span>
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Lưu nháp khi chưa đủ thông tin; Gửi PR để chuyển xem xét.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu nháp
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="scr03-title" class="view" data-role="requester" data-screen="PR-SCR-03" id="scr03">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="scr03-title">
+       Chi tiết PR-B
+      </h1>
+      <a class="btn" href="#returned">
+       Chỉnh sửa PR
+      </a>
+     </div>
+     <div class="status-line">
+      <span class="badge return">
+       Chờ chỉnh sửa
+      </span>
+      <span>
+       Vòng 1 đã đóng.
+      </span>
+     </div>
+    </div>
+    <div class="callout warn">
+     <strong>
+      Lý do trả lại · MGR-01 · 09/10/2026 14:00
+     </strong>
+     <p>
+      “Cần chỉnh sửa nội dung PR.”
+     </p>
+     <p>
+      Chọn Chỉnh sửa PR để cập nhật thông tin và gửi lại.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="scr03-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="scr03-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="scr03-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       Không áp dụng
+      </strong>
+      <span>
+       PR không đang chờ Quản lý xem xét.
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: Không áp dụng vì PR xác định không ở hàng đợi. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        03/10/2026 10:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        09/10/2026 14:00
+       </time>
+       <div>
+        <strong>
+         MGR-01 trả lại để chỉnh sửa
+        </strong>
+        <p>
+         Vòng 1 đóng. Lý do: Cần chỉnh sửa nội dung PR.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="waiting-title" class="view" data-role="requester" data-screen="PR-SCR-03" id="waiting">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="waiting-title">
+       Chi tiết PR-A
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge">
+       Chờ xem xét
+      </span>
+      <span>
+       Vòng 1 đang mở.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="waiting-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="waiting-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="waiting-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       195,00 giờ
+      </strong>
+      <span>
+       Từ 02/10/2026 09:00 đến 10/10/2026 12:00 (UTC+07:00).
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: T trừ mốc mở vòng hiện tại, tính bằng giờ liên tục. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        02/10/2026 09:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở, chuyển Quản lý cửa hàng xem xét.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="waiting-c-title" class="view" data-role="requester" data-screen="PR-SCR-03" id="waiting-c">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="waiting-c-title">
+       Chi tiết PR-C
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge">
+       Chờ xem xét
+      </span>
+      <span>
+       Vòng 2 đang mở.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="waiting-c-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="waiting-c-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="waiting-c-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       96,00 giờ
+      </strong>
+      <span>
+       Từ 06/10/2026 12:00 đến 10/10/2026 12:00 (UTC+07:00).
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: T trừ mốc mở vòng hiện tại, tính bằng giờ liên tục. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        29/09/2026 08:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        30/09/2026 11:00
+       </time>
+       <div>
+        <strong>
+         MGR-01 trả lại để chỉnh sửa
+        </strong>
+        <p>
+         Vòng 1 đóng. Lý do: Cần chỉnh sửa nội dung PR.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        06/10/2026 12:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi lại hợp lệ
+        </strong>
+        <p>
+         Vòng 2 mở, chuyển Quản lý cửa hàng xem xét.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="returned-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="returned">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="returned-title">
+       Chỉnh sửa PR-B
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge return">
+       Chờ chỉnh sửa
+      </span>
+      <span>
+       Vòng 1 đã đóng · gửi lại hợp lệ sẽ mở vòng 2.
+      </span>
+     </div>
+    </div>
+    <div class="callout warn">
+     <strong>
+      Lý do trả lại · MGR-01 · 09/10/2026 14:00
+     </strong>
+     <p>
+      “Cần chỉnh sửa nội dung PR.”
+     </p>
+     <p>
+      Chỉnh sửa thông tin bên dưới rồi gửi lại. Thông tin và ngân sách sẽ được kiểm tra lại.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="returned-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi lại; có thể lưu phần sửa khi chưa đầy đủ.
+      </strong>
+     </p>
+     <p class="small muted" id="returned-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="returned-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="returned-required-note returned-owner-readonly" aria-required="true" id="returned-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="returned-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="returned-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="returned-required-note returned-unit-readonly" aria-required="true" id="returned-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="returned-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="returned-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <select aria-describedby="returned-required-note" aria-required="true" id="returned-cost">
+        <option value="">
+         Chưa chọn
+        </option>
+        <option selected="" value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="returned-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="returned-required-note" aria-required="true" id="returned-date" placeholder="dd/mm/yyyy" type="text" value="15/10/2026"/>
+      </div>
+     </div>
+     <div class="field">
+      <label for="returned-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi lại)
+       </span>
+      </label>
+      <textarea aria-describedby="returned-required-note" aria-required="true" id="returned-reason" placeholder="">[Nội dung đang chỉnh sửa]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="returned-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="returned-required-note" aria-required="true" id="returned-item" placeholder="" type="text" value="[Mô tả đang chỉnh sửa]"/>
+      </div>
+      <div class="field">
+       <label for="returned-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="returned-qty-hint returned-required-note" aria-required="true" id="returned-qty" inputmode="decimal" placeholder="" type="text" value="2"/>
+       <span class="hint" id="returned-qty-hint">
+        Lớn hơn 0.
+       </span>
+      </div>
+      <div class="field">
+       <label for="returned-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="returned-price-hint returned-required-note" aria-required="true" id="returned-price" inputmode="decimal" placeholder="" type="text" value="100000"/>
+       <span class="hint" id="returned-price-hint">
+        <span class="money-hint">
+         100.000 VND
+        </span>
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Gửi lại sẽ kiểm tra thông tin và ngân sách.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu phần sửa
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi lại PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="resubmit-error-title" class="view" data-role="requester" data-screen="PR-SCR-02" id="resubmit-error">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="resubmit-error-title">
+       Chỉnh sửa PR-B
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge return">
+       Chờ chỉnh sửa
+      </span>
+      <span>
+       Vòng 1 đã đóng · gửi lại hợp lệ sẽ mở vòng 2.
+      </span>
+     </div>
+    </div>
+    <div class="callout warn">
+     <strong>
+      Lý do trả lại · MGR-01 · 09/10/2026 14:00
+     </strong>
+     <p>
+      “Cần chỉnh sửa nội dung PR.”
+     </p>
+     <p>
+      Chỉnh sửa thông tin bên dưới rồi gửi lại. Thông tin và ngân sách sẽ được kiểm tra lại.
+     </p>
+    </div>
+    <div class="callout error" role="alert">
+     <strong>
+      Chưa thể gửi lại PR: 1 trường cần sửa
+     </strong>
+     <ul>
+      <li>
+       <a class="error-link" href="#resubmit-error-qty">
+        Nhập số lượng lớn hơn 0
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="resubmit-error-required-note">
+      *
+      <strong>
+       Bắt buộc khi gửi lại; có thể lưu phần sửa khi chưa đầy đủ.
+      </strong>
+     </p>
+     <p class="small muted" id="resubmit-error-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <div class="request-grid">
+      <div class="field">
+       <label for="resubmit-error-owner">
+        Người yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="resubmit-error-required-note resubmit-error-owner-readonly" aria-required="true" id="resubmit-error-owner" placeholder="" readonly="" type="text" value="REQ-01"/>
+       <span class="hint" id="resubmit-error-owner-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="resubmit-error-unit">
+        Cửa hàng / Bộ phận yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="resubmit-error-required-note resubmit-error-unit-readonly" aria-required="true" id="resubmit-error-unit" placeholder="" readonly="" type="text" value="Đơn vị mẫu"/>
+       <span class="hint" id="resubmit-error-unit-readonly">
+        Tự điền · chỉ đọc.
+       </span>
+      </div>
+      <div class="field">
+       <label for="resubmit-error-cost">
+        Trung tâm chi phí
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <select aria-describedby="resubmit-error-required-note" aria-required="true" id="resubmit-error-cost">
+        <option value="">
+         Chưa chọn
+        </option>
+        <option selected="" value="sample">
+         Trung tâm chi phí mẫu
+        </option>
+       </select>
+      </div>
+      <div class="field">
+       <label for="resubmit-error-date">
+        Ngày cần hàng
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="resubmit-error-required-note" aria-required="true" id="resubmit-error-date" placeholder="dd/mm/yyyy" type="text" value="15/10/2026"/>
+      </div>
+     </div>
+     <div class="field">
+      <label for="resubmit-error-reason">
+       Lý do nghiệp vụ
+       *
+       <span class="sr-only">
+        (bắt buộc khi gửi lại)
+       </span>
+      </label>
+      <textarea aria-describedby="resubmit-error-required-note" aria-required="true" id="resubmit-error-reason" placeholder="">[Nội dung đang chỉnh sửa]</textarea>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Hàng hóa đề nghị
+      <span class="sample-label">
+       · nội dung mẫu
+      </span>
+     </h2>
+     <div class="line-grid">
+      <div class="field">
+       <label for="resubmit-error-item">
+        Mô tả hàng hóa hữu hình · dòng 1
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="resubmit-error-required-note" aria-required="true" id="resubmit-error-item" placeholder="" type="text" value="[Mô tả đang chỉnh sửa]"/>
+      </div>
+      <div class="field has-error">
+       <label for="resubmit-error-qty">
+        Số lượng yêu cầu
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="resubmit-error-qty-hint resubmit-error-qty-error resubmit-error-required-note" aria-invalid="true" aria-required="true" id="resubmit-error-qty" inputmode="decimal" placeholder="" type="text" value=""/>
+       <span class="hint" id="resubmit-error-qty-hint">
+        Lớn hơn 0.
+       </span>
+       <span class="error-text" id="resubmit-error-qty-error">
+        Nhập số lượng lớn hơn 0
+       </span>
+      </div>
+      <div class="field">
+       <label for="resubmit-error-price">
+        Đơn giá ước tính · VND
+        *
+        <span class="sr-only">
+         (bắt buộc khi gửi lại)
+        </span>
+       </label>
+       <input aria-describedby="resubmit-error-price-hint resubmit-error-required-note" aria-required="true" id="resubmit-error-price" inputmode="decimal" placeholder="" type="text" value="100000"/>
+       <span class="hint" id="resubmit-error-price-hint">
+        <span class="money-hint">
+         100.000 VND
+        </span>
+       </span>
+      </div>
+     </div>
+     <div class="action-bar">
+      <p>
+       Gửi lại sẽ kiểm tra thông tin và ngân sách.
+      </p>
+      <div class="actions">
+       <button class="btn secondary" disabled="" type="button">
+        Lưu phần sửa
+       </button>
+       <button class="btn" disabled="" type="button">
+        Gửi lại PR
+       </button>
+      </div>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="approved-title" class="view" data-role="requester" data-screen="PR-SCR-03" id="approved">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="approved-title">
+       Chi tiết PR-D
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge approved">
+       Đã duyệt
+      </span>
+      <span>
+       Vòng 1 đã đóng. Sẵn sàng cho Mua hàng.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="approved-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="approved-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="approved-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       Không áp dụng
+      </strong>
+      <span>
+       PR không đang chờ Quản lý xem xét.
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: Không áp dụng vì PR xác định không ở hàng đợi. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        04/10/2026 15:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        05/10/2026 09:00
+       </time>
+       <div>
+        <strong>
+         MGR-01 phê duyệt
+        </strong>
+        <p>
+         Vòng 1 đóng. Sẵn sàng cho Mua hàng.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="rejected-title" class="view" data-role="requester" data-screen="PR-SCR-03" id="rejected">
+    <a class="back" href="#scr01">
+     ← Về PR của tôi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="rejected-title">
+       Chi tiết PR-E
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge reject">
+       Đã từ chối
+      </span>
+      <span>
+       Vòng 1 đã đóng. PR này không thể mở lại hoặc gửi lại.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <p class="small muted" id="rejected-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="rejected-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="rejected-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       Không áp dụng
+      </strong>
+      <span>
+       PR không đang chờ Quản lý xem xét.
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: Không áp dụng vì PR xác định không ở hàng đợi. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        07/10/2026 10:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        08/10/2026 00:00
+       </time>
+       <div>
+        <strong>
+         MGR-01 từ chối
+        </strong>
+        <p>
+         Vòng 1 đóng. PR này không thể mở lại hoặc gửi lại.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="manager-review-title" class="view" data-role="manager" data-screen="PR-SCR-03" id="manager-review">
+    <a class="back" href="#scr04">
+     ← Về hàng đợi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="manager-review-title">
+       Xem xét PR-A
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge">
+       Chờ xem xét
+      </span>
+      <span>
+       Vòng 1 đang mở.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <div class="callout">
+      <strong>
+       Kiểm tra trước khi chuyển xem xét: thông tin và ngân sách đã đạt.
+      </strong>
+     </div>
+     <p class="small muted" id="manager-review-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="manager-review-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="manager-review-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       195,00 giờ
+      </strong>
+      <span>
+       Từ 02/10/2026 09:00 đến 10/10/2026 12:00 (UTC+07:00).
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: T trừ mốc mở vòng hiện tại, tính bằng giờ liên tục. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Quyết định xem xét
+     </h2>
+     <div class="actions">
+      <button class="btn" disabled="" type="button">
+       Phê duyệt
+      </button>
+      <a class="btn secondary" href="#manager-return">
+       Trả lại để chỉnh sửa
+      </a>
+      <a class="btn danger" href="#manager-reject">
+       Từ chối
+      </a>
+     </div>
+     <p class="small muted" style="margin-top:10px">
+      Chỉ quyết định khi PR đang Chờ xem xét và đủ điều kiện.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        02/10/2026 09:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở, chuyển Quản lý cửa hàng xem xét.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="manager-review-c-title" class="view" data-role="manager" data-screen="PR-SCR-03" id="manager-review-c">
+    <a class="back" href="#scr04">
+     ← Về hàng đợi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="manager-review-c-title">
+       Xem xét PR-C
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge">
+       Chờ xem xét
+      </span>
+      <span>
+       Vòng 2 đang mở.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Thông tin yêu cầu
+     </h2>
+     <div class="callout">
+      <strong>
+       Kiểm tra trước khi chuyển xem xét: thông tin và ngân sách đã đạt.
+      </strong>
+     </div>
+     <p class="small muted" id="manager-review-c-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <dl aria-describedby="manager-review-c-document-note" class="readonly-grid">
+      <div>
+       <dt>
+        Người yêu cầu
+       </dt>
+       <dd>
+        REQ-01
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Cửa hàng / Bộ phận yêu cầu
+       </dt>
+       <dd>
+        Đơn vị mẫu
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Trung tâm chi phí
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div>
+       <dt>
+        Ngày cần hàng
+       </dt>
+       <dd>
+        <span class="placeholder">
+         —
+         <span class="sr-only">
+          Chưa trình bày trong wireframe
+         </span>
+        </span>
+       </dd>
+      </div>
+      <div class="wide">
+       <dt>
+        Lý do nghiệp vụ
+       </dt>
+       <dd class="placeholder">
+        —
+        <span class="sr-only">
+         Chưa trình bày trong wireframe
+        </span>
+       </dd>
+      </div>
+     </dl>
+     <h2>
+      Hàng hóa đề nghị
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="manager-review-c-document-note" class="item-table">
+       <thead>
+        <tr>
+         <th scope="col">
+          Mô tả hàng hóa hữu hình
+         </th>
+         <th scope="col">
+          Số lượng
+         </th>
+         <th scope="col">
+          Đơn giá ước tính · VND
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <div class="waiting-line">
+      <span>
+       Thời gian chờ
+      </span>
+      <strong>
+       96,00 giờ
+      </strong>
+      <span>
+       Từ 06/10/2026 12:00 đến 10/10/2026 12:00 (UTC+07:00).
+      </span>
+     </div>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-02: T trừ mốc mở vòng hiện tại, tính bằng giờ liên tục. T = 10/10/2026 12:00 (UTC+07:00). Số PR không xác định trong hồ sơ đang xem: 0.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Quyết định xem xét
+     </h2>
+     <div class="actions">
+      <button class="btn" disabled="" type="button">
+       Phê duyệt
+      </button>
+      <button class="btn secondary" disabled="" type="button">
+       Trả lại để chỉnh sửa
+      </button>
+      <button class="btn danger" disabled="" type="button">
+       Từ chối
+      </button>
+     </div>
+     <p class="small muted" style="margin-top:10px">
+      Chỉ quyết định khi PR đang Chờ xem xét và đủ điều kiện.
+     </p>
+    </div>
+    <div class="panel">
+     <h2>
+      Lịch sử quy trình
+     </h2>
+     <ol class="history">
+      <li>
+       <time>
+        29/09/2026 08:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi hợp lệ lần đầu
+        </strong>
+        <p>
+         Vòng 1 mở.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        30/09/2026 11:00
+       </time>
+       <div>
+        <strong>
+         MGR-01 trả lại để chỉnh sửa
+        </strong>
+        <p>
+         Vòng 1 đóng. Lý do: Cần chỉnh sửa nội dung PR.
+        </p>
+       </div>
+      </li>
+      <li>
+       <time>
+        06/10/2026 12:00
+       </time>
+       <div>
+        <strong>
+         REQ-01 gửi lại hợp lệ
+        </strong>
+        <p>
+         Vòng 2 mở, chuyển Quản lý cửa hàng xem xét.
+        </p>
+       </div>
+      </li>
+     </ol>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="manager-return-title" class="view" data-role="manager" data-screen="PR-SCR-03" id="manager-return">
+    <a class="back" href="#manager-review">
+     ← Quay lại xem xét
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="manager-return-title">
+       Trả PR-A để chỉnh sửa
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge">
+       Chờ xem xét
+      </span>
+      <span>
+       Vòng 1 đang mở.
+      </span>
+     </div>
+    </div>
+    <div class="panel">
+     <h2>
+      Lý do trả lại
+     </h2>
+     <p>
+      Trả lại sẽ đóng vòng 1 và chuyển PR sang Chờ chỉnh sửa. Người yêu cầu sẽ thấy lý do để sửa và gửi lại.
+     </p>
+     <div class="field has-error">
+      <label for="return-reason">
+       Lý do trả lại · bắt buộc
+      </label>
+      <textarea aria-describedby="return-reason-error" aria-invalid="true" aria-required="true" id="return-reason" placeholder="Nêu nội dung cần chỉnh sửa"></textarea>
+      <span class="error-text" id="return-reason-error">
+       Nhập lý do trả lại để tiếp tục
+      </span>
+     </div>
+     <div class="action-bar">
+      <p>
+       Chưa ghi quyết định khi thiếu lý do.
+      </p>
+      <div class="actions">
+       <button class="btn" disabled="" type="button">
+        Hoàn tất trả lại
+       </button>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="manager-reject-title" class="view" data-role="manager" data-screen="PR-SCR-03" id="manager-reject">
+    <a class="back" href="#manager-review">
+     ← Quay lại xem xét
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="manager-reject-title">
+       Xác nhận từ chối PR-A?
+      </h1>
+     </div>
+     <div class="status-line">
+      <span class="badge">
+       Chờ xem xét
+      </span>
+      <span>
+       Vòng 1 đang mở.
+      </span>
+     </div>
+    </div>
+    <div class="callout error">
+     <strong>
+      Sau khi từ chối, PR này không thể chỉnh sửa hoặc gửi lại.
+     </strong>
+     <p>
+      PR-A sẽ chuyển Đã từ chối, vòng xem xét đóng và PR không được chuyển Mua hàng. Chính PR này không thể chỉnh sửa hoặc gửi lại.
+     </p>
+    </div>
+    <div class="panel">
+     <p>
+      Xác nhận từ chối yêu cầu này?
+     </p>
+     <div class="actions">
+      <a class="btn secondary" href="#manager-review">
+       Quay lại xem xét
+      </a>
+      <button class="btn danger" disabled="" type="button">
+       Xác nhận từ chối
+      </button>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="scr04-title" class="view" data-role="manager" data-screen="PR-SCR-04" id="scr04">
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="scr04-title">
+       Hàng đợi xem xét PR
+      </h1>
+     </div>
+     <p>
+      Đơn vị mẫu · Các PR đang chờ quyết định của bạn.
+     </p>
+    </div>
+    <div class="panel queue-panel">
+     <h2>
+      PR cần xem xét
+      <span class="count">
+       2 PR
+      </span>
+     </h2>
+     <div class="table-wrap">
+      <table aria-describedby="scr04-document-note" class="queue-table">
+       <caption class="sr-only">
+        Các PR đang chờ Quản lý cửa hàng xem xét
+       </caption>
+       <colgroup>
+        <col class="col-id"/>
+        <col/>
+        <col class="col-owner"/>
+        <col class="col-round"/>
+        <col class="col-date"/>
+        <col class="col-wait"/>
+        <col class="col-action"/>
+       </colgroup>
+       <thead>
+        <tr>
+         <th scope="col">
+          Mã PR
+         </th>
+         <th scope="col">
+          Mô tả ngắn
+         </th>
+         <th scope="col">
+          Người yêu cầu
+         </th>
+         <th scope="col">
+          Vòng
+         </th>
+         <th scope="col">
+          Mốc gửi xem xét
+         </th>
+         <th scope="col">
+          Thời gian chờ
+         </th>
+         <th scope="col">
+          Thao tác
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td>
+          <strong>
+           PR-A
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          REQ-01
+         </td>
+         <td>
+          1
+         </td>
+         <td class="nowrap">
+          02/10/2026 09:00
+         </td>
+         <td>
+          <strong>
+           195,00 giờ
+          </strong>
+         </td>
+         <td>
+          <a href="#manager-review">
+           Xem xét
+          </a>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           PR-C
+          </strong>
+         </td>
+         <td class="placeholder">
+          —
+          <span class="sr-only">
+           Chưa trình bày trong wireframe
+          </span>
+         </td>
+         <td>
+          REQ-01
+         </td>
+         <td>
+          2
+         </td>
+         <td class="nowrap">
+          06/10/2026 12:00
+         </td>
+         <td>
+          <strong>
+           96,00 giờ
+          </strong>
+         </td>
+         <td>
+          <a href="#manager-review-c">
+           Xem xét
+          </a>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+     <p class="small muted" id="scr04-document-note">
+      Thông tin chứng từ chưa được bổ sung trong wireframe.
+     </p>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <div class="panel cohort-panel">
+     <div class="cohort-heading">
+      <h2>
+       Tỷ lệ PR từng bị trả lại
+      </h2>
+      <strong class="rate">
+       25,00%
+       <span>
+        1 / 4 PR
+       </span>
+      </strong>
+     </div>
+     <p class="report-context">
+      Đơn vị mẫu · Kỳ 01/10/2026 00:00 đến trước 08/10/2026 00:00
+      <br/>
+      Báo cáo tại 10/10/2026 12:00 (UTC+07:00)
+     </p>
+     <p class="cohort-context">
+      Trong nhóm kỳ: 1 PR chờ xem xét · 1 PR chờ chỉnh sửa
+     </p>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-03 = 1 / 4 × 100% = 25,00%. Mẫu số gồm PR-A, PR-B, PR-D, PR-E; tử số là PR-B. PR-C có vòng đầu trước kỳ nên không thuộc cohort.
+       </p>
+       <p>
+        PR-MET-01 = 2 PR đang chờ tại T. PR-MET-02 tính giờ liên tục từ mốc mở vòng hiện tại đến T; gửi lại mở mốc vòng mới.
+       </p>
+       <p>
+        Cohort chọn theo lần gửi hợp lệ đầu tại [S, E); quyết định trả lại được xét đến và gồm T. Phạm vi là toàn Đơn vị mẫu, gồm cả PR không ở hàng đợi.
+       </p>
+       <ul class="quality-list">
+        <li>
+         Chưa xác định tình trạng chờ: 0 PR.
+        </li>
+        <li>
+         Chưa tính được thời gian chờ: 0 PR.
+        </li>
+        <li>
+         Chưa xác định cohort: 0 PR.
+        </li>
+        <li>
+         Thuộc cohort nhưng chưa rõ lịch sử trả lại: 0 PR.
+        </li>
+        <li>
+         Chưa xác định tình trạng ngữ cảnh trong cohort: 0 PR.
+        </li>
+        <li>
+         Bản ghi không gắn được PR: 0.
+        </li>
+       </ul>
+       <p>
+        Thiếu định danh PR phải công bố riêng số bản ghi không gắn được PR và giới hạn “Không xác định đầy đủ”.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="queue-empty-title" class="view" data-role="manager" data-screen="PR-SCR-04" id="queue-empty">
+    <a class="back" href="#scr04">
+     ← Về hàng đợi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="queue-empty-title">
+       Hàng đợi xem xét PR
+      </h1>
+     </div>
+     <p>
+      Tình huống riêng · Không có PR đang chờ.
+     </p>
+    </div>
+    <div class="panel queue-panel">
+     <h2>
+      PR cần xem xét
+      <span class="count">
+       0 PR
+      </span>
+     </h2>
+     <div class="empty">
+      <h3>
+       Không có PR chờ xem xét
+      </h3>
+      <p>
+       Bạn chưa có yêu cầu cần ra quyết định trong hàng đợi này.
+      </p>
+     </div>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+    <details class="disclosure">
+     <summary>
+      Cách tính và chất lượng dữ liệu
+     </summary>
+     <div class="disclosure-body">
+      <p>
+       PR-MET-01 = 0; số PR không xác định = 0 trong tình huống này. Hàng đợi trống không suy ra tỷ lệ cohort. Tình huống này không cung cấp kết quả PR-MET-03.
+      </p>
+     </div>
+    </details>
+   </section>
+   <section aria-labelledby="metric-empty-title" class="view" data-role="manager" data-screen="PR-SCR-04" id="metric-empty">
+    <a class="back" href="#scr04">
+     ← Về hàng đợi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="metric-empty-title">
+       Nhóm kỳ không có dữ liệu
+      </h1>
+     </div>
+     <p>
+      Tình huống riêng · Không có lần gửi hợp lệ đầu trong kỳ.
+     </p>
+    </div>
+    <div class="panel cohort-panel">
+     <div class="cohort-heading">
+      <h2>
+       Tỷ lệ PR từng bị trả lại
+      </h2>
+      <strong class="rate">
+       Không có dữ liệu
+       <span>
+        0 / 0 PR
+       </span>
+      </strong>
+     </div>
+     <p class="report-context">
+      Đơn vị mẫu · Kỳ 01/10/2026 00:00 đến trước 08/10/2026 00:00
+      <br/>
+      Báo cáo tại 10/10/2026 12:00 (UTC+07:00)
+     </p>
+     <p class="cohort-context">
+      Trong nhóm kỳ: 0 PR chờ xem xét · 0 PR chờ chỉnh sửa
+     </p>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-03 = N / D × 100%. D = 0 nên hiển thị “Không có dữ liệu”, không hiển thị 0%.
+       </p>
+       <p>
+        Kịch bản riêng giả định không có lần gửi hợp lệ đầu trong kỳ.
+       </p>
+       <p>
+        Cohort chọn theo lần gửi hợp lệ đầu tại [S, E); quyết định trả lại được xét đến và gồm T. Phạm vi là toàn Đơn vị mẫu, gồm cả PR không ở hàng đợi.
+       </p>
+       <ul class="quality-list">
+        <li>
+         Chưa xác định tình trạng chờ: 0 PR.
+        </li>
+        <li>
+         Chưa tính được thời gian chờ: 0 PR.
+        </li>
+        <li>
+         Chưa xác định cohort: 0 PR.
+        </li>
+        <li>
+         Thuộc cohort nhưng chưa rõ lịch sử trả lại: 0 PR.
+        </li>
+        <li>
+         Chưa xác định tình trạng ngữ cảnh trong cohort: 0 PR.
+        </li>
+        <li>
+         Bản ghi không gắn được PR: 0.
+        </li>
+       </ul>
+       <p>
+        Thiếu định danh PR phải công bố riêng số bản ghi không gắn được PR và giới hạn “Không xác định đầy đủ”.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="metric-unknown-title" class="view" data-role="manager" data-screen="PR-SCR-04" id="metric-unknown">
+    <a class="back" href="#scr04">
+     ← Về hàng đợi
+    </a>
+    <div class="page-head">
+     <div class="heading-row">
+      <h1 id="metric-unknown-title">
+       Dữ liệu chưa xác định
+      </h1>
+     </div>
+     <p>
+      Tình huống riêng · Giữ rõ các phần chưa đủ căn cứ.
+     </p>
+    </div>
+    <div class="callout warn">
+     <strong>
+      Chưa tính được thời gian chờ
+     </strong>
+     <p>
+      Đã xác nhận PR đang chờ nhưng thiếu mốc mở vòng hiện tại. Thời gian chờ: Không xác định do thiếu dữ liệu.
+     </p>
+    </div>
+    <div class="panel cohort-panel">
+     <div class="cohort-heading">
+      <h2>
+       Tỷ lệ PR từng bị trả lại
+      </h2>
+      <strong class="rate">
+       Không có dữ liệu
+       <span>
+        0 / 0 PR
+       </span>
+      </strong>
+     </div>
+     <div class="callout warn">
+      <strong>
+       Có dữ liệu chưa xác định
+      </strong>
+      <p>
+       1 PR chưa xác định có thuộc nhóm kỳ hay không. Mẫu số tính được bằng 0; chưa thể kết luận nhóm thực sự rỗng.
+      </p>
+     </div>
+     <p class="report-context">
+      Đơn vị mẫu · Kỳ 01/10/2026 00:00 đến trước 08/10/2026 00:00
+      <br/>
+      Báo cáo tại 10/10/2026 12:00 (UTC+07:00)
+     </p>
+     <p class="cohort-context">
+      Trong nhóm kỳ: Chưa xác định nhóm kỳ đầy đủ.
+     </p>
+     <details class="disclosure">
+      <summary>
+       Cách tính và chất lượng dữ liệu
+      </summary>
+      <div class="disclosure-body">
+       <p>
+        PR-MET-03 = N / D × 100%. D = 0 nên hiển thị “Không có dữ liệu”, không hiển thị 0%.
+       </p>
+       <p>
+        Kịch bản riêng: chưa xác định cohort của 1 PR; không đưa PR đó vào tử số hoặc mẫu số.
+       </p>
+       <p>
+        Cohort chọn theo lần gửi hợp lệ đầu tại [S, E); quyết định trả lại được xét đến và gồm T. Phạm vi là toàn Đơn vị mẫu, gồm cả PR không ở hàng đợi.
+       </p>
+       <ul class="quality-list">
+        <li>
+         Chưa xác định tình trạng chờ: chưa nêu trong kịch bản.
+        </li>
+        <li>
+         Chưa tính được thời gian chờ: 1 PR minh họa riêng.
+        </li>
+        <li>
+         Chưa xác định cohort: 1 PR.
+        </li>
+        <li>
+         Thuộc cohort nhưng chưa rõ lịch sử trả lại: 0 PR.
+        </li>
+        <li>
+         Chưa xác định tình trạng ngữ cảnh trong cohort: chưa nêu trong tình huống.
+        </li>
+        <li>
+         Bản ghi không gắn được PR: 0.
+        </li>
+       </ul>
+       <p>
+        Thiếu định danh PR phải công bố riêng số bản ghi không gắn được PR và giới hạn “Không xác định đầy đủ”.
+       </p>
+      </div>
+     </details>
+     <p class="metric-label">
+      Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.
+     </p>
+    </div>
+   </section>
+   <footer class="footer">
+    <a href="README.md">
+     Ghi chú reviewer và nguồn yêu cầu
+    </a>
+   </footer>
+  </main>
+ </body>
+</html>

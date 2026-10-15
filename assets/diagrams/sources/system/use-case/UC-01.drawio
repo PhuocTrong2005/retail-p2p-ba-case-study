@@ -1,0 +1,66 @@
+<mxfile host="app.diagrams.net" pages="1">
+  <diagram id="eSb941dkyqZLuHknJDcY" name="UC-01">
+    <mxGraphModel dx="1288" dy="703" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="uc01-boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="650" width="540" x="180" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-system-title" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;autosize=1;resizable=0;" value="&lt;b&gt;Hệ thống quản lý mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="280" x="310" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-page-title" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;autosize=1;resizable=0;" value="&lt;b&gt;UC-01 — Tạo và gửi yêu cầu mua hàng (PR)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="310" x="295" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-requester" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nhân viên cửa hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="55" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-budget-source" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nguồn dữ liệu ngân sách" vertex="1">
+          <mxGeometry height="60" width="30" x="790" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-create-submit" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Tạo và gửi yêu cầu mua hàng" vertex="1">
+          <mxGeometry height="80" width="210" x="345" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-validate-info" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Kiểm tra thông tin PR" vertex="1">
+          <mxGeometry height="75" width="185" x="213" y="347.5" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-validate-budget" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Kiểm tra ngân sách khả dụng" vertex="1">
+          <mxGeometry height="75" width="185" x="507" y="351" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-revise" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Chỉnh sửa yêu cầu mua hàng" vertex="1">
+          <mxGeometry height="80" width="200" x="350" y="541" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-edge-requester-main" edge="1" parent="1" source="uc01-requester" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc01-create-submit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-edge-requester-revise" edge="1" parent="1" source="uc01-requester" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc01-revise">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="125" y="585" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="uc01-edge-main-validation" edge="1" parent="1" source="uc01-create-submit" style="html=1;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;strokeWidth=1;endArrow=open;endFill=0;rounded=0;dashed=1;dashPattern=8 8;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="uc01-validate-info">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-label-validation" connectable="0" parent="uc01-edge-main-validation" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="uc01-edge-budget-source" edge="1" parent="1" source="uc01-budget-source" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc01-validate-budget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-edge-main-budget" edge="1" parent="1" source="uc01-create-submit" style="html=1;labelBackgroundColor=#ffffff;jettySize=auto;orthogonalLoop=1;strokeWidth=1;endArrow=open;endFill=0;rounded=0;dashed=1;dashPattern=8 8;exitX=0.65;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="uc01-validate-budget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01-label-budget" connectable="0" parent="uc01-edge-main-budget" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

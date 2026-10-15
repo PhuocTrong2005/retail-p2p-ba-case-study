@@ -1,35 +1,26 @@
-# Business Requirements Catalog
+# Danh mục yêu cầu nghiệp vụ
 
-## 1. Overview
+## 1. Tổng quan
 
-This document defines the consolidated Business Requirements Catalog for the **NovaRetail JSC Procure-to-Pay Process Optimization** project.
+Tài liệu xác định danh mục yêu cầu nghiệp vụ hợp nhất cho dự án **Tối ưu hóa quy trình từ mua hàng đến thanh toán tại NovaRetail JSC**.
 
-The catalog translates the results of the previous Business Analysis activities into a structured set of business-level requirements.
+Danh mục chuyển [vấn đề và mục tiêu](../01-business-context/README.md), [điểm bất cập/nguyên nhân gốc rễ](../03-as-is-analysis/README.md), [phạm vi](../01-business-context/scope.md) và [To-Be/quy tắc](../04-to-be-design/README.md) thành tập yêu cầu nghiệp vụ có cấu trúc. [BRD](./business-requirements-document.md) giữ bản tổng hợp để đọc riêng.
 
-The requirements are derived from:
+Danh mục thiết lập **đường cơ sở yêu cầu nghiệp vụ**, được phân rã thành ca sử dụng ở [Giai đoạn 06](../06-system-analysis/README.md) và yêu cầu chức năng/phi chức năng ở [Giai đoạn 07](../07-software-requirements/README.md).
 
-* business problems and pain points;
-* root-cause analysis;
-* business objectives;
-* agreed project scope;
-* To-Be process improvements;
-* business rules.
-
-The catalog establishes the **Business Requirement baseline** that is decomposed into Use Cases in [Phase 06](../06-system-analysis/README.md) and Functional/Non-Functional Requirements in [Phase 07](../07-software-requirements/README.md).
-
-> **Note:** NovaRetail JSC is a fictional organization created for this Business Analysis portfolio case study. All process volumes, targets, and operational scenarios are simulated.
+> **Lưu ý:** NovaRetail JSC là tổ chức giả lập được tạo cho nghiên cứu tình huống hồ sơ năng lực phân tích nghiệp vụ này. Mọi khối lượng quy trình, chỉ tiêu và kịch bản vận hành đều giả lập.
 
 ---
 
-## 2. Requirement Identification Convention
+## 2. Quy ước định danh yêu cầu
 
-Business Requirements use the following identifier:
+Yêu cầu nghiệp vụ dùng định danh sau:
 
 ```text
 BRQ-XX
 ```
 
-Example:
+Ví dụ:
 
 ```text
 BRQ-01
@@ -37,385 +28,387 @@ BRQ-02
 BRQ-03
 ```
 
-The project uses the following naming convention across its analysis artifacts:
+Dự án dùng quy ước đặt tên sau xuyên suốt các sản phẩm phân tích:
 
-| Prefix | Meaning                    |
+| Tiền tố | Ý nghĩa |
 | ------ | -------------------------- |
-| OBJ    | Business Objective         |
-| PP     | Pain Point                 |
-| RC     | Root Cause                 |
-| BR     | Business Rule              |
-| BRQ    | Business Requirement       |
-| FR     | Functional Requirement     |
-| NFR    | Non-Functional Requirement |
-| UC     | Use Case                   |
+| OBJ | Mục tiêu nghiệp vụ |
+| PP | Điểm bất cập |
+| RC | Nguyên nhân gốc rễ |
+| BR | Quy tắc nghiệp vụ |
+| BRQ | Yêu cầu nghiệp vụ |
+| FR | Yêu cầu chức năng |
+| NFR | Yêu cầu phi chức năng |
+| UC | Ca sử dụng |
 
-This convention supports end-to-end [requirements traceability](../08-traceability/requirements-traceability-matrix.md).
+Quy ước hỗ trợ [truy vết yêu cầu](../08-traceability/requirements-traceability-matrix.md) xuyên suốt.
 
-### Objective measure alignment
+### Đồng bộ cách đo mục tiêu
 
-For OBJ-03, the 95% target means the percentage of in-scope P2P transactions managed through the centralized process. It is separate from the 100% PR/PO status-visibility target and does not measure information accessibility.
+Với OBJ-03, chỉ tiêu 95% là tỷ lệ giao dịch P2P trong phạm vi được quản lý qua quy trình tập trung. Chỉ tiêu này tách biệt với chỉ tiêu 100% khả năng theo dõi trạng thái PR/PO và không đo khả năng truy cập thông tin.
+
+OBJ-01 vẫn đo từ lúc gửi PO đến phê duyệt cuối cùng; lịch làm việc, vòng trả về/gửi lại và cách xử lý bản ghi đang chờ/bị từ chối còn mở. OBJ-02 hướng đến không quá một điểm ghi nhận chính cho thông tin hiện có tái sử dụng được; dữ liệu mới về số lượng GR, hóa đơn và đề nghị thanh toán được tách riêng. OBJ-04 giữ 100% kiểm tra ngân sách và ít nhất 80% hóa đơn đủ điều kiện **được xử lý qua đối chiếu ba bên tự động**, bao gồm trường hợp sai lệch; đây không phải chỉ tiêu 80% đối chiếu đạt. Mẫu số hóa đơn đủ điều kiện, kỳ quan sát và cách xử lý lần thử lặp lại chưa được xác định. OBJ-05 giữ mức bao phủ kiểm toán 100% hành động chính; mức bao phủ lịch sử đầy đủ theo giao dịch là chẩn đoán riêng. Xem [Mục tiêu dự án](../01-business-context/project-objectives.md) để biết định nghĩa đo lường chuẩn và lựa chọn còn mở. Không chỉ tiêu nào là kết quả đã đạt.
 
 ---
 
-## 3. Priority Definition
+## 3. Định nghĩa mức ưu tiên
 
-Business Requirements are prioritized using three levels.
+Yêu cầu nghiệp vụ được ưu tiên theo ba mức.
 
-| Priority   | Definition                                                                                       |
+| Mức ưu tiên | Định nghĩa |
 | ---------- | ------------------------------------------------------------------------------------------------ |
-| **High**   | Required to address a major business problem, critical process control, or core To-Be capability |
-| **Medium** | Important to process governance but not a primary transformation driver                          |
-| **Low**    | Useful improvement that may be deferred without preventing the core To-Be process from operating |
+| **Cao** | Cần để xử lý vấn đề nghiệp vụ lớn, kiểm soát quy trình trọng yếu hoặc khả năng To-Be cốt lõi |
+| **Trung bình** | Quan trọng với quản trị quy trình nhưng không phải động lực chuyển đổi chính |
+| **Thấp** | Cải tiến hữu ích có thể hoãn mà không ngăn quy trình To-Be cốt lõi vận hành |
 
-Priority represents **business importance**, not implementation complexity or development effort.
+Mức ưu tiên thể hiện **tầm quan trọng nghiệp vụ**, không phải độ phức tạp triển khai hoặc công sức phát triển.
 
 ---
 
-# 4. Business Requirements Summary
+# 4. Tổng hợp yêu cầu nghiệp vụ
 
-| ID     | Business Requirement                                 | Priority | Primary Objective |
+| ID | Yêu cầu nghiệp vụ | Mức ưu tiên | Mục tiêu chính |
 | ------ | ---------------------------------------------------- | -------- | ----------------- |
-| BRQ-01 | Centralized Procure-to-Pay Transaction Management    | High     | OBJ-03            |
-| BRQ-02 | Standardized Purchase Requisition Management         | High     | OBJ-02, OBJ-03    |
-| BRQ-03 | Mandatory Budget Control                             | High     | OBJ-04            |
-| BRQ-04 | Controlled Supplier Selection                        | Medium   | OBJ-04            |
-| BRQ-05 | Standardized Purchase Order Management and Approval  | High     | OBJ-01, OBJ-05    |
-| BRQ-06 | Procurement Data Reuse and Transaction Linkage       | High     | OBJ-02, OBJ-03    |
-| BRQ-07 | Procurement Status Visibility                        | High     | OBJ-03            |
-| BRQ-08 | Controlled Three-Way Matching and Exception Handling | High     | OBJ-04            |
-| BRQ-09 | Transaction and Approval Traceability                | High     | OBJ-05            |
-| BRQ-10 | Controlled Payment Request Approval                  | High     | OBJ-04            |
-| BRQ-11 | Basic Procurement Reporting                          | Medium   | OBJ-01, OBJ-03, OBJ-04, OBJ-05 |
+| BRQ-01 | Quản lý giao dịch từ mua hàng đến thanh toán tập trung | Cao | OBJ-03 |
+| BRQ-02 | Quản lý yêu cầu mua hàng chuẩn hóa | Cao | OBJ-02, OBJ-03 |
+| BRQ-03 | Kiểm soát ngân sách bắt buộc | Cao | OBJ-04 |
+| BRQ-04 | Lựa chọn nhà cung cấp có kiểm soát | Trung bình | OBJ-04 |
+| BRQ-05 | Quản lý và phê duyệt đơn đặt hàng chuẩn hóa | Cao | OBJ-01, OBJ-05 |
+| BRQ-06 | Tái sử dụng dữ liệu mua hàng và liên kết giao dịch | Cao | OBJ-02, OBJ-03 |
+| BRQ-07 | Khả năng theo dõi trạng thái mua hàng | Cao | OBJ-03 |
+| BRQ-08 | Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát | Cao | OBJ-04 |
+| BRQ-09 | Truy vết giao dịch và phê duyệt | Cao | OBJ-05 |
+| BRQ-10 | Phê duyệt đề nghị thanh toán có kiểm soát | Cao | OBJ-04 |
+| BRQ-11 | Báo cáo mua hàng cơ bản | Trung bình | OBJ-01, OBJ-03, OBJ-04, OBJ-05 |
 
 ---
 
-# 5. Detailed Business Requirements
+# 5. Yêu cầu nghiệp vụ chi tiết
 
-## BRQ-01 — Centralized Procure-to-Pay Transaction Management
+## BRQ-01 — Quản lý giao dịch từ mua hàng đến thanh toán tập trung
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires a standardized and connected procurement process covering Purchase Requisition creation through Payment Request approval.
+> NovaRetail cần quy trình mua hàng chuẩn hóa và liên thông, bao phủ từ lập yêu cầu mua hàng đến phê duyệt đề nghị thanh toán.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-The current Procure-to-Pay process is fragmented across several tools and information sources, including:
+Quy trình từ mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại phân tán trên nhiều công cụ và nguồn thông tin, gồm:
 
 * Excel;
 * email;
-* warehouse records;
-* accounting software.
+* hồ sơ kho;
+* phần mềm kế toán.
 
-A single procurement transaction may therefore be represented differently across multiple departments.
+Vì vậy, một giao dịch mua hàng có thể được thể hiện khác nhau giữa nhiều bộ phận.
 
-The future process should provide a connected transaction lifecycle covering:
+Quy trình tương lai nên cung cấp vòng đời giao dịch liên thông bao phủ:
 
 ```text
-Purchase Requisition
+Yêu cầu mua hàng
         ↓
-Purchase Order
+Đơn đặt hàng
         ↓
-Goods Receipt
+Phiếu nhận hàng
         ↓
-Supplier Invoice
+Hóa đơn nhà cung cấp
         ↓
-Payment Request
+Đề nghị thanh toán
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-02 — Procurement data is fragmented
-* PP-04 — PR/PO status is difficult to track
-* RC-02 — Lack of an integrated procurement data flow
-* To-Be connected transaction design
+* PP-02 — Dữ liệu mua hàng phân tán
+* PP-04 — Khó theo dõi trạng thái PR/PO
+* RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp
+* Thiết kế giao dịch liên thông To-Be
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-03 — Improve Procurement Visibility and Data Consistency
+* OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-07 — PR-to-PO Traceability
-* BR-13 — PO Reference Required for Goods Receipt
-* BR-15 — Invoice-to-PO Relationship
-* BR-25 — Transaction Status
-* BR-26 — Audit History
+* BR-07 — Truy vết từ PR đến PO
+* BR-13 — Bắt buộc tham chiếu PO khi ghi nhận phiếu nhận hàng
+* BR-15 — Quan hệ hóa đơn với PO
+* BR-25 — Trạng thái giao dịch
+* BR-26 — Lịch sử kiểm toán
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Relevant users should be able to follow an in-scope procurement transaction from PR creation through Payment Request approval without manually reconstructing its lifecycle from unrelated files and emails.
+Người dùng liên quan nên có thể theo dõi giao dịch mua hàng trong phạm vi từ lập PR đến phê duyệt đề nghị thanh toán mà không phải tái dựng thủ công vòng đời từ các tệp và email không liên kết.
 
 ---
 
-## BRQ-02 — Standardized Purchase Requisition Management
+## BRQ-02 — Quản lý yêu cầu mua hàng chuẩn hóa
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires Purchase Requisitions to be created, submitted, validated, approved, rejected or returned, and tracked through a standardized procurement workflow.
+> NovaRetail cần yêu cầu mua hàng được lập, gửi, kiểm tra, phê duyệt, từ chối hoặc trả về và theo dõi qua luồng mua hàng chuẩn hóa. Từ chối kết thúc đường xử lý PR đó; trả về có lý do cho phép chỉnh sửa và gửi lại sau kiểm tra lại trường bắt buộc và ngân sách.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-The As-Is Purchase Requisition process starts with an Excel file and depends heavily on email communication.
+Quy trình yêu cầu mua hàng As-Is bắt đầu bằng tệp Excel và phụ thuộc nhiều vào trao đổi email.
 
-This creates:
+Điều này tạo ra:
 
-* inconsistent request handling;
-* fragmented information;
-* limited status visibility;
-* additional downstream data-entry effort.
+* xử lý yêu cầu không nhất quán;
+* thông tin phân tán;
+* hạn chế khả năng theo dõi trạng thái;
+* thêm công sức nhập liệu ở bước sau.
 
-The future PR lifecycle should follow a controlled process:
+Vòng đời PR tương lai nên theo quy trình có kiểm soát:
 
 ```text
-Create
+Lập
   ↓
-Submit
+Gửi
   ↓
-Validate
+Kiểm tra
   ↓
-Approve / Reject / Return
+Phê duyệt / từ chối / trả về
   ↓
-Track
+Theo dõi
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-02 — Procurement data is fragmented
-* PP-04 — PR/PO status is difficult to track
-* PP-07 — Procurement data is entered repeatedly
-* To-Be Purchase Requisition process
+* PP-02 — Dữ liệu mua hàng phân tán
+* PP-04 — Khó theo dõi trạng thái PR/PO
+* PP-07 — Dữ liệu mua hàng được nhập lặp lại
+* Quy trình yêu cầu mua hàng To-Be
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-02 — Reduce Repetitive Manual Data Entry
-* OBJ-03 — Improve Procurement Visibility and Data Consistency
+* OBJ-02 — Giảm nhập dữ liệu thủ công lặp lại
+* OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-01 — Mandatory Purchase Requisition Information
-* BR-04 — Purchase Requisition Approval
-* BR-05 — Approved PR Required for Procurement
-* BR-25 — Transaction Status
+* BR-01 — Thông tin yêu cầu mua hàng bắt buộc
+* BR-04 — Phê duyệt yêu cầu mua hàng
+* BR-05 — Phải có PR đã phê duyệt để xử lý mua hàng
+* BR-25 — Trạng thái giao dịch
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Purchase Requisitions should follow a consistent process rather than relying on individual spreadsheet and email practices.
+Yêu cầu mua hàng nên theo quy trình nhất quán thay vì dựa vào cách dùng bảng tính và email riêng lẻ.
 
 ---
 
-## BRQ-03 — Mandatory Budget Control
+## BRQ-03 — Kiểm soát ngân sách bắt buộc
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires every applicable Purchase Requisition to pass budget validation before proceeding to business approval.
+> NovaRetail yêu cầu mọi yêu cầu mua hàng thuộc diện áp dụng phải đạt kiểm tra ngân sách trước khi chuyển phê duyệt nghiệp vụ.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-Budget checking in the As-Is process is performed manually and may not be applied consistently.
+Kiểm tra ngân sách trong As-Is được thực hiện thủ công và có thể không được áp dụng nhất quán.
 
-The To-Be process establishes budget validation as a mandatory control before Store Manager approval.
+Quy trình To-Be thiết lập kiểm tra ngân sách là kiểm soát bắt buộc trước phê duyệt của Quản lý cửa hàng.
 
 ```text
-PR Submitted
+PR đã gửi
      ↓
-Budget Validation
+Kiểm tra ngân sách
      ↓
-Budget Available?
+Có đủ ngân sách?
    /            \
- Yes             No
+  Có             Không
   ↓               ↓
-PR Approval    Return PR
+Phê duyệt PR    Trả PR
 ```
 
-Budget validation and business approval represent different business decisions:
+Kiểm tra ngân sách và phê duyệt nghiệp vụ là các quyết định nghiệp vụ khác nhau:
 
 ```text
-Budget Validation
-= Is sufficient budget available?
+Kiểm tra ngân sách
+= Có đủ ngân sách khả dụng không?
 
-Business Approval
-= Should this purchase be made?
+Phê duyệt nghiệp vụ
+= Có nên thực hiện giao dịch mua này không?
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-06 — Budget control is inconsistent
-* Process control gap identified during As-Is analysis
-* To-Be mandatory budget-validation process
+* PP-06 — Kiểm soát ngân sách không nhất quán
+* Khoảng trống kiểm soát quy trình được xác định trong phân tích As-Is
+* Quy trình kiểm tra ngân sách bắt buộc To-Be
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-04 — Strengthen Purchasing and Invoice Controls
+* OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-02 — Budget Validation Before PR Approval
-* BR-03 — Insufficient Budget
+* BR-02 — Kiểm tra ngân sách trước phê duyệt PR
+* BR-03 — Không đủ ngân sách
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Applicable Purchase Requisitions should not proceed to business approval without a successful budget-validation result.
+Yêu cầu mua hàng thuộc diện áp dụng không nên chuyển phê duyệt nghiệp vụ khi chưa có kết quả kiểm tra ngân sách đạt.
 
-### Scope Boundary
+### Ranh giới phạm vi
 
-The procurement process consumes available budget information.
+Quy trình mua hàng sử dụng thông tin ngân sách khả dụng.
 
-The following remain outside scope:
+Các nội dung sau vẫn ngoài phạm vi:
 
-* budget creation;
-* budget allocation;
-* financial planning;
-* budget forecasting.
-
----
-
-## BRQ-04 — Controlled Supplier Selection
-
-### Requirement
-
-> NovaRetail requires Purchase Orders to use eligible suppliers from the existing approved Supplier Master.
-
-### Business Rationale
-
-Only suppliers that have already been approved by NovaRetail should be eligible for use within the in-scope procurement process.
-
-This requirement provides a purchasing-control mechanism without extending the project into supplier sourcing or onboarding.
-
-### Priority
-
-**Medium**
-
-### Source
-
-* Project Scope
-* Approved Supplier Master assumption
-* To-Be Procurement Processing
-
-### Related Objectives
-
-* OBJ-04 — Strengthen Purchasing and Invoice Controls
-
-### Related Business Rules
-
-* BR-06 — Approved Supplier Requirement
-
-### Business Success Direction
-
-Purchase Orders within the defined P2P process should not be issued to suppliers that are not eligible according to the approved Supplier Master.
-
-### Scope Boundary
-
-The requirement does not include:
-
-* supplier onboarding;
-* supplier qualification;
-* RFQ;
-* RFP;
-* tender management;
-* supplier scoring;
-* contract negotiation.
+* lập ngân sách;
+* phân bổ ngân sách;
+* lập kế hoạch tài chính;
+* dự báo ngân sách.
 
 ---
 
-## BRQ-05 — Standardized Purchase Order Management and Approval
+## BRQ-04 — Lựa chọn nhà cung cấp có kiểm soát
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires Purchase Orders to be created from approved procurement requests and processed through a standardized approval workflow before being issued to suppliers.
+> NovaRetail yêu cầu đơn đặt hàng sử dụng nhà cung cấp đủ điều kiện từ danh mục nhà cung cấp hiện có đã được phê duyệt.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-The current PO approval process depends on email communication and manual follow-up.
+Chỉ nhà cung cấp đã được NovaRetail phê duyệt mới nên đủ điều kiện sử dụng trong quy trình mua hàng thuộc phạm vi.
 
-This contributes directly to:
+Yêu cầu này cung cấp cơ chế kiểm soát mua hàng mà không mở rộng dự án sang tìm nguồn cung hoặc tiếp nhận nhà cung cấp mới.
 
-* approval waiting time;
-* delayed PO issuance;
-* limited approval visibility;
-* weak approval traceability.
+### Mức ưu tiên
 
-The future process should follow a controlled sequence:
+**Trung bình**
+
+### Nguồn
+
+* Phạm vi dự án
+* Giả định danh mục nhà cung cấp đã được phê duyệt
+* Xử lý mua hàng To-Be
+
+### Mục tiêu liên quan
+
+* OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn
+
+### Quy tắc nghiệp vụ liên quan
+
+* BR-06 — Yêu cầu nhà cung cấp đã được phê duyệt
+
+### Định hướng thành công nghiệp vụ
+
+Đơn đặt hàng trong quy trình P2P đã xác định không nên được phát hành cho nhà cung cấp chưa đủ điều kiện theo danh mục nhà cung cấp đã được phê duyệt.
+
+### Ranh giới phạm vi
+
+Yêu cầu không bao gồm:
+
+* tiếp nhận nhà cung cấp mới;
+* đánh giá điều kiện nhà cung cấp;
+* yêu cầu báo giá (RFQ);
+* yêu cầu đề xuất (RFP);
+* quản lý đấu thầu;
+* chấm điểm nhà cung cấp;
+* đàm phán hợp đồng.
+
+---
+
+## BRQ-05 — Quản lý và phê duyệt đơn đặt hàng chuẩn hóa
+
+### Yêu cầu
+
+> NovaRetail yêu cầu đơn đặt hàng được lập từ yêu cầu mua hàng đã phê duyệt và xử lý qua luồng phê duyệt chuẩn hóa trước khi phát hành cho nhà cung cấp.
+
+### Cơ sở nghiệp vụ
+
+Quy trình phê duyệt PO hiện tại phụ thuộc vào trao đổi email và đôn đốc thủ công.
+
+Điều này trực tiếp góp phần gây ra:
+
+* thời gian chờ phê duyệt;
+* chậm phát hành PO;
+* hạn chế khả năng theo dõi phê duyệt;
+* khả năng truy vết phê duyệt yếu.
+
+Quy trình tương lai nên theo trình tự có kiểm soát:
 
 ```text
-Approved PR
+PR đã phê duyệt
      ↓
-Create PO
+Lập PO
      ↓
-Submit PO
+Gửi PO
      ↓
-Determine Approval Route
+Xác định tuyến phê duyệt
      ↓
-Procurement Approval
+Phê duyệt mua hàng
      ↓
-Additional Financial Approval
-(if required)
+Phê duyệt tài chính bổ sung
+(nếu cần)
      ↓
-PO Fully Approved
+PO đã phê duyệt đầy đủ
      ↓
-Issue PO
+Phát hành PO
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-01 — PO approval takes too long
-* PP-05 — Audit trail is limited
-* RC-01 — Lack of standardized PO approval workflow
-* To-Be PO approval process
+* PP-01 — Phê duyệt PO quá lâu
+* PP-05 — Dấu vết kiểm toán hạn chế
+* RC-01 — Thiếu luồng phê duyệt PO chuẩn hóa
+* Quy trình phê duyệt PO To-Be
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-01 — Shorten the Purchase Order Approval Cycle
-* OBJ-05 — Improve Transaction Traceability
+* OBJ-01 — Rút ngắn chu trình phê duyệt đơn đặt hàng
+* OBJ-05 — Cải thiện khả năng truy vết giao dịch
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-07 — PR-to-PO Traceability
-* BR-08 — Reuse of Purchase Requisition Data
-* BR-09 — Purchase Order Approval Routing
-* BR-10 — Additional Financial Approval
-* BR-11 — PO Issuance
-* BR-12 — Returned Purchase Order
+* BR-07 — Truy vết từ PR đến PO
+* BR-08 — Tái sử dụng dữ liệu yêu cầu mua hàng
+* BR-09 — Chuyển phê duyệt đơn đặt hàng
+* BR-10 — Phê duyệt tài chính bổ sung
+* BR-11 — Phát hành PO
+* BR-12 — Đơn đặt hàng bị trả về
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Every Purchase Order should follow the applicable approval route and complete all required approvals before being issued to the Supplier.
+Mọi đơn đặt hàng nên theo tuyến phê duyệt áp dụng và hoàn tất mọi phê duyệt bắt buộc trước khi phát hành cho Nhà cung cấp.
 
-### Policy Note
+### Lưu ý chính sách
 
-Exact approval thresholds are intentionally not defined in the current baseline.
+Ngưỡng phê duyệt chính xác được chủ ý chưa xác định trong đường cơ sở hiện tại.
 
-Approval criteria should remain configurable according to validated Procurement and Finance policies.
+Tiêu chí phê duyệt nên tiếp tục có thể cấu hình theo chính sách Mua hàng và Tài chính đã xác nhận.
 
 ---
 
-## BRQ-06 — Procurement Data Reuse and Transaction Linkage
+## BRQ-06 — Tái sử dụng dữ liệu mua hàng và liên kết giao dịch
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires related procurement records to reuse available transaction information and maintain traceable relationships throughout the Procure-to-Pay lifecycle.
+> NovaRetail cần các hồ sơ mua hàng liên quan tái sử dụng thông tin giao dịch có sẵn và duy trì quan hệ truy vết được xuyên suốt vòng đời P2P.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-The As-Is process requires information to be manually entered and retrieved across several process stages.
+Quy trình As-Is yêu cầu nhập và tìm thông tin thủ công qua nhiều bước quy trình.
 
-The future process should support direct transaction relationships such as:
+Quy trình tương lai nên hỗ trợ quan hệ giao dịch trực tiếp như:
 
 ```text
 PR-001
@@ -425,326 +418,329 @@ PR-001
          └── INV-001
 ```
 
-Information already captured upstream should be reused where appropriate.
+Thông tin đã ghi nhận ở bước trước nên được tái sử dụng khi phù hợp.
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-02 — Procurement data is fragmented
-* PP-03 — Three-way matching is manual
-* PP-07 — Procurement data is entered repeatedly
-* RC-02 — Lack of an integrated procurement data flow
+* PP-02 — Dữ liệu mua hàng phân tán
+* PP-03 — Đối chiếu ba bên thủ công
+* PP-07 — Dữ liệu mua hàng được nhập lặp lại
+* RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-02 — Reduce Repetitive Manual Data Entry
-* OBJ-03 — Improve Procurement Visibility and Data Consistency
+* OBJ-02 — Giảm nhập dữ liệu thủ công lặp lại
+* OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-07 — PR-to-PO Traceability
-* BR-08 — Reuse of Purchase Requisition Data
-* BR-13 — PO Reference Required for Goods Receipt
-* BR-15 — Invoice-to-PO Relationship
+* BR-07 — Truy vết từ PR đến PO
+* BR-08 — Tái sử dụng dữ liệu yêu cầu mua hàng
+* BR-13 — Bắt buộc tham chiếu PO khi ghi nhận phiếu nhận hàng
+* BR-15 — Quan hệ hóa đơn với PO
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Existing procurement information should be reused across downstream activities where appropriate, while related documents remain identifiable as part of the same procurement transaction.
+Thông tin mua hàng hiện có nên được tái sử dụng qua các hoạt động ở bước sau khi phù hợp, đồng thời vẫn nhận diện được chứng từ liên quan là một phần của cùng giao dịch mua hàng.
 
 ---
 
-## BRQ-07 — Procurement Status Visibility
+## BRQ-07 — Khả năng theo dõi trạng thái mua hàng
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires authorized users to have visibility into the current status of relevant Purchase Requisitions, Purchase Orders, Goods Receipts, Supplier Invoices, exceptions, and approval activities.
+> NovaRetail cần người dùng được cấp quyền có thể theo dõi trạng thái hiện tại của yêu cầu mua hàng, đơn đặt hàng, phiếu nhận hàng, hóa đơn nhà cung cấp, ngoại lệ và hoạt động phê duyệt liên quan.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-Users currently depend on:
+Người dùng hiện phụ thuộc vào:
 
 * email;
-* spreadsheets;
-* Procurement follow-up;
-* manager follow-up;
+* bảng tính;
+* đôn đốc bộ phận mua hàng;
+* đôn đốc quản lý;
 
-to determine the status of procurement transactions.
+để xác định trạng thái giao dịch mua hàng.
 
-The future process should provide consistent workflow status information.
+Quy trình tương lai nên cung cấp thông tin trạng thái luồng công việc nhất quán.
 
-Relevant users should be able to determine:
+Người dùng liên quan nên có thể xác định:
 
 ```text
-What is the current status?
+Trạng thái hiện tại là gì?
 
-Has the transaction been approved?
+Giao dịch đã được phê duyệt chưa?
 
-Has it been returned?
+Đã bị trả về chưa?
 
-Is an action pending?
+Có hành động đang chờ không?
 
-Which process stage currently owns the transaction?
+Bước quy trình nào đang phụ trách giao dịch?
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-04 — PR/PO status is difficult to track
-* PP-02 — Procurement data is fragmented
-* RC-02 — Lack of an integrated procurement data flow
+* PP-04 — Khó theo dõi trạng thái PR/PO
+* PP-02 — Dữ liệu mua hàng phân tán
+* RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-03 — Improve Procurement Visibility and Data Consistency
+* OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-25 — Transaction Status
-* BR-26 — Audit History
+* BR-25 — Trạng thái giao dịch
+* BR-27 — Hành động theo vai trò
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Authorized users should be able to determine the current status of relevant procurement transactions without relying primarily on manual email follow-up.
+Người dùng được cấp quyền nên có thể xác định trạng thái hiện tại của giao dịch mua hàng liên quan mà không chủ yếu dựa vào đôn đốc email thủ công.
 
 ---
 
-## BRQ-08 — Controlled Three-Way Matching and Exception Handling
+## BRQ-08 — Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires Supplier Invoices to be validated against related Purchase Orders and Goods Receipts before proceeding to payment preparation, with structured handling for mismatched transactions.
+> NovaRetail yêu cầu hóa đơn nhà cung cấp được kiểm tra với đơn đặt hàng và phiếu nhận hàng liên quan trước khi chuyển sang chuẩn bị thanh toán, với cách xử lý có cấu trúc cho giao dịch có sai lệch.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-In the As-Is process, the AP Accountant manually identifies and compares:
+Trong quy trình As-Is, Kế toán công nợ phải trả (AP) xác định và so sánh thủ công:
 
 ```text
-Purchase Order
+Đơn đặt hàng
       +
-Goods Receipt
+Phiếu nhận hàng
       +
-Supplier Invoice
+Hóa đơn nhà cung cấp
 ```
 
-The future process should support rule-based matching for eligible transactions.
+Quy trình tương lai nên hỗ trợ đối chiếu theo quy tắc cho giao dịch đủ điều kiện.
 
 ```text
-PO + GR + Invoice
+PO + GR + hóa đơn
         ↓
-Three-Way Matching
+Đối chiếu ba bên
         ↓
-Documents Match?
+Chứng từ khớp?
      /          \
-   Yes           No
+    Có           Không
     ↓             ↓
-Continue       Exception
+Đủ điều kiện  Tạo ngoại lệ
                   ↓
-               Resolve
+             Điều tra / ghi nhận chỉnh sửa
                   ↓
-               Re-match
+               Chạy lại đối chiếu
+                  ↓
+             Đạt? Có → Ghi nhận đã xử lý / cấp điều kiện
+                   Không → Giữ ngoại lệ mở / chặn đề nghị thanh toán
 ```
 
-Automation should support standard transactions while mismatches remain subject to controlled human investigation.
+Tự động hóa nên hỗ trợ giao dịch thông thường, còn sai lệch vẫn phải được con người điều tra có kiểm soát.
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-03 — Three-way matching is manual
-* RC-03 — Lack of integrated document data and matching capability
-* To-Be Three-Way Matching process
+* PP-03 — Đối chiếu ba bên thủ công
+* RC-03 — Thiếu dữ liệu chứng từ tích hợp và khả năng đối chiếu
+* Quy trình đối chiếu ba bên To-Be
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-04 — Strengthen Purchasing and Invoice Controls
+* OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-16 — Matching Preconditions
-* BR-17 — Matching Attributes
-* BR-18 — Matching Tolerance
-* BR-19 — Successful Matching
-* BR-20 — Mismatch Requires Exception Handling
-* BR-21 — Exception Traceability
+* BR-16 — Điều kiện tiên quyết để đối chiếu
+* BR-17 — Thuộc tính đối chiếu
+* BR-18 — Dung sai đối chiếu
+* BR-19 — Đối chiếu đạt
+* BR-20 — Sai lệch phải được xử lý ngoại lệ
+* BR-21 — Truy vết ngoại lệ
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Eligible transactions should pass through a consistent three-way matching control, while mismatched invoices should not proceed directly to Payment Request preparation until the exception has been resolved.
+Giao dịch đủ điều kiện nên đi qua kiểm soát đối chiếu ba bên nhất quán; hóa đơn có sai lệch không nên chuyển thẳng sang chuẩn bị đề nghị thanh toán cho đến khi đã ghi nhận chỉnh sửa và đối chiếu lại đạt; ngoại lệ vẫn mở sau đối chiếu lại không đạt.
 
 ---
 
-## BRQ-09 — Transaction and Approval Traceability
+## BRQ-09 — Truy vết giao dịch và phê duyệt
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires key procurement activities, transaction changes, matching exceptions, and approval decisions to maintain sufficient history for operational review and audit purposes.
+> NovaRetail yêu cầu các hoạt động mua hàng chính, thay đổi giao dịch, ngoại lệ đối chiếu và quyết định phê duyệt giữ đủ lịch sử phục vụ xem xét vận hành và kiểm toán.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-The current process stores transaction evidence across:
+Quy trình hiện tại lưu bằng chứng giao dịch trên:
 
 * email;
-* Excel files;
-* departmental records;
-* separate systems.
+* tệp Excel;
+* hồ sơ bộ phận;
+* hệ thống riêng biệt.
 
-The future process should allow NovaRetail to determine:
+Quy trình tương lai nên cho phép NovaRetail xác định:
 
 ```text
-Who performed the action?
-What action was performed?
-When did it occur?
-Which transaction was affected?
-What approval decision was made?
-What status changed?
+Ai thực hiện hành động?
+Hành động nào đã được thực hiện?
+Xảy ra khi nào?
+Giao dịch nào bị ảnh hưởng?
+Quyết định phê duyệt nào đã được đưa ra?
+Trạng thái nào đã thay đổi?
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* PP-05 — Audit trail is limited
-* RC-01 — Lack of standardized approval workflow
-* RC-02 — Lack of integrated procurement data flow
-* To-Be audit-history design
+* PP-05 — Dấu vết kiểm toán hạn chế
+* RC-01 — Thiếu luồng phê duyệt chuẩn hóa
+* RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp
+* Thiết kế lịch sử kiểm toán To-Be
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-05 — Improve Transaction Traceability
+* OBJ-05 — Cải thiện khả năng truy vết giao dịch
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-12 — Returned Purchase Order
-* BR-21 — Exception Traceability
-* BR-26 — Audit History
-* BR-27 — Role-Based Actions
+* BR-12 — Đơn đặt hàng bị trả về
+* BR-21 — Truy vết ngoại lệ
+* BR-26 — Lịch sử kiểm toán
+* BR-27 — Hành động theo vai trò
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Key procurement activities should be reconstructable from transaction history without depending on scattered email or spreadsheet evidence.
+Các hoạt động mua hàng chính nên có thể được tái dựng từ lịch sử giao dịch mà không phụ thuộc bằng chứng email hoặc bảng tính rải rác.
 
 ---
 
-## BRQ-10 — Controlled Payment Request Approval
+## BRQ-10 — Phê duyệt đề nghị thanh toán có kiểm soát
 
-### Requirement
+### Yêu cầu
 
-> NovaRetail requires Payment Requests to proceed to financial approval only after the applicable procurement and invoice controls have been completed.
+> NovaRetail yêu cầu đề nghị thanh toán chỉ chuyển phê duyệt tài chính sau khi hoàn tất các kiểm soát mua hàng và hóa đơn áp dụng.
 
-### Business Rationale
+### Cơ sở nghiệp vụ
 
-Receiving a Supplier Invoice alone should not make a transaction eligible for Payment Request approval.
+Chỉ nhận hóa đơn nhà cung cấp không nên làm giao dịch đủ điều kiện phê duyệt đề nghị thanh toán.
 
-The relevant procurement controls must first be completed.
+Các kiểm soát mua hàng liên quan phải hoàn tất trước.
 
 ```text
-Supplier Invoice
+Hóa đơn nhà cung cấp
        ↓
-Three-Way Matching
+Đối chiếu ba bên
        ↓
-Matched / Exception Resolved
+Kết quả đối chiếu hiện hành đạt
        ↓
-Prepare Payment Request
+Chuẩn bị đề nghị thanh toán
        ↓
-Finance Manager Review
+Trưởng bộ phận tài chính xem xét
        ↓
-Payment Request Approved
+Đề nghị thanh toán đã được phê duyệt
 ```
 
-### Priority
+### Mức ưu tiên
 
-**High**
+**Cao**
 
-### Source
+### Nguồn
 
-* To-Be Payment Approval process
-* Payment-control requirements
-* Project scope boundary
+* Quy trình phê duyệt thanh toán To-Be
+* Yêu cầu kiểm soát thanh toán
+* Ranh giới phạm vi dự án
 
-### Related Objectives
+### Mục tiêu liên quan
 
-* OBJ-04 — Strengthen Purchasing and Invoice Controls
+* OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn
 
-### Related Business Rules
+### Quy tắc nghiệp vụ liên quan
 
-* BR-19 — Successful Matching
-* BR-20 — Mismatch Requires Exception Handling
-* BR-22 — Payment Request Eligibility
-* BR-23 — Payment Approval
-* BR-24 — Payment Execution Boundary
+* BR-19 — Đối chiếu đạt
+* BR-20 — Sai lệch phải được xử lý ngoại lệ
+* BR-22 — Điều kiện lập đề nghị thanh toán
+* BR-23 — Phê duyệt thanh toán
+* BR-24 — Ranh giới thực hiện thanh toán
 
-### Business Success Direction
+### Định hướng thành công nghiệp vụ
 
-Payment Requests should reach Finance approval only after all applicable procurement and invoice controls have been successfully completed.
+Đề nghị thanh toán chỉ nên đến bước phê duyệt tài chính sau khi mọi kiểm soát mua hàng và hóa đơn áp dụng đã hoàn tất với kết quả đạt.
 
-### Scope Boundary
+### Ranh giới phạm vi
 
 ```text
-Payment Request Approved
+Đề nghị thanh toán đã được phê duyệt
           ↓
-     END OF SCOPE
+     KẾT THÚC PHẠM VI
 ```
 
-The following remain outside scope:
+Các nội dung sau vẫn ngoài phạm vi:
 
-* bank transfer;
-* payment API execution;
-* payment settlement;
-* bank reconciliation.
-
----
-
-## BRQ-11 — Basic Procurement Reporting
-
-### Requirement
-
-> NovaRetail requires authorized managers to view basic operational procurement reports or summaries for process monitoring.
-
-### Business Rationale
-
-Basic procurement reporting is explicitly included in the project scope and is needed to review the redesigned process. It is a distinct business need, not merely a status-view feature.
-
-### Priority
-
-**Medium**
-
-### Source
-
-* Project Scope — Procurement Reporting
-* To-Be process monitoring needs
-* UC-12 — View Procurement Reports
-
-### Related Objectives
-
-* OBJ-01 — Shorten the Purchase Order Approval Cycle
-* OBJ-03 — Improve Procurement Visibility and Data Consistency
-* OBJ-04 — Strengthen Purchasing and Invoice Controls
-* OBJ-05 — Improve Transaction Traceability
-
-### Related Business Rules
-
-* BR-25 — Transaction Status
-* BR-27 — Role-Based Actions
-
-### Business Success Direction
-
-Authorized managers should be able to review basic operational information such as PR/PO status, pending approvals, GR and invoice status, matching exceptions, and Payment Request status. Report layout, KPI formulas, filters, exports, and chart design remain for later definition.
+* chuyển khoản ngân hàng;
+* thực hiện qua API thanh toán;
+* quyết toán thanh toán;
+* đối soát ngân hàng.
 
 ---
 
-# 6. Requirement-to-Objective Matrix
+## BRQ-11 — Báo cáo mua hàng cơ bản
 
-| Business Requirement | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 |
+### Yêu cầu
+
+> NovaRetail cần quản lý được cấp quyền xem báo cáo hoặc tổng hợp mua hàng vận hành cơ bản để theo dõi quy trình.
+
+### Cơ sở nghiệp vụ
+
+Báo cáo mua hàng cơ bản được nêu rõ trong phạm vi dự án và cần để xem xét quy trình được thiết kế lại. Đây là nhu cầu nghiệp vụ riêng, không chỉ là tính năng xem trạng thái.
+
+### Mức ưu tiên
+
+**Trung bình**
+
+### Nguồn
+
+* Phạm vi dự án — Báo cáo mua hàng
+* Nhu cầu theo dõi quy trình To-Be
+* UC-12 — Xem báo cáo mua hàng
+
+### Mục tiêu liên quan
+
+* OBJ-01 — Rút ngắn chu trình phê duyệt đơn đặt hàng
+* OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
+* OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn
+* OBJ-05 — Cải thiện khả năng truy vết giao dịch
+
+### Quy tắc nghiệp vụ liên quan
+
+* BR-25 — Trạng thái giao dịch
+* BR-27 — Hành động theo vai trò
+
+### Định hướng thành công nghiệp vụ
+
+Quản lý được cấp quyền nên có thể xem thông tin vận hành cơ bản như trạng thái PR/PO, yêu cầu chờ phê duyệt, trạng thái GR và hóa đơn, ngoại lệ đối chiếu và trạng thái đề nghị thanh toán. Bố cục báo cáo, công thức KPI, bộ lọc, chức năng xuất và thiết kế biểu đồ để xác định sau.
+
+---
+
+# 6. Ma trận yêu cầu với mục tiêu
+
+| Yêu cầu nghiệp vụ | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 |
 | -------------------- | :----: | :----: | :----: | :----: | :----: |
 | BRQ-01               |        |        |    ✓   |        |        |
 | BRQ-02               |        |    ✓   |    ✓   |        |        |
@@ -760,9 +756,9 @@ Authorized managers should be able to review basic operational information such 
 
 ---
 
-# 7. Requirement-to-Pain-Point Matrix
+# 7. Ma trận yêu cầu với điểm bất cập
 
-| Requirement | PP-01 | PP-02 | PP-03 | PP-04 | PP-05 | PP-06 | PP-07 |
+| Yêu cầu | PP-01 | PP-02 | PP-03 | PP-04 | PP-05 | PP-06 | PP-07 |
 | ----------- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | BRQ-01      |       |   ✓   |       |   ✓   |       |       |       |
 | BRQ-02      |       |   ✓   |       |   ✓   |       |       |   ✓   |
@@ -776,277 +772,281 @@ Authorized managers should be able to review basic operational information such 
 | BRQ-10      |       |       |   ✓   |       |       |       |       |
 | BRQ-11      |   ✓   |       |       |   ✓   |   ✓   |       |       |
 
-BRQ-04 is primarily derived from the agreed purchasing-control scope rather than from one of the seven identified As-Is pain points.
+BRQ-04 chủ yếu được rút ra từ phạm vi kiểm soát mua hàng đã thống nhất, không phải từ một trong bảy điểm bất cập As-Is đã xác định.
 
 ---
 
-# 8. Requirement-to-Root-Cause Mapping
+# 8. Ánh xạ yêu cầu với nguyên nhân gốc rễ
 
-| Requirement | Root Cause / Control Source                                         |
+| Yêu cầu | Nguyên nhân gốc rễ / nguồn kiểm soát |
 | ----------- | ------------------------------------------------------------------- |
-| BRQ-01      | RC-02 — Lack of integrated procurement data flow                    |
-| BRQ-02      | RC-02 and fragmented manual PR handling                             |
-| BRQ-03      | Budget-control gap                                                  |
-| BRQ-04      | Approved-supplier purchasing control                                |
-| BRQ-05      | RC-01 — Lack of standardized PO approval workflow                   |
-| BRQ-06      | RC-02 — Lack of integrated procurement data flow                    |
-| BRQ-07      | RC-02 — Lack of integrated procurement data flow                    |
-| BRQ-08      | RC-03 — Lack of integrated document data and matching capability    |
-| BRQ-09      | RC-01 and RC-02                                                     |
-| BRQ-10      | Payment-control requirement dependent on completed invoice controls |
-| BRQ-11      | In-scope operational reporting need                                 |
+| BRQ-01 | RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp |
+| BRQ-02 | RC-02 và xử lý PR thủ công phân tán |
+| BRQ-03 | Khoảng trống kiểm soát ngân sách |
+| BRQ-04 | Kiểm soát mua hàng từ nhà cung cấp đã được phê duyệt |
+| BRQ-05 | RC-01 — Thiếu luồng phê duyệt PO chuẩn hóa |
+| BRQ-06 | RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp |
+| BRQ-07 | RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp |
+| BRQ-08 | RC-03 — Thiếu dữ liệu chứng từ tích hợp và khả năng đối chiếu |
+| BRQ-09 | RC-01 và RC-02 |
+| BRQ-10 | Yêu cầu kiểm soát thanh toán phụ thuộc kiểm soát hóa đơn đã hoàn tất |
+| BRQ-11 | Nhu cầu báo cáo vận hành trong phạm vi |
 
 ---
 
-# 9. Requirement Dependencies
+# 9. Điều kiện phụ thuộc giữa các yêu cầu
 
-The Business Requirements are related rather than completely independent.
+Các yêu cầu nghiệp vụ có liên hệ, không hoàn toàn độc lập.
 
-## 9.1 Transaction Foundation
+## 9.1 Nền tảng giao dịch
 
-BRQ-01 provides the overall process foundation.
+BRQ-01 cung cấp nền tảng quy trình tổng thể.
 
 ```text
 BRQ-01
-Centralized P2P Transaction Management
+Quản lý giao dịch P2P tập trung
         │
         ├── BRQ-02
-        │   PR Management
+        │   Quản lý PR
         │
         ├── BRQ-05
-        │   PO Management
+        │   Quản lý PO
         │
         └── BRQ-06
-            Transaction Linkage
+            Liên kết giao dịch
 ```
 
 ---
 
-## 9.2 Data-Driven Dependencies
+## 9.2 Điều kiện phụ thuộc dựa trên dữ liệu
 
-BRQ-06 supports several downstream capabilities.
+BRQ-06 hỗ trợ nhiều khả năng ở các bước sau.
 
 ```text
 BRQ-06
-Data Reuse and Transaction Linkage
+Tái sử dụng dữ liệu và liên kết giao dịch
         │
         ├── BRQ-07
-        │   Status Visibility
+        │   Khả năng theo dõi trạng thái
         │
         ├── BRQ-08
-        │   Three-Way Matching
+        │   Đối chiếu ba bên
         │
         ├── BRQ-09
-        │   Traceability
+        │   Truy vết
         │
         └── BRQ-11
-            Basic Reporting
+            Báo cáo cơ bản
 ```
 
 ---
 
-## 9.3 Invoice-to-Payment Dependency
+## 9.3 Điều kiện phụ thuộc từ hóa đơn đến thanh toán
 
 ```text
 BRQ-08
-Three-Way Matching
+Đối chiếu ba bên
         ↓
-Invoice Eligibility
+Điều kiện hóa đơn
         ↓
 BRQ-10
-Payment Request Approval
+Phê duyệt đề nghị thanh toán
 ```
 
-A controlled Payment Request process depends on successful matching or resolved exceptions.
+Quy trình đề nghị thanh toán có kiểm soát yêu cầu kết quả đối chiếu hiện hành đạt theo quy tắc áp dụng. Ngoại lệ được đánh dấu đã xử lý mà chưa có đối chiếu lại đạt không thể cấp điều kiện này.
 
 ---
 
-# 10. Requirements Outside the Current Scope
+# 10. Yêu cầu ngoài phạm vi hiện tại
 
-The Business Requirement baseline intentionally excludes:
+Đường cơ sở yêu cầu nghiệp vụ chủ ý loại trừ:
 
-* supplier onboarding;
-* supplier qualification;
-* RFQ / RFP;
-* tender management;
-* strategic sourcing;
-* contract lifecycle management;
-* supplier performance management;
-* inventory forecasting;
-* demand planning;
-* full Warehouse Management System functionality;
-* corporate budget creation and planning;
-* General Ledger accounting;
-* Accounts Receivable;
-* payroll;
-* detailed tax processing;
-* bank payment execution;
-* bank API integration;
-* bank reconciliation;
-* Supplier Portal;
-* full ERP replacement.
+* tiếp nhận nhà cung cấp mới;
+* đánh giá điều kiện nhà cung cấp;
+* yêu cầu báo giá / đề xuất (RFQ / RFP);
+* quản lý đấu thầu;
+* tìm nguồn cung chiến lược;
+* quản lý vòng đời hợp đồng;
+* quản lý hiệu quả nhà cung cấp;
+* dự báo tồn kho;
+* lập kế hoạch nhu cầu;
+* chức năng hệ thống quản lý kho đầy đủ;
+* lập và hoạch định ngân sách doanh nghiệp;
+* kế toán sổ cái;
+* công nợ phải thu;
+* tiền lương;
+* xử lý thuế chi tiết;
+* thực hiện thanh toán ngân hàng;
+* tích hợp API ngân hàng;
+* đối soát ngân hàng;
+* mua dịch vụ, ghi nhận và nghiệm thu dịch vụ;
+* hủy PR hoặc PO, sửa PR đã phê duyệt hoặc PO đã phê duyệt/đã phát hành và mở lại PR bị từ chối (để sau);
+* cổng thông tin nhà cung cấp;
+* thay thế toàn bộ ERP.
 
-Any future request for these capabilities should be evaluated as a potential scope change.
+Mọi yêu cầu tương lai về các khả năng này nên được đánh giá như thay đổi phạm vi tiềm năng.
 
 ---
 
-# 11. Requirements Requiring Further Decomposition
+# 11. Yêu cầu cần phân rã thêm
 
-The Business Requirements describe **what NovaRetail needs**.
+Yêu cầu nghiệp vụ mô tả **NovaRetail cần gì**.
 
-Detailed system behavior will be defined in later analysis stages.
+Hành vi hệ thống chi tiết sẽ được xác định trong các giai đoạn phân tích sau.
 
-| BRQ    | Further Analysis Required                                      |
+| BRQ | Phân tích thêm cần thực hiện |
 | ------ | -------------------------------------------------------------- |
-| BRQ-01 | Transaction model and lifecycle relationships                  |
-| BRQ-02 | PR fields, validation, statuses, user actions                  |
-| BRQ-03 | Budget-validation behavior and failure scenarios               |
-| BRQ-04 | Supplier eligibility validation                                |
-| BRQ-05 | PO workflow, approval routing, return/resubmit scenarios       |
-| BRQ-06 | Document relationships and reusable transaction data           |
-| BRQ-07 | Detailed status model and visibility rules                     |
-| BRQ-08 | Matching rules, tolerance, exception types and resolution flow |
-| BRQ-09 | Audit events, history fields and access rules                  |
-| BRQ-10 | Payment Request data and approval behavior                     |
-| BRQ-11 | Report subjects, authorized access, KPI definitions, filters, and presentation |
+| BRQ-01 | Mô hình giao dịch và quan hệ vòng đời |
+| BRQ-02 | Trường PR, kiểm tra, trạng thái, hành động người dùng |
+| BRQ-03 | Hành vi kiểm tra ngân sách và kịch bản không đạt |
+| BRQ-04 | Kiểm tra điều kiện nhà cung cấp |
+| BRQ-05 | Luồng PO, chuyển phê duyệt, kịch bản trả về/gửi lại |
+| BRQ-06 | Quan hệ chứng từ và dữ liệu giao dịch tái sử dụng được |
+| BRQ-07 | Mô hình trạng thái chi tiết và quy tắc cho phép xem |
+| BRQ-08 | Quy tắc đối chiếu, dung sai, loại ngoại lệ và luồng xử lý |
+| BRQ-09 | Sự kiện kiểm toán, trường lịch sử và quy tắc truy cập |
+| BRQ-10 | Dữ liệu đề nghị thanh toán và hành vi phê duyệt |
+| BRQ-11 | Chủ đề báo cáo, quyền truy cập, định nghĩa KPI, bộ lọc và trình bày |
 
-These areas are decomposed into the [SRS](../07-software-requirements/srs.md) and [System Analysis](../06-system-analysis/README.md); the listed detailed choices remain subject to the open decisions and later design work.
+Các lĩnh vực này được phân rã trong [SRS](../07-software-requirements/srs.md) và [Phân tích hệ thống](../06-system-analysis/README.md); các lựa chọn chi tiết được liệt kê vẫn phụ thuộc quyết định còn mở và công việc thiết kế sau này.
 
 ---
 
-# 12. Open Business Decisions
+# 12. Quyết định nghiệp vụ còn mở
 
-Some business policies remain intentionally unresolved.
+Một số chính sách nghiệp vụ được chủ ý giữ chưa giải quyết.
 
-| ID    | Open Decision                                    | Expected Owner                        |
+| ID | Quyết định còn mở | Chủ sở hữu dự kiến |
 | ----- | ------------------------------------------------ | ------------------------------------- |
-| OD-01 | Exact PO approval monetary thresholds            | Procurement Manager / Finance Manager |
-| OD-02 | Criteria requiring additional financial approval | Finance Manager                       |
-| OD-03 | Detailed budget-validation policy                | Finance Manager                       |
-| OD-04 | Three-way matching tolerance values              | Finance Manager / AP Accountant       |
-| OD-05 | Matching-exception escalation rules              | Procurement Manager / Finance Manager |
-| OD-06 | Final procurement transaction statuses           | Process Owners                        |
-| OD-07 | Detailed role permissions                        | Business Owners / IT                  |
-| OD-08 | Detailed partial Goods Receipt policy            | Procurement / Warehouse               |
+| OD-01 | Ngưỡng tiền phê duyệt PO chính xác | Trưởng bộ phận mua hàng / Trưởng bộ phận tài chính |
+| OD-02 | Tiêu chí cần phê duyệt tài chính bổ sung | Trưởng bộ phận tài chính |
+| OD-03 | Chính sách kiểm tra ngân sách chi tiết | Trưởng bộ phận tài chính |
+| OD-04 | Giá trị dung sai đối chiếu ba bên | Trưởng bộ phận tài chính / Kế toán công nợ phải trả |
+| OD-05 | Quy tắc chuyển cấp ngoại lệ đối chiếu | Trưởng bộ phận mua hàng / Trưởng bộ phận tài chính |
+| OD-06 | Trạng thái giao dịch mua hàng cuối cùng | Chủ sở hữu quy trình |
+| OD-07 | Quyền chi tiết theo vai trò | Chủ sở hữu nghiệp vụ / CNTT |
+| OD-08 | Chính sách nhận hàng một phần chi tiết | Mua hàng / Kho |
 
-These decisions should be validated rather than invented solely to complete documentation.
+Các quyết định này nên được xác nhận, không tự đặt ra chỉ để hoàn thiện tài liệu.
 
 ---
 
-# 13. Business Requirement Baseline
+# 13. Đường cơ sở yêu cầu nghiệp vụ
 
-The initial BRD requirement baseline contains:
+Đường cơ sở yêu cầu BRD ban đầu gồm:
 
 ```text
-11 Business Requirements
+11 yêu cầu nghiệp vụ
 
-9 High Priority
-2 Medium Priority
-0 Low Priority
+9 mức ưu tiên cao
+2 mức ưu tiên trung bình
+0 mức ưu tiên thấp
 ```
 
-The baseline covers the agreed process boundary:
+Đường cơ sở bao phủ ranh giới quy trình đã thống nhất:
 
 ```text
-Purchase Requisition Creation
+Lập yêu cầu mua hàng
             ↓
-Payment Request Approval
+Phê duyệt đề nghị thanh toán
 ```
 
 ---
 
-# 14. Future Requirement Decomposition
+# 14. Phân rã yêu cầu tương lai
 
-Business Requirements will later be decomposed into more detailed requirements.
+Yêu cầu nghiệp vụ sẽ được phân rã thành yêu cầu chi tiết hơn sau này.
 
-Example:
+Ví dụ:
 
 ```text
 BRQ-05
-Standardized PO Management and Approval
+Quản lý và phê duyệt PO chuẩn hóa
         ↓
-Functional Requirements
+Yêu cầu chức năng
         ↓
-Create PO from Approved PR
-Determine Approval Route
-Route PO to Approver
-Approve / Return PO
-Resubmit Corrected PO
+Lập PO từ PR đã phê duyệt
+Xác định tuyến phê duyệt
+Chuyển PO đến người phê duyệt
+Phê duyệt / trả PO
+Gửi lại PO đã chỉnh sửa
         ↓
-Use Cases
+Ca sử dụng
         ↓
-Acceptance Criteria
+Tiêu chí chấp nhận
 ```
 
-Another example:
+Ví dụ khác:
 
 ```text
 BRQ-08
-Controlled Three-Way Matching
+Đối chiếu ba bên có kiểm soát
         ↓
-Functional Requirements
+Yêu cầu chức năng
         ↓
-Retrieve PO / GR / Invoice
-Evaluate Matching Rules
-Identify Mismatch
-Create Exception
-Resolve Exception
-Re-run Matching
+Lấy PO / GR / hóa đơn
+Đánh giá quy tắc đối chiếu
+Nhận diện sai lệch
+Tạo ngoại lệ
+Điều tra / ghi nhận chỉnh sửa
+Chạy lại đối chiếu
+Đạt → Ghi nhận đã xử lý / cấp điều kiện
+Không đạt → Giữ ngoại lệ mở / chặn đề nghị thanh toán
 ```
 
-Functional Requirement IDs will be formally assigned during the detailed requirements stage.
+Mã yêu cầu chức năng sẽ được gán chính thức trong giai đoạn yêu cầu chi tiết.
 
 ---
 
-# 15. Traceability Direction
+# 15. Hướng truy vết
 
-The project will maintain the following traceability model:
+Dự án sẽ duy trì mô hình truy vết sau:
 
 ```text
-Business Problem
+Vấn đề nghiệp vụ
        ↓
-Pain Point
+Điểm bất cập
        ↓
-Root Cause
+Nguyên nhân gốc rễ
        ↓
-Business Objective
+Mục tiêu nghiệp vụ
        ↓
-Business Requirement
+Yêu cầu nghiệp vụ
        ↓
-Business Rule
+Quy tắc nghiệp vụ
        ↓
-Functional Requirement
+Yêu cầu chức năng
        ↓
-Use Case
+Ca sử dụng
        ↓
-Acceptance Criteria / Test
+Tiêu chí chấp nhận / kiểm tra
 ```
 
-The Business Requirements Catalog establishes the `BRQ` layer of this model.
+Danh mục yêu cầu nghiệp vụ thiết lập tầng `BRQ` của mô hình này.
 
 ---
 
-# 16. Catalog Status
+# 16. Trạng thái danh mục
 
-| Item                             | Status          |
+| Nội dung | Trạng thái |
 | -------------------------------- | --------------- |
-| BRQ-01 to BRQ-11 identified      | Complete        |
-| Business priorities assigned     | Complete        |
-| Business-objective mapping       | Complete        |
-| Pain-point mapping               | Complete        |
-| Root-cause/control mapping       | Complete        |
-| Business-rule references         | Complete        |
-| Detailed Functional Requirements | Defined in Phase 07 |
-| Detailed Use Cases               | Defined in Phase 06 |
-| Acceptance Criteria              | Defined in Phase 07 |
-| Final RTM                        | Compact baseline in Phase 08 |
+| Đã xác định BRQ-01 đến BRQ-11 | Hoàn tất |
+| Đã gán mức ưu tiên nghiệp vụ | Hoàn tất |
+| Ánh xạ mục tiêu nghiệp vụ | Hoàn tất |
+| Ánh xạ điểm bất cập | Hoàn tất |
+| Ánh xạ nguyên nhân gốc rễ/kiểm soát | Hoàn tất |
+| Tham chiếu quy tắc nghiệp vụ | Hoàn tất |
+| Yêu cầu chức năng chi tiết | Được xác định trong Giai đoạn 07 |
+| Ca sử dụng chi tiết | Được xác định trong Giai đoạn 06 |
+| Tiêu chí chấp nhận | Được xác định trong Giai đoạn 07 |
+| RTM cuối cùng | Đường cơ sở gọn trong Giai đoạn 08 |
 
 ---
 
-## Case Study Disclaimer
+## Lưu ý về phạm vi áp dụng nghiên cứu tình huống
 
-NovaRetail JSC is a fictional organization created solely for this Business Analysis portfolio project.
+NovaRetail JSC là tổ chức giả lập được tạo riêng cho dự án hồ sơ năng lực phân tích nghiệp vụ này.
 
-The requirements in this catalog are based on the simulated business context, agreed project scope, As-Is process analysis, pain-point analysis, root-cause analysis, and proposed To-Be process.
+Yêu cầu trong danh mục dựa trên bối cảnh nghiệp vụ giả lập, phạm vi dự án đã thống nhất, phân tích quy trình As-Is, phân tích điểm bất cập, phân tích nguyên nhân gốc rễ và quy trình To-Be đề xuất.
 
-Any quantitative targets, approval policies, matching tolerances, or operational assumptions require validation in a real implementation.
+Mọi chỉ tiêu định lượng, chính sách phê duyệt, dung sai đối chiếu hoặc giả định vận hành đều cần xác nhận khi triển khai thực tế.

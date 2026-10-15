@@ -1,898 +1,901 @@
-# Use Case Specifications
+# Đặc tả ca sử dụng
 
-## 1. Purpose
+## 1. Mục đích
 
-This document consolidates the Use Case Model and detailed Use Case Specifications for the **NovaRetail Procurement Management System**.
+Tài liệu hợp nhất mô hình ca sử dụng (Use Case — UC) và đặc tả ca sử dụng chi tiết cho **Hệ thống quản lý mua hàng NovaRetail**.
 
-The system scope covers the Procure-to-Pay process from **Purchase Requisition creation** through **Payment Request approval**. Actual bank payment execution, supplier onboarding, RFQ/RFP, contract management, and full ERP/accounting replacement are outside the scope of this case study.
+Phạm vi hệ thống bao phủ mua hàng hóa hữu hình từ **lập yêu cầu mua hàng** đến **phê duyệt đề nghị thanh toán**. Mua dịch vụ, nghiệm thu/đối chiếu dịch vụ, thực hiện thanh toán ngân hàng thực tế, tiếp nhận nhà cung cấp mới, RFQ/RFP, quản lý hợp đồng và thay thế toàn bộ ERP/kế toán nằm ngoài phạm vi nghiên cứu tình huống này.
 
-The document is organized as follows:
+Tài liệu được tổ chức như sau:
 
-- UC-00: System Use Case Overview
-- UC-01 to UC-12: Detailed business use cases
-- Each use case includes its corresponding diagram exported from Draw.io
+- UC-00: Tổng quan ca sử dụng hệ thống
+- UC-01 đến UC-12: Các ca sử dụng nghiệp vụ chi tiết
+- Mỗi ca sử dụng có sơ đồ tương ứng xuất từ Draw.io
 
-> **Modeling note:** Use Case diagrams describe actor goals and system interactions. End-to-end process sequence is modeled separately in BPMN.
+> **Lưu ý mô hình hóa:** Sơ đồ ca sử dụng mô tả mục tiêu tác nhân và tương tác với hệ thống. Trình tự quy trình xuyên suốt được mô hình hóa riêng bằng BPMN.
+
+[Các trang Draw.io chỉnh sửa được tại kho](../assets/diagrams/sources/README.md) là nguồn chuẩn để chỉnh sửa. Mọi trang đã được kết xuất và kiểm tra trực quan bằng Draw.io Desktop 32.4.1; các PNG đã chỉnh bên dưới chứa siêu dữ liệu khớp nguồn. UC-01 bao gồm kiểm tra bắt buộc trường dữ liệu và ngân sách trong lần gửi thành công. UC-04 mở rộng Xem xét PO tại điểm mở rộng xem xét tài chính bổ sung được đặt tên khi tiêu chí được cấu hình yêu cầu phê duyệt tài chính. UC-06 cho phép ghi nhận hóa đơn trong khi chờ dữ liệu đối chiếu. UC-07 bao gồm đối chiếu lại bắt buộc để xác nhận đã xử lý; đối chiếu lại không đạt giữ ngoại lệ hiện có ở trạng thái mở.
 
 ---
 
-## UC-00 — P2P System Use Case Overview
+## UC-00 — Tổng quan ca sử dụng hệ thống P2P
 
-![UC-00 — P2P System Use Case Overview](../assets/diagrams/exports/system/use-case/UC-00.drawio.png)
+![UC-00 — Tổng quan ca sử dụng hệ thống P2P](../assets/diagrams/exports/system/use-case/UC-00.drawio.png)
 
-### 2.1 System Boundary
+### 2.1 Ranh giới hệ thống
 
-**System under analysis:** Procurement Management System
+**Hệ thống được phân tích:** Hệ thống quản lý mua hàng
 
-The system supports Purchase Requisition creation and approval, budget validation orchestration, Purchase Order creation and approval, Goods Receipt recording, Supplier Invoice processing, automated three-way matching, matching exception handling, Payment Request preparation and approval, transaction status visibility, transaction history and auditability, and basic procurement reporting.
+Hệ thống hỗ trợ lập và phê duyệt yêu cầu mua hàng (Purchase Requisition — PR), điều phối kiểm tra ngân sách, lập và phê duyệt đơn đặt hàng (Purchase Order — PO), ghi phiếu nhận hàng (Goods Receipt — GR), xử lý hóa đơn nhà cung cấp, đối chiếu ba bên tự động, xử lý ngoại lệ đối chiếu, chuẩn bị và phê duyệt đề nghị thanh toán (Payment Request), theo dõi trạng thái giao dịch, lịch sử giao dịch và khả năng kiểm toán, cùng báo cáo mua hàng cơ bản.
 
-### 2.2 Core Actors
+### 2.2 Tác nhân cốt lõi
 
-| Actor | Role in the System |
+| Tác nhân | Vai trò trong hệ thống |
 |---|---|
-| Requester / Store Employee | Creates and submits Purchase Requisitions |
-| Store Manager | Reviews and makes business approval decisions on Purchase Requisitions |
-| Procurement Officer | Processes approved PRs and creates Purchase Orders |
-| Procurement Manager | Reviews and approves or returns Purchase Orders |
-| Warehouse Staff | Records Goods Receipt against approved Purchase Orders |
-| AP Accountant | Processes Supplier Invoices, matching exceptions, and Payment Requests |
-| Finance Manager | Performs conditional financial PO review and approves Payment Requests |
-| Internal Audit | Reviews transaction and approval history |
-| Budget Data Source | Provides budget information required for automated budget validation |
+| Người yêu cầu / Nhân viên cửa hàng | Lập và gửi yêu cầu mua hàng |
+| Quản lý cửa hàng | Xem xét và quyết định phê duyệt nghiệp vụ cho yêu cầu mua hàng |
+| Nhân viên mua hàng | Xử lý PR đã phê duyệt và lập đơn đặt hàng |
+| Trưởng bộ phận mua hàng | Xem xét và phê duyệt hoặc trả về đơn đặt hàng |
+| Nhân viên kho | Ghi phiếu nhận hàng theo đơn đặt hàng đã phê duyệt |
+| Kế toán công nợ phải trả (AP) | Xử lý hóa đơn nhà cung cấp, ngoại lệ đối chiếu và đề nghị thanh toán |
+| Trưởng bộ phận tài chính | Xem xét tài chính PO có điều kiện và phê duyệt đề nghị thanh toán |
+| Kiểm toán nội bộ | Xem xét lịch sử giao dịch và phê duyệt |
+| Nguồn dữ liệu ngân sách | Cung cấp thông tin ngân sách cần cho kiểm tra ngân sách tự động |
 
-### 2.3 Actors Not Modeled as Direct System Users
+### 2.3 Tác nhân không được mô hình hóa là người dùng hệ thống trực tiếp
 
-- **Supplier:** External business participant, but Supplier Portal is outside scope.
-- **CFO:** Executive Sponsor, not a day-to-day system actor.
-- **Accounting System:** Existing dependency, but the detailed integration interface is not yet defined.
+- **Nhà cung cấp:** Bên tham gia nghiệp vụ bên ngoài, nhưng cổng thông tin nhà cung cấp nằm ngoài phạm vi.
+- **Giám đốc tài chính (CFO):** Nhà bảo trợ cấp điều hành, không phải tác nhân dùng hệ thống hằng ngày.
+- **Hệ thống kế toán:** Điều kiện phụ thuộc hiện có, nhưng giao diện tích hợp chi tiết chưa được xác định.
 
-### 2.4 Use Case Catalog
+### 2.4 Danh mục ca sử dụng
 
-| ID | Use Case | Primary Actor |
+| ID | Ca sử dụng | Tác nhân chính |
 |---|---|---|
-| UC-01 | Create and Submit Purchase Requisition | Requester / Store Employee |
-| UC-02 | Review Purchase Requisition | Store Manager |
-| UC-03 | Create and Submit Purchase Order | Procurement Officer |
-| UC-04 | Review Purchase Order | Procurement Manager |
-| UC-05 | Record Goods Receipt | Warehouse Staff |
-| UC-06 | Process Supplier Invoice | AP Accountant |
-| UC-07 | Resolve Matching Exception | AP Accountant |
-| UC-08 | Prepare Payment Request | AP Accountant |
-| UC-09 | Review Payment Request | Finance Manager |
-| UC-10 | View Transaction Status | Authorized Operational Users |
-| UC-11 | Review Transaction History | Authorized Reviewers / Internal Audit |
-| UC-12 | View Procurement Reports | Procurement Manager / Finance Manager |
+| UC-01 | Lập và gửi yêu cầu mua hàng | Người yêu cầu / Nhân viên cửa hàng |
+| UC-02 | Xem xét yêu cầu mua hàng | Quản lý cửa hàng |
+| UC-03 | Lập và gửi đơn đặt hàng | Nhân viên mua hàng |
+| UC-04 | Xem xét đơn đặt hàng | Trưởng bộ phận mua hàng |
+| UC-05 | Ghi nhận phiếu nhận hàng | Nhân viên kho |
+| UC-06 | Xử lý hóa đơn nhà cung cấp | Kế toán công nợ phải trả |
+| UC-07 | Xử lý ngoại lệ đối chiếu | Kế toán công nợ phải trả |
+| UC-08 | Chuẩn bị đề nghị thanh toán | Kế toán công nợ phải trả |
+| UC-09 | Xem xét đề nghị thanh toán | Trưởng bộ phận tài chính |
+| UC-10 | Xem trạng thái giao dịch | Người dùng vận hành được cấp quyền |
+| UC-11 | Xem lịch sử giao dịch | Người xem xét được cấp quyền / Kiểm toán nội bộ |
+| UC-12 | Xem báo cáo mua hàng | Trưởng bộ phận mua hàng / Trưởng bộ phận tài chính |
 
 ---
 
-# 3. Detailed Use Case Specifications
+# 3. Đặc tả ca sử dụng chi tiết
 
-## UC-01 — Create and Submit Purchase Requisition
+## UC-01 — Lập và gửi yêu cầu mua hàng
 
-![UC-01 — Create and Submit Purchase Requisition](../assets/diagrams/exports/system/use-case/UC-01.drawio.png)
+![UC-01 — Lập và gửi yêu cầu mua hàng](../assets/diagrams/exports/system/use-case/UC-01.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-01 |
-| **Use Case Name** | Create and Submit Purchase Requisition |
-| **Primary Actor** | Requester / Store Employee |
-| **Supporting Actor** | Budget Data Source |
-| **Goal** | Create a Purchase Requisition, provide the required purchasing information, and submit it for business approval after successful validation and budget control. |
-| **Trigger** | The Requester identifies a purchasing need. |
-| **Related BRQs** | BRQ-02, BRQ-03, BRQ-09 |
-| **Related Business Rules** | BR-01, BR-02, BR-03, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-01 |
+| **Tên ca sử dụng** | Lập và gửi yêu cầu mua hàng |
+| **Tác nhân chính** | Người yêu cầu / Nhân viên cửa hàng |
+| **Tác nhân hỗ trợ** | Nguồn dữ liệu ngân sách |
+| **Mục tiêu** | Lập yêu cầu mua hàng, cung cấp thông tin mua hàng bắt buộc và gửi phê duyệt nghiệp vụ sau khi kiểm tra và kiểm soát ngân sách đạt. |
+| **Sự kiện kích hoạt** | Người yêu cầu xác định nhu cầu mua hàng. |
+| **BRQ liên quan** | BRQ-01, BRQ-02, BRQ-03, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-01, BR-02, BR-03, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The Requester is an authorized system user.
-2. The Requester is associated with a valid store, department, and/or cost center as applicable.
-3. Budget information is available to the procurement process.
+1. Người yêu cầu là người dùng hệ thống được cấp quyền.
+2. Người yêu cầu gắn với cửa hàng, bộ phận và/hoặc trung tâm chi phí hợp lệ tùy trường hợp.
+3. Thông tin ngân sách có sẵn cho quy trình mua hàng.
 
-### Main Flow
+### Luồng chính
 
-1. The Requester starts a new Purchase Requisition.
-2. The Requester enters the required purchasing information.
-3. The Requester submits the Purchase Requisition.
-4. The system validates the required PR information.
-5. The system requests or obtains the applicable budget information.
-6. The system validates the available budget.
-7. The budget validation succeeds.
-8. The system records the submission action and updates the PR status.
-9. The PR is routed for business approval by the Store Manager.
+1. Người yêu cầu bắt đầu yêu cầu mua hàng mới cho hàng hóa hữu hình trong đường cơ sở này.
+2. Người yêu cầu nhập thông tin mua hàng bắt buộc.
+3. Người yêu cầu gửi yêu cầu mua hàng.
+4. Hệ thống kiểm tra thông tin PR bắt buộc.
+5. Hệ thống yêu cầu hoặc lấy thông tin ngân sách áp dụng.
+6. Hệ thống kiểm tra ngân sách khả dụng.
+7. Kiểm tra ngân sách đạt.
+8. Hệ thống ghi hành động gửi và cập nhật trạng thái PR.
+9. PR được chuyển đến Quản lý cửa hàng phê duyệt nghiệp vụ.
 
-### Alternative Flow A1 — Invalid or Missing PR Information
+### Luồng thay thế A1 — Thông tin PR thiếu hoặc không hợp lệ
 
-1. The Requester submits the PR.
-2. The system detects missing or invalid required information.
-3. The system displays the validation issues.
-4. The PR does not proceed to approval.
-5. The Requester corrects the information and resubmits the PR.
+1. Người yêu cầu gửi PR.
+2. Hệ thống phát hiện thông tin bắt buộc thiếu hoặc không hợp lệ.
+3. Hệ thống hiển thị các vấn đề kiểm tra.
+4. PR không được chuyển phê duyệt.
+5. Người yêu cầu chỉnh sửa thông tin và gửi lại PR.
 
-### Alternative Flow A2 — Insufficient Budget
+### Luồng thay thế A2 — Không đủ ngân sách
 
-1. The system performs budget validation.
-2. Available budget is insufficient.
-3. The PR is prevented from proceeding to business approval.
-4. The system returns the PR for revision.
-5. The Requester revises the PR and resubmits it.
-6. Required validation is performed again.
+1. Hệ thống thực hiện kiểm tra ngân sách.
+2. Ngân sách khả dụng không đủ.
+3. PR bị chặn chuyển phê duyệt nghiệp vụ.
+4. Hệ thống trả PR để chỉnh sửa.
+5. Người yêu cầu chỉnh sửa PR và gửi lại.
+6. Kiểm tra trường bắt buộc và ngân sách áp dụng được thực hiện lại trước bước Quản lý cửa hàng xem xét.
 
-### Alternative Flow A3 — PR Returned After Business Review
+### Luồng thay thế A3 — PR bị trả về sau xem xét nghiệp vụ
 
-1. The Store Manager returns the PR for revision through UC-02.
-2. The Requester opens the returned PR.
-3. The Requester revises the required information.
-4. The Requester resubmits the PR.
-5. The system performs the required validations again.
+1. Quản lý cửa hàng trả PR để chỉnh sửa qua UC-02.
+2. Người yêu cầu mở PR bị trả về.
+3. Người yêu cầu chỉnh sửa thông tin bắt buộc.
+4. Người yêu cầu gửi lại PR.
+5. Hệ thống lặp lại kiểm tra trường bắt buộc và ngân sách áp dụng trước bước Quản lý cửa hàng xem xét.
 
-### Postconditions
+### Điều kiện sau
 
-**Success**
-- The PR is submitted successfully.
-- Required information is valid.
-- Budget validation has succeeded.
-- The PR is ready for Store Manager review.
-- The submission action is retained in transaction history.
+**Thành công**
+- PR được gửi thành công.
+- Thông tin bắt buộc hợp lệ.
+- Kiểm tra ngân sách đã đạt.
+- PR sẵn sàng để Quản lý cửa hàng xem xét.
+- Hành động gửi được giữ trong lịch sử giao dịch.
 
-**Failure / Incomplete**
-- The PR remains unavailable for business approval until validation issues are resolved.
+**Không thành công / chưa hoàn tất**
+- PR vẫn chưa được chuyển phê duyệt nghiệp vụ cho đến khi các vấn đề kiểm tra được khắc phục.
 
-### Notes
+### Ghi chú
 
-- Budget validation is a system control; the Store Manager does not manually perform the budget calculation.
-- No Finance Manager override for insufficient budget is assumed.
-- Detailed field definitions are deferred to the SRS.
+- Kiểm tra ngân sách là kiểm soát hệ thống; Quản lý cửa hàng không thực hiện tính toán ngân sách thủ công.
+- Không giả định Trưởng bộ phận tài chính được ghi đè khi thiếu ngân sách.
+- Định nghĩa trường chi tiết được để lại cho SRS.
 
 ---
 
-## UC-02 — Review Purchase Requisition
+## UC-02 — Xem xét yêu cầu mua hàng
 
-![UC-02 — Review Purchase Requisition](../assets/diagrams/exports/system/use-case/UC-02.drawio.png)
+![UC-02 — Xem xét yêu cầu mua hàng](../assets/diagrams/exports/system/use-case/UC-02.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-02 |
-| **Use Case Name** | Review Purchase Requisition |
-| **Primary Actor** | Store Manager |
-| **Goal** | Review a validated Purchase Requisition and make the required business approval decision. |
-| **Trigger** | A submitted and budget-validated PR is routed to the Store Manager. |
-| **Related BRQs** | BRQ-02, BRQ-03, BRQ-09 |
-| **Related Business Rules** | BR-02, BR-04, BR-05, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-02 |
+| **Tên ca sử dụng** | Xem xét yêu cầu mua hàng |
+| **Tác nhân chính** | Quản lý cửa hàng |
+| **Mục tiêu** | Xem xét yêu cầu mua hàng đã kiểm tra đạt và đưa ra quyết định phê duyệt nghiệp vụ cần thiết. |
+| **Sự kiện kích hoạt** | PR đã gửi và đạt kiểm tra ngân sách được chuyển đến Quản lý cửa hàng. |
+| **BRQ liên quan** | BRQ-02, BRQ-03, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-02, BR-04, BR-05, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The PR has been submitted.
-2. Required PR information has passed validation.
-3. Applicable budget validation has succeeded.
-4. The PR is awaiting business approval.
-5. The Store Manager is authorized to review the PR.
+1. PR đã được gửi.
+2. Thông tin PR bắt buộc đã đạt kiểm tra.
+3. Kiểm tra ngân sách áp dụng đã đạt.
+4. PR đang chờ phê duyệt nghiệp vụ.
+5. Quản lý cửa hàng có quyền xem xét PR.
 
-### Main Flow — Approve PR
+### Luồng chính — Phê duyệt PR
 
-1. The Store Manager opens the pending PR.
-2. The system displays the PR information relevant to the approval decision.
-3. The Store Manager reviews the purchasing need.
-4. The Store Manager selects **Approve**.
-5. The system records the approval decision, approver, and timestamp.
-6. The PR status is updated to the applicable approved state.
-7. The approved PR becomes available for Procurement processing.
+1. Quản lý cửa hàng mở PR đang chờ.
+2. Hệ thống hiển thị thông tin PR liên quan đến quyết định phê duyệt.
+3. Quản lý cửa hàng xem xét nhu cầu mua hàng.
+4. Quản lý cửa hàng chọn **Phê duyệt**.
+5. Hệ thống ghi quyết định phê duyệt, người phê duyệt và dấu thời gian.
+6. Trạng thái PR được cập nhật sang trạng thái đã phê duyệt áp dụng.
+7. PR đã phê duyệt trở nên có sẵn để bộ phận mua hàng xử lý.
 
-### Alternative Flow A1 — Reject PR
+### Luồng thay thế A1 — Từ chối PR
 
-1. The Store Manager reviews the PR.
-2. The Store Manager selects **Reject**.
-3. The system records the rejection decision.
-4. The PR is updated to the applicable rejected state.
-5. The PR does not proceed to Procurement processing.
+1. Quản lý cửa hàng xem xét PR.
+2. Quản lý cửa hàng chọn **Từ chối**.
+3. Hệ thống ghi quyết định từ chối.
+4. PR được cập nhật sang trạng thái bị từ chối áp dụng.
+5. PR không chuyển sang xử lý mua hàng.
 
-### Alternative Flow A2 — Return PR for Revision
+### Luồng thay thế A2 — Trả PR để chỉnh sửa
 
-1. The Store Manager reviews the PR.
-2. The Store Manager selects **Return for Revision**.
-3. The system records the return decision and relevant reason/comment.
-4. The PR is returned to the Requester.
-5. The Requester revises and resubmits the PR through UC-01, which repeats required-field and applicable budget validation before it is routed for approval.
+1. Quản lý cửa hàng xem xét PR.
+2. Quản lý cửa hàng chọn **Trả lại để chỉnh sửa**.
+3. Hệ thống yêu cầu và ghi lý do cùng quyết định trả về.
+4. PR được trả về Người yêu cầu.
+5. Người yêu cầu chỉnh sửa và gửi lại PR qua UC-01, trong đó lặp lại kiểm tra trường bắt buộc và ngân sách áp dụng trước khi chuyển phê duyệt.
 
-### Postconditions
+### Điều kiện sau
 
-**Approved** — The PR is approved and available for Procurement processing.
+**Đã phê duyệt** — PR đã phê duyệt và có sẵn để bộ phận mua hàng xử lý.
 
-**Rejected** — The PR does not continue in the procurement workflow.
+**Đã từ chối** — PR không chuyển sang bộ phận mua hàng và không được mở lại hoặc gửi lại như cùng một PR trong đường cơ sở này.
 
-**Returned** — The PR is returned to the Requester for correction.
+**Đã trả về** — PR được trả về Người yêu cầu để chỉnh sửa.
 
-### Notes
+### Ghi chú
 
-- Budget validation is completed before this Use Case.
-- The Store Manager performs the business approval decision, not the automated budget control.
-- A rejected PR does not use the return-and-resubmit path. Reopening a rejected PR requires a separate business policy, which is not defined in this case study.
+- Kiểm tra ngân sách hoàn tất trước ca sử dụng này.
+- Quản lý cửa hàng quyết định phê duyệt nghiệp vụ, không thực hiện kiểm soát ngân sách tự động.
+- PR bị từ chối không dùng đường trả về và gửi lại. Mở lại PR bị từ chối cần chính sách nghiệp vụ riêng, chưa được xác định trong nghiên cứu tình huống này.
 
 ---
 
-## UC-03 — Create and Submit Purchase Order
+## UC-03 — Lập và gửi đơn đặt hàng
 
-![UC-03 — Create and Submit Purchase Order](../assets/diagrams/exports/system/use-case/UC-03.drawio.png)
+![UC-03 — Lập và gửi đơn đặt hàng](../assets/diagrams/exports/system/use-case/UC-03.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-03 |
-| **Use Case Name** | Create and Submit Purchase Order |
-| **Primary Actor** | Procurement Officer |
-| **Goal** | Create a Purchase Order from an approved PR, select an existing approved supplier, complete PO information, and submit the PO for approval. |
-| **Trigger** | An approved PR is ready for Procurement processing. |
-| **Related BRQs** | BRQ-04, BRQ-05, BRQ-06, BRQ-09 |
-| **Related Business Rules** | BR-05, BR-06, BR-07, BR-08, BR-09, BR-12, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-03 |
+| **Tên ca sử dụng** | Lập và gửi đơn đặt hàng |
+| **Tác nhân chính** | Nhân viên mua hàng |
+| **Mục tiêu** | Lập đơn đặt hàng từ PR đã phê duyệt, chọn nhà cung cấp hiện có đã phê duyệt, hoàn thiện thông tin PO và gửi PO phê duyệt. |
+| **Sự kiện kích hoạt** | PR đã phê duyệt sẵn sàng để bộ phận mua hàng xử lý. |
+| **BRQ liên quan** | BRQ-01, BRQ-04, BRQ-05, BRQ-06, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-05, BR-06, BR-07, BR-08, BR-09, BR-12, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The source PR has been approved.
-2. The Procurement Officer is authorized to process the PR.
-3. Approved Supplier Master information is available.
-4. The PR contains the information required to initiate PO creation.
+1. PR nguồn đã được phê duyệt.
+2. Nhân viên mua hàng có quyền xử lý PR.
+3. Thông tin danh mục nhà cung cấp đã phê duyệt có sẵn.
+4. PR chứa thông tin cần để bắt đầu lập PO.
 
-### Main Flow
+### Luồng chính
 
-1. The Procurement Officer opens an approved PR.
-2. The system displays the PR and its relevant purchasing information.
-3. The Procurement Officer selects an existing approved supplier.
-4. The system creates or initializes a PO from the approved PR.
-5. Applicable PR information is reused in the PO.
-6. The Procurement Officer completes PO-specific information such as supplier, pricing, commercial, and delivery information as applicable.
-7. The Procurement Officer submits the PO.
-8. The system validates required PO information.
-9. The system evaluates the applicable approval rules.
-10. The system determines the required approval route.
-11. The PO is routed to the appropriate approver.
+1. Nhân viên mua hàng mở PR đã phê duyệt.
+2. Hệ thống hiển thị PR và thông tin mua hàng liên quan.
+3. Nhân viên mua hàng chọn nhà cung cấp hiện có đã phê duyệt.
+4. Hệ thống tạo hoặc khởi tạo PO từ PR đã phê duyệt.
+5. Thông tin PR áp dụng được tái sử dụng trong PO.
+6. Nhân viên mua hàng hoàn thiện thông tin riêng của PO như nhà cung cấp, giá, thông tin thương mại và giao hàng tùy trường hợp.
+7. Nhân viên mua hàng gửi PO.
+8. Hệ thống kiểm tra thông tin PO bắt buộc.
+9. Hệ thống đánh giá quy tắc phê duyệt áp dụng.
+10. Hệ thống xác định tuyến phê duyệt bắt buộc.
+11. PO được chuyển đến người phê duyệt phù hợp.
 
-### Alternative Flow A1 — Invalid PO Information
+### Luồng thay thế A1 — Thông tin PO không hợp lệ
 
-1. The Procurement Officer submits the PO.
-2. The system detects missing or invalid required information.
-3. The system displays the validation issues.
-4. The PO remains unavailable for approval.
-5. The Procurement Officer corrects the PO and resubmits it.
+1. Nhân viên mua hàng gửi PO.
+2. Hệ thống phát hiện thông tin bắt buộc thiếu hoặc không hợp lệ.
+3. Hệ thống hiển thị các vấn đề kiểm tra.
+4. PO vẫn chưa được chuyển phê duyệt.
+5. Nhân viên mua hàng chỉnh sửa PO và gửi lại.
 
-### Alternative Flow A2 — PO Returned for Changes
+### Luồng thay thế A2 — PO bị trả về để thay đổi
 
-1. An approver returns the PO through UC-04.
-2. The Procurement Officer opens the returned PO.
-3. The Procurement Officer reviews the return reason.
-4. The Procurement Officer corrects the required information.
-5. The Procurement Officer resubmits the PO.
-6. The approval route is evaluated again as applicable.
+1. Người phê duyệt trả PO qua UC-04.
+2. Nhân viên mua hàng mở PO bị trả về.
+3. Nhân viên mua hàng xem lý do trả về.
+4. Nhân viên mua hàng chỉnh sửa thông tin bắt buộc.
+5. Nhân viên mua hàng gửi lại PO.
+6. Tuyến phê duyệt được đánh giá lại tùy trường hợp áp dụng.
 
-### Postconditions
+### Điều kiện sau
 
-- The PO has been created from an approved PR.
-- The source PR reference is retained.
-- Applicable PR information has been reused.
-- An approved Supplier Master supplier has been selected.
-- The PO is submitted into the approval workflow.
+- PO đã được lập từ PR đã phê duyệt.
+- Tham chiếu PR nguồn được giữ.
+- Thông tin PR áp dụng đã được tái sử dụng.
+- Đã chọn nhà cung cấp trong danh mục nhà cung cấp đã được phê duyệt.
+- PO được gửi vào luồng phê duyệt.
 
-### Notes
+### Ghi chú
 
-- Supplier onboarding, supplier qualification, RFQ/RFP, and tendering are outside scope.
-- Exact approval thresholds are not defined in this Use Case.
+- Tiếp nhận nhà cung cấp mới, đánh giá điều kiện nhà cung cấp, RFQ/RFP và đấu thầu nằm ngoài phạm vi.
+- Ngưỡng phê duyệt chính xác chưa được xác định trong ca sử dụng này.
 
 ---
 
-## UC-04 — Review Purchase Order
+## UC-04 — Xem xét đơn đặt hàng
 
-![UC-04 — Review Purchase Order](../assets/diagrams/exports/system/use-case/UC-04.drawio.png)
+![UC-04 — Xem xét đơn đặt hàng](../assets/diagrams/exports/system/use-case/UC-04.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-04 |
-| **Use Case Name** | Review Purchase Order |
-| **Primary Actor** | Procurement Manager |
-| **Conditional Actor** | Finance Manager |
-| **Goal** | Complete the required PO approval process before the PO can be issued. |
-| **Trigger** | A submitted PO is routed for approval. |
-| **Related BRQs** | BRQ-05, BRQ-09 |
-| **Related Business Rules** | BR-09, BR-10, BR-11, BR-12, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-04 |
+| **Tên ca sử dụng** | Xem xét đơn đặt hàng |
+| **Tác nhân chính** | Trưởng bộ phận mua hàng |
+| **Tác nhân có điều kiện** | Trưởng bộ phận tài chính |
+| **Mục tiêu** | Hoàn tất quy trình phê duyệt PO bắt buộc trước khi PO được phép phát hành. |
+| **Sự kiện kích hoạt** | PO đã gửi được chuyển phê duyệt. |
+| **BRQ liên quan** | BRQ-05, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-09, BR-10, BR-11, BR-12, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The PO has been submitted.
-2. Required PO information has passed validation.
-3. The applicable approval route has been determined.
-4. The approver is authorized for the applicable approval step.
+1. PO đã được gửi.
+2. Thông tin PO bắt buộc đã đạt kiểm tra.
+3. Tuyến phê duyệt áp dụng đã được xác định.
+4. Người phê duyệt có quyền cho bước phê duyệt áp dụng.
 
-### Main Flow — Procurement Approval
+### Luồng chính — Phê duyệt mua hàng
 
-1. The Procurement Manager opens the pending PO.
-2. The system displays the PO and relevant source transaction information.
-3. The Procurement Manager reviews the PO.
-4. The Procurement Manager approves the PO.
-5. The system records the approval decision.
-6. The system determines whether additional Finance approval is required.
+1. Trưởng bộ phận mua hàng mở PO đang chờ.
+2. Hệ thống hiển thị PO và thông tin giao dịch nguồn liên quan.
+3. Trưởng bộ phận mua hàng xem xét PO.
+4. Trưởng bộ phận mua hàng phê duyệt PO.
+5. Hệ thống ghi quyết định phê duyệt.
+6. Hệ thống xác định có cần phê duyệt tài chính bổ sung hay không.
 
-### Main Flow Continuation A — No Additional Finance Approval Required
+### Phần tiếp nối luồng chính A — Không cần phê duyệt tài chính bổ sung
 
-7. No additional Finance approval is required.
-8. All required approvals are complete.
-9. The system updates the PO to the applicable approved/finalized status.
-10. The approved PO becomes eligible to be issued to the Supplier.
+7. Không cần phê duyệt tài chính bổ sung.
+8. Mọi phê duyệt bắt buộc đã hoàn tất.
+9. Hệ thống cập nhật PO sang trạng thái đã phê duyệt/hoàn tất áp dụng.
+10. PO đã phê duyệt trở thành đủ điều kiện phát hành cho Nhà cung cấp.
 
-### Main Flow Continuation B — Additional Finance Approval Required
+### Phần tiếp nối luồng chính B — Cần phê duyệt tài chính bổ sung
 
-7. The system routes the PO to the Finance Manager.
-8. The Finance Manager reviews the PO from the financial control perspective.
-9. The Finance Manager approves the PO.
-10. The system records the Finance approval.
-11. All required approvals are complete.
-12. The PO becomes eligible to be issued to the Supplier.
+7. Hệ thống chuyển PO đến Trưởng bộ phận tài chính.
+8. Trưởng bộ phận tài chính xem xét PO từ góc độ kiểm soát tài chính.
+9. Trưởng bộ phận tài chính phê duyệt PO.
+10. Hệ thống ghi phê duyệt tài chính.
+11. Mọi phê duyệt bắt buộc đã hoàn tất.
+12. PO trở thành đủ điều kiện phát hành cho Nhà cung cấp.
 
-### Alternative Flow A1 — Procurement Manager Returns PO
+### Luồng thay thế A1 — Trưởng bộ phận mua hàng trả PO
 
-1. The Procurement Manager reviews the PO.
-2. The Procurement Manager selects **Return for Changes**.
-3. The system records the decision and relevant reason/comment.
-4. The PO returns to the Procurement Officer.
-5. The Procurement Officer corrects and resubmits the PO through UC-03.
+1. Trưởng bộ phận mua hàng xem xét PO.
+2. Trưởng bộ phận mua hàng chọn **Trả về để thay đổi**.
+3. Hệ thống ghi quyết định và lý do/nhận xét liên quan.
+4. PO trở về Nhân viên mua hàng.
+5. Nhân viên mua hàng chỉnh sửa và gửi lại PO qua UC-03.
 
-### Alternative Flow A2 — Finance Manager Returns PO
+### Luồng thay thế A2 — Trưởng bộ phận tài chính trả PO
 
-1. Additional financial approval is required.
-2. The Finance Manager reviews the PO.
-3. The Finance Manager selects **Return for Changes**.
-4. The system records the return decision.
-5. The PO returns to the Procurement Officer for correction.
-6. The PO must be resubmitted through the applicable approval workflow.
+1. Cần phê duyệt tài chính bổ sung.
+2. Trưởng bộ phận tài chính xem xét PO.
+3. Trưởng bộ phận tài chính chọn **Trả về để thay đổi**.
+4. Hệ thống ghi quyết định trả về.
+5. PO trở về Nhân viên mua hàng để chỉnh sửa.
+6. PO phải được gửi lại qua luồng phê duyệt áp dụng.
 
-### Postconditions
+### Điều kiện sau
 
-**Approved** — All required PO approvals are complete, approval history is retained, and the PO is ready to be issued externally.
+**Đã phê duyệt** — Mọi phê duyệt PO bắt buộc đã hoàn tất, lịch sử phê duyệt được giữ và PO sẵn sàng để phát hành ra bên ngoài.
 
-**Returned** — The PO is returned to Procurement for correction.
+**Đã trả về** — PO được trả về bộ phận mua hàng để chỉnh sửa.
 
-### Open Decisions
+### Quyết định còn mở
 
-- **OD-01:** Exact PO approval monetary thresholds.
-- **OD-02:** Criteria requiring additional Finance approval.
+- **OD-01:** Ngưỡng tiền phê duyệt PO chính xác.
+- **OD-02:** Tiêu chí cần phê duyệt tài chính bổ sung.
 
-### Notes
+### Ghi chú
 
-- Finance Manager participation is conditional, not mandatory for every PO.
-- A PO must not be issued until all required approvals are completed.
+- Trưởng bộ phận tài chính tham gia có điều kiện, không bắt buộc với mọi PO.
+- Không được phát hành PO cho đến khi hoàn tất mọi phê duyệt bắt buộc.
 
 ---
 
-## UC-05 — Record Goods Receipt
+## UC-05 — Ghi nhận phiếu nhận hàng
 
-![UC-05 — Record Goods Receipt](../assets/diagrams/exports/system/use-case/UC-05.drawio.png)
+![UC-05 — Ghi nhận phiếu nhận hàng](../assets/diagrams/exports/system/use-case/UC-05.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-05 |
-| **Use Case Name** | Record Goods Receipt |
-| **Primary Actor** | Warehouse Staff |
-| **Goal** | Record the actual receipt of goods against the correct approved PO. |
-| **Trigger** | Goods are delivered for an approved Purchase Order. |
-| **Related BRQs** | BRQ-06, BRQ-08, BRQ-09 |
-| **Related Business Rules** | BR-13, BR-14, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-05 |
+| **Tên ca sử dụng** | Ghi nhận phiếu nhận hàng |
+| **Tác nhân chính** | Nhân viên kho |
+| **Mục tiêu** | Ghi nhận việc thực nhận hàng theo đúng PO đã phê duyệt. |
+| **Sự kiện kích hoạt** | Hàng được giao cho đơn đặt hàng đã phê duyệt. |
+| **BRQ liên quan** | BRQ-01, BRQ-06, BRQ-08, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-13, BR-14, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. A valid approved PO exists.
-2. Goods have been received.
-3. Warehouse Staff is authorized to record Goods Receipt.
+1. Có PO đã phê duyệt hợp lệ.
+2. Đã nhận hàng.
+3. Nhân viên kho có quyền ghi phiếu nhận hàng.
 
-### Main Flow
+### Luồng chính
 
-1. Warehouse Staff identifies or searches for the related approved PO.
-2. The system displays relevant PO information.
-3. Warehouse Staff checks the delivered quantity and condition.
-4. Warehouse Staff enters the Goods Receipt information.
-5. The system validates the Goods Receipt information.
-6. Warehouse Staff submits the Goods Receipt.
-7. The system records the GR against the PO.
-8. The system updates the related procurement transaction information.
-9. The GR becomes available for downstream invoice matching.
+1. Nhân viên kho xác định hoặc tìm PO đã phê duyệt liên quan.
+2. Hệ thống hiển thị thông tin PO liên quan.
+3. Nhân viên kho kiểm tra số lượng giao và tình trạng hàng.
+4. Nhân viên kho nhập thông tin phiếu nhận hàng.
+5. Hệ thống kiểm tra thông tin phiếu nhận hàng.
+6. Nhân viên kho gửi phiếu nhận hàng.
+7. Hệ thống ghi GR theo PO.
+8. Hệ thống cập nhật thông tin giao dịch mua hàng liên quan.
+9. GR có sẵn cho đối chiếu hóa đơn ở bước sau.
 
-### Alternative Flow A1 — Invalid Goods Receipt Information
+### Luồng thay thế A1 — Thông tin phiếu nhận hàng không hợp lệ
 
-1. Warehouse Staff submits the GR.
-2. The system detects missing or invalid information.
-3. The system displays the validation issues.
-4. The GR is not finalized.
-5. Warehouse Staff corrects and resubmits the information.
+1. Nhân viên kho gửi GR.
+2. Hệ thống phát hiện thông tin thiếu hoặc không hợp lệ.
+3. Hệ thống hiển thị các vấn đề kiểm tra.
+4. GR chưa được hoàn tất.
+5. Nhân viên kho chỉnh sửa và gửi lại thông tin.
 
-### Postconditions
+### Điều kiện sau
 
-- A Goods Receipt is recorded against the correct PO.
-- The GR is available for three-way matching.
-- The transaction history is updated.
+- Phiếu nhận hàng được ghi theo đúng PO.
+- GR có sẵn cho đối chiếu ba bên.
+- Lịch sử giao dịch được cập nhật.
 
-### Open Decisions
+### Quyết định còn mở
 
-- **OD-08:** Partial Goods Receipt policy.
+- **OD-08:** Chính sách nhận hàng một phần.
 
-### Notes
+### Ghi chú
 
-- Detailed Warehouse Management System functionality is outside scope.
-- Partial Goods Receipt is not assumed as a confirmed rule until OD-08 is resolved.
+- Chức năng hệ thống quản lý kho chi tiết nằm ngoài phạm vi.
+- Nhận hàng một phần chưa được giả định là quy tắc đã xác nhận cho đến khi OD-08 được giải quyết.
 
 ---
 
-## UC-06 — Process Supplier Invoice
+## UC-06 — Xử lý hóa đơn nhà cung cấp
 
-![UC-06 — Process Supplier Invoice](../assets/diagrams/exports/system/use-case/UC-06.drawio.png)
+![UC-06 — Xử lý hóa đơn nhà cung cấp](../assets/diagrams/exports/system/use-case/UC-06.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-06 |
-| **Use Case Name** | Process Supplier Invoice |
-| **Primary Actor** | AP Accountant |
-| **Goal** | Record a Supplier Invoice, link it to the related procurement transaction, and process it through three-way matching. |
-| **Trigger** | AP receives a Supplier Invoice related to a PO-based purchase. |
-| **Related BRQs** | BRQ-06, BRQ-08, BRQ-09 |
-| **Related Business Rules** | BR-15, BR-16, BR-17, BR-18, BR-19, BR-20, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-06 |
+| **Tên ca sử dụng** | Xử lý hóa đơn nhà cung cấp |
+| **Tác nhân chính** | Kế toán công nợ phải trả |
+| **Mục tiêu** | Ghi hóa đơn nhà cung cấp, liên kết với giao dịch mua hàng liên quan và xử lý qua đối chiếu ba bên. |
+| **Sự kiện kích hoạt** | AP nhận hóa đơn nhà cung cấp liên quan giao dịch mua theo PO. |
+| **BRQ liên quan** | BRQ-01, BRQ-06, BRQ-08, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-15, BR-16, BR-17, BR-18, BR-19, BR-20, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The purchase is within the PO-based procurement scope.
-2. The related PO exists.
-3. AP Accountant is authorized to process the invoice.
+1. Giao dịch mua nằm trong phạm vi mua hàng theo PO.
+2. PO liên quan tồn tại.
+3. Kế toán công nợ phải trả có quyền xử lý hóa đơn.
 
-### Main Flow — Successful Match
+### Luồng chính — Đối chiếu đạt
 
-1. AP Accountant opens Supplier Invoice processing.
-2. AP Accountant records the Supplier Invoice information.
-3. The invoice is linked to the related PO.
-4. The system checks whether the required PO, GR, and Invoice information is available.
-5. When the required information is available, the system performs three-way matching.
-6. The system compares the predefined matching attributes.
-7. The documents satisfy the applicable matching rules.
-8. The system marks the invoice/transaction as successfully matched.
-9. The invoice becomes eligible for Payment Request preparation.
+1. Kế toán công nợ phải trả mở chức năng xử lý hóa đơn nhà cung cấp.
+2. Kế toán công nợ phải trả ghi thông tin hóa đơn nhà cung cấp.
+3. Hóa đơn được liên kết với PO liên quan.
+4. Hệ thống kiểm tra thông tin PO, GR và hóa đơn bắt buộc đã có đủ chưa.
+5. Khi có đủ thông tin bắt buộc, hệ thống thực hiện đối chiếu ba bên.
+6. Hệ thống so sánh các thuộc tính đối chiếu được xác định trước.
+7. Các chứng từ thỏa mãn quy tắc đối chiếu áp dụng.
+8. Hệ thống đánh dấu hóa đơn/giao dịch là đối chiếu đạt.
+9. Hóa đơn trở thành đủ điều kiện chuẩn bị đề nghị thanh toán.
 
-### Alternative Flow A1 — Required Matching Information Not Available
+### Luồng thay thế A1 — Chưa có thông tin đối chiếu bắt buộc
 
-1. The invoice is recorded.
-2. Required PO, GR, or Invoice information is not yet available.
-3. Automated matching cannot be completed.
-4. The transaction remains pending the required information.
-5. Matching is performed when the required information becomes available.
+1. Hóa đơn được ghi nhận.
+2. Thông tin PO, GR hoặc hóa đơn bắt buộc chưa có đủ.
+3. Chưa thể hoàn tất đối chiếu tự động.
+4. Giao dịch tiếp tục chờ thông tin bắt buộc và chưa đủ điều kiện chuẩn bị hoặc gửi đề nghị thanh toán.
+5. Đối chiếu được thực hiện khi có đủ thông tin bắt buộc.
 
-### Alternative Flow A2 — Matching Fails
+### Luồng thay thế A2 — Đối chiếu không đạt
 
-1. The system performs three-way matching.
-2. One or more applicable values do not match.
-3. The system creates a Matching Exception.
-4. The transaction does not proceed to Payment Request preparation.
-5. The exception is handled through UC-07.
+1. Hệ thống thực hiện đối chiếu ba bên.
+2. Kết quả hiện hành không đạt quy tắc đối chiếu áp dụng.
+3. Hệ thống tạo ngoại lệ đối chiếu.
+4. Giao dịch không chuyển sang chuẩn bị đề nghị thanh toán.
+5. Ngoại lệ được xử lý qua UC-07.
 
-### Postconditions
+### Điều kiện sau
 
-**Matched** — The invoice is successfully matched and eligible for Payment Request preparation.
+**Đã đối chiếu đạt** — Hóa đơn đối chiếu đạt và đủ điều kiện chuẩn bị đề nghị thanh toán.
 
-**Mismatch** — A Matching Exception exists and the transaction is blocked from normal Payment Request preparation until the exception is resolved according to policy.
+**Sai lệch** — Ngoại lệ đối chiếu vẫn mở và việc chuẩn bị/gửi đề nghị thanh toán bị chặn cho đến khi chỉnh sửa và đối chiếu lại đạt.
 
-### Open Decisions
+### Quyết định còn mở
 
-- **OD-04:** Three-way matching tolerance policy and values, if tolerances are adopted.
+- **OD-04:** Chính sách và giá trị dung sai đối chiếu ba bên, nếu áp dụng dung sai.
 
-### Notes
+### Ghi chú
 
-- Matching may conceptually compare supplier, item, quantity, unit price, and/or total amount as applicable.
-- **BR-18 is conditional:** matching tolerance must not be assumed unless NovaRetail adopts an approved tolerance policy.
+- Về mặt khái niệm, đối chiếu có thể so sánh nhà cung cấp, mặt hàng, số lượng, đơn giá và/hoặc tổng tiền tùy trường hợp.
+- **BR-18 có điều kiện:** không được giả định dung sai đối chiếu trừ khi NovaRetail áp dụng chính sách dung sai đã được phê duyệt.
 
 ---
 
-## UC-07 — Resolve Matching Exception
+## UC-07 — Xử lý ngoại lệ đối chiếu
 
-![UC-07 — Resolve Matching Exception](../assets/diagrams/exports/system/use-case/UC-07.drawio.png)
+![UC-07 — Xử lý ngoại lệ đối chiếu](../assets/diagrams/exports/system/use-case/UC-07.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-07 |
-| **Use Case Name** | Resolve Matching Exception |
-| **Primary Actor** | AP Accountant |
-| **Supporting Actors** | Procurement Officer, Warehouse Staff |
-| **Goal** | Investigate and resolve a failed three-way match so the transaction can be evaluated again. |
-| **Trigger** | The system creates a Matching Exception after a failed match. |
-| **Related BRQs** | BRQ-08, BRQ-09 |
-| **Related Business Rules** | BR-20, BR-21, BR-22, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-07 |
+| **Tên ca sử dụng** | Xử lý ngoại lệ đối chiếu |
+| **Tác nhân chính** | Kế toán công nợ phải trả |
+| **Tác nhân hỗ trợ** | Nhân viên mua hàng, Nhân viên kho |
+| **Mục tiêu** | Điều tra và xử lý trường hợp đối chiếu ba bên không đạt để giao dịch có thể được đánh giá lại. |
+| **Sự kiện kích hoạt** | Hệ thống tạo ngoại lệ đối chiếu sau lần đối chiếu không đạt. |
+| **BRQ liên quan** | BRQ-08, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-20, BR-21, BR-22, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. A Matching Exception exists.
-2. The exception is associated with a procurement transaction.
-3. AP Accountant is authorized to review the exception.
+1. Có ngoại lệ đối chiếu.
+2. Ngoại lệ gắn với giao dịch mua hàng.
+3. Kế toán công nợ phải trả có quyền xem xét ngoại lệ.
 
-### Main Flow
+### Luồng chính
 
-1. AP Accountant opens the Matching Exception.
-2. The system displays the mismatch information and related transaction references.
-3. AP Accountant reviews the mismatch.
-4. AP Accountant identifies the likely cause.
-5. AP Accountant coordinates with Procurement Officer and/or Warehouse Staff as required.
-6. Relevant information is corrected or updated through the appropriate business process.
-7. The resolution action and relevant history are recorded.
-8. AP Accountant initiates or requests re-evaluation.
-9. The system re-runs the applicable three-way matching logic.
-10. The documents now satisfy the matching rules.
-11. The exception is resolved.
-12. The invoice becomes eligible for the next controlled step.
+1. Kế toán công nợ phải trả mở ngoại lệ đối chiếu.
+2. Hệ thống hiển thị thông tin sai lệch và tham chiếu giao dịch liên quan.
+3. Kế toán công nợ phải trả xem xét sai lệch.
+4. Kế toán công nợ phải trả xác định nguyên nhân có khả năng xảy ra.
+5. Kế toán công nợ phải trả phối hợp với Nhân viên mua hàng và/hoặc Nhân viên kho khi cần.
+6. Thông tin liên quan được chỉnh sửa hoặc cập nhật qua quy trình nghiệp vụ phù hợp.
+7. Hành động chỉnh sửa và lịch sử liên quan được ghi nhận; riêng việc này không làm ngoại lệ trở thành đã xử lý.
+8. Kế toán công nợ phải trả bắt đầu hoặc yêu cầu đánh giá lại.
+9. Hệ thống chạy lại logic đối chiếu ba bên áp dụng.
+10. Kết quả hiện hành thỏa mãn quy tắc đối chiếu áp dụng.
+11. Hệ thống ghi nhận ngoại lệ là đã xử lý sau lần đối chiếu lại đạt đó.
+12. Hóa đơn trở thành đủ điều kiện chuẩn bị và gửi đề nghị thanh toán.
 
-### Alternative Flow A1 — Exception Remains Unresolved
+### Luồng thay thế A1 — Ngoại lệ vẫn chưa xử lý xong
 
-1. The system re-runs matching.
-2. The documents still do not satisfy the applicable matching rules.
-3. The exception remains open or unresolved.
-4. The transaction remains blocked from normal Payment Request preparation.
-5. Further investigation is required.
+1. Hệ thống chạy lại đối chiếu.
+2. Các chứng từ vẫn chưa thỏa mãn quy tắc đối chiếu áp dụng.
+3. Ngoại lệ vẫn mở hoặc chưa xử lý xong.
+4. Giao dịch vẫn bị chặn chuẩn bị đề nghị thanh toán thông thường.
+5. Cần điều tra thêm.
 
-### Alternative Flow A2 — Supplier Clarification Required
+### Luồng thay thế A2 — Cần nhà cung cấp làm rõ
 
-1. AP Accountant or Procurement identifies that Supplier clarification is required.
-2. The Supplier is contacted outside the internal system interaction model.
-3. Relevant information is obtained.
-4. The internal transaction information is updated as appropriate.
-5. Matching is re-run.
+1. Kế toán công nợ phải trả hoặc bộ phận mua hàng xác định cần Nhà cung cấp làm rõ.
+2. Nhà cung cấp được liên hệ bên ngoài mô hình tương tác hệ thống nội bộ.
+3. Thông tin liên quan được thu thập.
+4. Thông tin giao dịch nội bộ được cập nhật phù hợp.
+5. Đối chiếu được chạy lại.
 
-### Postconditions
+### Điều kiện sau
 
-**Resolved** — Exception status and resolution history are retained, the transaction is re-evaluated, and the invoice may proceed only if the applicable controls are satisfied.
+**Đã xử lý** — Kết quả đối chiếu lại đạt được ghi nhận, sau đó cập nhật trạng thái ngoại lệ và lịch sử xử lý; hóa đơn được phép tiếp tục theo quy tắc áp dụng.
 
-**Unresolved** — The exception remains active and the invoice remains blocked from normal payment preparation.
+**Chưa xử lý xong** — Ngoại lệ vẫn còn hiệu lực và hóa đơn vẫn bị chặn chuẩn bị thanh toán thông thường.
 
-### Open Decisions
+### Quyết định còn mở
 
-- **OD-04:** Matching tolerance policy and values, if applicable.
-- **OD-05:** Matching-exception escalation rules.
-- **OD-08:** Partial Goods Receipt policy may affect quantity-related exceptions.
+- **OD-04:** Chính sách và giá trị dung sai đối chiếu, nếu áp dụng.
+- **OD-05:** Quy tắc chuyển cấp ngoại lệ đối chiếu.
+- **OD-08:** Chính sách nhận hàng một phần có thể ảnh hưởng ngoại lệ liên quan số lượng.
 
-### Notes
+### Ghi chú
 
-- Supplier may participate operationally through external communication but is not modeled as a direct system actor.
-- AP Accountant remains the primary owner of matching exception handling in this baseline.
+- Nhà cung cấp có thể tham gia vận hành qua trao đổi bên ngoài nhưng không được mô hình hóa là tác nhân hệ thống trực tiếp.
+- Kế toán công nợ phải trả vẫn là người phụ trách chính xử lý ngoại lệ đối chiếu trong đường cơ sở này.
+- Chỉnh sửa PO đã phê duyệt/đã phát hành hoặc GR đã ghi không được đặc tả là sửa trực tiếp trong ca sử dụng này; quy trình chỉnh sửa áp dụng vẫn còn mở.
 
 ---
 
-## UC-08 — Prepare Payment Request
+## UC-08 — Chuẩn bị đề nghị thanh toán
 
-![UC-08 — Prepare Payment Request](../assets/diagrams/exports/system/use-case/UC-08.drawio.png)
+![UC-08 — Chuẩn bị đề nghị thanh toán](../assets/diagrams/exports/system/use-case/UC-08.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-08 |
-| **Use Case Name** | Prepare Payment Request |
-| **Primary Actor** | AP Accountant |
-| **Goal** | Prepare and submit a Payment Request for an invoice that has satisfied the required procurement controls. |
-| **Trigger** | An invoice becomes eligible for payment preparation. |
-| **Related BRQs** | BRQ-10, BRQ-09 |
-| **Related Business Rules** | BR-19, BR-22, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-08 |
+| **Tên ca sử dụng** | Chuẩn bị đề nghị thanh toán |
+| **Tác nhân chính** | Kế toán công nợ phải trả |
+| **Mục tiêu** | Chuẩn bị và gửi đề nghị thanh toán cho hóa đơn đã thỏa mãn các kiểm soát mua hàng bắt buộc. |
+| **Sự kiện kích hoạt** | Hóa đơn trở thành đủ điều kiện chuẩn bị thanh toán. |
+| **BRQ liên quan** | BRQ-01, BRQ-10, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-19, BR-22, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The Supplier Invoice exists.
-2. The invoice is eligible for payment preparation.
-3. The invoice has either successfully completed applicable matching or completed an approved exception-resolution path according to the applicable control policy.
-4. AP Accountant is authorized to prepare Payment Requests.
+1. Hóa đơn nhà cung cấp tồn tại.
+2. Hóa đơn đủ điều kiện chuẩn bị thanh toán.
+3. Kết quả đối chiếu hiện hành thỏa mãn quy tắc áp dụng; ghi nhận ngoại lệ đã xử lý mà không có đối chiếu lại đạt là chưa đủ.
+4. Kế toán công nợ phải trả có quyền chuẩn bị đề nghị thanh toán.
 
-### Main Flow
+### Luồng chính
 
-1. AP Accountant identifies an eligible invoice.
-2. AP Accountant starts Payment Request preparation.
-3. The system verifies the invoice's eligibility.
-4. The system provides the related procurement transaction references and supporting information.
-5. AP Accountant completes the Payment Request information.
-6. AP Accountant reviews the Payment Request.
-7. AP Accountant submits the Payment Request for approval.
-8. The system records the submission action.
-9. The system routes the Payment Request to the authorized Finance approver.
+1. Kế toán công nợ phải trả xác định hóa đơn đủ điều kiện.
+2. Kế toán công nợ phải trả yêu cầu bắt đầu chuẩn bị đề nghị thanh toán.
+3. Hệ thống xác minh kết quả đối chiếu hiện hành đạt và điều kiện hóa đơn trước khi cho phép chuẩn bị, rồi kiểm tra lại trước khi gửi.
+4. Hệ thống cung cấp tham chiếu giao dịch mua hàng liên quan và thông tin hỗ trợ.
+5. Kế toán công nợ phải trả hoàn thiện thông tin đề nghị thanh toán.
+6. Kế toán công nợ phải trả xem xét đề nghị thanh toán.
+7. Kế toán công nợ phải trả gửi đề nghị thanh toán để phê duyệt.
+8. Hệ thống ghi hành động gửi.
+9. Hệ thống chuyển đề nghị thanh toán đến người phê duyệt tài chính có thẩm quyền.
 
-### Alternative Flow A1 — Invoice Is Not Eligible
+### Luồng thay thế A1 — Hóa đơn chưa đủ điều kiện
 
-1. AP Accountant attempts to prepare or submit the Payment Request.
-2. The system determines that the invoice has not satisfied the required controls.
-3. The Payment Request is prevented from proceeding.
-4. AP Accountant must resolve the underlying issue before resubmission.
+1. Kế toán công nợ phải trả thử chuẩn bị hoặc gửi đề nghị thanh toán.
+2. Hệ thống phát hiện thiếu dữ liệu đối chiếu, kết quả hiện hành không đạt hoặc trạng thái ngoại lệ không có đối chiếu lại đạt.
+3. Chuẩn bị và gửi đề nghị thanh toán bị chặn.
+4. Phải khắc phục vấn đề nền tảng và chạy lại đối chiếu đạt trước khi thử chuẩn bị hoặc gửi lần mới.
 
-### Alternative Flow A2 — Returned Payment Request
+### Luồng thay thế A2 — Đề nghị thanh toán bị trả về
 
-1. Finance Manager returns the Payment Request through UC-09.
-2. AP Accountant opens the returned request.
-3. AP Accountant reviews the return reason.
-4. AP Accountant revises the required information.
-5. AP Accountant resubmits the Payment Request.
-6. The request is routed again for approval.
+1. Trưởng bộ phận tài chính trả đề nghị thanh toán qua UC-09.
+2. Kế toán công nợ phải trả mở đề nghị bị trả về.
+3. Kế toán công nợ phải trả xem lý do trả về.
+4. Kế toán công nợ phải trả chỉnh sửa thông tin bắt buộc.
+5. Kế toán công nợ phải trả gửi lại đề nghị thanh toán.
+6. Đề nghị được chuyển lại để phê duyệt.
 
-### Postconditions
+### Điều kiện sau
 
-- A valid Payment Request has been submitted for Finance approval.
-- Submission history is retained.
+- Đề nghị thanh toán hợp lệ đã được gửi phê duyệt tài chính.
+- Lịch sử gửi được giữ.
 
-### Notes
+### Ghi chú
 
-- Preparing a Payment Request is intentionally separated from Supplier Invoice processing because it is a distinct user goal and control point.
+- Chuẩn bị đề nghị thanh toán được chủ ý tách khỏi xử lý hóa đơn nhà cung cấp vì là mục tiêu người dùng và điểm kiểm soát riêng.
 
 ---
 
-## UC-09 — Review Payment Request
+## UC-09 — Xem xét đề nghị thanh toán
 
-![UC-09 — Review Payment Request](../assets/diagrams/exports/system/use-case/UC-09.drawio.png)
+![UC-09 — Xem xét đề nghị thanh toán](../assets/diagrams/exports/system/use-case/UC-09.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-09 |
-| **Use Case Name** | Review Payment Request |
-| **Primary Actor** | Finance Manager |
-| **Goal** | Review a submitted Payment Request and make the final approval decision within the project scope. |
-| **Trigger** | A Payment Request is submitted and routed to Finance. |
-| **Related BRQs** | BRQ-10, BRQ-09 |
-| **Related Business Rules** | BR-23, BR-24, BR-25, BR-26 |
+| **Mã ca sử dụng** | UC-09 |
+| **Tên ca sử dụng** | Xem xét đề nghị thanh toán |
+| **Tác nhân chính** | Trưởng bộ phận tài chính |
+| **Mục tiêu** | Xem xét đề nghị thanh toán đã gửi và đưa ra quyết định phê duyệt cuối cùng trong phạm vi dự án. |
+| **Sự kiện kích hoạt** | Đề nghị thanh toán được gửi và chuyển đến Tài chính. |
+| **BRQ liên quan** | BRQ-01 (hỗ trợ điểm kết thúc phê duyệt), BRQ-10, BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-23, BR-24, BR-25, BR-26 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. A Payment Request has been submitted.
-2. The request is linked to an eligible Supplier Invoice and supporting procurement transaction.
-3. Finance Manager is authorized to perform the approval.
+1. Đề nghị thanh toán đã được gửi.
+2. Đề nghị liên kết với hóa đơn nhà cung cấp đủ điều kiện và giao dịch mua hàng hỗ trợ.
+3. Trưởng bộ phận tài chính có thẩm quyền phê duyệt.
 
-### Main Flow — Approve Payment Request
+### Luồng chính — Phê duyệt đề nghị thanh toán
 
-1. Finance Manager opens the pending Payment Request.
-2. The system displays the Payment Request and relevant supporting transaction information.
-3. Finance Manager reviews the request.
-4. Finance Manager selects **Approve**.
-5. The system records the approval decision, approver, and timestamp.
-6. The Payment Request is updated to the applicable approved state.
-7. The procurement workflow reaches its defined end point.
+1. Trưởng bộ phận tài chính mở đề nghị thanh toán đang chờ.
+2. Hệ thống hiển thị đề nghị thanh toán và thông tin giao dịch hỗ trợ liên quan.
+3. Trưởng bộ phận tài chính xem xét đề nghị.
+4. Trưởng bộ phận tài chính chọn **Phê duyệt**.
+5. Hệ thống ghi quyết định phê duyệt, người phê duyệt và dấu thời gian.
+6. Đề nghị thanh toán được cập nhật sang trạng thái đã phê duyệt áp dụng.
+7. Luồng mua hàng đạt điểm kết thúc đã xác định.
 
-### Alternative Flow A1 — Return Payment Request for Revision
+### Luồng thay thế A1 — Trả đề nghị thanh toán để chỉnh sửa
 
-1. Finance Manager reviews the Payment Request.
-2. Finance Manager identifies required corrections or clarification.
-3. Finance Manager selects **Return for Revision**.
-4. The system records the decision and relevant reason/comment.
-5. The request returns to AP Accountant.
-6. AP Accountant revises and resubmits it through UC-08.
+1. Trưởng bộ phận tài chính xem xét đề nghị thanh toán.
+2. Trưởng bộ phận tài chính xác định nội dung cần chỉnh sửa hoặc làm rõ.
+3. Trưởng bộ phận tài chính chọn **Trả lại để chỉnh sửa**.
+4. Hệ thống ghi quyết định và lý do/nhận xét liên quan.
+5. Đề nghị trở về Kế toán công nợ phải trả.
+6. Kế toán công nợ phải trả chỉnh sửa và gửi lại qua UC-08.
 
-### Postconditions
+### Điều kiện sau
 
-**Approved** — Payment Request is approved, approval history is retained, and the defined procurement case-study scope is complete.
+**Đã phê duyệt** — Đề nghị thanh toán được phê duyệt, lịch sử phê duyệt được giữ và phạm vi nghiên cứu tình huống mua hàng đã xác định hoàn tất.
 
-**Returned** — The request is returned to AP for revision.
+**Đã trả về** — Đề nghị được trả về AP để chỉnh sửa.
 
-### Notes
+### Ghi chú
 
-- **Payment Request Approved is the end of project scope.**
-- Actual bank payment execution, bank API integration, and payment reconciliation are outside scope.
+- **Đề nghị thanh toán đã được phê duyệt là điểm kết thúc phạm vi dự án.** Trạng thái này không biểu thị đã thanh toán, đã thực hiện qua ngân hàng hoặc Nhà cung cấp đã nhận tiền.
+- Thực hiện thanh toán ngân hàng thực tế, tích hợp API ngân hàng và đối soát thanh toán nằm ngoài phạm vi.
 
 ---
 
-## UC-10 — View Transaction Status
+## UC-10 — Xem trạng thái giao dịch
 
-![UC-10 — View Transaction Status](../assets/diagrams/exports/system/use-case/UC-10.drawio.png)
+![UC-10 — Xem trạng thái giao dịch](../assets/diagrams/exports/system/use-case/UC-10.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-10 |
-| **Use Case Name** | View Transaction Status |
-| **Primary Actors** | Authorized Operational Users |
-| **Goal** | View the current status and workflow position of relevant procurement transactions. |
-| **Trigger** | An authorized user needs to determine the current state of a procurement transaction. |
-| **Related BRQs** | BRQ-07, BRQ-06 |
-| **Related Business Rules** | BR-25, BR-27 |
+| **Mã ca sử dụng** | UC-10 |
+| **Tên ca sử dụng** | Xem trạng thái giao dịch |
+| **Tác nhân chính** | Người dùng vận hành được cấp quyền |
+| **Mục tiêu** | Xem trạng thái hiện tại và vị trí trong luồng công việc của giao dịch mua hàng liên quan. |
+| **Sự kiện kích hoạt** | Người dùng được cấp quyền cần xác định trạng thái hiện tại của giao dịch mua hàng. |
+| **BRQ liên quan** | BRQ-07, BRQ-06 |
+| **Quy tắc nghiệp vụ liên quan** | BR-25, BR-27 |
 
-### Authorized Operational Users in the Current Baseline
+### Người dùng vận hành được cấp quyền trong đường cơ sở hiện tại
 
-- Requester / Store Employee
-- Store Manager
-- Procurement Officer
-- Procurement Manager
-- AP Accountant
-- Finance Manager
+- Người yêu cầu / Nhân viên cửa hàng
+- Quản lý cửa hàng
+- Nhân viên mua hàng
+- Trưởng bộ phận mua hàng
+- Kế toán công nợ phải trả
+- Trưởng bộ phận tài chính
 
-Actual visibility may vary by role and permission.
+Khả năng xem thực tế có thể khác nhau theo vai trò và quyền.
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The user is authenticated.
-2. The user has access to the relevant transaction information.
-3. The requested procurement transaction exists.
+1. Người dùng đã được xác thực.
+2. Người dùng có quyền truy cập thông tin giao dịch liên quan.
+3. Giao dịch mua hàng được yêu cầu tồn tại.
 
-### Main Flow
+### Luồng chính
 
-1. The user opens the transaction tracking or search capability.
-2. The user identifies the relevant procurement transaction.
-3. The system checks the user's access rights.
-4. The system displays the current transaction status.
-5. The system displays relevant workflow information, which may include current process stage, pending action, approval state, returned or rejected state, and related PR/PO/GR/Invoice/Payment Request references where applicable.
-6. The user reviews the information.
+1. Người dùng mở chức năng theo dõi hoặc tìm kiếm giao dịch.
+2. Người dùng xác định giao dịch mua hàng liên quan.
+3. Hệ thống kiểm tra quyền truy cập của người dùng.
+4. Hệ thống hiển thị trạng thái giao dịch hiện tại.
+5. Hệ thống hiển thị thông tin luồng công việc liên quan, có thể gồm bước quy trình hiện tại, hành động đang chờ, trạng thái phê duyệt, trạng thái bị trả về hoặc từ chối và tham chiếu PR/PO/GR/hóa đơn/đề nghị thanh toán liên quan tùy trường hợp.
+6. Người dùng xem thông tin.
 
-### Alternative Flow A1 — Transaction Not Found
+### Luồng thay thế A1 — Không tìm thấy giao dịch
 
-1. The user searches for a transaction.
-2. No matching accessible transaction is found.
-3. The system informs the user that no relevant result is available.
+1. Người dùng tìm giao dịch.
+2. Không tìm thấy giao dịch khớp và có quyền truy cập.
+3. Hệ thống thông báo không có kết quả liên quan.
 
-### Alternative Flow A2 — Access Not Authorized
+### Luồng thay thế A2 — Không có quyền truy cập
 
-1. The user attempts to access a transaction.
-2. The system determines that the user does not have the required permission.
-3. The restricted transaction information is not displayed.
+1. Người dùng thử truy cập giao dịch.
+2. Hệ thống xác định người dùng không có quyền bắt buộc.
+3. Thông tin giao dịch bị hạn chế không được hiển thị.
 
-### Postconditions
+### Điều kiện sau
 
-- No business transaction is modified.
-- The user obtains the current status information permitted by their role.
+- Không giao dịch nghiệp vụ nào bị sửa đổi.
+- Người dùng nhận thông tin trạng thái hiện tại được vai trò cho phép.
 
-### Open Decisions
+### Quyết định còn mở
 
-- **OD-06:** Final procurement transaction status model.
-- **OD-07:** Detailed role permissions.
+- **OD-06:** Mô hình trạng thái giao dịch mua hàng cuối cùng.
+- **OD-07:** Quyền chi tiết theo vai trò.
 
-### Notes
+### Ghi chú
 
-- The detailed list and naming of statuses are intentionally not frozen at this stage.
+- Danh sách và tên trạng thái chi tiết được chủ ý chưa chốt ở giai đoạn này.
 
 ---
 
-## UC-11 — Review Transaction History
+## UC-11 — Xem lịch sử giao dịch
 
-![UC-11 — Review Transaction History](../assets/diagrams/exports/system/use-case/UC-11.drawio.png)
+![UC-11 — Xem lịch sử giao dịch](../assets/diagrams/exports/system/use-case/UC-11.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-11 |
-| **Use Case Name** | Review Transaction History |
-| **Primary Actors** | Procurement Manager, Finance Manager, Internal Audit |
-| **Goal** | Review historical actions, approvals, and exceptions associated with an in-scope procurement transaction. |
-| **Trigger** | An authorized reviewer needs to investigate or verify transaction history. |
-| **Related BRQs** | BRQ-09 |
-| **Related Business Rules** | BR-21, BR-26, BR-27 |
+| **Mã ca sử dụng** | UC-11 |
+| **Tên ca sử dụng** | Xem lịch sử giao dịch |
+| **Tác nhân chính** | Trưởng bộ phận mua hàng, Trưởng bộ phận tài chính, Kiểm toán nội bộ |
+| **Mục tiêu** | Xem xét lịch sử hành động, phê duyệt và ngoại lệ gắn với giao dịch mua hàng trong phạm vi. |
+| **Sự kiện kích hoạt** | Người xem xét được cấp quyền cần điều tra hoặc xác minh lịch sử giao dịch. |
+| **BRQ liên quan** | BRQ-09 |
+| **Quy tắc nghiệp vụ liên quan** | BR-21, BR-26, BR-27 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The user is authenticated.
-2. The user has permission to review the relevant transaction history.
-3. A relevant procurement transaction exists.
+1. Người dùng đã được xác thực.
+2. Người dùng có quyền xem lịch sử giao dịch liên quan.
+3. Có giao dịch mua hàng liên quan.
 
-### Main Flow
+### Luồng chính
 
-1. The reviewer searches for or opens a procurement transaction.
-2. The system verifies the reviewer's access rights.
-3. The reviewer opens the transaction history.
-4. The system displays the available history in chronological or otherwise understandable order.
-5. The displayed history may include user/actor, action performed, timestamp, approval decision, previous/new status where applicable, matching exception events, exception resolution information, and related transaction references.
-6. The reviewer examines the history.
+1. Người xem xét tìm hoặc mở giao dịch mua hàng.
+2. Hệ thống xác minh quyền truy cập của người xem xét.
+3. Người xem xét mở lịch sử giao dịch.
+4. Hệ thống hiển thị lịch sử có sẵn theo thứ tự thời gian hoặc thứ tự khác dễ hiểu.
+5. Lịch sử hiển thị có thể gồm người dùng/tác nhân, hành động thực hiện, dấu thời gian, quyết định phê duyệt, trạng thái trước/mới tùy trường hợp, sự kiện ngoại lệ đối chiếu, thông tin xử lý ngoại lệ và tham chiếu giao dịch liên quan.
+6. Người xem xét kiểm tra lịch sử.
 
-### Alternative Flow A1 — No Accessible History
+### Luồng thay thế A1 — Không có lịch sử được phép truy cập
 
-1. The reviewer selects a transaction.
-2. No history is available or accessible under the current permissions.
-3. The system displays the appropriate information without exposing restricted data.
+1. Người xem xét chọn giao dịch.
+2. Không có lịch sử hoặc không được phép truy cập theo quyền hiện tại.
+3. Hệ thống hiển thị thông tin phù hợp mà không để lộ dữ liệu bị hạn chế.
 
-### Postconditions
+### Điều kiện sau
 
-- Transaction history remains unchanged.
-- The reviewer obtains the audit information permitted by their role.
+- Lịch sử giao dịch giữ nguyên.
+- Người xem xét nhận thông tin kiểm toán được vai trò cho phép.
 
-### Open Decisions
+### Quyết định còn mở
 
-- **OD-07:** Detailed role permissions.
+- **OD-07:** Quyền chi tiết theo vai trò.
 
-### Notes
+### Ghi chú
 
-- Transaction history is read-only for the actors modeled in this Use Case.
-- Other operational roles may receive limited history access later if approved by the business owners.
+- Lịch sử giao dịch là chỉ đọc đối với các tác nhân được mô hình hóa trong ca sử dụng này.
+- Các vai trò vận hành khác có thể được cấp quyền xem lịch sử hạn chế sau này nếu chủ sở hữu nghiệp vụ phê duyệt.
 
 ---
 
-## UC-12 — View Procurement Reports
+## UC-12 — Xem báo cáo mua hàng
 
-![UC-12 — View Procurement Reports](../assets/diagrams/exports/system/use-case/UC-12.drawio.png)
+![UC-12 — Xem báo cáo mua hàng](../assets/diagrams/exports/system/use-case/UC-12.drawio.png)
 
-### Use Case Summary
+### Tóm tắt ca sử dụng
 
-| Item | Description |
+| Nội dung | Mô tả |
 |---|---|
-| **Use Case ID** | UC-12 |
-| **Use Case Name** | View Procurement Reports |
-| **Primary Actors** | Procurement Manager, Finance Manager |
-| **Goal** | View basic operational procurement information for process monitoring and management review. |
-| **Trigger** | A manager needs summarized procurement information. |
-| **Related BRQs** | BRQ-11, BRQ-07 |
-| **Related Business Rules** | BR-25, BR-27 |
+| **Mã ca sử dụng** | UC-12 |
+| **Tên ca sử dụng** | Xem báo cáo mua hàng |
+| **Tác nhân chính** | Trưởng bộ phận mua hàng, Trưởng bộ phận tài chính |
+| **Mục tiêu** | Xem thông tin mua hàng vận hành cơ bản để theo dõi quy trình và phục vụ quản lý xem xét. |
+| **Sự kiện kích hoạt** | Quản lý cần thông tin mua hàng tổng hợp. |
+| **BRQ liên quan** | BRQ-11, BRQ-07 (hỗ trợ tổng hợp trạng thái) |
+| **Quy tắc nghiệp vụ liên quan** | BR-25, BR-27 |
 
-### Preconditions
+### Điều kiện tiên quyết
 
-1. The user is authenticated.
-2. The user has access to procurement reporting.
-3. Relevant procurement transaction data is available.
+1. Người dùng đã được xác thực.
+2. Người dùng có quyền truy cập báo cáo mua hàng.
+3. Có dữ liệu giao dịch mua hàng liên quan.
 
-### Main Flow
+### Luồng chính
 
-1. The manager opens the procurement reporting capability.
-2. The system verifies the user's access rights.
-3. The system presents available basic procurement reports or summaries.
-4. The manager selects the required report or information set.
-5. The manager applies available filtering criteria where applicable.
-6. The system presents the requested operational information.
-7. The manager reviews the results.
+1. Quản lý mở chức năng báo cáo mua hàng.
+2. Hệ thống xác minh quyền truy cập của người dùng.
+3. Hệ thống trình bày các báo cáo hoặc tổng hợp mua hàng cơ bản có sẵn.
+4. Quản lý chọn báo cáo hoặc tập thông tin cần thiết.
+5. Quản lý áp dụng các tiêu chí lọc có sẵn tùy trường hợp.
+6. Hệ thống trình bày thông tin vận hành được yêu cầu.
+7. Quản lý xem kết quả.
 
-### Report Subjects in the Current Business Baseline
+### Chủ đề báo cáo trong đường cơ sở nghiệp vụ hiện tại
 
-The basic reporting capability may cover operational information such as Purchase Requisition status, Purchase Order status, pending approvals, Goods Receipt activity/status, Supplier Invoice status, matching exceptions, and Payment Request status.
+Khả năng báo cáo cơ bản có thể bao phủ thông tin vận hành như trạng thái yêu cầu mua hàng, trạng thái đơn đặt hàng, yêu cầu chờ phê duyệt, hoạt động/trạng thái phiếu nhận hàng, trạng thái hóa đơn nhà cung cấp, ngoại lệ đối chiếu và trạng thái đề nghị thanh toán.
 
-### Alternative Flow A1 — No Data for Selected Criteria
+### Luồng thay thế A1 — Không có dữ liệu cho tiêu chí đã chọn
 
-1. The manager selects reporting criteria.
-2. No accessible transaction data matches the criteria.
-3. The system displays an empty result or appropriate no-data message.
+1. Quản lý chọn tiêu chí báo cáo.
+2. Không có dữ liệu giao dịch được phép truy cập khớp tiêu chí.
+3. Hệ thống hiển thị kết quả rỗng hoặc thông báo không có dữ liệu phù hợp.
 
-### Alternative Flow A2 — Unauthorized Report Access
+### Luồng thay thế A2 — Truy cập báo cáo không có quyền
 
-1. The user attempts to access restricted report information.
-2. The system determines that the user does not have the required permission.
-3. Restricted information is not displayed.
+1. Người dùng thử truy cập thông tin báo cáo bị hạn chế.
+2. Hệ thống xác định người dùng không có quyền bắt buộc.
+3. Thông tin bị hạn chế không được hiển thị.
 
-### Postconditions
+### Điều kiện sau
 
-- No procurement transaction is modified.
-- The manager obtains the permitted operational information.
+- Không giao dịch mua hàng nào bị sửa đổi.
+- Quản lý nhận thông tin vận hành được phép.
 
-### Notes
+### Ghi chú
 
-- Exact dashboard layout, chart types, export formats, KPI formulas, and visual design are not defined at this stage.
-- Detailed reporting requirements will be refined in the SRS and UI/Wireframe stages.
+- Bố cục bảng điều khiển, loại biểu đồ, định dạng xuất, công thức KPI và thiết kế trực quan chính xác chưa được xác định ở giai đoạn này.
+- Yêu cầu báo cáo chi tiết sẽ được làm rõ trong các giai đoạn SRS và giao diện/khung giao diện.
 
 ---
 
-# 4. BRQ-to-Use-Case Coverage Summary
+# 4. Tổng hợp mức độ bao phủ từ BRQ đến ca sử dụng
 
-| Business Requirement | Related Use Cases |
+| Yêu cầu nghiệp vụ | Ca sử dụng liên quan |
 |---|---|
-| BRQ-01 — Connected Procure-to-Pay Transaction Management | UC-01, UC-03, UC-05, UC-06, UC-08 |
-| BRQ-02 — Standardized Purchase Requisition Management | UC-01, UC-02 |
-| BRQ-03 — Mandatory Budget Control | UC-01, UC-02 |
-| BRQ-04 — Controlled Supplier Selection | UC-03 |
-| BRQ-05 — Standardized Purchase Order Management and Approval | UC-03, UC-04 |
-| BRQ-06 — Procurement Data Reuse and Transaction Linkage | UC-03, UC-05, UC-06, UC-10 |
-| BRQ-07 — Procurement Status Visibility | UC-10, UC-12 |
-| BRQ-08 — Controlled Three-Way Matching and Exception Handling | UC-05, UC-06, UC-07 |
-| BRQ-09 — Transaction and Approval Traceability | UC-01–UC-09 as cross-cutting behavior, and UC-11 as the dedicated review capability |
-| BRQ-10 — Controlled Payment Request Approval | UC-08, UC-09 |
-| BRQ-11 — Basic Procurement Reporting | UC-12 |
+| BRQ-01 — Quản lý giao dịch P2P liên thông | UC-01, UC-03, UC-05, UC-06, UC-08; UC-09 hỗ trợ điểm kết thúc phê duyệt |
+| BRQ-02 — Quản lý yêu cầu mua hàng chuẩn hóa | UC-01, UC-02 |
+| BRQ-03 — Kiểm soát ngân sách bắt buộc | UC-01, UC-02 |
+| BRQ-04 — Lựa chọn nhà cung cấp có kiểm soát | UC-03 |
+| BRQ-05 — Quản lý và phê duyệt đơn đặt hàng chuẩn hóa | UC-03, UC-04 |
+| BRQ-06 — Tái sử dụng dữ liệu mua hàng và liên kết giao dịch | UC-03, UC-05, UC-06, UC-10 |
+| BRQ-07 — Khả năng theo dõi trạng thái mua hàng | UC-10; UC-12 hỗ trợ tổng hợp trạng thái |
+| BRQ-08 — Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát | UC-05, UC-06, UC-07 |
+| BRQ-09 — Truy vết giao dịch và phê duyệt | UC-01–UC-09 là hành vi xuyên suốt, UC-11 là chức năng xem xét riêng |
+| BRQ-10 — Phê duyệt đề nghị thanh toán có kiểm soát | UC-08, UC-09 |
+| BRQ-11 — Báo cáo mua hàng cơ bản | UC-12 |
 
 ---
 
-# 5. Scope and Modeling Notes
+# 5. Ghi chú phạm vi và mô hình hóa
 
-- The process starts when an authorized Requester identifies a purchasing need and creates a Purchase Requisition.
-- The modeled process ends when the Payment Request is approved.
-- Actual bank payment execution is outside scope.
-- Supplier selection is limited to existing approved suppliers.
-- Supplier onboarding, qualification, RFQ/RFP, tendering, and Supplier Portal are outside scope.
-- Budget creation and maintenance are outside scope; the Procurement Management System consumes available budget information.
-- Detailed PO approval thresholds remain open.
-- Detailed Finance approval criteria remain open.
-- Matching tolerances are conditional and must not be assumed unless approved.
-- Partial Goods Receipt policy remains open.
-- Exact transaction statuses and detailed role permissions will be refined later.
-- The SRS will contain detailed Functional and Non-Functional Requirements derived from these business use cases.
+- Quy trình bắt đầu khi Người yêu cầu được cấp quyền xác định nhu cầu mua hàng và lập yêu cầu mua hàng.
+- Quy trình được mô hình hóa kết thúc khi đề nghị thanh toán được phê duyệt.
+- Thực hiện thanh toán ngân hàng thực tế nằm ngoài phạm vi.
+- Lựa chọn nhà cung cấp giới hạn ở nhà cung cấp hiện có đã được phê duyệt.
+- Tiếp nhận, đánh giá điều kiện nhà cung cấp, RFQ/RFP, đấu thầu và cổng thông tin nhà cung cấp nằm ngoài phạm vi.
+- Lập và duy trì ngân sách nằm ngoài phạm vi; Hệ thống quản lý mua hàng sử dụng thông tin ngân sách có sẵn.
+- Ngưỡng phê duyệt PO chi tiết vẫn còn mở.
+- Tiêu chí phê duyệt tài chính chi tiết vẫn còn mở.
+- Dung sai đối chiếu có điều kiện, không được giả định nếu chưa được phê duyệt.
+- Chính sách nhận hàng một phần vẫn còn mở.
+- Trạng thái giao dịch chính xác và quyền chi tiết theo vai trò sẽ được làm rõ sau.
+- SRS sẽ chứa yêu cầu chức năng và phi chức năng chi tiết được rút ra từ các ca sử dụng nghiệp vụ này.

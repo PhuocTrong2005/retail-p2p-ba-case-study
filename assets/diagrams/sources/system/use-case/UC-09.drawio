@@ -1,0 +1,28 @@
+<mxfile host="app.diagrams.net" pages="1">
+  <diagram id="LLOr2JO_wkJ0_iZBY7po" name="UC-09">
+    <mxGraphModel dx="1030" dy="562" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1">
+          <mxGeometry height="540" width="520" x="180" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="finance" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Trưởng bộ phận tài chính" vertex="1">
+          <mxGeometry height="60" width="30" x="60" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="main" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Xem xét đề nghị thanh toán" vertex="1">
+          <mxGeometry height="80" width="200" x="345" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="finance" style="rounded=0;html=1;" target="main">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aINKZk8lyRCQTDrrUoGF-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;autosize=1;" value="&lt;b&gt;Hệ thống quản lý mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="280" x="308" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="aINKZk8lyRCQTDrrUoGF-2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;autosize=1;" value="&lt;b&gt;UC-09 — Xem xét đề nghị thanh toán&lt;/b&gt;" vertex="1">
+          <mxGeometry height="26" width="217" x="340" y="108" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

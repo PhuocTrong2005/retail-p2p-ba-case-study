@@ -1,0 +1,65 @@
+<mxfile host="app.diagrams.net" pages="1">
+  <diagram id="xzYUi1nu4vEBeO4kz49F" name="UC-07">
+    <mxGraphModel dx="1471" dy="803" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1">
+          <mxGeometry height="518" width="540" x="180" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ap" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Kế toán công nợ phải trả" vertex="1">
+          <mxGeometry height="60" width="30" x="55" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="proc" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nhân viên mua hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="55" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="warehouse" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nhân viên kho" vertex="1">
+          <mxGeometry height="60" width="30" x="784" y="208" as="geometry" />
+        </mxCell>
+        <mxCell id="main" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Xử lý ngoại lệ đối chiếu" vertex="1">
+          <mxGeometry height="80" width="200" x="345" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="review" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Xem xét ngoại lệ đối chiếu" vertex="1">
+          <mxGeometry height="75" width="190" x="251" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="ap" style="rounded=0;html=1;" target="main">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="proc" style="rounded=0;html=1;" target="main">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="warehouse" style="rounded=0;html=1;" target="main">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i1" edge="1" parent="1" source="main" style="html=1;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;" target="review">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="il1" connectable="0" parent="i1" style="edgeLabel;html=1;resizable=0;points=[];" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-34" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bbIRN802-Ng2uWjfk3DZ-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;autosize=1;" value="&lt;b&gt;Hệ thống quản lý mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="280" x="308" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="bbIRN802-Ng2uWjfk3DZ-2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;autosize=1;" value="&lt;b&gt;UC-07 — Xử lý ngoại lệ đối chiếu&lt;/b&gt;" vertex="1">
+          <mxGeometry height="26" width="234" x="331" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="rematch_condition_note" value="Chỉ xác nhận xử lý sau khi đối chiếu lại đạt. Đối chiếu lại không đạt thì giữ ngoại lệ mở và chặn đề nghị thanh toán." style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="235" y="495" width="430" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="rerun" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Chạy lại đối chiếu ba bên" vertex="1">
+          <mxGeometry height="75" width="190" x="473" y="391" as="geometry" />
+        </mxCell>
+        <mxCell id="i2" edge="1" parent="1" source="main" style="html=1;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;" target="rerun">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="il2" connectable="0" parent="i2" style="edgeLabel;html=1;resizable=0;points=[];" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-22" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

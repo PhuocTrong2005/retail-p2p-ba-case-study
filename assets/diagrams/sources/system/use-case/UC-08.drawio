@@ -1,0 +1,54 @@
+<mxfile host="app.diagrams.net" pages="1">
+  <diagram id="dRgbL0cJCTHHvEzuEWrC" name="UC-08">
+    <mxGraphModel dx="1030" dy="562" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1">
+          <mxGeometry height="650" width="540" x="180" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ap" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Kế toán công nợ phải trả" vertex="1">
+          <mxGeometry height="60" width="30" x="55" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="main" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Chuẩn bị đề nghị thanh toán" vertex="1">
+          <mxGeometry height="80" width="200" x="345" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="eligibility" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Kiểm tra hóa đơn đủ điều kiện" vertex="1">
+          <mxGeometry height="75" width="190" x="220" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="submit" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Gửi đề nghị thanh toán để phê duyệt" vertex="1">
+          <mxGeometry height="75" width="195" x="493" y="303" as="geometry" />
+        </mxCell>
+        <mxCell id="revise" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="Chỉnh sửa đề nghị thanh toán bị trả lại" vertex="1">
+          <mxGeometry height="75" width="205" x="360" y="504" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="ap" style="rounded=0;html=1;" target="main">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="ap" style="rounded=0;html=1;" target="revise">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="i1" edge="1" parent="1" source="main" style="html=1;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;" target="eligibility">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="il1" connectable="0" parent="i1" style="edgeLabel;html=1;resizable=0;points=[];" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-38" y="-5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i2" edge="1" parent="1" source="main" style="html=1;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;" target="submit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="il2" connectable="0" parent="i2" style="edgeLabel;html=1;resizable=0;points=[];" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" vertex="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0Qk3AyhVOxQ3-W3I1qEf-1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;autosize=1;" value="&lt;b&gt;Hệ thống quản lý mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="280" x="308" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="0Qk3AyhVOxQ3-W3I1qEf-2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;autosize=1;" value="&lt;b&gt;UC-08 — Chuẩn bị đề nghị thanh toán&lt;/b&gt;" vertex="1">
+          <mxGeometry height="26" width="220" x="338" y="108" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

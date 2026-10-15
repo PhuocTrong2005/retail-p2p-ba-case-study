@@ -1,302 +1,203 @@
-# 06 — System Analysis
+# 06 — Phân tích hệ thống
 
-> **Phase navigation:** Purpose: model system actors and user goals without designing software. Contents: use cases, activity diagrams, and system-boundary analysis. Next: [07 — Software Requirements](../07-software-requirements/README.md).
+> **Điều hướng giai đoạn:** Mục đích: mô hình hóa tác nhân hệ thống và mục tiêu người dùng, chưa thiết kế phần mềm. Nội dung: ca sử dụng, sơ đồ hoạt động và phân tích ranh giới hệ thống. Tiếp theo: [07 — Yêu cầu phần mềm](../07-software-requirements/README.md).
 
-## 1. Overview
+## 1. Tổng quan
 
-This section translates the business-requirement baseline and To-Be Procure-to-Pay process into a structured **system interaction model** for the proposed **Procurement Management System**.
+Chuyển quy trình To-Be và yêu cầu nghiệp vụ thành ranh giới, tác nhân và mô hình tương tác của **Hệ thống quản lý mua hàng** được đề xuất. Có 12 UC chính, UC-00 tổng quan và ba sơ đồ hoạt động; đây là mô hình phân tích, chưa thiết kế hoặc triển khai phần mềm.
 
-The analysis focuses on:
+Phạm vi gồm hàng hóa hữu hình, từ lập PR đến phê duyệt đề nghị thanh toán. Mua dịch vụ và thực hiện thanh toán ngân hàng nằm ngoài phạm vi.
 
-- defining the system boundary;
-- identifying direct system actors;
-- modeling user goals through UML Use Cases;
-- documenting detailed Use Case scenarios;
-- modeling key decision-heavy workflows through UML Activity Diagrams;
-- preserving traceability from Business Requirements to future Functional and Non-Functional Requirements.
+**Đọc theo nhu cầu:** [Danh mục UC và sơ đồ](#42-danh-mục-ca-sử-dụng) · [Đặc tả kịch bản](./use-case-specifications.md) · [Sơ đồ hoạt động](#5-sơ-đồ-hoạt-động) · [Ánh xạ BRQ–UC](#8-truy-vết-từ-yêu-cầu-nghiệp-vụ-đến-ca-sử-dụng).
 
-The System Analysis covers the process from **Purchase Requisition creation** through **Payment Request approval**.
+## 2. Ranh giới hệ thống
 
-> **Scope boundary:** Actual bank payment execution is outside the scope of this case study.
+### Hệ thống được phân tích
 
----
+**Hệ thống quản lý mua hàng**
 
-## 2. System Boundary
+Các mục tiêu người dùng được liệt kê trong [danh mục UC](#42-danh-mục-ca-sử-dụng); [đặc tả UC-00](./use-case-specifications.md#uc-00--tổng-quan-ca-sử-dụng-hệ-thống-p2p) mô tả khả năng hệ thống ở mức tổng quan.
 
-### System Under Analysis
+### Điều kiện phụ thuộc bên ngoài / hỗ trợ
 
-**Procurement Management System**
+Mô hình hiện tại đưa **Nguồn dữ liệu ngân sách** vào như hệ thống hỗ trợ bên ngoài vì cần thông tin ngân sách để kiểm tra ngân sách tự động.
 
-The system supports the following business capabilities:
+Các thành phần sau được chủ ý không mô hình hóa là tác nhân hệ thống trực tiếp:
 
-- Purchase Requisition creation and submission;
-- required-information validation;
-- budget validation orchestration;
-- Purchase Requisition approval;
-- Purchase Order creation from approved PR data;
-- approved supplier selection;
-- Purchase Order approval routing;
-- Goods Receipt recording;
-- Supplier Invoice processing;
-- three-way matching between PO, GR, and Invoice;
-- matching exception handling;
-- Payment Request preparation and approval;
-- transaction status visibility;
-- transaction and approval history;
-- basic procurement reporting.
-
-### External / Supporting Dependencies
-
-The current model includes **Budget Data Source** as an external supporting system because budget information is required for automated budget validation.
-
-The following elements are intentionally not modeled as direct system actors:
-
-- **Supplier** — remains an external business participant; Supplier Portal is outside scope.
-- **CFO** — Executive Sponsor, not a day-to-day operational system user.
-- **Accounting System** — remains an existing dependency, but the detailed integration interface has not yet been defined.
+- **Nhà cung cấp** — vẫn là bên tham gia nghiệp vụ bên ngoài; cổng thông tin nhà cung cấp nằm ngoài phạm vi.
+- **Giám đốc tài chính (CFO)** — Nhà bảo trợ cấp điều hành, không phải người dùng hệ thống vận hành hằng ngày.
+- **Hệ thống kế toán** — vẫn là điều kiện phụ thuộc hiện có, nhưng giao diện tích hợp chi tiết chưa được xác định.
 
 ---
 
-## 3. System Actors
+## 3. Tác nhân hệ thống
 
-| ID | Actor | Role |
+| ID | Tác nhân | Vai trò |
 |---|---|---|
-| ACT-01 | Requester / Store Employee | Creates and submits Purchase Requisitions |
-| ACT-02 | Store Manager | Reviews and makes business approval decisions on Purchase Requisitions |
-| ACT-03 | Procurement Officer | Processes approved PRs and creates/manages Purchase Orders |
-| ACT-04 | Procurement Manager | Reviews and approves or returns Purchase Orders |
-| ACT-05 | Warehouse Staff | Records Goods Receipt against approved Purchase Orders |
-| ACT-06 | AP Accountant | Processes Supplier Invoices, matching exceptions, and Payment Requests |
-| ACT-07 | Finance Manager | Performs conditional financial PO review and approves Payment Requests |
-| ACT-08 | Internal Audit | Reviews transaction and approval history |
-| ACT-09 | Budget Data Source | Provides budget information required for budget validation |
+| ACT-01 | Người yêu cầu / Nhân viên cửa hàng | Lập và gửi yêu cầu mua hàng |
+| ACT-02 | Quản lý cửa hàng | Xem xét và quyết định phê duyệt nghiệp vụ cho yêu cầu mua hàng |
+| ACT-03 | Nhân viên mua hàng | Xử lý PR đã phê duyệt và lập/quản lý đơn đặt hàng |
+| ACT-04 | Trưởng bộ phận mua hàng | Xem xét và phê duyệt hoặc trả về đơn đặt hàng |
+| ACT-05 | Nhân viên kho | Ghi phiếu nhận hàng theo đơn đặt hàng đã phê duyệt |
+| ACT-06 | Kế toán công nợ phải trả (AP) | Xử lý hóa đơn nhà cung cấp, ngoại lệ đối chiếu và đề nghị thanh toán |
+| ACT-07 | Trưởng bộ phận tài chính | Xem xét tài chính PO có điều kiện và phê duyệt đề nghị thanh toán |
+| ACT-08 | Kiểm toán nội bộ | Xem lịch sử giao dịch và phê duyệt |
+| ACT-09 | Nguồn dữ liệu ngân sách | Cung cấp thông tin ngân sách cần cho kiểm tra ngân sách |
 
 ---
 
-## 4. Use Case Model
+## 4. Mô hình ca sử dụng
 
-### 4.1 System Use Case Overview
+### 4.1 Tổng quan ca sử dụng hệ thống
 
-The overview diagram presents the major system goals and their primary actors without reproducing the full end-to-end business sequence already documented in BPMN.
+Sơ đồ tổng quan trình bày mục tiêu hệ thống chính và tác nhân chính tương ứng, không tái hiện toàn bộ trình tự nghiệp vụ xuyên suốt đã ghi bằng BPMN.
 
-![P2P System Use Case Overview](../assets/diagrams/exports/system/use-case/UC-00.drawio.png)
+![Tổng quan ca sử dụng hệ thống P2P](../assets/diagrams/exports/system/use-case/UC-00.drawio.png)
 
-> Use Case relationships describe actor goals and system interaction. Process sequence is modeled separately in BPMN and Activity Diagrams.
+> Quan hệ ca sử dụng mô tả mục tiêu tác nhân và tương tác hệ thống. Trình tự quy trình được mô hình hóa riêng bằng BPMN và sơ đồ hoạt động.
 
-Rendered diagrams are stored in shared assets. The repository contains [external editor URL references](../assets/diagrams/editable-references/) rather than local editable Draw.io source files.
+[Danh mục nguồn Draw.io và ảnh xuất theo trang](../assets/diagrams/sources/README.md) giữ ánh xạ nguồn/PNG và lịch sử kiểm tra. [URL trình biên tập bên ngoài](../assets/diagrams/editable-references/) là tham chiếu lịch sử.
 
-### 4.2 Use Case Catalog
+### 4.2 Danh mục ca sử dụng
 
-| ID | Use Case | Primary Actor | Diagram |
+| ID | Ca sử dụng | Tác nhân chính | Sơ đồ |
 |---|---|---|---|
-| UC-01 | Create and Submit Purchase Requisition | Requester / Store Employee | [View](../assets/diagrams/exports/system/use-case/UC-01.drawio.png) |
-| UC-02 | Review Purchase Requisition | Store Manager | [View](../assets/diagrams/exports/system/use-case/UC-02.drawio.png) |
-| UC-03 | Create and Submit Purchase Order | Procurement Officer | [View](../assets/diagrams/exports/system/use-case/UC-03.drawio.png) |
-| UC-04 | Review Purchase Order | Procurement Manager | [View](../assets/diagrams/exports/system/use-case/UC-04.drawio.png) |
-| UC-05 | Record Goods Receipt | Warehouse Staff | [View](../assets/diagrams/exports/system/use-case/UC-05.drawio.png) |
-| UC-06 | Process Supplier Invoice | AP Accountant | [View](../assets/diagrams/exports/system/use-case/UC-06.drawio.png) |
-| UC-07 | Resolve Matching Exception | AP Accountant | [View](../assets/diagrams/exports/system/use-case/UC-07.drawio.png) |
-| UC-08 | Prepare Payment Request | AP Accountant | [View](../assets/diagrams/exports/system/use-case/UC-08.drawio.png) |
-| UC-09 | Review Payment Request | Finance Manager | [View](../assets/diagrams/exports/system/use-case/UC-09.drawio.png) |
-| UC-10 | View Transaction Status | Authorized Operational Users | [View](../assets/diagrams/exports/system/use-case/UC-10.drawio.png) |
-| UC-11 | Review Transaction History | Authorized Reviewers / Internal Audit | [View](../assets/diagrams/exports/system/use-case/UC-11.drawio.png) |
-| UC-12 | View Procurement Reports | Procurement Manager / Finance Manager | [View](../assets/diagrams/exports/system/use-case/UC-12.drawio.png) |
+| UC-01 | Lập và gửi yêu cầu mua hàng | Người yêu cầu / Nhân viên cửa hàng | [Xem](../assets/diagrams/exports/system/use-case/UC-01.drawio.png) |
+| UC-02 | Xem xét yêu cầu mua hàng | Quản lý cửa hàng | [Xem](../assets/diagrams/exports/system/use-case/UC-02.drawio.png) |
+| UC-03 | Lập và gửi đơn đặt hàng | Nhân viên mua hàng | [Xem](../assets/diagrams/exports/system/use-case/UC-03.drawio.png) |
+| UC-04 | Xem xét đơn đặt hàng | Trưởng bộ phận mua hàng | [Xem](../assets/diagrams/exports/system/use-case/UC-04.drawio.png) |
+| UC-05 | Ghi nhận phiếu nhận hàng | Nhân viên kho | [Xem](../assets/diagrams/exports/system/use-case/UC-05.drawio.png) |
+| UC-06 | Xử lý hóa đơn nhà cung cấp | Kế toán công nợ phải trả | [Xem](../assets/diagrams/exports/system/use-case/UC-06.drawio.png) |
+| UC-07 | Xử lý ngoại lệ đối chiếu | Kế toán công nợ phải trả | [Xem](../assets/diagrams/exports/system/use-case/UC-07.drawio.png) |
+| UC-08 | Chuẩn bị đề nghị thanh toán | Kế toán công nợ phải trả | [Xem](../assets/diagrams/exports/system/use-case/UC-08.drawio.png) |
+| UC-09 | Xem xét đề nghị thanh toán | Trưởng bộ phận tài chính | [Xem](../assets/diagrams/exports/system/use-case/UC-09.drawio.png) |
+| UC-10 | Xem trạng thái giao dịch | Người dùng vận hành được cấp quyền | [Xem](../assets/diagrams/exports/system/use-case/UC-10.drawio.png) |
+| UC-11 | Xem lịch sử giao dịch | Người xem xét được cấp quyền / Kiểm toán nội bộ | [Xem](../assets/diagrams/exports/system/use-case/UC-11.drawio.png) |
+| UC-12 | Xem báo cáo mua hàng | Trưởng bộ phận mua hàng / Trưởng bộ phận tài chính | [Xem](../assets/diagrams/exports/system/use-case/UC-12.drawio.png) |
 
-### 4.3 Detailed Use Case Specifications
+### 4.3 Đặc tả ca sử dụng chi tiết
 
-Detailed specifications for UC-01 through UC-12 are consolidated into one document for easier navigation and review:
-
-**[View Use Case Specifications](./use-case-specifications.md)**
-
-Each specification includes:
-
-- goal and trigger;
-- primary and supporting actors;
-- preconditions;
-- main flow;
-- alternative / exception flows;
-- postconditions;
-- related Business Requirements;
-- related Business Rules;
-- relevant open decisions and modeling notes.
+[Đặc tả UC-01–UC-12](./use-case-specifications.md) giữ mục tiêu, tác nhân, điều kiện tiên quyết, luồng chính/thay thế, ngoại lệ, điều kiện sau, nguồn BRQ/BR và OD. README này giữ danh mục điều hướng, không kể lại các kịch bản đó.
 
 ---
 
-## 5. Activity Diagrams
+## 5. Sơ đồ hoạt động
 
-Activity Diagrams are used only for workflows where decisions, routing, or exception loops require more behavioral detail than the Use Case Diagram alone can provide.
+Sơ đồ hoạt động chỉ được dùng cho luồng mà quyết định, chuyển xử lý hoặc vòng lặp ngoại lệ cần chi tiết hành vi nhiều hơn sơ đồ ca sử dụng có thể cung cấp riêng lẻ.
 
-### 5.1 PR Approval Flow
+### 5.1 Luồng phê duyệt PR
 
-This diagram covers:
+![Sơ đồ hoạt động — Luồng phê duyệt PR](../assets/diagrams/exports/system/activity/activity-pr-approval.png)
 
-- PR creation and submission;
-- required-information validation;
-- budget validation;
-- Store Manager review;
-- Approve / Reject / Return for Revision outcomes;
-- correction and resubmission loops.
-
-![Activity Diagram — PR Approval Flow](../assets/diagrams/exports/system/activity/activity-pr-approval.png)
-
-**Key control:** Budget validation must succeed before the PR can proceed to business approval.
+**Kiểm soát chính:** Kiểm tra ngân sách phải đạt trước khi PR được chuyển phê duyệt nghiệp vụ.
 
 ---
 
-### 5.2 PO Approval Flow
+### 5.2 Luồng phê duyệt PO
 
-This diagram covers:
+![Sơ đồ hoạt động — Luồng phê duyệt PO](../assets/diagrams/exports/system/activity/activity-po-approval.png)
 
-- PO creation from an approved PR;
-- selection of an existing approved supplier;
-- PO validation;
-- approval-route determination;
-- Procurement Manager review;
-- conditional Finance Manager review;
-- return, correction, and resubmission;
-- PO finalization after all required approvals.
-
-![Activity Diagram — PO Approval Flow](../assets/diagrams/exports/system/activity/activity-po-approval.png)
-
-**Key control:** Finance approval is conditional and is required only when the applicable approval criteria are met.
+**Kiểm soát chính:** Phê duyệt tài chính có điều kiện và chỉ bắt buộc khi thỏa mãn tiêu chí phê duyệt áp dụng.
 
 ---
 
-### 5.3 Invoice Matching & Exception Handling
+### 5.3 Đối chiếu hóa đơn và xử lý ngoại lệ
 
-This diagram covers:
+![Sơ đồ hoạt động — Đối chiếu hóa đơn và xử lý ngoại lệ](../assets/diagrams/exports/system/activity/activity-invoice-matching.png)
 
-- Supplier Invoice recording;
-- linkage to the related PO;
-- availability of PO, GR, and Invoice information;
-- automated three-way matching;
-- successful-match path;
-- matching exception creation;
-- exception investigation and correction;
-- re-running the match;
-- eligibility for Payment Request preparation.
-
-![Activity Diagram — Invoice Matching & Exception Handling](../assets/diagrams/exports/system/activity/activity-invoice-matching.png)
-
-**Key control:** An invoice cannot proceed through the normal payment-preparation path until the applicable matching controls have been satisfied.
+**Kiểm soát chính:** Hóa đơn không được đi theo đường chuẩn bị thanh toán thông thường cho đến khi thỏa mãn các kiểm soát đối chiếu áp dụng.
 
 ---
 
-## 6. Key Modeling Decisions
+## 6. Quyết định mô hình hóa chính
 
-The System Analysis follows the business baseline established in the previous phases.
+Phân tích hệ thống tuân theo đường cơ sở nghiệp vụ được thiết lập ở các giai đoạn trước.
 
-### Purchase Requisition
+### Yêu cầu mua hàng
 
-- Budget validation is performed before Store Manager approval.
-- The Store Manager performs the business approval decision, not the budget calculation.
-- A failed budget validation prevents the PR from progressing.
-- A returned PR must be revised and resubmitted.
+- Kiểm tra ngân sách được thực hiện trước phê duyệt của Quản lý cửa hàng.
+- Quản lý cửa hàng quyết định phê duyệt nghiệp vụ, không tính toán ngân sách.
+- Kiểm tra ngân sách không đạt chặn PR tiếp tục.
+- PR bị trả về cần lý do và được phép chỉnh sửa, gửi lại sau khi kiểm tra lại trường bắt buộc và ngân sách. PR bị từ chối không được mở lại hoặc gửi lại như cùng một PR trong đường cơ sở này.
 
-### Purchase Order
+### Đơn đặt hàng
 
-- A PO must originate from an approved PR.
-- Applicable PR data is reused when creating the PO.
-- Supplier selection is restricted to an existing approved Supplier Master.
-- Procurement Manager approval is part of the standard PO approval process.
-- Additional Finance approval is conditional.
-- A PO cannot be issued until all required approvals are completed.
+- PO phải bắt nguồn từ PR đã phê duyệt.
+- Dữ liệu PR áp dụng được tái sử dụng khi lập PO.
+- Lựa chọn nhà cung cấp giới hạn trong danh mục nhà cung cấp hiện có đã được phê duyệt.
+- Phê duyệt của Trưởng bộ phận mua hàng bắt buộc với mọi PO; phê duyệt có điều kiện của Trưởng bộ phận tài chính là bổ sung. Mọi phê duyệt bắt buộc phải hoàn tất trước phát hành.
+- Không được phát hành PO cho đến khi hoàn tất mọi phê duyệt bắt buộc.
 
-### Goods Receipt and Invoice Matching
+### Phiếu nhận hàng và đối chiếu hóa đơn
 
-- Goods Receipt must reference an approved PO.
-- Supplier Invoice processing is limited to PO-based purchases in the current scope.
-- Three-way matching evaluates PO, GR, and Invoice information.
-- A mismatch creates a controlled exception.
-- Matching exceptions must be resolved before the transaction can normally proceed to payment preparation.
+- Phiếu nhận hàng phải tham chiếu PO đã phê duyệt.
+- Xử lý hóa đơn nhà cung cấp giới hạn ở giao dịch mua theo PO trong phạm vi hiện tại.
+- Đối chiếu ba bên đánh giá thông tin PO, GR và hóa đơn.
+- Sai lệch tạo ngoại lệ có kiểm soát.
+- Kết quả đối chiếu lại hiện hành đạt phải xác nhận ngoại lệ đã xử lý trước chuẩn bị hoặc gửi đề nghị thanh toán; chỉ ghi nhận chỉnh sửa không cấp điều kiện này.
 
-### Payment Request
+### Đề nghị thanh toán
 
-- AP Accountant prepares the Payment Request.
-- Finance Manager performs the final Payment Request approval.
-- **Payment Request Approved** is the end of the modeled Procure-to-Pay scope.
-- Bank payment execution and reconciliation are outside scope.
+- Kế toán công nợ phải trả chuẩn bị đề nghị thanh toán.
+- Trưởng bộ phận tài chính thực hiện phê duyệt đề nghị thanh toán cuối cùng.
+- **Đề nghị thanh toán đã được phê duyệt** là điểm kết thúc phạm vi P2P được mô hình hóa; không có nghĩa đã thanh toán hoặc Nhà cung cấp đã nhận tiền.
+- Thực hiện thanh toán ngân hàng và đối soát nằm ngoài phạm vi.
 
-### Visibility and Governance
+### Khả năng theo dõi và quản trị
 
-- Authorized users can view relevant transaction status.
-- Key actions and approval decisions are retained in transaction history.
-- Internal Audit has a review role rather than an operational approval role.
-- Detailed role permissions will be refined later.
+- Người dùng được cấp quyền có thể xem trạng thái giao dịch liên quan.
+- Hành động chính và quyết định phê duyệt được giữ trong lịch sử giao dịch.
+- Kiểm toán nội bộ có vai trò xem xét, không phải phê duyệt vận hành.
+- Quyền chi tiết theo vai trò sẽ được làm rõ sau.
 
 ---
 
-## 7. Open Business Decisions
+## 7. Quyết định nghiệp vụ còn mở
 
-The following items remain intentionally unresolved and must not be treated as confirmed system rules:
+Các nội dung sau được chủ ý giữ chưa giải quyết và không được coi là quy tắc hệ thống đã xác nhận:
 
-| ID | Open Decision |
+| ID | Quyết định còn mở |
 |---|---|
-| OD-01 | Exact Purchase Order approval monetary thresholds |
-| OD-02 | Criteria requiring additional Finance approval |
-| OD-03 | Detailed budget-validation policy |
-| OD-04 | Three-way matching tolerance policy and values, if applicable |
-| OD-05 | Matching-exception escalation rules |
-| OD-06 | Final procurement transaction status model |
-| OD-07 | Detailed role permissions |
-| OD-08 | Partial Goods Receipt policy |
+| OD-01 | Ngưỡng tiền phê duyệt đơn đặt hàng chính xác |
+| OD-02 | Tiêu chí cần phê duyệt tài chính bổ sung |
+| OD-03 | Chính sách kiểm tra ngân sách chi tiết |
+| OD-04 | Chính sách và giá trị dung sai đối chiếu ba bên, nếu áp dụng |
+| OD-05 | Quy tắc chuyển cấp ngoại lệ đối chiếu |
+| OD-06 | Mô hình trạng thái giao dịch mua hàng cuối cùng |
+| OD-07 | Quyền chi tiết theo vai trò |
+| OD-08 | Chính sách nhận hàng một phần |
 
-These decisions will be refined during detailed requirements analysis and stakeholder validation.
+Các quyết định này sẽ được làm rõ trong phân tích yêu cầu chi tiết và xác nhận với các bên liên quan.
 
 ---
 
-## 8. Business Requirement to Use Case Traceability
+## 8. Truy vết từ yêu cầu nghiệp vụ đến ca sử dụng
 
-| Business Requirement | Related Use Cases |
+| Yêu cầu nghiệp vụ | Ca sử dụng liên quan |
 |---|---|
-| BRQ-01 — Connected Procure-to-Pay Transaction Management | UC-01, UC-03, UC-05, UC-06, UC-08 |
-| BRQ-02 — Standardized Purchase Requisition Management | UC-01, UC-02 |
-| BRQ-03 — Mandatory Budget Control | UC-01, UC-02 |
-| BRQ-04 — Controlled Supplier Selection | UC-03 |
-| BRQ-05 — Standardized Purchase Order Management and Approval | UC-03, UC-04 |
-| BRQ-06 — Procurement Data Reuse and Transaction Linkage | UC-03, UC-05, UC-06, UC-10 |
-| BRQ-07 — Procurement Status Visibility | UC-10, UC-12 |
-| BRQ-08 — Controlled Three-Way Matching and Exception Handling | UC-05, UC-06, UC-07 |
-| BRQ-09 — Transaction and Approval Traceability | Cross-cutting across transactional Use Cases; UC-11 provides the dedicated review capability |
-| BRQ-10 — Controlled Payment Request Approval | UC-08, UC-09 |
-| BRQ-11 — Basic Procurement Reporting | UC-12 |
+| BRQ-01 — Quản lý giao dịch P2P liên thông | UC-01, UC-03, UC-05, UC-06, UC-08; UC-09 hỗ trợ điểm kết thúc phê duyệt |
+| BRQ-02 — Quản lý yêu cầu mua hàng chuẩn hóa | UC-01, UC-02 |
+| BRQ-03 — Kiểm soát ngân sách bắt buộc | UC-01, UC-02 |
+| BRQ-04 — Lựa chọn nhà cung cấp có kiểm soát | UC-03 |
+| BRQ-05 — Quản lý và phê duyệt đơn đặt hàng chuẩn hóa | UC-03, UC-04 |
+| BRQ-06 — Tái sử dụng dữ liệu mua hàng và liên kết giao dịch | UC-03, UC-05, UC-06, UC-10 |
+| BRQ-07 — Khả năng theo dõi trạng thái mua hàng | UC-10; UC-12 hỗ trợ tổng hợp trạng thái |
+| BRQ-08 — Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát | UC-05, UC-06, UC-07 |
+| BRQ-09 — Truy vết giao dịch và phê duyệt | UC-01–UC-09 là hành vi xuyên suốt, UC-11 là chức năng xem xét riêng |
+| BRQ-10 — Phê duyệt đề nghị thanh toán có kiểm soát | UC-08, UC-09 |
+| BRQ-11 — Báo cáo mua hàng cơ bản | UC-12 |
 
-This mapping provides the bridge from the Business Requirements Document to the detailed system requirements that will be defined in the SRS.
-
----
-
-## 9. Deliverables
-
-```text
-assets/diagrams/
-├── exports/system/
-│   ├── use-case/     # UC-00 through UC-12 PNG exports
-│   └── activity/     # three activity-diagram PNG exports
-└── editable-references/
-    ├── system-use-case-diagram-url.txt
-    └── system-activity-diagram-url.txt
-```
+Ánh xạ này kết nối tài liệu yêu cầu nghiệp vụ với yêu cầu hệ thống chi tiết sẽ được xác định trong SRS.
 
 ---
 
-## 10. Transition to SRS
+## 9. Sản phẩm đầu ra
 
-The System Analysis establishes **what users need to accomplish with the Procurement Management System and how the key workflows behave**.
+- [Đặc tả ca sử dụng](./use-case-specifications.md): nguồn chính cho kịch bản chi tiết.
+- [Danh mục 18 nguồn Draw.io và PNG](../assets/diagrams/sources/README.md): gồm BPMN, UC và ba sơ đồ hoạt động; nguồn chỉnh sửa chính thức nằm trong kho.
 
-The subsequent **Software Requirements Specification (SRS)** translates this analysis into:
+## 10. Chuyển tiếp sang SRS
 
-```text
-Business Requirement (BRQ)
-        ↓
-Use Case / Business Scenario
-        ↓
-Functional Requirement (FR)
-        ↓
-Non-Functional Requirement (NFR)
-        ↓
-Acceptance Criteria
-        ↓
-Traceability / Validation
-```
+[SRS](../07-software-requirements/srs.md) cụ thể hóa UC thành FR/NFR và tiêu chí chấp nhận; [RTM](../08-traceability/requirements-traceability-matrix.md) tổng hợp truy vết và khoảng thiếu. Có mô hình hoặc tiêu chí không đồng nghĩa đã kiểm thử phần mềm hay nghiệm thu.
 
-The [SRS](../07-software-requirements/srs.md) defines detailed Functional and Non-Functional Requirements without changing the business scope established in the BRD and System Analysis.
+Trước: [05 — Yêu cầu nghiệp vụ](../05-brd/README.md). Tiếp theo: [07 — Yêu cầu phần mềm](../07-software-requirements/README.md).

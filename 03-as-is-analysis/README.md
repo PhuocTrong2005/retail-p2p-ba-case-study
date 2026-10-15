@@ -1,582 +1,412 @@
-# As-Is Procure-to-Pay Process Analysis
+# Phân tích quy trình từ mua hàng đến thanh toán hiện tại (As-Is)
 
-> **Phase navigation:** Purpose: model the current process and analyze its problems. Contents: As-Is BPMN, pain points, and root causes. Next: [04 — To-Be Design](../04-to-be-design/README.md).
+> **Điều hướng giai đoạn:** Mục đích: mô hình hóa quy trình hiện tại và phân tích vấn đề. Nội dung: BPMN As-Is, điểm bất cập và nguyên nhân gốc rễ. Tiếp theo: [04 — Thiết kế To-Be](../04-to-be-design/README.md).
 
-## 1. Analysis Purpose
+## 1. Mục đích phân tích
 
-This section analyzes NovaRetail's current Procure-to-Pay process to understand how purchasing activities are performed across Store Operations, Procurement, Warehouse, and Finance & Accounting.
+Mô hình hóa quy trình mua hàng đến thanh toán (P2P) hiện tại để xác định bàn giao thủ công, điểm bất cập, điểm nghẽn và khoảng trống kiểm soát làm đầu vào cho To-Be. Đây là mô hình giả lập, giữ nguyên đặc điểm dùng bảng tính, email và đối chiếu thủ công của hiện trạng.
 
-The purpose of the As-Is analysis is to:
+**Đọc theo nhu cầu:** [BPMN](#4-bpmn-quy-trình-as-is) · [Diễn giải quy trình](#5-diễn-giải-từng-bước-quy-trình-hiện-tại) · [Điểm nghẽn](#8-phân-tích-điểm-nghẽn).
 
-* understand the current workflow;
-* identify manual activities and process handoffs;
-* locate major pain points and bottlenecks;
-* identify data and control gaps;
-* determine the root causes of key process issues;
-* establish clear inputs for the future To-Be process.
+| Tài liệu chi tiết | Nội dung chính |
+| --- | --- |
+| [Phân tích điểm bất cập](./pain-point-analysis.md) | PP-01–PP-07, quan sát, tác động, bên bị ảnh hưởng, quan hệ và ưu tiên. |
+| [Phân tích nguyên nhân gốc rễ](./root-cause-analysis.md) | RC-01–RC-03, chuỗi câu hỏi tại sao, yếu tố góp phần và hướng cải tiến. |
 
-The As-Is model intentionally preserves the current manual activities, email-based approvals, fragmented information sources, and manual matching activities because these represent the existing process that needs to be improved.
+## 2. Ranh giới quy trình
 
----
+Phân tích bao phủ quy trình P2P từ khi xác định nhu cầu mua hàng đến khi đề nghị thanh toán liên quan được phê duyệt.
 
-## 2. Process Boundary
+### Bắt đầu quy trình
 
-The analysis covers the Procure-to-Pay process from the point where a purchasing need is identified until the related payment request is approved.
+Quy trình bắt đầu khi Nhân viên cửa hàng hoặc người yêu cầu được cấp quyền xác định nhu cầu mua hàng hóa, vật tư, thiết bị hoặc dịch vụ vận hành.
 
-### Process Start
+### Kết thúc quy trình
 
-The process begins when a Store Employee or authorized requester identifies a need to purchase goods, supplies, equipment, or operating services.
+Quy trình kết thúc khi:
 
-### Process End
+* hóa đơn nhà cung cấp đã được xem xét;
+* đối chiếu ba bên đã hoàn tất;
+* các ngoại lệ liên quan đã được xử lý;
+* đề nghị thanh toán đã được phê duyệt.
 
-The process ends when:
+Thực hiện thanh toán thực tế qua hệ thống ngân hàng nằm ngoài phạm vi quy trình này.
 
-* the supplier invoice has been reviewed;
-* three-way matching has been completed;
-* relevant exceptions have been resolved;
-* the payment request has been approved.
+### Luồng tổng quan
 
-Actual payment execution through the banking system is outside the scope of this process.
-
-### High-Level Flow
-
-```text
-Purchasing Need
-      ↓
-Purchase Requisition
-      ↓
-PR Approval
-      ↓
-Supplier Selection
-      ↓
-Purchase Order
-      ↓
-PO Approval
-      ↓
-Supplier Fulfillment
-      ↓
-Goods Receipt
-      ↓
-Supplier Invoice
-      ↓
-Three-Way Matching
-      ↓
-Exception Handling
-      ↓
-Payment Approval
-```
+PR → phê duyệt PR → lựa chọn nhà cung cấp → lập/phê duyệt PO → nhà cung cấp giao hàng → GR và hóa đơn → đối chiếu, xử lý ngoại lệ → phê duyệt đề nghị thanh toán. Trình tự và nhánh được thể hiện trong BPMN bên dưới.
 
 ---
 
-## 3. Process Participants
+## 3. Các bên tham gia quy trình
 
-| Participant                | Role in the As-Is Process                                                           |
+| Bên tham gia | Vai trò trong quy trình As-Is |
 | -------------------------- | ----------------------------------------------------------------------------------- |
-| Requester / Store Employee | Identifies purchasing needs and prepares the Purchase Requisition                   |
-| Store Manager              | Reviews and approves or rejects the Purchase Requisition                            |
-| Procurement Officer        | Reviews approved PRs, selects an approved supplier, and prepares the Purchase Order |
-| Procurement Manager        | Reviews Purchase Orders and performs procurement approval                           |
-| Warehouse Staff            | Receives goods and records Goods Receipt information                                |
-| AP Accountant              | Receives supplier invoices and performs three-way matching                          |
-| Finance Manager            | Performs additional financial control and approves payment requests                 |
-| Supplier                   | Receives Purchase Orders, delivers goods, and sends invoices                        |
+| Người yêu cầu / Nhân viên cửa hàng | Xác định nhu cầu mua hàng và lập yêu cầu mua hàng (Purchase Requisition — PR) |
+| Quản lý cửa hàng | Xem xét và phê duyệt hoặc từ chối yêu cầu mua hàng |
+| Nhân viên mua hàng | Xem xét PR đã phê duyệt, chọn nhà cung cấp đã được phê duyệt và lập đơn đặt hàng (Purchase Order — PO) |
+| Trưởng bộ phận mua hàng | Xem xét đơn đặt hàng và thực hiện phê duyệt mua hàng |
+| Nhân viên kho | Nhận hàng và ghi nhận thông tin phiếu nhận hàng (Goods Receipt — GR) |
+| Kế toán công nợ phải trả (AP) | Nhận hóa đơn nhà cung cấp và thực hiện đối chiếu ba bên |
+| Trưởng bộ phận tài chính | Thực hiện kiểm soát tài chính bổ sung và phê duyệt đề nghị thanh toán |
+| Nhà cung cấp | Nhận đơn đặt hàng, giao hàng và gửi hóa đơn |
 
-The Supplier is modeled as an external participant because it operates outside NovaRetail.
-
----
-
-## 4. As-Is BPMN
-
-![NovaRetail Procure-to-Pay As-Is BPMN](../assets/diagrams/exports/as-is/p2p-as-is.png)
-
-[Open the external diagram-editor reference](https://app.diagrams.net/#G1DY7h19HGXCIOLIl10G2CIp9fzg-Cxf_B#%7B%22pageId%22%3A%22VZPugXlF1knfDJKrDQvl%22%7D)
-
-The repository contains the rendered export and a [reference URL](../assets/diagrams/editable-references/as-is-p2p-diagram-url.txt); it does not contain a local editable Draw.io source file.
-
-The BPMN model represents the current process rather than the proposed future solution.
-
-For example:
-
-* Purchase Requisitions are prepared using spreadsheets.
-* Approval activities depend on email communication.
-* Procurement data is maintained across multiple files and systems.
-* Purchase Order data may need to be entered again from the original Purchase Requisition.
-* Goods Receipt and Invoice information are maintained by different business functions.
-* Three-way matching is performed manually.
-* Transaction status and approval history are not centrally available.
-
-These characteristics are intentionally retained because they form the basis of the As-Is analysis.
+Nhà cung cấp được mô hình hóa là bên tham gia bên ngoài vì hoạt động ngoài NovaRetail.
 
 ---
 
-## 5. Current Process Walkthrough
+## 4. BPMN quy trình As-Is
 
-### 5.1 Purchase Requisition Creation
+![BPMN quy trình từ mua hàng đến thanh toán hiện tại của NovaRetail](../assets/diagrams/exports/as-is/p2p-as-is.png)
 
-The process begins when a Store Employee or requester identifies a purchasing need.
+[Mở PNG đầy đủ](../assets/diagrams/exports/as-is/p2p-as-is.png) · [Nguồn Draw.io](../assets/diagrams/sources/as-is/p2p-as-is.drawio) · [Danh mục nguồn và lịch sử kiểm tra](../assets/diagrams/sources/README.md).
 
-The requester prepares a Purchase Requisition using Excel and records information such as:
+[URL trình biên tập bên ngoài](../assets/diagrams/editable-references/as-is-p2p-diagram-url.txt) được giữ làm tham chiếu lịch sử.
 
-* requested item or service;
-* quantity;
-* estimated price;
-* required date;
-* purchasing reason;
-* requesting store or department.
+Mô hình BPMN thể hiện quy trình hiện tại, không phải giải pháp tương lai được đề xuất.
 
-The Purchase Requisition is then sent to the Store Manager through email.
+Ví dụ:
 
-**Observation:**
-The procurement transaction does not begin within a centralized workflow. Information is initially stored in a spreadsheet and communicated through email.
+* Yêu cầu mua hàng được lập trên bảng tính.
+* Hoạt động phê duyệt phụ thuộc vào trao đổi email.
+* Dữ liệu mua hàng được lưu giữ trong nhiều tệp và hệ thống.
+* Dữ liệu đơn đặt hàng có thể phải nhập lại từ yêu cầu mua hàng gốc.
+* Thông tin phiếu nhận hàng và hóa đơn do các bộ phận nghiệp vụ khác nhau lưu giữ.
+* Đối chiếu ba bên được thực hiện thủ công.
+* Trạng thái giao dịch và lịch sử phê duyệt không có sẵn tập trung.
 
-**Related Pain Points:** PP-02, PP-04, PP-07.
-
----
-
-### 5.2 Purchase Requisition Approval
-
-The Store Manager receives the Purchase Requisition by email and reviews the purchasing request.
-
-Budget information may need to be checked separately because procurement and budget information are not managed through a single process.
-
-The manager then either approves or rejects the request.
-
-If the request is rejected, the current process ends or the requester may need to prepare a revised request.
-
-**Observation:**
-Approval information is maintained through email communication, while budget control is performed manually and may not be applied consistently.
-
-**Related Pain Points:** PP-04, PP-05, PP-06.
+Các đặc điểm này được chủ ý giữ lại vì là cơ sở của phân tích As-Is.
 
 ---
 
-### 5.3 Procurement Processing
+## 5. Diễn giải từng bước quy trình hiện tại
 
-After the Purchase Requisition is approved, the Procurement Officer receives the request and reviews the purchasing information.
+### 5.1 Lập yêu cầu mua hàng
 
-The Procurement Officer selects an existing approved supplier and prepares the corresponding Purchase Order.
+Quy trình bắt đầu khi Nhân viên cửa hàng hoặc người yêu cầu xác định nhu cầu mua hàng.
 
-Because the original PR and PO are maintained separately, information from the Purchase Requisition may need to be entered again when the Purchase Order is created.
+Người yêu cầu lập yêu cầu mua hàng bằng Excel và ghi nhận các thông tin như:
 
-**Observation:**
-Existing transaction information is not automatically reused between process stages.
+* hàng hóa hoặc dịch vụ được yêu cầu;
+* số lượng;
+* giá ước tính;
+* ngày cần hàng;
+* lý do mua hàng;
+* cửa hàng hoặc bộ phận yêu cầu.
 
-**Related Pain Points:** PP-02, PP-07.
+Sau đó, yêu cầu mua hàng được gửi đến Quản lý cửa hàng qua email.
 
----
+**Quan sát:**
+Giao dịch mua hàng không bắt đầu trong luồng công việc tập trung. Thông tin ban đầu được lưu trên bảng tính và trao đổi qua email.
 
-### 5.4 Purchase Order Approval
-
-The Procurement Officer sends the Purchase Order to the Procurement Manager for approval through email.
-
-The Procurement Manager reviews information such as:
-
-* supplier;
-* items;
-* quantities;
-* prices;
-* total value;
-* purchasing justification.
-
-If the Purchase Order is rejected or requires correction, it is returned to the Procurement Officer.
-
-Some Purchase Orders may also require additional financial approval depending on applicable approval rules.
-
-**Observation:**
-The main source of delay is not necessarily the review activity itself, but the waiting time created by email-based approval and manual follow-up.
-
-**Related Pain Points:** PP-01, PP-04, PP-05.
+**Các điểm bất cập liên quan:** PP-02, PP-04, PP-07.
 
 ---
 
-### 5.5 Supplier Fulfillment
+### 5.2 Phê duyệt yêu cầu mua hàng
 
-After approval, the Procurement Officer sends the Purchase Order to the selected supplier.
+Quản lý cửa hàng nhận yêu cầu mua hàng qua email và xem xét yêu cầu.
 
-The supplier receives the Purchase Order, prepares the requested goods, and delivers them to NovaRetail.
+Thông tin ngân sách có thể cần được kiểm tra riêng vì thông tin mua hàng và ngân sách không được quản lý qua một quy trình duy nhất.
 
-The supplier also issues the corresponding invoice.
+Sau đó, quản lý phê duyệt hoặc từ chối yêu cầu.
 
-Because the supplier is external to NovaRetail, these interactions are represented using BPMN Message Flows.
+Nếu yêu cầu bị từ chối, quy trình hiện tại kết thúc hoặc người yêu cầu có thể phải lập yêu cầu đã chỉnh sửa.
 
----
+**Quan sát:**
+Thông tin phê duyệt được lưu giữ qua trao đổi email, còn kiểm soát ngân sách được thực hiện thủ công và có thể không được áp dụng nhất quán.
 
-### 5.6 Goods Receipt
-
-Warehouse Staff receive the delivered goods and compare the delivery with the Purchase Order.
-
-The receiving activity includes checking:
-
-* quantity;
-* item;
-* delivery condition;
-* partial or complete receipt.
-
-The warehouse then records Goods Receipt information.
-
-This information may be stored separately from procurement and accounting records.
-
-**Observation:**
-Goods Receipt information is not necessarily available immediately to Procurement or Accounts Payable through a shared transaction record.
-
-**Related Pain Points:** PP-02, PP-04, PP-07.
+**Các điểm bất cập liên quan:** PP-04, PP-05, PP-06.
 
 ---
 
-### 5.7 Supplier Invoice Processing
+### 5.3 Xử lý mua hàng
 
-The supplier sends an invoice to NovaRetail.
+Sau khi yêu cầu mua hàng được phê duyệt, Nhân viên mua hàng nhận yêu cầu và xem xét thông tin mua hàng.
 
-The AP Accountant receives the invoice and identifies the related Purchase Order and Goods Receipt.
+Nhân viên mua hàng chọn một nhà cung cấp hiện có đã được phê duyệt và lập đơn đặt hàng tương ứng.
 
-Because these documents may be stored in different sources, the AP Accountant may need to locate and collect the relevant transaction information manually.
+Vì PR gốc và PO được lưu riêng, thông tin trong yêu cầu mua hàng có thể phải nhập lại khi lập đơn đặt hàng.
 
-**Observation:**
-Invoice processing depends on information maintained by different departments and systems.
+**Quan sát:**
+Thông tin giao dịch hiện có không được tự động tái sử dụng giữa các bước quy trình.
 
-**Related Pain Points:** PP-02, PP-03.
+**Các điểm bất cập liên quan:** PP-02, PP-07.
 
 ---
 
-### 5.8 Manual Three-Way Matching
+### 5.4 Phê duyệt đơn đặt hàng
 
-The AP Accountant manually compares:
+Nhân viên mua hàng gửi đơn đặt hàng đến Trưởng bộ phận mua hàng để phê duyệt qua email.
+
+Trưởng bộ phận mua hàng xem xét các thông tin như:
+
+* nhà cung cấp;
+* mặt hàng;
+* số lượng;
+* giá;
+* tổng giá trị;
+* căn cứ mua hàng.
+
+Nếu đơn đặt hàng bị từ chối hoặc cần chỉnh sửa, đơn được trả về Nhân viên mua hàng.
+
+Một số đơn đặt hàng cũng có thể cần phê duyệt tài chính bổ sung tùy quy tắc phê duyệt áp dụng.
+
+**Quan sát:**
+Nguồn gây chậm chính không nhất thiết là bản thân việc xem xét, mà là thời gian chờ do phê duyệt qua email và đôn đốc thủ công.
+
+**Các điểm bất cập liên quan:** PP-01, PP-04, PP-05.
+
+---
+
+### 5.5 Nhà cung cấp thực hiện đơn hàng
+
+Sau phê duyệt, Nhân viên mua hàng gửi đơn đặt hàng đến nhà cung cấp đã chọn.
+
+Nhà cung cấp nhận đơn đặt hàng, chuẩn bị hàng được yêu cầu và giao đến NovaRetail.
+
+Nhà cung cấp cũng phát hành hóa đơn tương ứng.
+
+Vì nhà cung cấp nằm ngoài NovaRetail, các tương tác này được biểu diễn bằng luồng thông điệp (Message Flow) trong BPMN.
+
+---
+
+### 5.6 Nhận hàng
+
+Nhân viên kho nhận hàng được giao và so sánh với đơn đặt hàng.
+
+Hoạt động nhận hàng gồm kiểm tra:
+
+* số lượng;
+* mặt hàng;
+* tình trạng khi giao;
+* nhận một phần hoặc toàn bộ.
+
+Sau đó, kho ghi nhận thông tin phiếu nhận hàng.
+
+Thông tin này có thể được lưu riêng với hồ sơ mua hàng và kế toán.
+
+**Quan sát:**
+Thông tin phiếu nhận hàng không nhất thiết có sẵn ngay cho bộ phận mua hàng hoặc công nợ phải trả qua hồ sơ giao dịch dùng chung.
+
+**Các điểm bất cập liên quan:** PP-02, PP-04, PP-07.
+
+---
+
+### 5.7 Xử lý hóa đơn nhà cung cấp
+
+Nhà cung cấp gửi hóa đơn đến NovaRetail.
+
+Kế toán công nợ phải trả nhận hóa đơn và xác định đơn đặt hàng, phiếu nhận hàng liên quan.
+
+Vì các chứng từ có thể được lưu ở nhiều nguồn, Kế toán công nợ phải trả có thể phải tìm và thu thập thông tin giao dịch liên quan thủ công.
+
+**Quan sát:**
+Xử lý hóa đơn phụ thuộc vào thông tin do các bộ phận và hệ thống khác nhau lưu giữ.
+
+**Các điểm bất cập liên quan:** PP-02, PP-03.
+
+---
+
+### 5.8 Đối chiếu ba bên thủ công
+
+Kế toán công nợ phải trả so sánh thủ công:
 
 ```text
-Purchase Order
+Đơn đặt hàng
       +
-Goods Receipt
+Phiếu nhận hàng
       +
-Supplier Invoice
+Hóa đơn nhà cung cấp
 ```
 
-The comparison may include:
+Việc so sánh có thể gồm:
 
-* supplier;
-* item;
-* quantity;
-* unit price;
-* invoice amount.
+* nhà cung cấp;
+* mặt hàng;
+* số lượng;
+* đơn giá;
+* số tiền hóa đơn.
 
-If the information matches, the invoice can proceed toward payment approval.
+Nếu thông tin khớp, hóa đơn có thể tiếp tục đến phê duyệt thanh toán.
 
-If a discrepancy is identified, additional investigation is required.
+Nếu phát hiện sai lệch, cần điều tra thêm.
 
-**Observation:**
-Three-way matching is highly dependent on manual document collection and comparison.
+**Quan sát:**
+Đối chiếu ba bên phụ thuộc nhiều vào thu thập và so sánh chứng từ thủ công.
 
-**Related Pain Point:** PP-03.
-
----
-
-### 5.9 Exception Handling
-
-When the Purchase Order, Goods Receipt, and Supplier Invoice do not match, the AP Accountant investigates the discrepancy.
-
-Depending on the issue, the accountant may need to contact:
-
-* Procurement;
-* Warehouse;
-* Supplier.
-
-Communication may take place through email, phone calls, or manual checks.
-
-After the discrepancy is resolved, the documents are reviewed again.
-
-**Observation:**
-Exception handling depends heavily on manual coordination between multiple parties.
-
-This does not introduce a separate pain point in this case study but reinforces PP-02 and PP-03.
+**Điểm bất cập liên quan:** PP-03.
 
 ---
 
-### 5.10 Payment Approval
+### 5.9 Xử lý ngoại lệ
 
-After the invoice is successfully validated, the AP Accountant prepares a Payment Request.
+Khi đơn đặt hàng, phiếu nhận hàng và hóa đơn nhà cung cấp không khớp, Kế toán công nợ phải trả điều tra sai lệch.
 
-The Finance Manager reviews the Payment Request and the related supporting information.
+Tùy vấn đề, kế toán có thể cần liên hệ:
 
-If approved, the procurement transaction reaches the end of the process analyzed in this project.
+* Bộ phận mua hàng;
+* Kho;
+* Nhà cung cấp.
 
-If the request is rejected, it is returned for correction or further review.
+Trao đổi có thể qua email, điện thoại hoặc kiểm tra thủ công.
 
-**Process End:**
-Payment Request Approved.
+Sau khi sai lệch được khắc phục, các chứng từ được xem xét lại.
 
----
+**Quan sát:**
+Xử lý ngoại lệ phụ thuộc nhiều vào phối hợp thủ công giữa nhiều bên.
 
-## 6. Pain Point Analysis
-
-Seven key pain points were identified during the As-Is analysis.
-
-| ID    | Process Area                       | As-Is Observation                                                                                   | Business Impact                                                         |
-| ----- | ---------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| PP-01 | PO Approval                        | Purchase Order approval depends on email and manual follow-up                                       | Longer waiting time and delayed PO issuance                             |
-| PP-02 | End-to-End P2P Data Flow           | Procurement information is distributed across Excel, email, warehouse records, and accounting tools | Data inconsistency and difficult coordination between departments       |
-| PP-03 | Invoice Processing                 | PO, Goods Receipt, and Invoice information are manually compared                                    | Longer invoice processing and risk of missed discrepancies              |
-| PP-04 | PR / PO Lifecycle                  | There is no centralized transaction status                                                          | Users must manually request updates and have limited process visibility |
-| PP-05 | Approval and Transaction History   | Approval evidence and transaction changes exist across separate emails and files                    | Weak traceability and difficult audit review                            |
-| PP-06 | PR Approval                        | Budget checking is manual and inconsistently applied                                                | Purchasing requests may proceed without reliable budget validation      |
-| PP-07 | PR to PO and Downstream Processing | Existing information must be entered again across process stages                                    | Additional workload and increased risk of data-entry errors             |
+Điều này không tạo điểm bất cập riêng trong nghiên cứu tình huống, nhưng làm rõ thêm PP-02 và PP-03.
 
 ---
 
-## 7. Pain Point Categories
+### 5.10 Phê duyệt thanh toán
 
-The identified issues can be grouped into three broader categories.
+Sau khi hóa đơn được kiểm tra đạt, Kế toán công nợ phải trả lập đề nghị thanh toán (Payment Request).
 
-### Process Efficiency
+Trưởng bộ phận tài chính xem xét đề nghị thanh toán và thông tin hỗ trợ liên quan.
 
-* PP-01 — Approval delay
-* PP-03 — Manual three-way matching
-* PP-07 — Duplicate data entry
+Nếu được phê duyệt, giao dịch mua hàng đạt điểm kết thúc của quy trình được phân tích trong dự án.
 
-### Data and Visibility
+Nếu yêu cầu bị từ chối, yêu cầu được trả về để chỉnh sửa hoặc xem xét thêm.
 
-* PP-02 — Fragmented procurement data
-* PP-04 — Limited PR/PO status visibility
-
-### Control and Governance
-
-* PP-05 — Limited audit trail
-* PP-06 — Inconsistent budget control
-
-This grouping helps distinguish individual operational problems from the broader improvement areas that will later be addressed in the To-Be process.
+**Kết thúc quy trình:**
+Đề nghị thanh toán đã được phê duyệt.
 
 ---
 
-## 8. Bottleneck Analysis
+## 6. Phân tích điểm bất cập
 
-Not every pain point is considered a process bottleneck.
+Bảy điểm bất cập PP-01–PP-07 được tổng hợp và phân tích tại [tài liệu điểm bất cập](./pain-point-analysis.md#2-tổng-hợp-điểm-bất-cập). Các tham chiếu PP ở từng bước phía trên nối quan sát quy trình với phân tích chi tiết này.
 
-The As-Is analysis identified three major bottlenecks that have the greatest potential to increase cycle time and manual workload.
+## 7. Phân nhóm điểm bất cập
 
-### 8.1 Bottleneck 1 — Purchase Order Approval Waiting Time
+Ba nhóm là hiệu quả quy trình, dữ liệu/khả năng theo dõi và kiểm soát/quản trị. Xem [bảng phân nhóm](./pain-point-analysis.md#2-tổng-hợp-điểm-bất-cập), [quan hệ giữa các vấn đề](./pain-point-analysis.md#4-mối-liên-hệ-giữa-các-điểm-bất-cập) và [ưu tiên](./pain-point-analysis.md#5-ưu-tiên-các-điểm-bất-cập).
 
-The PO approval process relies on email communication.
+---
+
+## 8. Phân tích điểm nghẽn
+
+Không phải mọi điểm bất cập đều được coi là điểm nghẽn quy trình.
+
+Phân tích As-Is xác định ba điểm nghẽn chính có khả năng làm tăng thời gian chu trình và khối lượng công việc thủ công nhiều nhất.
+
+### 8.1 Điểm nghẽn 1 — Thời gian chờ phê duyệt đơn đặt hàng
+
+Quy trình phê duyệt PO dựa vào trao đổi email.
 
 ```text
-PO Prepared
+PO đã được lập
     ↓
-Approval Email Sent
+Email phê duyệt đã gửi
     ↓
-Waiting for Approver
+Chờ người phê duyệt
     ↓
-Manager Reviews PO
+Quản lý xem xét PO
     ↓
-Approval Decision
+Quyết định phê duyệt
 ```
 
-The actual task of reviewing the Purchase Order may take relatively little time.
+Công việc thực tế để xem xét đơn đặt hàng có thể mất tương đối ít thời gian.
 
-However, the request may remain in the approver's email queue before it is reviewed.
+Tuy nhiên, yêu cầu có thể nằm trong hàng đợi email của người phê duyệt trước khi được xem xét.
 
-The primary bottleneck is therefore **waiting time between submission and approval**, rather than the review activity itself.
+Vì vậy, điểm nghẽn chính là **thời gian chờ từ lúc gửi đến lúc phê duyệt**, không phải bản thân việc xem xét.
 
-**Related Pain Point:** PP-01.
+**Điểm bất cập liên quan:** PP-01.
 
 ---
 
-### 8.2 Bottleneck 2 — Manual Information Handoffs
+### 8.2 Điểm nghẽn 2 — Bàn giao thông tin thủ công
 
-Procurement information moves between multiple departments and tools.
+Thông tin mua hàng luân chuyển giữa nhiều bộ phận và công cụ.
 
 ```text
-Purchase Requisition
+Yêu cầu mua hàng
         ↓
-Purchase Order
+Đơn đặt hàng
         ↓
-Warehouse Record
+Hồ sơ kho
         ↓
-Accounting Record
+Hồ sơ kế toán
 ```
 
-Each handoff may require:
+Mỗi lần bàn giao có thể cần:
 
-* manual data entry;
-* file transfer;
-* email communication;
-* manual verification.
+* nhập dữ liệu thủ công;
+* chuyển tệp;
+* trao đổi email;
+* xác minh thủ công.
 
-These handoffs increase:
+Các lần bàn giao này làm tăng:
 
-* processing time;
-* coordination effort;
-* risk of inconsistent information;
-* risk of data-entry errors.
+* thời gian xử lý;
+* công sức phối hợp;
+* rủi ro thông tin không nhất quán;
+* rủi ro lỗi nhập liệu.
 
-**Related Pain Points:** PP-02 and PP-07.
+**Các điểm bất cập liên quan:** PP-02 và PP-07.
 
 ---
 
-### 8.3 Bottleneck 3 — Manual Invoice Matching
+### 8.3 Điểm nghẽn 3 — Đối chiếu hóa đơn thủ công
 
-Accounts Payable must collect information from several sources before an invoice can be approved.
+Bộ phận công nợ phải trả phải thu thập thông tin từ nhiều nguồn trước khi hóa đơn có thể được phê duyệt.
 
 ```text
-Find Purchase Order
+Tìm đơn đặt hàng
         +
-Find Goods Receipt
+Tìm phiếu nhận hàng
         +
-Review Supplier Invoice
+Xem xét hóa đơn nhà cung cấp
         ↓
-Manual Comparison
+So sánh thủ công
         ↓
-Investigate Discrepancies
+Điều tra sai lệch
 ```
 
-When transaction volume increases, this activity can become a significant processing constraint for the Accounts Payable function.
+Khi khối lượng giao dịch tăng, hoạt động này có thể trở thành hạn chế xử lý đáng kể đối với bộ phận công nợ phải trả.
 
-**Related Pain Point:** PP-03.
-
----
-
-## 9. Root Cause Analysis
-
-The project performs root-cause analysis on three high-impact problems rather than treating every identified pain point independently.
+**Điểm bất cập liên quan:** PP-03.
 
 ---
 
-### RC-01 — Purchase Order Approval Delay
+## 9. Phân tích nguyên nhân gốc rễ
 
-```text
-Why is PO approval slow?
-        ↓
-Approval requests spend time waiting.
-        ↓
-Why?
-Approvers receive requests through email.
-        ↓
-Why?
-There is no centralized approval queue or routing mechanism.
-        ↓
-Root Cause
-Lack of a standardized and controlled PO approval workflow.
-```
+Phân tích chuyên sâu tập trung vào ba vấn đề có tác động lớn:
 
-**Root Cause:**
-Lack of a standardized approval workflow.
+| Nguyên nhân | Nội dung và nơi đọc chi tiết |
+| --- | --- |
+| RC-01 | [Thiếu luồng phê duyệt PO chuẩn hóa và tập trung](./root-cause-analysis.md#3-rc-01--chậm-phê-duyệt-đơn-đặt-hàng). |
+| RC-02 | [Thiếu luồng dữ liệu mua hàng tích hợp](./root-cause-analysis.md#4-rc-02--dữ-liệu-mua-hàng-phân-tán-và-nhập-lặp-lại). |
+| RC-03 | [Thiếu dữ liệu giao dịch tích hợp và khả năng đối chiếu tự động](./root-cause-analysis.md#5-rc-03--đối-chiếu-ba-bên-thủ-công). |
+
+Tài liệu nguyên nhân gốc rễ giữ đầy đủ chuỗi phân tích, yếu tố góp phần, hệ quả và hướng cải tiến.
 
 ---
 
-### RC-02 — Fragmented and Repeated Procurement Data
+## 10. Các phát hiện chính
 
-```text
-Why is procurement data entered repeatedly?
-        ↓
-Each department uses different files or tools.
-        ↓
-Why?
-Transaction information is not transferred automatically.
-        ↓
-Why?
-Current tools are not integrated around a single procurement transaction.
-        ↓
-Root Cause
-Lack of an integrated procurement data flow.
-```
-
-**Root Cause:**
-Lack of an integrated procurement data flow across the Procure-to-Pay lifecycle.
+- Quy trình phân tán tạo nhiều bàn giao thủ công và khoảng trống thông tin.
+- Lập PR, phê duyệt, nhập PO, kiểm tra ngân sách, thu thập chứng từ, đối chiếu và xử lý ngoại lệ phụ thuộc nhiều vào thao tác thủ công.
+- Khó xác định trạng thái, người xử lý tiếp theo, thời gian chờ và lịch sử phê duyệt; bằng chứng kiểm soát ngân sách/kiểm toán thiếu tập trung.
+- Khi khối lượng mua hàng tăng, công việc tìm chứng từ, nhập lại và đối chiếu thủ công tạo rủi ro mở rộng.
 
 ---
 
-### RC-03 — Manual Three-Way Matching
+## 11. Hướng cải tiến
 
-```text
-Why is three-way matching performed manually?
-        ↓
-AP must collect PO, GR, and Invoice information separately.
-        ↓
-Why?
-The documents are stored in different sources.
-        ↓
-Why?
-There is no automated relationship between the transaction documents.
-        ↓
-Root Cause
-Lack of integrated document data and matching capability.
-```
+Các phát hiện xác định hướng cải tiến cho To-Be; đây chưa phải giải pháp cuối cùng.
 
-**Root Cause:**
-Lack of integrated transaction data and automated matching capability.
+Các hướng cải tiến chính gồm:
 
----
+* giảm bàn giao thủ công không cần thiết;
+* chuẩn hóa hoạt động phê duyệt;
+* cải thiện tính nhất quán dữ liệu mua hàng;
+* cải thiện khả năng theo dõi trạng thái PR và PO;
+* tăng cường kiểm soát ngân sách và kiểm toán;
+* giảm nhập dữ liệu lặp lại;
+* giảm đối chiếu hóa đơn thủ công;
+* cung cấp cách xử lý ngoại lệ có cấu trúc.
 
-## 10. Key Findings
-
-The As-Is analysis produced four major findings.
-
-### Finding 1 — The P2P Process Is Fragmented
-
-Procure-to-Pay activities are performed across several departments and tools without a single workflow connecting the transaction from Purchase Requisition through Payment Approval.
-
-This creates multiple manual handoffs and information gaps.
-
----
-
-### Finding 2 — Manual Activities Are Used at Critical Process Points
-
-Several high-impact activities depend heavily on manual work, including:
-
-* PR creation;
-* approval communication;
-* PO data entry;
-* budget verification;
-* document retrieval;
-* three-way matching;
-* exception handling.
-
-This increases operational workload and process variability.
-
----
-
-### Finding 3 — Process Visibility and Control Are Limited
-
-Users do not have a consistent way to identify:
-
-* the current transaction status;
-* who is responsible for the next action;
-* how long a request has been waiting;
-* the complete approval history.
-
-Management also has limited centralized evidence for budget control and audit review.
-
----
-
-### Finding 4 — The Current Process Has Scalability Risk
-
-Manual processing may remain manageable at lower transaction volumes.
-
-However, as purchasing volume increases, activities such as email approval, repeated data entry, document retrieval, and manual matching can become increasingly difficult to manage efficiently.
-
-The current process therefore presents a scalability risk for NovaRetail's procurement operations.
-
----
-
-## 11. Improvement Direction
-
-The purpose of the As-Is analysis is not to define the final solution yet.
-
-Instead, the findings identify the areas that the future process should address.
-
-```text
-As-Is Finding
-        ↓
-Improvement Direction
-        ↓
-To-Be Process Design
-```
-
-The main improvement directions are:
-
-* reduce unnecessary manual handoffs;
-* standardize approval activities;
-* improve procurement data consistency;
-* improve PR and PO status visibility;
-* strengthen budget and audit controls;
-* reduce repetitive data entry;
-* reduce manual invoice matching;
-* provide structured exception handling.
-
-These findings will be used as direct inputs for the To-Be Procure-to-Pay process design.
+Các phát hiện này sẽ được dùng làm đầu vào trực tiếp cho thiết kế quy trình P2P To-Be.

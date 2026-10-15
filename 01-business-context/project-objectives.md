@@ -1,231 +1,243 @@
-# Project Objectives
+# Mục tiêu dự án
 
-## 1. Purpose
+## 1. Mục đích
 
-After reviewing the current Procure-to-Pay process, the project identified several recurring issues related to approval delays, fragmented data, manual processing, limited visibility, weak auditability, and inconsistent financial controls.
+Sau khi rà soát quy trình mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại, dự án xác định một số vấn đề lặp lại liên quan đến chậm phê duyệt, dữ liệu phân tán, xử lý thủ công, khó theo dõi, hạn chế khả năng kiểm toán và kiểm soát tài chính thiếu nhất quán.
 
-Instead of treating each pain point as a separate objective, the project groups related issues into five broader improvement areas.
+Thay vì xem từng vấn đề là một mục tiêu riêng, dự án nhóm các vấn đề liên quan thành năm lĩnh vực cải tiến rộng hơn.
 
-The objectives below define what the redesigned Procure-to-Pay process is expected to achieve.
+Các mục tiêu dưới đây xác định kết quả kỳ vọng của quy trình P2P được thiết kế lại.
 
-> **Assumption:** The quantitative values used in this case study are hypothetical and are included only to establish measurable targets for the proposed process.
-
----
-
-## 2. Business Goal
-
-The overall goal of the project is to improve the efficiency, transparency, consistency, and control of NovaRetail's Procure-to-Pay process.
-
-The project focuses on:
-
-* reducing unnecessary waiting time;
-* reducing repetitive manual work;
-* improving access to consistent procurement information;
-* strengthening purchasing and payment controls;
-* improving transaction traceability.
+> **Giả định:** Các giá trị định lượng trong nghiên cứu tình huống này là giả định, chỉ nhằm xác lập mục tiêu có thể đo lường cho quy trình đề xuất.
 
 ---
 
-## 3. Business Objectives
+## 2. Mục đích nghiệp vụ tổng thể
 
-### OBJ-01 — Shorten the Purchase Order Approval Cycle
+Mục đích tổng thể của dự án là cải thiện hiệu quả, tính minh bạch, tính nhất quán và khả năng kiểm soát quy trình P2P của NovaRetail.
 
-The current Purchase Order approval process depends heavily on email communication. Approval requests may remain pending until the appropriate manager reviews and responds to them.
+Dự án tập trung vào:
 
-The project aims to reduce unnecessary waiting time and shorten the PO approval cycle.
-
-**Related Pain Point:**
-PP-01 — Purchase Order approval takes too long.
-
-**Measure:**
-Average time between PO submission and final approval.
-
-**Current Assumption:**
-Approximately 2 business days.
-
-**Target:**
-Less than 1 business day.
+* giảm thời gian chờ không cần thiết;
+* giảm công việc thủ công lặp lại;
+* cải thiện khả năng tiếp cận thông tin mua hàng nhất quán;
+* củng cố kiểm soát mua hàng và thanh toán;
+* cải thiện khả năng truy vết giao dịch.
 
 ---
 
-### OBJ-02 — Reduce Repetitive Manual Data Entry
+## 3. Mục tiêu nghiệp vụ
 
-Procurement information is currently entered and transferred between several files and systems. Similar information may need to be entered again when creating a Purchase Order, recording goods receipt, or processing an invoice.
+### OBJ-01 — Rút ngắn chu kỳ phê duyệt đơn đặt hàng
 
-The objective is to reduce repeated data entry and allow transaction information to be reused throughout the Procure-to-Pay process where possible.
+Quy trình phê duyệt đơn đặt hàng (Purchase Order — PO) hiện tại phụ thuộc nhiều vào trao đổi qua email. Yêu cầu phê duyệt có thể chờ đến khi người quản lý phù hợp xem xét và phản hồi.
 
-**Related Pain Points:**
+Dự án hướng đến giảm thời gian chờ không cần thiết và rút ngắn chu kỳ phê duyệt PO.
 
-* PP-02 — Procurement data is fragmented.
-* PP-07 — Data is manually re-entered across multiple process stages.
+**Vấn đề liên quan:**
+PP-01 — Phê duyệt PO quá lâu.
 
-**Measure:**
-Average number of manual data-entry touchpoints per procurement transaction.
+**Chỉ số đo:**
+Thời gian trung bình từ gửi PO đến phê duyệt cuối cùng.
 
-**Current Assumption:**
-Approximately 4 manual data-entry touchpoints.
+**Giả định hiện tại:**
+Khoảng 2 ngày làm việc.
 
-**Target:**
-No more than 1 primary manual data-entry point, with downstream data reused where possible.
+**Mục tiêu:**
+Dưới 1 ngày làm việc.
 
----
-
-### OBJ-03 — Improve Procurement Visibility and Data Consistency
-
-Procurement information is currently distributed across email, spreadsheets, and accounting software. As a result, users may have difficulty identifying the current status of a Purchase Requisition or Purchase Order and may need to search across multiple sources for related information.
-
-The redesigned process should provide a more consistent view of procurement transactions and allow relevant users to identify the current status and responsible party more easily.
-
-**Related Pain Points:**
-
-* PP-02 — Procurement data is fragmented.
-* PP-04 — PR and PO status is difficult to track.
-
-**Measures:**
-
-* Percentage of PR and PO transactions with an available processing status.
-* Percentage of procurement transactions managed through the centralized process.
-
-**Targets:**
-
-* 100% of PR and PO transactions should have a visible processing status.
-* At least 95% of in-scope Procure-to-Pay transactions should be managed through the centralized process.
+**Ranh giới đo lường:** Khoảng thời gian vẫn là từ gửi PO đến phê duyệt cuối cùng. Lịch làm việc, mốc bắt đầu từ lần gửi đầu hay lần gửi lại, cách xử lý chu kỳ trả lại/gửi lại và hồ sơ đang chờ hoặc bị từ chối chưa được xác định. Không mặc định lịch làm việc hoặc quy tắc loại trừ nào.
 
 ---
 
-### OBJ-04 — Strengthen Purchasing and Invoice Controls
+### OBJ-02 — Giảm nhập liệu thủ công lặp lại
 
-The current process has two significant control weaknesses: budget checking is not consistently performed before purchasing, and three-way matching is handled manually.
+Thông tin mua hàng hiện được nhập và chuyển giữa nhiều tệp, hệ thống. Thông tin tương tự có thể phải nhập lại khi tạo PO, ghi nhận nhận hàng hoặc xử lý hóa đơn.
 
-The project aims to improve these control points before purchase and payment decisions are completed.
+Mục tiêu là giảm nhập liệu lặp lại và cho phép tái sử dụng thông tin giao dịch xuyên suốt quy trình P2P khi có thể.
 
-Purchase Requisitions should be checked against available budget before approval. Supplier invoices should also be compared against Purchase Orders and Goods Receipts before payment processing.
+**Vấn đề liên quan:**
 
-**Related Pain Points:**
+* PP-02 — Dữ liệu mua hàng phân tán.
+* PP-07 — Dữ liệu được nhập lại thủ công qua nhiều giai đoạn quy trình.
 
-* PP-03 — Three-way matching is performed manually.
-* PP-06 — Budget control is inconsistent.
+**Chỉ số đo:**
+Các điểm nhập lại thủ công đối với thông tin có thể tái sử dụng đã tồn tại, cùng số điểm ghi nhận ban đầu của thông tin đó.
 
-**Measures:**
+**Giả định hiện tại:**
+Khoảng 4 điểm nhập liệu thủ công.
 
-* Percentage of Purchase Requisitions checked against available budget before approval.
-* Percentage of eligible invoices processed through automated three-way matching.
+Ước tính giả lập này cần được xác nhận theo định nghĩa đã làm rõ về dữ liệu có thể tái sử dụng; không được mặc định chỉ tính các lần nhập dư thừa.
 
-**Targets:**
+**Mục tiêu:**
+Không quá 1 điểm nhập liệu thủ công ban đầu cho thông tin giao dịch có thể tái sử dụng, với dữ liệu được tái sử dụng ở các bước sau khi có thể.
 
-* 100% of Purchase Requisitions should receive a budget check before approval.
-* At least 80% of eligible invoices should be processed through automated three-way matching.
-
-Invoices with quantity, price, or receipt discrepancies may still require manual review.
-
----
-
-### OBJ-05 — Improve Transaction Traceability
-
-Approval decisions and transaction changes are currently distributed across emails and separate files. This makes it difficult to review historical activities and determine who performed a specific action.
-
-The future process should provide sufficient transaction history to support operational review and internal audit activities.
-
-**Related Pain Point:**
-PP-05 — Procurement audit trails are limited.
-
-**Measure:**
-Percentage of key procurement transactions with a complete audit history.
-
-**Target:**
-100% of key actions performed through the proposed procurement process should be recorded.
-
-Key actions include:
-
-* Create
-* Submit
-* Approve
-* Reject
-* Update
-* Cancel
-* Record Goods Receipt
-* Perform Invoice Matching
-* Approve Payment
+**Ranh giới đo lường:** Nhập lại thông tin yêu cầu mua hàng (Purchase Requisition — PR) hoặc PO đã có được tính là nhập lặp. Quan sát mới hoặc dữ liệu riêng của chứng từ, như số lượng thực nhận, thông tin hóa đơn nhà cung cấp và thông tin đề nghị thanh toán (Payment Request), là các đầu vào riêng. Mục tiêu không giới hạn toàn bộ P2P ở một lần nhập liệu. Đơn vị dữ liệu tái sử dụng, cách đếm điểm nhập và tập đối tượng quan sát vẫn cần xác định.
 
 ---
 
-## 4. Objective Summary
+### OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
 
-| ID     | Objective                                           | Main Measure                                           | Target                                       |
-| ------ | --------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- |
-| OBJ-01 | Shorten PO approval cycle                           | Average PO approval time                               | < 1 business day                             |
-| OBJ-02 | Reduce repetitive manual data entry                 | Manual data-entry touchpoints                          | ≤ 1 primary entry point                      |
-| OBJ-03 | Improve procurement visibility and data consistency | PR/PO status coverage; centralized in-scope P2P transaction rate | 100% status visibility; ≥ 95% centralized |
+Thông tin mua hàng hiện phân tán trên email, bảng tính và phần mềm kế toán. Do đó, người dùng có thể khó xác định trạng thái hiện tại của PR hoặc PO và phải tìm thông tin liên quan từ nhiều nguồn.
 
-For OBJ-03, the 95% target measures the share of in-scope P2P transactions managed through the centralized process. It is separate from the 100% PR/PO status-visibility measure.
-| OBJ-04 | Strengthen purchasing and invoice controls          | Budget check rate and automated matching rate          | 100% budget checks; ≥ 80% automated matching |
-| OBJ-05 | Improve transaction traceability                    | Transactions with complete audit history               | 100%                                         |
+Quy trình được thiết kế lại nên cung cấp cách nhìn nhất quán hơn về giao dịch mua hàng, giúp người dùng liên quan xác định trạng thái hiện tại và bên chịu trách nhiệm dễ hơn.
+
+**Vấn đề liên quan:**
+
+* PP-02 — Dữ liệu mua hàng phân tán.
+* PP-04 — Khó theo dõi trạng thái PR và PO.
+
+**Chỉ số đo:**
+
+* Tỷ lệ giao dịch PR và PO có trạng thái xử lý.
+* Tỷ lệ giao dịch mua hàng được quản lý qua quy trình tập trung.
+
+**Mục tiêu:**
+
+* 100% giao dịch PR và PO nên có trạng thái xử lý có thể xem được.
+* Ít nhất 95% giao dịch P2P trong phạm vi nên được quản lý qua quy trình tập trung.
+
+**Ranh giới đo lường:** Khả năng xem trạng thái và mức độ bao phủ giao dịch tập trung là hai chỉ số riêng. Tập hồ sơ, kỳ quan sát, đơn vị đếm giao dịch và tiêu chí hiển thị cho người có quyền vẫn cần xác định; quyền truy cập chi tiết còn mở theo OD-07.
 
 ---
 
-## 5. Relationship Between Problems and Objectives
+### OBJ-04 — Củng cố kiểm soát mua hàng và hóa đơn
+
+Quy trình hiện tại có hai điểm yếu kiểm soát đáng kể: kiểm tra ngân sách chưa được thực hiện nhất quán trước mua hàng, và đối chiếu ba bên được xử lý thủ công.
+
+Dự án hướng đến cải thiện các điểm kiểm soát này trước khi hoàn tất quyết định mua hàng và thanh toán.
+
+PR nên được kiểm tra với ngân sách khả dụng trước khi phê duyệt. Hóa đơn nhà cung cấp cũng nên được đối chiếu với PO và phiếu nhận hàng (Goods Receipt — GR) trước khi xử lý thanh toán.
+
+**Vấn đề liên quan:**
+
+* PP-03 — Đối chiếu ba bên được thực hiện thủ công.
+* PP-06 — Kiểm soát ngân sách thiếu nhất quán.
+
+**Chỉ số đo:**
+
+* Tỷ lệ PR được kiểm tra với ngân sách khả dụng trước khi phê duyệt.
+* Tỷ lệ hóa đơn đủ điều kiện được xử lý qua đối chiếu ba bên tự động.
+
+**Mục tiêu:**
+
+* 100% PR nên được kiểm tra ngân sách trước khi phê duyệt.
+* Ít nhất 80% hóa đơn đủ điều kiện nên được xử lý qua đối chiếu ba bên tự động.
+
+Hóa đơn có sai lệch số lượng, giá hoặc nhận hàng vẫn có thể cần xem xét thủ công.
+
+**Ranh giới đo lường:** Chỉ số đối chiếu tự động tính hóa đơn đủ điều kiện được xử lý qua kiểm soát đối chiếu ba bên tự động, gồm cả kết quả không đạt phải xử lý ngoại lệ. Không có nghĩa 80% đối chiếu đạt. Điều kiện bắt đầu đối chiếu khác với điều kiện lập đề nghị thanh toán sau khi đối chiếu đạt. Mẫu số hóa đơn đủ điều kiện, kỳ quan sát và cách xử lý các lần đối chiếu lặp vẫn cần xác định. Chỉ số ngân sách cũng cần quy tắc đếm khi kiểm tra lại sau gửi lại; mục tiêu 100% giữ nguyên.
+
+---
+
+### OBJ-05 — Cải thiện khả năng truy vết giao dịch
+
+Quyết định phê duyệt và thay đổi giao dịch hiện phân tán trong email và các tệp riêng. Điều này gây khó khăn khi rà soát hoạt động quá khứ và xác định ai đã thực hiện hành động cụ thể.
+
+Quy trình tương lai nên cung cấp lịch sử giao dịch đủ để hỗ trợ rà soát vận hành và kiểm toán nội bộ.
+
+**Vấn đề liên quan:**
+PP-05 — Dấu vết kiểm toán mua hàng còn hạn chế.
+
+**Chỉ số đo:**
+Tỷ lệ hành động mua hàng trọng yếu trong phạm vi được ghi nhận với thông tin kiểm toán bắt buộc.
+
+**Mục tiêu:**
+100% hành động trọng yếu được thực hiện qua quy trình mua hàng đề xuất nên được ghi nhận.
+
+Các hành động trọng yếu gồm:
+
+* Tạo
+* Gửi
+* Phê duyệt
+* Từ chối
+* Trả lại để chỉnh sửa
+* Cập nhật
+* Ghi nhận phiếu nhận hàng
+* Thực hiện đối chiếu hóa đơn
+* Phê duyệt đề nghị thanh toán
+
+**Ranh giới đo lường:** Mục tiêu 100% liên quan đến mức độ bao phủ kiểm toán hành động trọng yếu, nhất quán với BR-26 và NFR-02. Tỷ lệ giao dịch có lịch sử đầy đủ là chỉ số chẩn đoán riêng, không có mục tiêu riêng được xác định tại đây. Danh mục sự kiện trọng yếu cuối cùng, quy tắc đầy đủ trường bắt buộc, mẫu số và kỳ quan sát cần được xác nhận; không mặc định thời hạn lưu trữ.
+
+---
+
+## 4. Tóm tắt mục tiêu
+
+| ID | Mục tiêu | Chỉ số đo chính | Đích cần đạt |
+| --- | --- | --- | --- |
+| OBJ-01 | Rút ngắn chu kỳ phê duyệt PO | Thời gian trung bình từ gửi đến phê duyệt cuối cùng | < 1 ngày làm việc |
+| OBJ-02 | Giảm nhập liệu thủ công lặp lại | Ghi nhận ban đầu và nhập lại dữ liệu có thể tái sử dụng | ≤ 1 điểm nhập ban đầu cho dữ liệu có thể tái sử dụng |
+| OBJ-03 | Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu | Mức độ bao phủ trạng thái PR/PO; tỷ lệ giao dịch P2P trong phạm vi được tập trung | 100% xem được trạng thái; ≥ 95% tập trung |
+| OBJ-04 | Củng cố kiểm soát mua hàng và hóa đơn | Kiểm tra ngân sách; hóa đơn đủ điều kiện được xử lý qua đối chiếu tự động | 100% kiểm tra ngân sách; ≥ 80% được xử lý đối chiếu tự động |
+| OBJ-05 | Cải thiện khả năng truy vết giao dịch | Mức độ bao phủ kiểm toán hành động trọng yếu | 100% |
+
+Với OBJ-03, mục tiêu 95% đo tỷ trọng giao dịch P2P trong phạm vi được quản lý qua quy trình tập trung. Mục tiêu này tách biệt với chỉ số 100% xem được trạng thái PR/PO. Mọi mục tiêu đều là kỳ vọng giả lập; chưa mục tiêu nào là kết quả đã đạt. Các lựa chọn đo lường nêu trên vẫn còn mở.
+
+---
+
+## 5. Quan hệ giữa vấn đề và mục tiêu
 
 ```text
-PP-01 Approval Delay
+PP-01 Chậm phê duyệt
         ↓
-OBJ-01 Shorten PO Approval Cycle
+OBJ-01 Rút ngắn chu kỳ phê duyệt PO
 
 
-PP-02 Fragmented Data
-PP-07 Duplicate Data Entry
+PP-02 Dữ liệu phân tán
+PP-07 Nhập liệu trùng lặp
         ↓
-OBJ-02 Reduce Repetitive Manual Data Entry
+OBJ-02 Giảm nhập liệu thủ công lặp lại
 
 
-PP-02 Fragmented Data
-PP-04 Limited Status Visibility
+PP-02 Dữ liệu phân tán
+PP-04 Khó theo dõi trạng thái
         ↓
-OBJ-03 Improve Procurement Visibility and Data Consistency
+OBJ-03 Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu
 
 
-PP-03 Manual Three-Way Matching
-PP-06 Inconsistent Budget Control
+PP-03 Đối chiếu ba bên thủ công
+PP-06 Kiểm soát ngân sách thiếu nhất quán
         ↓
-OBJ-04 Strengthen Purchasing and Invoice Controls
+OBJ-04 Củng cố kiểm soát mua hàng và hóa đơn
 
 
-PP-05 Limited Audit Trail
+PP-05 Dấu vết kiểm toán hạn chế
         ↓
-OBJ-05 Improve Transaction Traceability
+OBJ-05 Cải thiện khả năng truy vết giao dịch
 ```
 
 ---
 
-## 6. From Objective to Solution
+## 6. Từ mục tiêu đến giải pháp
 
-The objectives describe the business outcomes expected from the project. They do not define specific system functions yet.
+Mục tiêu mô tả kết quả nghiệp vụ kỳ vọng từ dự án. Chúng chưa xác định chức năng hệ thống cụ thể.
 
-For example:
+Ví dụ:
 
 ```text
-Business Problem
-PO approval takes too long
+Vấn đề nghiệp vụ
+Phê duyệt PO quá lâu
 
         ↓
 
-Business Objective
-Shorten the PO approval cycle
+Mục tiêu nghiệp vụ
+Rút ngắn chu kỳ phê duyệt PO
 
         ↓
 
-To-Be Process
-Reduce manual routing and unnecessary waiting
+Quy trình đề xuất tương lai
+Giảm chuyển xử lý thủ công và thời gian chờ không cần thiết
 
         ↓
 
-Business Requirement
-The approval process must follow predefined approval rules
+Yêu cầu nghiệp vụ
+Quy trình phê duyệt phải tuân theo quy tắc phê duyệt định trước
 
         ↓
 
-Functional Requirement
-The system shall route a submitted Purchase Order
-to the appropriate approver based on defined approval rules
+Yêu cầu chức năng
+Hệ thống phải chuyển PO đã gửi
+đến người phê duyệt phù hợp theo quy tắc phê duyệt đã xác định
 ```
 
-The detailed solution will be defined later during the To-Be process design and requirements analysis.
+Giải pháp chi tiết sẽ được xác định sau trong thiết kế quy trình đề xuất tương lai và phân tích yêu cầu.

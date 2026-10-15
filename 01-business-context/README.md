@@ -1,14 +1,24 @@
-# Business Case Description
+# 01 — Bối cảnh nghiệp vụ
 
-> **Phase navigation:** Purpose: establish the case context, problem, objectives, and scope. Contents: this overview, [problem statement](./problem-statement.md), [project objectives](./project-objectives.md), and [scope](./scope.md). Next: [02 — Stakeholder Analysis](../02-stakeholder-analysis/README.md).
-## 1. Company Background
-NovaRetail JSC là chuỗi bán lẻ hàng tiêu dùng hoạt động tại Việt Nam, hiện có 35 cửa hàng, 2 kho trung tâm, khoảng 650 nhân viên và hơn 120 nhà cung cấp. Doanh nghiệp xử lý trung bình khoảng 1.200 Purchase Orders mỗi tháng, với các phòng ban chính tham gia quy trình mua sắm gồm Store Operations, Procurement, Warehouse, Finance & Accounting.
-## 2. Current Procurement Context
-Hoạt động mua sắm tại NovaRetail diễn ra thường xuyên để phục vụ nhiều nhu cầu khác nhau như hàng hóa bán lại, vật tư cửa hàng, thiết bị, văn phòng phẩm và các dịch vụ vận hành. Tuy nhiên, quy trình Procure-to-Pay hiện tại vẫn phụ thuộc nhiều vào các công cụ rời rạc như Excel, email và accounting software.
-## 3. Existing Procure-to-Pay Process
-Trong quy trình hiện tại, dữ liệu phải được trao đổi và nhập lại nhiều lần giữa các bộ phận. Purchase Requisition được tạo và phê duyệt, sau đó Procurement tiến hành lựa chọn nhà cung cấp và phát hành Purchase Order. Khi hàng được giao, Warehouse tiếp nhận và lập Goods Receipt, trong khi Accounting tiếp nhận hóa đơn và thực hiện đối chiếu thủ công giữa Purchase Order, Goods Receipt và Invoice trước khi Finance Manager phê duyệt thanh toán.
-## 4. Key Business Problems
-Mô hình vận hành hiện tại tạo ra nhiều vấn đề như chậm phê duyệt, nhập liệu lặp lại, khó theo dõi trạng thái Purchase Order, sai lệch dữ liệu, thiếu một hệ thống procurement tập trung và hạn chế khả năng audit trail. Ngoài ra, việc dữ liệu nằm phân tán giữa nhiều công cụ và bộ phận khiến doanh nghiệp thiếu khả năng theo dõi quy trình theo thời gian thực.
-## 5. Need for Change
-Dự án được khởi động nhằm phân tích và tái thiết kế quy trình Procure-to-Pay theo hướng chuẩn hóa và tập trung hơn. Giải pháp mục tiêu là xây dựng một Procurement Management System hỗ trợ phối hợp giữa Store, Procurement, Warehouse và Finance, đồng thời giảm thao tác thủ công, tăng độ chính xác dữ liệu, rút ngắn thời gian phê duyệt và cải thiện khả năng kiểm soát chi phí cũng như audit.
-![RichPicture](../assets/images/novaretail-rich-picture.png)
+## Mục đích và kết quả chính
+
+Xác lập bài toán, mục tiêu và phạm vi nghiên cứu tình huống. NovaRetail JSC là doanh nghiệp giả lập với 35 cửa hàng, 2 kho trung tâm, khoảng 650 nhân viên, hơn 120 nhà cung cấp và khoảng 1.200 PO/tháng. Dữ liệu phân tán giữa bảng tính, email và phần mềm kế toán tạo nhu cầu chuẩn hóa quy trình mua hàng đến thanh toán (P2P).
+
+Bối cảnh doanh nghiệp có cả nhu cầu dịch vụ vận hành; đường cơ sở nghiên cứu chỉ bao gồm hàng hóa hữu hình và dừng ở phê duyệt đề nghị thanh toán.
+
+## Đọc sâu
+
+| Tài liệu | Nội dung |
+| --- | --- |
+| [Phát biểu vấn đề](./problem-statement.md) | Hiện trạng, bảy điểm bất cập và tác động nghiệp vụ. |
+| [Mục tiêu dự án](./project-objectives.md) | OBJ-01–OBJ-05, KPI mục tiêu giả lập và lựa chọn đo lường còn mở. |
+| [Phạm vi](./scope.md) | Ranh giới, loại trừ, giả định và các giới hạn đường cơ sở. |
+
+## Bức tranh tổng thể
+
+![Bức tranh tổng thể (Rich Picture)](../assets/images/novaretail-rich-picture.png)
+
+> **Chú giải phạm vi cho bức tranh tổng thể (ảnh raster):** NovaRetail JSC và các số liệu 35 cửa hàng, 2 kho, khoảng 650 nhân viên, khoảng 120 nhà cung cấp và 1.200 PO/tháng đều là **giả lập**. Hình mô tả bối cảnh doanh nghiệp rộng hơn nghiên cứu tình huống: nhu cầu **dịch vụ vận hành** và các bước **thanh toán ngân hàng (bank payment) / nhà cung cấp (Supplier) nhận tiền** nằm **ngoài phạm vi** đường cơ sở hiện hành. Quy trình thuộc phạm vi dừng tại **Đề nghị thanh toán đã được phê duyệt (Payment Request Approved)**; nhãn “Payment Approval” trong ảnh là phê duyệt đề nghị thanh toán, không có nghĩa là **đã thanh toán (Paid)**. Dòng số 9 “Invoice Matching” (đối chiếu hóa đơn) xuất hiện hai lần là nhãn bị lặp, **không phải hai lần đối chiếu bắt buộc**. Kho mã chỉ có ảnh raster, không có nguồn chỉnh sửa. Ảnh gốc chưa được sửa và chưa được Việt hóa hoàn toàn; chú giải này hiệu chỉnh cách đọc ảnh.
+
+
+Tiếp theo: [02 — Phân tích các bên liên quan](../02-stakeholder-analysis/README.md).

@@ -1,165 +1,165 @@
-# Improvement Map
+# Bản đồ cải tiến
 
-## Overview
+## Tổng quan
 
-This document maps the problems identified in NovaRetail's As-Is Procure-to-Pay process to their corresponding root causes, business objectives, and To-Be process improvements.
+Tài liệu ánh xạ các vấn đề trong quy trình từ mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại của NovaRetail tới nguyên nhân gốc rễ, mục tiêu nghiệp vụ và cải tiến quy trình tương lai tương ứng.
 
-The purpose is to demonstrate that the proposed future process is not based on an arbitrary feature list.
+Mục đích là chứng minh quy trình tương lai được đề xuất không dựa trên danh sách tính năng tùy ý.
 
-Each major improvement should answer the question:
+Mỗi cải tiến lớn nên trả lời câu hỏi:
 
-> **What identified business problem does this change solve?**
+> **Thay đổi này giải quyết vấn đề nghiệp vụ đã xác định nào?**
 
-The mapping follows the analysis chain:
+Việc ánh xạ theo chuỗi phân tích:
 
 ```text
-Pain Point
+Điểm bất cập
     ↓
-Root Cause
+Nguyên nhân gốc rễ
     ↓
-Improvement Decision
+Quyết định cải tiến
     ↓
-Business Objective
+Mục tiêu nghiệp vụ
     ↓
-To-Be Process
+Quy trình To-Be
     ↓
-Future Requirement
+Yêu cầu tương lai
 ```
 
 ---
 
-# 1. Summary Improvement Map
+# 1. Bản đồ cải tiến tổng hợp
 
-| Pain Point                                     | Root Cause / Control Gap                                         | To-Be Improvement                                         | Objective |
+| Điểm bất cập | Nguyên nhân gốc rễ / khoảng trống kiểm soát | Cải tiến To-Be | Mục tiêu |
 | ---------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------- | --------- |
-| PP-01 — PO approval takes too long             | RC-01 — Lack of standardized PO approval workflow                | Workflow-based approval routing                           | OBJ-01    |
-| PP-02 — Procurement data is fragmented         | RC-02 — Lack of integrated procurement data flow                 | Connected PR → PO → GR → Invoice transaction relationship | OBJ-03    |
-| PP-03 — Three-way matching is manual           | RC-03 — Lack of integrated document data and matching capability | Automated three-way matching with exception handling      | OBJ-04    |
-| PP-04 — PR/PO status is difficult to track     | Primarily RC-02                                                  | Centralized workflow status                               | OBJ-03    |
-| PP-05 — Audit trail is limited                 | RC-01 and RC-02 contribute                                       | Central transaction and approval history                  | OBJ-05    |
-| PP-06 — Budget control is inconsistent         | Process control gap                                              | Mandatory budget validation before PR approval            | OBJ-04    |
-| PP-07 — Procurement data is repeatedly entered | RC-02                                                            | Reuse of upstream transaction information                 | OBJ-02    |
+| PP-01 — Phê duyệt PO quá lâu | RC-01 — Thiếu luồng phê duyệt PO chuẩn hóa | Chuyển phê duyệt theo luồng công việc | OBJ-01 |
+| PP-02 — Dữ liệu mua hàng phân tán | RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp | Quan hệ giao dịch PR → PO → GR → hóa đơn liên thông | OBJ-03 |
+| PP-03 — Đối chiếu ba bên thủ công | RC-03 — Thiếu dữ liệu chứng từ tích hợp và khả năng đối chiếu | Đối chiếu ba bên tự động kết hợp xử lý ngoại lệ | OBJ-04 |
+| PP-04 — Khó theo dõi trạng thái PR/PO | Chủ yếu RC-02 | Trạng thái luồng công việc tập trung | OBJ-03 |
+| PP-05 — Dấu vết kiểm toán hạn chế | RC-01 và RC-02 góp phần | Lịch sử giao dịch và phê duyệt tập trung | OBJ-05 |
+| PP-06 — Kiểm soát ngân sách không nhất quán | Khoảng trống kiểm soát quy trình | Bắt buộc kiểm tra ngân sách trước phê duyệt PR | OBJ-04 |
+| PP-07 — Dữ liệu mua hàng nhập lặp lại | RC-02 | Tái sử dụng thông tin giao dịch từ bước trước | OBJ-02 |
 
 ---
 
-# 2. PP-01 — Purchase Order Approval Delay
+# 2. PP-01 — Chậm phê duyệt đơn đặt hàng
 
-## As-Is Problem
+## Vấn đề As-Is
 
-Purchase Order approval is performed through email and depends on manual follow-up.
+Phê duyệt đơn đặt hàng (Purchase Order — PO) được thực hiện qua email và phụ thuộc vào đôn đốc thủ công.
 
 ```text
-Create PO
+Lập PO
    ↓
-Send Approval Email
+Gửi email phê duyệt
    ↓
-Wait for Approver
+Chờ người phê duyệt
    ↓
-Review
+Xem xét
    ↓
-Reply
+Phản hồi
 ```
 
-A significant portion of approval cycle time may therefore consist of waiting rather than actual review time.
+Vì vậy, một phần đáng kể của chu trình phê duyệt có thể là thời gian chờ thay vì thời gian xem xét thực tế.
 
 ---
 
-## Root Cause
+## Nguyên nhân gốc rễ
 
-**RC-01 — Lack of a standardized and centralized Purchase Order approval workflow.**
+**RC-01 — Thiếu luồng phê duyệt đơn đặt hàng được chuẩn hóa và tập trung.**
 
-The current process does not provide:
+Quy trình hiện tại chưa cung cấp:
 
-* structured approval routing;
-* centralized pending approval visibility;
-* consistent workflow status;
-* clear electronic approval history.
+* chuyển phê duyệt có cấu trúc;
+* khả năng theo dõi tập trung các yêu cầu chờ phê duyệt;
+* trạng thái luồng công việc nhất quán;
+* lịch sử phê duyệt điện tử rõ ràng.
 
 ---
 
-## To-Be Improvement
+## Cải tiến To-Be
 
-### Workflow-Based PO Approval
+### Phê duyệt PO theo luồng công việc
 
 ```text
-Submit PO
+Gửi PO
     ↓
-Evaluate Approval Rules
+Đánh giá quy tắc phê duyệt
     ↓
-Route to Required Approver
+Chuyển đến người phê duyệt bắt buộc
     ↓
-Review
+Xem xét
     ↓
-Approve / Return
+Phê duyệt / trả về
 ```
 
-The system controls the routing while Procurement and Finance remain responsible for business decisions.
+Hệ thống kiểm soát việc chuyển phê duyệt, còn bộ phận mua hàng và tài chính vẫn chịu trách nhiệm quyết định nghiệp vụ.
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* reduced manual routing;
-* reduced manual follow-up;
-* improved visibility of pending approvals;
-* more consistent approval handling;
-* improved approval traceability.
-
----
-
-## Business Objective
-
-**OBJ-01 — Shorten the Purchase Order approval cycle.**
+* giảm chuyển phê duyệt thủ công;
+* giảm đôn đốc thủ công;
+* cải thiện khả năng theo dõi yêu cầu chờ phê duyệt;
+* xử lý phê duyệt nhất quán hơn;
+* cải thiện khả năng truy vết phê duyệt.
 
 ---
 
-## Related Business Rules
+## Mục tiêu nghiệp vụ
 
-* BR-09 — PO Approval Routing
-* BR-10 — Additional Financial Approval
-* BR-11 — PO Issuance
-* BR-12 — Returned Purchase Order
-* BR-26 — Audit History
+**OBJ-01 — Rút ngắn chu trình phê duyệt đơn đặt hàng.**
 
 ---
 
-# 3. PP-02 — Fragmented Procurement Data
+## Quy tắc nghiệp vụ liên quan
 
-## As-Is Problem
+* BR-09 — Chuyển phê duyệt PO
+* BR-10 — Phê duyệt tài chính bổ sung
+* BR-11 — Phát hành PO
+* BR-12 — Đơn đặt hàng bị trả về
+* BR-26 — Lịch sử kiểm toán
 
-Procurement information is maintained across multiple sources.
+---
+
+# 3. PP-02 — Dữ liệu mua hàng phân tán
+
+## Vấn đề As-Is
+
+Thông tin mua hàng được lưu giữ ở nhiều nguồn.
 
 ```text
-PR Excel
+Yêu cầu mua hàng (PR) trên Excel
    ↓
-PO File / Tool
+Tệp / công cụ PO
 
-Warehouse Record
+Hồ sơ kho
    ↓
-Goods Receipt
+Phiếu nhận hàng
 
-Accounting Software
+Phần mềm kế toán
    ↓
-Invoice
+Hóa đơn
 
 Email
    ↓
-Approval Evidence
+Bằng chứng phê duyệt
 ```
 
-Users may need to search different systems or files to reconstruct a single procurement transaction.
+Người dùng có thể phải tìm trong nhiều hệ thống hoặc tệp để tái dựng một giao dịch mua hàng.
 
 ---
 
-## Root Cause
+## Nguyên nhân gốc rễ
 
-**RC-02 — Lack of an integrated procurement data flow connecting the main stages of the P2P lifecycle.**
+**RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp kết nối các giai đoạn chính của vòng đời P2P.**
 
 ---
 
-## To-Be Improvement
+## Cải tiến To-Be
 
-### Connected Transaction Relationship
+### Quan hệ giao dịch liên thông
 
 ```text
 PR-001
@@ -169,477 +169,480 @@ PR-001
          └── INV-001
 ```
 
-The related procurement records are connected through common transaction references.
+Các hồ sơ mua hàng liên quan được kết nối qua tham chiếu giao dịch chung.
 
-The design does not require every application to be replaced by one physical database. The business requirement is that the relevant transaction information can be consistently linked and retrieved.
-
----
-
-## Expected Effect
-
-* improved data consistency;
-* reduced document searching;
-* easier cross-department coordination;
-* improved transaction visibility;
-* better support for matching and audit history.
+Thiết kế không yêu cầu thay mọi ứng dụng bằng một cơ sở dữ liệu vật lý duy nhất. Yêu cầu nghiệp vụ là thông tin giao dịch liên quan có thể được liên kết và truy xuất nhất quán.
 
 ---
 
-## Business Objective
+## Tác động kỳ vọng
 
-**OBJ-03 — Improve procurement visibility and data consistency.**
-
----
-
-## Related Business Rules
-
-* BR-07 — PR-to-PO Traceability
-* BR-13 — PO Reference Required for Goods Receipt
-* BR-15 — Invoice-to-PO Relationship
-* BR-25 — Transaction Status
-* BR-26 — Audit History
+* cải thiện tính nhất quán dữ liệu;
+* giảm tìm kiếm chứng từ;
+* phối hợp liên bộ phận dễ hơn;
+* cải thiện khả năng theo dõi giao dịch;
+* hỗ trợ tốt hơn cho đối chiếu và lịch sử kiểm toán.
 
 ---
 
-# 4. PP-03 — Manual Three-Way Matching
+## Mục tiêu nghiệp vụ
 
-## As-Is Problem
+**OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu.**
 
-AP manually finds and compares three transaction records.
+---
+
+## Quy tắc nghiệp vụ liên quan
+
+* BR-07 — Truy vết từ PR đến PO
+* BR-13 — Bắt buộc tham chiếu PO khi ghi nhận phiếu nhận hàng
+* BR-15 — Quan hệ hóa đơn với PO
+* BR-25 — Trạng thái giao dịch
+* BR-26 — Lịch sử kiểm toán
+
+---
+
+# 4. PP-03 — Đối chiếu ba bên thủ công
+
+## Vấn đề As-Is
+
+AP tìm và so sánh ba hồ sơ giao dịch thủ công.
 
 ```text
-Find PO
+Tìm PO
    +
-Find GR
+Tìm GR
    +
-Review Invoice
+Xem xét hóa đơn
       ↓
-Manual Comparison
+So sánh thủ công
 ```
 
-When a mismatch occurs, additional manual investigation is required.
+Khi có sai lệch, cần điều tra thủ công thêm.
 
 ---
 
-## Root Cause
+## Nguyên nhân gốc rễ
 
-**RC-03 — Lack of integrated PO, Goods Receipt, and Invoice data with automated matching capability.**
+**RC-03 — Thiếu dữ liệu PO, phiếu nhận hàng (Goods Receipt — GR) và hóa đơn tích hợp cùng khả năng đối chiếu tự động.**
 
 ---
 
-## To-Be Improvement
+## Cải tiến To-Be
 
-### Automated Three-Way Matching
+### Đối chiếu ba bên tự động
 
 ```text
 PO
 +
 GR
 +
-Invoice
+Hóa đơn
    ↓
-Matching Rules
+Quy tắc đối chiếu
    ↓
-Documents Match?
+Chứng từ khớp?
 ```
 
-If matching succeeds:
+Nếu đối chiếu đạt:
 
 ```text
-Matched
+Đã đối chiếu đạt
    ↓
-Payment Preparation
+Chuẩn bị thanh toán
 ```
 
-If matching fails:
+Nếu đối chiếu không đạt:
 
 ```text
-Mismatch
+Sai lệch
    ↓
-Create Exception
+Tạo ngoại lệ
    ↓
-Resolve
+Điều tra / ghi nhận chỉnh sửa
    ↓
-Re-run Matching
+Chạy lại đối chiếu
+   ↓
+Đạt? Có → Ghi nhận đã xử lý / cấp điều kiện
+      Không → Giữ ngoại lệ mở / chặn đề nghị thanh toán
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* reduced AP workload for standard transactions;
-* faster invoice processing;
-* consistent matching control;
-* improved identification of discrepancies;
-* AP can focus more effort on exception cases.
-
----
-
-## Business Objective
-
-**OBJ-04 — Strengthen purchasing and invoice controls.**
+* giảm khối lượng công việc AP với giao dịch thông thường;
+* xử lý hóa đơn nhanh hơn;
+* kiểm soát đối chiếu nhất quán;
+* cải thiện nhận diện sai lệch;
+* AP có thể tập trung nhiều công sức hơn vào trường hợp ngoại lệ.
 
 ---
 
-## Related Business Rules
+## Mục tiêu nghiệp vụ
 
-* BR-16 — Matching Preconditions
-* BR-17 — Matching Attributes
-* BR-18 — Matching Tolerance
-* BR-19 — Successful Matching
-* BR-20 — Mismatch Requires Exception Handling
-* BR-21 — Exception Traceability
+**OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn.**
 
 ---
 
-# 5. PP-04 — Limited PR and PO Status Visibility
+## Quy tắc nghiệp vụ liên quan
 
-## As-Is Problem
-
-Users cannot consistently determine where a PR or PO is currently waiting.
-
-They may need to:
-
-* search email;
-* review spreadsheets;
-* contact Procurement;
-* contact approvers.
+* BR-16 — Điều kiện tiên quyết để đối chiếu
+* BR-17 — Thuộc tính đối chiếu
+* BR-18 — Dung sai đối chiếu
+* BR-19 — Đối chiếu đạt
+* BR-20 — Sai lệch phải được xử lý ngoại lệ
+* BR-21 — Truy vết ngoại lệ
 
 ---
 
-## Contributing Root Cause
+# 5. PP-04 — Hạn chế khả năng theo dõi trạng thái PR và PO
 
-This issue is primarily related to **RC-02 — fragmented procurement data flow**.
+## Vấn đề As-Is
 
-The current process does not maintain a shared workflow state across departments.
+Người dùng không thể xác định nhất quán PR hoặc PO hiện đang chờ ở đâu.
+
+Họ có thể cần:
+
+* tìm kiếm email;
+* xem bảng tính;
+* liên hệ bộ phận mua hàng;
+* liên hệ người phê duyệt.
 
 ---
 
-## To-Be Improvement
+## Nguyên nhân gốc rễ góp phần
 
-### Centralized Transaction Status
+Vấn đề này chủ yếu liên quan **RC-02 — luồng dữ liệu mua hàng phân tán**.
 
-Transactions maintain a current workflow status such as:
+Quy trình hiện tại không duy trì trạng thái luồng công việc dùng chung giữa các bộ phận.
+
+---
+
+## Cải tiến To-Be
+
+### Trạng thái giao dịch tập trung
+
+Giao dịch giữ trạng thái luồng công việc hiện tại như:
 
 ```text
-Draft
-Submitted
-Pending Approval
-Approved
-Returned
-Ordered
-Received
-Invoice Received
-Matching
-Exception
-Matched
-Payment Approved
+Nháp
+Đã gửi
+Chờ phê duyệt
+Đã phê duyệt
+Đã trả về
+Đã đặt hàng
+Đã nhận hàng
+Đã nhận hóa đơn
+Đang đối chiếu
+Ngoại lệ
+Đã đối chiếu đạt
+Đã phê duyệt thanh toán
 ```
 
-Exact states will be refined during requirements analysis.
+Trạng thái chính xác sẽ được làm rõ trong phân tích yêu cầu.
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-Users can identify:
+Người dùng có thể xác định:
 
-* current transaction status;
-* whether an action is pending;
-* who owns the next step;
-* whether the transaction has been returned or approved.
+* trạng thái giao dịch hiện tại;
+* có hành động đang chờ hay không;
+* ai phụ trách bước tiếp theo;
+* giao dịch đã bị trả về hay được phê duyệt.
 
-This reduces manual status inquiries.
-
----
-
-## Business Objective
-
-**OBJ-03 — Improve procurement visibility and data consistency.**
+Điều này giảm việc hỏi trạng thái thủ công.
 
 ---
 
-## Related Business Rules
+## Mục tiêu nghiệp vụ
 
-* BR-25 — Transaction Status
-* BR-26 — Audit History
+**OBJ-03 — Cải thiện khả năng theo dõi mua hàng và tính nhất quán dữ liệu.**
 
 ---
 
-# 6. PP-05 — Limited Audit Trail
+## Quy tắc nghiệp vụ liên quan
 
-## As-Is Problem
+* BR-25 — Trạng thái giao dịch
+* BR-26 — Lịch sử kiểm toán
 
-Approval evidence and transaction history are distributed across:
+---
+
+# 6. PP-05 — Dấu vết kiểm toán hạn chế
+
+## Vấn đề As-Is
+
+Bằng chứng phê duyệt và lịch sử giao dịch phân tán trên:
 
 * email;
-* spreadsheets;
-* departmental records;
-* separate systems.
+* bảng tính;
+* hồ sơ bộ phận;
+* hệ thống riêng biệt.
 
-It may be difficult to determine:
+Có thể khó xác định:
 
 ```text
-Who?
-Did What?
-When?
-To Which Transaction?
+Ai?
+Đã làm gì?
+Khi nào?
+Với giao dịch nào?
 ```
 
 ---
 
-## Contributing Root Causes
+## Các nguyên nhân gốc rễ góp phần
 
-The problem is influenced by both:
+Vấn đề chịu ảnh hưởng của cả:
 
-* **RC-01 — lack of standardized approval workflow;**
-* **RC-02 — lack of connected procurement data flow.**
+* **RC-01 — thiếu luồng phê duyệt chuẩn hóa;**
+* **RC-02 — thiếu luồng dữ liệu mua hàng liên thông.**
 
 ---
 
-## To-Be Improvement
+## Cải tiến To-Be
 
-### Central Transaction History
+### Lịch sử giao dịch tập trung
 
-For key procurement actions, the system maintains information such as:
+Với các hành động mua hàng chính, hệ thống giữ thông tin như:
 
 ```text
-Transaction: PO-001
-Action: Approved
-User: Procurement Manager
-Time: 10:25
-Previous Status: Pending Approval
-New Status: Approved
+Giao dịch: PO-001
+Hành động: Đã phê duyệt
+Người dùng: Trưởng bộ phận mua hàng
+Thời gian: 10:25
+Trạng thái trước: Chờ phê duyệt
+Trạng thái mới: Đã phê duyệt
 ```
 
-Audit history is treated as a system-wide behavior rather than a separate task after every BPMN activity.
+Lịch sử kiểm toán được coi là hành vi toàn hệ thống, không phải tác vụ riêng sau mỗi hoạt động BPMN.
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* better transaction reconstruction;
-* clearer accountability;
-* stronger evidence for internal review;
-* improved approval traceability.
-
----
-
-## Business Objective
-
-**OBJ-05 — Improve transaction traceability.**
+* tái dựng giao dịch tốt hơn;
+* trách nhiệm giải trình rõ hơn;
+* bằng chứng vững hơn cho xem xét nội bộ;
+* cải thiện khả năng truy vết phê duyệt.
 
 ---
 
-## Related Business Rules
+## Mục tiêu nghiệp vụ
 
-* BR-12 — Returned PO
-* BR-21 — Exception Traceability
-* BR-26 — Audit History
-* BR-27 — Role-Based Actions
+**OBJ-05 — Cải thiện khả năng truy vết giao dịch.**
 
 ---
 
-# 7. PP-06 — Inconsistent Budget Control
+## Quy tắc nghiệp vụ liên quan
 
-## As-Is Problem
+* BR-12 — PO bị trả về
+* BR-21 — Truy vết ngoại lệ
+* BR-26 — Lịch sử kiểm toán
+* BR-27 — Hành động theo vai trò
 
-Budget checking is performed manually and may depend on separate information or communication.
+---
+
+# 7. PP-06 — Kiểm soát ngân sách không nhất quán
+
+## Vấn đề As-Is
+
+Kiểm tra ngân sách được thực hiện thủ công và có thể phụ thuộc vào thông tin hoặc trao đổi riêng biệt.
 
 ```text
 PR
  ↓
-Manual Budget Check
+Kiểm tra ngân sách thủ công
  ↓
-Approval
+Phê duyệt
 ```
 
-The control may therefore be inconsistently applied.
+Do đó, kiểm soát có thể được áp dụng không nhất quán.
 
 ---
 
-## Root Cause / Control Gap
+## Nguyên nhân gốc rễ / khoảng trống kiểm soát
 
-The As-Is analysis did not define this as one of the three formal Five Whys root causes.
+Phân tích As-Is không xác định đây là một trong ba nguyên nhân gốc rễ chính thức theo Năm câu hỏi tại sao.
 
-Instead, the issue represents an important **process control gap**:
+Thay vào đó, vấn đề thể hiện **khoảng trống kiểm soát quy trình** quan trọng:
 
-> Budget validation is not embedded as a mandatory step in the procurement workflow.
+> Kiểm tra ngân sách chưa được tích hợp thành bước bắt buộc trong luồng mua hàng.
 
-This distinction avoids inventing an additional root-cause ID solely to make the traceability table symmetrical.
+Phân biệt này tránh tạo thêm mã nguyên nhân gốc rễ chỉ để làm bảng truy vết đối xứng.
 
 ---
 
-## To-Be Improvement
+## Cải tiến To-Be
 
-### Mandatory Budget Validation
+### Kiểm tra ngân sách bắt buộc
 
 ```text
-Submit PR
+Gửi PR
     ↓
-Validate Required Data
+Kiểm tra dữ liệu bắt buộc
     ↓
-Validate Available Budget
+Kiểm tra ngân sách khả dụng
     ↓
-Budget Available?
+Có đủ ngân sách?
 ```
 
-If validation fails:
+Nếu kiểm tra không đạt:
 
 ```text
-Return PR
+Trả PR để chỉnh sửa
    ↓
-Requester Revision
+Người yêu cầu chỉnh sửa
 ```
 
-If validation succeeds:
+Nếu kiểm tra đạt:
 
 ```text
-Continue to Business Approval
+Tiếp tục phê duyệt nghiệp vụ
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* more consistent purchasing control;
-* earlier identification of insufficient budget;
-* reduced manual budget-check coordination;
-* lower risk of approving requests without reliable budget validation.
-
----
-
-## Business Objective
-
-**OBJ-04 — Strengthen purchasing and invoice controls.**
+* kiểm soát mua hàng nhất quán hơn;
+* nhận diện sớm hơn việc thiếu ngân sách;
+* giảm phối hợp kiểm tra ngân sách thủ công;
+* giảm rủi ro phê duyệt yêu cầu khi chưa có kiểm tra ngân sách đáng tin cậy.
 
 ---
 
-## Related Business Rules
+## Mục tiêu nghiệp vụ
 
-* BR-02 — Budget Validation Before PR Approval
-* BR-03 — Insufficient Budget
+**OBJ-04 — Tăng cường kiểm soát mua hàng và hóa đơn.**
 
 ---
 
-# 8. PP-07 — Duplicate Manual Data Entry
+## Quy tắc nghiệp vụ liên quan
 
-## As-Is Problem
+* BR-02 — Kiểm tra ngân sách trước phê duyệt PR
+* BR-03 — Không đủ ngân sách
 
-Information already captured in the PR may need to be entered again during PO preparation.
+---
 
-Additional data may also be independently recorded downstream.
+# 8. PP-07 — Nhập dữ liệu thủ công trùng lặp
+
+## Vấn đề As-Is
+
+Thông tin đã ghi trong yêu cầu mua hàng (Purchase Requisition — PR) có thể phải nhập lại khi lập PO.
+
+Dữ liệu bổ sung cũng có thể được ghi độc lập ở các bước sau.
 
 ```text
 PR
  ↓
-Manual Re-entry
+Nhập lại thủ công
  ↓
 PO
 ```
 
 ---
 
-## Root Cause
+## Nguyên nhân gốc rễ
 
-**RC-02 — Lack of integrated procurement data flow.**
+**RC-02 — Thiếu luồng dữ liệu mua hàng tích hợp.**
 
 ---
 
-## To-Be Improvement
+## Cải tiến To-Be
 
-### Capture and Reuse Transaction Data
+### Ghi nhận và tái sử dụng dữ liệu giao dịch
 
 ```text
-Approved PR
+PR đã phê duyệt
       ↓
-Reuse Existing Data
+Tái sử dụng dữ liệu hiện có
       ↓
-Create PO
+Lập PO
 ```
 
-Downstream records reference the related transaction rather than recreating unrelated information.
+Hồ sơ ở các bước sau tham chiếu giao dịch liên quan thay vì tạo lại thông tin không liên kết.
 
 ```text
 PO
 ├── GR
-└── Invoice
+└── Hóa đơn
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* fewer manual entry touchpoints;
-* lower administrative workload;
-* reduced typing-error risk;
-* improved consistency between related documents.
-
----
-
-## Business Objective
-
-**OBJ-02 — Reduce repetitive manual data entry.**
+* ít điểm nhập liệu thủ công hơn;
+* giảm khối lượng công việc hành chính;
+* giảm rủi ro lỗi nhập liệu;
+* cải thiện tính nhất quán giữa các chứng từ liên quan.
 
 ---
 
-## Related Business Rules
+## Mục tiêu nghiệp vụ
 
-* BR-07 — PR-to-PO Traceability
-* BR-08 — Reuse of PR Data
-* BR-13 — Goods Receipt PO Reference
-* BR-15 — Invoice PO Reference
+**OBJ-02 — Giảm nhập dữ liệu thủ công lặp lại.**
 
 ---
 
-# 9. Cross-Pain-Point Improvement Relationships
+## Quy tắc nghiệp vụ liên quan
 
-One To-Be improvement may address more than one As-Is problem.
+* BR-07 — Truy vết từ PR đến PO
+* BR-08 — Tái sử dụng dữ liệu PR
+* BR-13 — Tham chiếu PO của phiếu nhận hàng
+* BR-15 — Tham chiếu PO của hóa đơn
 
-For example:
+---
+
+# 9. Quan hệ cải tiến giữa nhiều điểm bất cập
+
+Một cải tiến To-Be có thể xử lý nhiều vấn đề As-Is.
+
+Ví dụ:
 
 ```text
-Connected Transaction Data
+Dữ liệu giao dịch liên thông
           │
-          ├── reduces PP-02 Fragmentation
+          ├── giảm PP-02 Phân tán
           │
-          ├── improves PP-04 Visibility
+          ├── cải thiện PP-04 Khả năng theo dõi
           │
-          ├── reduces PP-07 Re-entry
+          ├── giảm PP-07 Nhập lại
           │
-          └── supports PP-03 Matching
+          └── hỗ trợ PP-03 Đối chiếu
 ```
 
-Similarly:
+Tương tự:
 
 ```text
-Workflow-Based Approval
+Phê duyệt theo luồng công việc
           │
-          ├── reduces PP-01 Waiting
+          ├── giảm PP-01 Chờ đợi
           │
-          ├── improves PP-04 Status
+          ├── cải thiện PP-04 Trạng thái
           │
-          └── improves PP-05 Auditability
+          └── cải thiện PP-05 Khả năng kiểm toán
 ```
 
-This is important because process improvement should address underlying structural weaknesses rather than create one isolated feature for every pain point.
+Điều này quan trọng vì cải tiến quy trình nên xử lý điểm yếu cấu trúc sâu xa, không tạo tính năng rời rạc cho từng điểm bất cập.
 
 ---
 
-# 10. Improvement Priorities
+# 10. Ưu tiên cải tiến
 
-The proposed improvements can be grouped into four broad areas.
+Các cải tiến đề xuất có thể nhóm thành bốn lĩnh vực rộng.
 
-## Priority Area 1 — Workflow Standardization
+## Lĩnh vực ưu tiên 1 — Chuẩn hóa luồng công việc
 
-Includes:
+Bao gồm:
 
-* PR workflow;
-* PO approval routing;
-* payment approval routing;
-* correction and resubmission paths.
+* luồng PR;
+* chuyển phê duyệt PO;
+* chuyển phê duyệt thanh toán;
+* đường chỉnh sửa và gửi lại.
 
-Primarily addresses:
+Chủ yếu xử lý:
 
 * PP-01;
 * PP-04;
@@ -647,54 +650,54 @@ Primarily addresses:
 
 ---
 
-## Priority Area 2 — Connected Procurement Data
+## Lĩnh vực ưu tiên 2 — Dữ liệu mua hàng liên thông
 
-Includes:
+Bao gồm:
 
 ```text
 PR
 ↓
 PO
 ↓
-GR / Invoice
+GR / hóa đơn
 ```
 
-Primarily addresses:
+Chủ yếu xử lý:
 
 * PP-02;
 * PP-04;
 * PP-07.
 
-It also enables automated matching.
+Điều này cũng tạo điều kiện cho đối chiếu tự động.
 
 ---
 
-## Priority Area 3 — Automated Controls
+## Lĩnh vực ưu tiên 3 — Kiểm soát tự động
 
-Includes:
+Bao gồm:
 
-* PR validation;
-* budget validation;
-* approval-rule evaluation;
-* three-way matching.
+* kiểm tra PR;
+* kiểm tra ngân sách;
+* đánh giá quy tắc phê duyệt;
+* đối chiếu ba bên.
 
-Primarily addresses:
+Chủ yếu xử lý:
 
 * PP-03;
 * PP-06.
 
 ---
 
-## Priority Area 4 — Exception and Audit Control
+## Lĩnh vực ưu tiên 4 — Kiểm soát ngoại lệ và kiểm toán
 
-Includes:
+Bao gồm:
 
-* structured matching exceptions;
-* status management;
-* transaction history;
-* approval history.
+* ngoại lệ đối chiếu có cấu trúc;
+* quản lý trạng thái;
+* lịch sử giao dịch;
+* lịch sử phê duyệt.
 
-Primarily addresses:
+Chủ yếu xử lý:
 
 * PP-03;
 * PP-04;
@@ -702,78 +705,78 @@ Primarily addresses:
 
 ---
 
-# 11. End-to-End Traceability Matrix
+# 11. Ma trận truy vết xuyên suốt
 
-| Pain Point | Root Cause / Gap    | Objective | To-Be Improvement                        | Key Business Rules         |
+| Điểm bất cập | Nguyên nhân gốc rễ / khoảng trống | Mục tiêu | Cải tiến To-Be | Quy tắc nghiệp vụ chính |
 | ---------- | ------------------- | --------- | ---------------------------------------- | -------------------------- |
-| PP-01      | RC-01               | OBJ-01    | Workflow-based PO approval               | BR-09, BR-10, BR-11, BR-12 |
-| PP-02      | RC-02               | OBJ-03    | Connected procurement transaction data   | BR-07, BR-13, BR-15        |
-| PP-03      | RC-03               | OBJ-04    | Automated 3-way matching                 | BR-16 to BR-21             |
-| PP-04      | RC-02               | OBJ-03    | Central workflow status                  | BR-25                      |
-| PP-05      | RC-01 / RC-02       | OBJ-05    | Central transaction and approval history | BR-26, BR-27               |
-| PP-06      | Process control gap | OBJ-04    | Mandatory budget validation              | BR-02, BR-03               |
-| PP-07      | RC-02               | OBJ-02    | Reuse PR data and transaction references | BR-07, BR-08               |
+| PP-01 | RC-01 | OBJ-01 | Phê duyệt PO theo luồng công việc | BR-09, BR-10, BR-11, BR-12 |
+| PP-02 | RC-02 | OBJ-03 | Dữ liệu giao dịch mua hàng liên thông | BR-07, BR-13, BR-15 |
+| PP-03 | RC-03 | OBJ-04 | Đối chiếu ba bên tự động | BR-16 đến BR-21 |
+| PP-04 | RC-02 | OBJ-03 | Trạng thái luồng công việc tập trung | BR-25 |
+| PP-05 | RC-01 / RC-02 | OBJ-05 | Lịch sử giao dịch và phê duyệt tập trung | BR-26, BR-27 |
+| PP-06 | Khoảng trống kiểm soát quy trình | OBJ-04 | Kiểm tra ngân sách bắt buộc | BR-02, BR-03 |
+| PP-07 | RC-02 | OBJ-02 | Tái sử dụng dữ liệu PR và tham chiếu giao dịch | BR-07, BR-08 |
 
 ---
 
-# 12. Future Requirements Traceability
+# 12. Truy vết yêu cầu tương lai
 
-The next project stages will extend this mapping into formal requirements.
+Các giai đoạn dự án tiếp theo sẽ mở rộng ánh xạ này thành yêu cầu chính thức.
 
 ```text
 PP-01
  ↓
 RC-01
  ↓
-Workflow Approval
+Phê duyệt theo luồng công việc
  ↓
 BR-09
  ↓
-Future BRD Requirement
+Yêu cầu BRD tương lai
  ↓
-Future Functional Requirement
+Yêu cầu chức năng tương lai
  ↓
-Use Case
+Ca sử dụng
  ↓
-Acceptance Criteria
+Tiêu chí chấp nhận
 ```
 
-A later Requirements Traceability Matrix will connect:
+Ma trận truy vết yêu cầu ở giai đoạn sau sẽ kết nối:
 
 ```text
-Business Objective
+Mục tiêu nghiệp vụ
 ↕
-Pain Point
+Điểm bất cập
 ↕
-Business Requirement
+Yêu cầu nghiệp vụ
 ↕
-Functional Requirement
+Yêu cầu chức năng
 ↕
-Use Case
+Ca sử dụng
 ↕
-Test / Acceptance Criteria
+Tiêu chí kiểm tra / chấp nhận
 ```
 
-Requirement IDs are therefore intentionally not invented at this stage.
+Do đó, mã yêu cầu được chủ ý chưa tạo ở giai đoạn này.
 
 ---
 
-# 13. Conclusion
+# 13. Kết luận
 
-The Improvement Map demonstrates that the proposed To-Be process is based on identifiable business needs rather than a generic procurement-system feature list.
+Bản đồ cải tiến chứng minh quy trình To-Be đề xuất dựa trên nhu cầu nghiệp vụ nhận diện được, không dựa trên danh sách tính năng hệ thống mua hàng chung chung.
 
-The most important design logic is:
+Logic thiết kế quan trọng nhất là:
 
 ```text
-Standardize Workflow
+Chuẩn hóa luồng công việc
         +
-Connect Transaction Data
+Kết nối dữ liệu giao dịch
         +
-Automate Rule-Based Controls
+Tự động hóa kiểm soát theo quy tắc
         +
-Structure Exception Handling
+Tổ chức xử lý ngoại lệ có cấu trúc
         ↓
-Improved P2P Process
+Quy trình P2P được cải tiến
 ```
 
-These improvement decisions provide the bridge between the As-Is analysis and the formal requirements that will be developed in later project stages.
+Các quyết định cải tiến này kết nối phân tích As-Is với các yêu cầu chính thức sẽ được xây dựng trong những giai đoạn dự án sau.

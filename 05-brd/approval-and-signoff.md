@@ -1,366 +1,372 @@
-# BRD Approval and Sign-Off
+# Phê duyệt và xác nhận BRD
 
-## 1. Purpose
+## 1. Mục đích
 
-This document defines the review, validation, and approval framework for the **Business Requirements Document (BRD)** of the NovaRetail JSC Procure-to-Pay Process Optimization project.
+Tài liệu xác định khuôn khổ xem xét, xác nhận và phê duyệt **Tài liệu yêu cầu nghiệp vụ (Business Requirements Document — BRD)** của dự án tối ưu hóa quy trình từ mua hàng đến thanh toán tại NovaRetail JSC.
 
-Its purpose is to clarify:
+Mục đích là làm rõ:
 
-- which stakeholders are responsible for reviewing the BRD;
-- which business areas each stakeholder should validate;
-- how approval status should be recorded;
-- which open business decisions must be resolved before implementation readiness.
+- các bên liên quan chịu trách nhiệm xem xét BRD;
+- các lĩnh vực nghiệp vụ mỗi bên nên xác nhận;
+- cách nên ghi nhận trạng thái phê duyệt;
+- các quyết định chính sách nghiệp vụ còn mở phải giải quyết trước khi sẵn sàng triển khai.
 
-> **Case Study Note:**  
-> NovaRetail JSC is a fictional organization created for this Business Analysis portfolio project.  
-> No real stakeholder signatures or formal corporate approvals are represented in this document.
+> **Lưu ý về nghiên cứu tình huống:**
+> NovaRetail JSC là tổ chức giả lập được tạo cho dự án hồ sơ năng lực phân tích nghiệp vụ này.
+> Tài liệu không thể hiện chữ ký của bên liên quan thực tế hoặc phê duyệt doanh nghiệp chính thức.
 
 ---
 
-## 2. Document Information
+## 2. Thông tin tài liệu
 
-| Item | Value |
+| Nội dung | Giá trị |
 |---|---|
-| Project | Retail Procure-to-Pay Process Optimization |
-| Organization | NovaRetail JSC |
-| Document | BRD Approval and Sign-Off |
-| Related Document | `business-requirements-document.md` |
-| Related Catalog | `requirements-catalog.md` |
-| Document Version | 1.0 |
-| Document Status | Case Study Baseline |
-| Prepared By | Business Analyst |
-| Approval Type | Simulated Validation Framework |
-| Formal Corporate Approval | Not Applicable — Portfolio Case Study |
+| Dự án | Tối ưu hóa quy trình từ mua hàng đến thanh toán trong bán lẻ |
+| Tổ chức | NovaRetail JSC |
+| Tài liệu | Phê duyệt và xác nhận BRD |
+| Tài liệu liên quan | `business-requirements-document.md` |
+| Danh mục liên quan | `requirements-catalog.md` |
+| Phiên bản tài liệu | 1.0 |
+| Trạng thái tài liệu | Đường cơ sở nghiên cứu tình huống |
+| Người lập | Chuyên viên phân tích nghiệp vụ |
+| Loại phê duyệt | Khuôn khổ xác nhận giả lập |
+| Phê duyệt doanh nghiệp chính thức | Không áp dụng — Nghiên cứu tình huống hồ sơ năng lực |
 
 ---
 
-## 3. Approval Objective
+## 3. Mục tiêu phê duyệt
 
-The BRD should be considered ready for detailed requirements analysis only after the relevant business stakeholders have reviewed the requirements within their areas of responsibility.
+BRD chỉ nên được coi là sẵn sàng cho phân tích yêu cầu chi tiết sau khi các bên liên quan nghiệp vụ phù hợp đã xem xét yêu cầu trong phạm vi trách nhiệm của mình.
 
-The approval process is intended to confirm that:
+Quy trình phê duyệt nhằm xác nhận rằng:
 
-- the business problem has been represented correctly;
-- the project scope is understood and agreed;
-- the Business Requirements reflect the intended To-Be process;
-- business controls are represented correctly;
-- no major requirement falls outside the agreed scope;
-- open business-policy decisions are clearly identified;
-- requirements are sufficiently stable to proceed to detailed system analysis.
+- vấn đề nghiệp vụ được thể hiện đúng;
+- phạm vi dự án được hiểu và thống nhất;
+- yêu cầu nghiệp vụ phản ánh quy trình To-Be dự kiến;
+- kiểm soát nghiệp vụ được thể hiện đúng;
+- không có yêu cầu lớn nằm ngoài phạm vi đã thống nhất;
+- quyết định chính sách nghiệp vụ còn mở được nhận diện rõ;
+- yêu cầu đủ ổn định để tiếp tục phân tích hệ thống chi tiết.
 
-Approval of the BRD does **not** represent approval of:
+Phê duyệt BRD **không** biểu thị phê duyệt:
 
-- detailed system design;
-- user-interface design;
-- technical architecture;
-- integration design;
-- database design;
-- implementation estimates.
+- thiết kế hệ thống chi tiết;
+- thiết kế giao diện người dùng;
+- kiến trúc kỹ thuật;
+- thiết kế tích hợp;
+- thiết kế cơ sở dữ liệu;
+- ước tính triển khai.
 
-Those topics belong to later project stages.
+Các chủ đề đó thuộc các giai đoạn dự án sau.
 
 ---
 
-# 4. Review and Approval Roles
+# 4. Vai trò xem xét và phê duyệt
 
-The following stakeholders would participate in BRD review and validation in a real project.
+Các bên liên quan sau sẽ tham gia xem xét và xác nhận BRD trong dự án thực tế.
 
-| Stakeholder | Role in BRD Validation | Main Review Area |
+| Bên liên quan | Vai trò xác nhận BRD | Lĩnh vực xem xét chính |
 |---|---|---|
-| Procurement Manager | Primary Process Owner | Procurement workflow, PO management, approval process, supplier controls |
-| Finance Manager | Financial Control Owner | Budget validation, financial approval, invoice controls, matching, Payment Request approval |
-| Store Manager | Business Approver Representative | Purchase Requisition process and business approval |
-| AP Accountant | Operational SME | Supplier Invoice processing, three-way matching, exception handling, Payment Request preparation |
-| Warehouse Representative | Operational SME | Goods Receipt process and PO-to-GR relationship |
-| IT Representative | Supporting Reviewer | High-level feasibility, system dependencies, integration considerations |
-| Internal Audit | Control Reviewer | Traceability, approval history, audit requirements |
-| CFO / Executive Sponsor | Executive Approval | Overall business alignment and project direction |
+| Trưởng bộ phận mua hàng | Chủ sở hữu quy trình chính | Luồng mua hàng, quản lý PO, quy trình phê duyệt, kiểm soát nhà cung cấp |
+| Trưởng bộ phận tài chính | Chủ sở hữu kiểm soát tài chính | Kiểm tra ngân sách, phê duyệt tài chính, kiểm soát hóa đơn, đối chiếu, phê duyệt đề nghị thanh toán |
+| Quản lý cửa hàng | Đại diện người phê duyệt nghiệp vụ | Quy trình yêu cầu mua hàng và phê duyệt nghiệp vụ |
+| Kế toán công nợ phải trả (AP) | Chuyên gia nghiệp vụ vận hành | Xử lý hóa đơn nhà cung cấp, đối chiếu ba bên, xử lý ngoại lệ, chuẩn bị đề nghị thanh toán |
+| Đại diện kho | Chuyên gia nghiệp vụ vận hành | Quy trình nhận hàng và quan hệ từ PO đến GR |
+| Đại diện CNTT | Người xem xét hỗ trợ | Tính khả thi tổng quan, điều kiện phụ thuộc hệ thống, xem xét tích hợp |
+| Kiểm toán nội bộ | Người xem xét kiểm soát | Truy vết, lịch sử phê duyệt, yêu cầu kiểm toán |
+| Giám đốc tài chính (CFO) / Nhà bảo trợ cấp điều hành | Phê duyệt điều hành | Mức phù hợp nghiệp vụ tổng thể và định hướng dự án |
 
 ---
 
-# 5. Stakeholder Review Responsibilities
+# 5. Trách nhiệm xem xét của các bên liên quan
 
-## 5.1 Procurement Manager
+## 5.1 Trưởng bộ phận mua hàng
 
-The Procurement Manager should validate that the BRD accurately represents the intended procurement process.
+Trưởng bộ phận mua hàng nên xác nhận BRD thể hiện chính xác quy trình mua hàng dự kiến.
 
-Key review areas include:
+Các lĩnh vực xem xét chính gồm:
 
-- Purchase Requisition handoff to Procurement;
-- approved supplier selection;
-- Purchase Order creation;
-- PO approval workflow;
-- correction and resubmission process;
-- PO issuance controls;
-- procurement ownership and responsibilities.
+- bàn giao yêu cầu mua hàng đến bộ phận mua hàng;
+- lựa chọn nhà cung cấp đã được phê duyệt;
+- lập đơn đặt hàng;
+- luồng phê duyệt PO;
+- quy trình chỉnh sửa và gửi lại;
+- kiểm soát phát hành PO;
+- người phụ trách và trách nhiệm mua hàng.
 
-### Key Related Requirements
+### Yêu cầu chính liên quan
 
-- BRQ-04 — Controlled Supplier Selection
-- BRQ-05 — Standardized Purchase Order Management and Approval
-- BRQ-06 — Procurement Data Reuse and Transaction Linkage
+- BRQ-04 — Lựa chọn nhà cung cấp có kiểm soát
+- BRQ-05 — Quản lý và phê duyệt đơn đặt hàng chuẩn hóa
+- BRQ-06 — Tái sử dụng dữ liệu mua hàng và liên kết giao dịch
 
-### Expected Validation
+### Xác nhận kỳ vọng
 
-The Procurement Manager should confirm that:
+Trưởng bộ phận mua hàng nên xác nhận rằng:
 
-> The proposed process provides sufficient control over Purchase Order creation and approval without introducing sourcing activities that are outside the agreed project scope.
-
----
-
-## 5.2 Finance Manager
-
-The Finance Manager should validate requirements related to financial control.
-
-Key review areas include:
-
-- budget validation;
-- additional financial approval;
-- invoice-control requirements;
-- three-way matching;
-- matching exceptions;
-- Payment Request approval;
-- payment process boundary.
-
-### Key Related Requirements
-
-- BRQ-03 — Mandatory Budget Control
-- BRQ-05 — Standardized Purchase Order Management and Approval
-- BRQ-08 — Controlled Three-Way Matching and Exception Handling
-- BRQ-10 — Controlled Payment Request Approval
-
-### Expected Validation
-
-The Finance Manager should confirm that:
-
-> Financial control points are applied before purchasing and payment approval while actual bank payment execution remains outside the project scope.
+> Quy trình đề xuất cung cấp đủ kiểm soát đối với lập và phê duyệt đơn đặt hàng, không đưa vào hoạt động tìm nguồn cung nằm ngoài phạm vi dự án đã thống nhất.
 
 ---
 
-## 5.3 Store Manager
+## 5.2 Trưởng bộ phận tài chính
 
-The Store Manager represents the business approval perspective for Purchase Requisitions.
+Trưởng bộ phận tài chính nên xác nhận yêu cầu liên quan kiểm soát tài chính.
 
-Key review areas include:
+Các lĩnh vực xem xét chính gồm:
 
-- Purchase Requisition information;
-- business-need approval;
-- rejection or return scenarios;
-- relationship between budget validation and business approval.
+- kiểm tra ngân sách;
+- phê duyệt tài chính bổ sung;
+- yêu cầu kiểm soát hóa đơn;
+- đối chiếu ba bên;
+- ngoại lệ đối chiếu;
+- phê duyệt đề nghị thanh toán;
+- ranh giới quy trình thanh toán.
 
-### Key Related Requirements
+### Yêu cầu chính liên quan
 
-- BRQ-02 — Standardized Purchase Requisition Management
-- BRQ-03 — Mandatory Budget Control
+- BRQ-03 — Kiểm soát ngân sách bắt buộc
+- BRQ-05 — Quản lý và phê duyệt đơn đặt hàng chuẩn hóa
+- BRQ-08 — Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát
+- BRQ-10 — Phê duyệt đề nghị thanh toán có kiểm soát
 
-### Expected Validation
+### Xác nhận kỳ vọng
 
-The Store Manager should confirm that:
+Trưởng bộ phận tài chính nên xác nhận rằng:
 
-> Budget validation does not replace the business decision to approve or reject a purchasing need.
-
----
-
-## 5.4 AP Accountant
-
-The AP Accountant should validate the operational feasibility of invoice-processing requirements.
-
-Key review areas include:
-
-- Supplier Invoice recording;
-- relationship between Invoice, PO, and Goods Receipt;
-- three-way matching;
-- mismatch identification;
-- exception resolution;
-- Payment Request preparation.
-
-### Key Related Requirements
-
-- BRQ-06 — Procurement Data Reuse and Transaction Linkage
-- BRQ-08 — Controlled Three-Way Matching and Exception Handling
-- BRQ-10 — Controlled Payment Request Approval
-
-### Expected Validation
-
-The AP Accountant should confirm that:
-
-> Standard transactions can be processed consistently while mismatched transactions remain subject to controlled human investigation.
+> Các điểm kiểm soát tài chính được áp dụng trước phê duyệt mua hàng và thanh toán, còn thực hiện thanh toán ngân hàng thực tế vẫn nằm ngoài phạm vi dự án.
 
 ---
 
-## 5.5 Warehouse Representative
+## 5.3 Quản lý cửa hàng
 
-The Warehouse Representative should validate requirements related to Goods Receipt.
+Quản lý cửa hàng đại diện góc nhìn phê duyệt nghiệp vụ cho yêu cầu mua hàng.
 
-Key review areas include:
+Các lĩnh vực xem xét chính gồm:
 
-- receipt of delivered goods;
-- Goods Receipt recording;
-- PO reference;
-- information required for downstream matching.
+- thông tin yêu cầu mua hàng;
+- phê duyệt nhu cầu nghiệp vụ;
+- kịch bản từ chối hoặc trả về;
+- quan hệ giữa kiểm tra ngân sách và phê duyệt nghiệp vụ.
 
-### Key Related Requirements
+### Yêu cầu chính liên quan
 
-- BRQ-06 — Procurement Data Reuse and Transaction Linkage
-- BRQ-08 — Controlled Three-Way Matching and Exception Handling
+- BRQ-02 — Quản lý yêu cầu mua hàng chuẩn hóa
+- BRQ-03 — Kiểm soát ngân sách bắt buộc
 
-### Expected Validation
+### Xác nhận kỳ vọng
 
-The Warehouse Representative should confirm that:
+Quản lý cửa hàng nên xác nhận rằng:
 
-> Goods Receipt information can be reliably linked to the correct Purchase Order and used in downstream invoice matching.
-
----
-
-## 5.6 IT Representative
-
-The IT Representative should perform a high-level feasibility review.
-
-The BRD does not require IT to approve detailed technical design at this stage.
-
-Key review areas include:
-
-- availability of Supplier Master information;
-- availability of budget information;
-- coexistence with the existing accounting system;
-- potential integration dependencies;
-- role and access dependencies.
-
-### Expected Validation
-
-The IT Representative should identify any major technical dependency that could invalidate a business requirement before detailed system analysis begins.
+> Kiểm tra ngân sách không thay thế quyết định nghiệp vụ phê duyệt hoặc từ chối nhu cầu mua hàng.
 
 ---
 
-## 5.7 Internal Audit
+## 5.4 Kế toán công nợ phải trả
 
-Internal Audit should review control and traceability requirements.
+Kế toán công nợ phải trả nên xác nhận tính khả thi vận hành của yêu cầu xử lý hóa đơn.
 
-Key review areas include:
+Các lĩnh vực xem xét chính gồm:
 
-- approval history;
-- transaction history;
-- user/action/timestamp recording;
-- matching-exception history;
-- segregation of responsibilities at a high level.
+- ghi hóa đơn nhà cung cấp;
+- quan hệ giữa hóa đơn, PO và phiếu nhận hàng;
+- đối chiếu ba bên;
+- nhận diện sai lệch;
+- xử lý ngoại lệ;
+- chuẩn bị đề nghị thanh toán.
 
-### Key Related Requirements
+### Yêu cầu chính liên quan
 
-- BRQ-09 — Transaction and Approval Traceability
+- BRQ-06 — Tái sử dụng dữ liệu mua hàng và liên kết giao dịch
+- BRQ-08 — Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát
+- BRQ-10 — Phê duyệt đề nghị thanh toán có kiểm soát
 
-### Expected Validation
+### Xác nhận kỳ vọng
 
-Internal Audit should confirm that:
+Kế toán công nợ phải trả nên xác nhận rằng:
 
-> The future process provides sufficient business-level traceability to support later definition of detailed audit requirements.
-
----
-
-## 5.8 CFO / Executive Sponsor
-
-The CFO acts as the Executive Sponsor rather than a day-to-day workflow participant.
-
-The Executive Sponsor should validate:
-
-- alignment with business objectives;
-- overall project scope;
-- expected business outcomes;
-- major financial-control direction;
-- unresolved decisions requiring executive escalation.
-
-### Expected Validation
-
-The CFO should confirm that:
-
-> The BRD remains aligned with the intended business transformation and does not expand into a full ERP, sourcing, or payment-execution program.
+> Giao dịch thông thường có thể được xử lý nhất quán, còn giao dịch có sai lệch vẫn phải được con người điều tra có kiểm soát.
 
 ---
 
-# 6. Approval Matrix
+## 5.5 Đại diện kho
 
-The following matrix represents the expected validation structure.
+Đại diện kho nên xác nhận yêu cầu liên quan phiếu nhận hàng.
 
-| Artifact / Area | Procurement Manager | Finance Manager | Store Manager | AP Accountant | Warehouse | IT | Internal Audit | CFO |
+Các lĩnh vực xem xét chính gồm:
+
+- nhận hàng được giao;
+- ghi phiếu nhận hàng (Goods Receipt — GR);
+- tham chiếu PO;
+- thông tin cần cho đối chiếu ở bước sau.
+
+### Yêu cầu chính liên quan
+
+- BRQ-06 — Tái sử dụng dữ liệu mua hàng và liên kết giao dịch
+- BRQ-08 — Đối chiếu ba bên và xử lý ngoại lệ có kiểm soát
+
+### Xác nhận kỳ vọng
+
+Đại diện kho nên xác nhận rằng:
+
+> Thông tin phiếu nhận hàng có thể được liên kết đáng tin cậy với đúng đơn đặt hàng và dùng cho đối chiếu hóa đơn ở bước sau.
+
+---
+
+## 5.6 Đại diện CNTT
+
+Đại diện CNTT nên thực hiện xem xét tính khả thi tổng quan.
+
+BRD không yêu cầu CNTT phê duyệt thiết kế kỹ thuật chi tiết ở giai đoạn này.
+
+Các lĩnh vực xem xét chính gồm:
+
+- tính sẵn có của thông tin danh mục nhà cung cấp;
+- tính sẵn có của thông tin ngân sách;
+- cùng tồn tại với hệ thống kế toán hiện có;
+- điều kiện phụ thuộc tích hợp tiềm năng;
+- điều kiện phụ thuộc về vai trò và truy cập.
+
+### Xác nhận kỳ vọng
+
+Đại diện CNTT nên nhận diện mọi điều kiện phụ thuộc kỹ thuật lớn có thể làm yêu cầu nghiệp vụ không còn khả thi trước khi bắt đầu phân tích hệ thống chi tiết.
+
+---
+
+## 5.7 Kiểm toán nội bộ
+
+Kiểm toán nội bộ nên xem xét yêu cầu kiểm soát và truy vết.
+
+Các lĩnh vực xem xét chính gồm:
+
+- lịch sử phê duyệt;
+- lịch sử giao dịch;
+- ghi nhận người dùng/hành động/dấu thời gian;
+- lịch sử ngoại lệ đối chiếu;
+- phân tách trách nhiệm ở mức tổng quan.
+
+### Yêu cầu chính liên quan
+
+- BRQ-09 — Truy vết giao dịch và phê duyệt
+
+### Xác nhận kỳ vọng
+
+Kiểm toán nội bộ nên xác nhận rằng:
+
+> Quy trình tương lai cung cấp đủ khả năng truy vết ở mức nghiệp vụ để hỗ trợ xác định yêu cầu kiểm toán chi tiết sau này.
+
+---
+
+## 5.8 CFO / Nhà bảo trợ cấp điều hành
+
+CFO đóng vai trò Nhà bảo trợ cấp điều hành, không phải người tham gia luồng công việc hằng ngày.
+
+Nhà bảo trợ cấp điều hành nên xác nhận:
+
+- mức phù hợp với mục tiêu nghiệp vụ;
+- phạm vi dự án tổng thể;
+- kết quả nghiệp vụ kỳ vọng;
+- định hướng kiểm soát tài chính chính;
+- quyết định chưa giải quyết cần chuyển cấp điều hành.
+
+### Xác nhận kỳ vọng
+
+CFO nên xác nhận rằng:
+
+> BRD vẫn phù hợp chuyển đổi nghiệp vụ dự kiến và không mở rộng thành chương trình ERP đầy đủ, tìm nguồn cung hoặc thực hiện thanh toán.
+
+---
+
+# 6. Ma trận phê duyệt
+
+Ma trận sau thể hiện cấu trúc xác nhận kỳ vọng.
+
+| Sản phẩm / lĩnh vực | Trưởng bộ phận mua hàng | Trưởng bộ phận tài chính | Quản lý cửa hàng | Kế toán công nợ phải trả | Kho | CNTT | Kiểm toán nội bộ | CFO |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Business Problem | R | R | C | C | C | C | C | A |
-| Business Objectives | R | R | C | C | C | C | C | A |
-| Project Scope | R | R | C | C | C | C | C | A |
-| PR Requirements | C | C | A/R | C |  | C |  |  |
-| Budget Control | C | A/R | C | C |  | C | C |  |
-| Supplier Selection | A/R | C |  |  |  | C |  |  |
-| PO Management | A/R | C |  | C |  | C |  |  |
-| Financial PO Approval | C | A/R |  | C |  | C | C |  |
-| Goods Receipt | C |  |  | C | A/R | C |  |  |
-| Invoice Processing | C | C |  | A/R | C | C |  |  |
-| Three-Way Matching | C | A |  | R | C | C | C |  |
-| Exception Handling | A/C | A/C |  | R | C | C | C |  |
-| Payment Request Approval |  | A/R |  | R |  | C | C |  |
-| Audit / Traceability | C | C |  | C | C | C | A/R |  |
-| Final BRD Approval | R | R | C | C | C | C | C | A |
+| Vấn đề nghiệp vụ | R | R | C | C | C | C | C | A |
+| Mục tiêu nghiệp vụ | R | R | C | C | C | C | C | A |
+| Phạm vi dự án | R | R | C | C | C | C | C | A |
+| Yêu cầu PR | C | C | A/R | C |  | C |  |  |
+| Kiểm soát ngân sách | C | A/R | C | C |  | C | C |  |
+| Lựa chọn nhà cung cấp | A/R | C |  |  |  | C |  |  |
+| Quản lý PO | A/R | C |  | C |  | C |  |  |
+| Phê duyệt tài chính PO | C | A/R |  | C |  | C | C |  |
+| Phiếu nhận hàng | C |  |  | C | A/R | C |  |  |
+| Xử lý hóa đơn | C | C |  | A/R | C | C |  |  |
+| Đối chiếu ba bên | C | A |  | R | C | C | C |  |
+| Xử lý ngoại lệ — xem xét luồng mua hàng | A | C |  | R | C | C | C |  |
+| Xử lý ngoại lệ — xem xét kiểm soát tài chính | C | A |  | R | C | C | C |  |
+| Phê duyệt đề nghị thanh toán |  | A/R |  | R |  | C | C |  |
+| Kiểm toán / truy vết | C | C |  | C | C | C | A/R |  |
+| Phê duyệt BRD cuối cùng | R | R | C | C | C | C | C | A |
 
-### RACI Legend
+### Chú giải RACI
 
-| Code | Meaning |
+| Mã | Ý nghĩa |
 |---|---|
-| R | Responsible for reviewing or validating the area |
-| A | Accountable for final business approval of the area |
-| C | Consulted during validation |
+| R | Chịu trách nhiệm thực hiện xem xét hoặc xác nhận lĩnh vực |
+| A | Chịu trách nhiệm cuối cùng phê duyệt nghiệp vụ của lĩnh vực |
+| C | Được tham vấn trong quá trình xác nhận |
 
-> This matrix represents a proposed validation model for the case study.  
-> In a real organization, final RACI assignments would require stakeholder confirmation.
+`A/R` nghĩa là cùng người xem xét vừa chịu trách nhiệm cuối cùng vừa chịu trách nhiệm thực hiện đối với lĩnh vực xem xét đã nêu. Các ô `A/C` trước đây cho xử lý ngoại lệ được tách theo đối tượng xem xét: Mua hàng phụ trách xác nhận luồng mua hàng, Tài chính phụ trách xác nhận kiểm soát tài chính, hai bên tham vấn nhau. Điều này không chốt chuyển cấp ngoại lệ vận hành hoặc trách nhiệm với trường hợp hỗn hợp; các nội dung đó vẫn mở theo OD-05.
+
+Đây là **RACI xem xét/xác nhận BRD**, khác với **RACI quy trình** theo vai trò con người trong [Phân tích các bên liên quan](../02-stakeholder-analysis/stakeholder-analysis.md#8-ma-trận-raci-sơ-bộ). Tài chính giữ `A/R` với Kiểm soát ngân sách nghĩa là xem xét chính sách/yêu cầu, không thực hiện tính toán ngân sách của hệ thống. Cả hai ma trận đều không cấp quyền truy cập hệ thống; quyền chi tiết vẫn mở theo OD-07.
+
+> Ma trận thể hiện mô hình xác nhận đề xuất cho nghiên cứu tình huống.
+> Trong tổ chức thực tế, phân công RACI cuối cùng cần các bên liên quan xác nhận.
 
 ---
 
-# 7. Open Business Decisions Requiring Validation
+# 7. Quyết định nghiệp vụ còn mở cần xác nhận
 
-The following items should remain unresolved until confirmed by the appropriate business owner.
+Các nội dung sau nên tiếp tục để mở cho đến khi chủ sở hữu nghiệp vụ phù hợp xác nhận.
 
-| ID | Open Decision | Primary Owner | Supporting Stakeholder | Status |
+| ID | Quyết định còn mở | Chủ sở hữu chính | Bên liên quan hỗ trợ | Trạng thái |
 |---|---|---|---|---|
-| OD-01 | Exact Purchase Order approval thresholds | Procurement Manager / Finance Manager | CFO if escalation is required | Pending |
-| OD-02 | Criteria requiring additional Finance approval | Finance Manager | Procurement Manager | Pending |
-| OD-03 | Detailed budget-validation policy | Finance Manager | Store Manager / IT | Pending |
-| OD-04 | Three-way matching tolerance policy and values, if applicable | Finance Manager | AP Accountant / Procurement Manager | Pending |
-| OD-05 | Matching-exception escalation rules | Finance Manager / Procurement Manager | AP Accountant | Pending |
-| OD-06 | Final procurement transaction status model | Process Owners | IT | Pending |
-| OD-07 | Detailed role permissions | Business Owners | IT | Pending |
-| OD-08 | Partial Goods Receipt policy | Procurement Manager / Warehouse | AP Accountant | Pending |
+| OD-01 | Ngưỡng phê duyệt đơn đặt hàng chính xác | Trưởng bộ phận mua hàng / Trưởng bộ phận tài chính | CFO nếu cần chuyển cấp | Đang chờ |
+| OD-02 | Tiêu chí cần phê duyệt tài chính bổ sung | Trưởng bộ phận tài chính | Trưởng bộ phận mua hàng | Đang chờ |
+| OD-03 | Chính sách kiểm tra ngân sách chi tiết | Trưởng bộ phận tài chính | Quản lý cửa hàng / CNTT | Đang chờ |
+| OD-04 | Chính sách và giá trị dung sai đối chiếu ba bên, nếu áp dụng | Trưởng bộ phận tài chính | Kế toán công nợ phải trả / Trưởng bộ phận mua hàng | Đang chờ |
+| OD-05 | Quy tắc chuyển cấp ngoại lệ đối chiếu | Trưởng bộ phận tài chính / Trưởng bộ phận mua hàng | Kế toán công nợ phải trả | Đang chờ |
+| OD-06 | Mô hình trạng thái giao dịch mua hàng cuối cùng | Chủ sở hữu quy trình | CNTT | Đang chờ |
+| OD-07 | Quyền chi tiết theo vai trò | Chủ sở hữu nghiệp vụ | CNTT | Đang chờ |
+| OD-08 | Chính sách nhận hàng một phần | Trưởng bộ phận mua hàng / Kho | Kế toán công nợ phải trả | Đang chờ |
 
-Open decisions must not be treated as confirmed production rules until validated.
+Không được coi quyết định còn mở là quy tắc vận hành thực tế đã xác nhận khi chưa được xác nhận.
 
 ---
 
-# 8. Requirement Validation Criteria
+# 8. Tiêu chí xác nhận yêu cầu
 
-A Business Requirement should be considered validated when it satisfies the following criteria.
+Yêu cầu nghiệp vụ nên được coi là đã xác nhận khi thỏa mãn các tiêu chí sau.
 
-| Criterion | Validation Question |
+| Tiêu chí | Câu hỏi xác nhận |
 |---|---|
-| Business Need | Does the requirement address a real business need, control, or agreed scope capability? |
-| Scope Alignment | Is the requirement within the approved P2P process boundary? |
-| Traceability | Can the requirement be traced to an objective, pain point, process need, or business control? |
-| Clarity | Is the requirement understandable without detailed technical interpretation? |
-| Non-Duplication | Does the requirement have a distinct business purpose? |
-| Feasibility Awareness | Are major external dependencies identified? |
-| Testability Direction | Can measurable or observable success criteria eventually be derived? |
-| Stakeholder Ownership | Is there an identifiable business owner for validation? |
+| Nhu cầu nghiệp vụ | Yêu cầu có đáp ứng nhu cầu nghiệp vụ thực, kiểm soát hoặc khả năng thuộc phạm vi đã thống nhất không? |
+| Phù hợp phạm vi | Yêu cầu có nằm trong ranh giới quy trình P2P đã phê duyệt không? |
+| Truy vết | Có thể truy vết yêu cầu tới mục tiêu, điểm bất cập, nhu cầu quy trình hoặc kiểm soát nghiệp vụ không? |
+| Rõ ràng | Có thể hiểu yêu cầu mà không cần diễn giải kỹ thuật chi tiết không? |
+| Không trùng lặp | Yêu cầu có mục đích nghiệp vụ riêng không? |
+| Nhận thức tính khả thi | Các điều kiện phụ thuộc bên ngoài chính đã được nhận diện chưa? |
+| Định hướng kiểm chứng | Sau này có thể rút ra tiêu chí thành công đo lường hoặc quan sát được không? |
+| Chủ sở hữu nghiệp vụ | Có xác định được chủ sở hữu nghiệp vụ để xác nhận không? |
 
 ---
 
-# 9. Validation Status of the Current BRD
+# 9. Trạng thái xác nhận BRD hiện tại
 
-Because this repository represents a portfolio case study, formal stakeholder validation has not occurred.
+Vì kho này là nghiên cứu tình huống hồ sơ năng lực, chưa diễn ra xác nhận chính thức của các bên liên quan.
 
-The current status should therefore be interpreted as:
+Do đó, trạng thái hiện tại nên được hiểu là:
 
 ```text
-Analysis Completed
+Đã hoàn tất phân tích
         ↓
-BRD Drafted
+Đã soạn BRD
         ↓
-Internal Consistency Review Completed
+Đã hoàn tất rà tính nhất quán nội bộ
         ↓
-Case Study Baseline Established
+Đã thiết lập đường cơ sở nghiên cứu tình huống
         ↓
-Formal Stakeholder Sign-Off
-Not Performed
+Xác nhận chính thức của các bên liên quan
+Chưa thực hiện
+```

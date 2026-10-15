@@ -1,53 +1,17 @@
-# Business Requirements
+# 05 — Yêu cầu nghiệp vụ
 
-> **Phase navigation:** Purpose: establish the business requirement baseline. Contents: [BRD](./business-requirements-document.md), [requirements catalog](./requirements-catalog.md), and a proposed [review/validation framework](./approval-and-signoff.md) (no actual sign-off recorded). Next: [06 — System Analysis](../06-system-analysis/README.md).
+## Mục đích và kết quả chính
 
-## Overview
+Chuyển bối cảnh, vấn đề, nguyên nhân gốc rễ, mục tiêu và To-Be thành đường cơ sở yêu cầu nghiệp vụ. Danh mục gồm BRQ-01–BRQ-11 với cơ sở nghiệp vụ, ưu tiên, nguồn và quan hệ truy vết; chưa quy định cách triển khai kỹ thuật.
 
-This section defines the business-level requirements for the **NovaRetail JSC Procure-to-Pay Process Optimization** project.
+Chuỗi phân tích: vấn đề → điểm bất cập/nguyên nhân → mục tiêu → cải tiến To-Be/quy tắc → yêu cầu nghiệp vụ. Điều kiện, ngoại lệ và các chính sách còn mở được giữ trong tài liệu chi tiết.
 
-The Business Requirements are derived from the analysis completed in the previous project stages, including:
+## Đọc sâu
 
-- business context;
-- problem statement;
-- project objectives;
-- project scope;
-- stakeholder analysis;
-- As-Is process analysis;
-- pain-point analysis;
-- root-cause analysis;
-- To-Be process design;
-- business rules.
+| Tài liệu | Nội dung |
+| --- | --- |
+| [Tài liệu yêu cầu nghiệp vụ (BRD)](./business-requirements-document.md) | Tổng hợp nhu cầu, phạm vi, mục tiêu, kiểm soát và giới hạn; có thể đọc riêng. |
+| [Danh mục yêu cầu](./requirements-catalog.md) | Định nghĩa BRQ, cơ sở nghiệp vụ, ưu tiên, nguồn, ánh xạ và quyết định còn mở. |
+| [Khung rà soát và ký duyệt đề xuất](./approval-and-signoff.md) | Trách nhiệm rà soát/xác nhận; chưa ghi nhận ký duyệt thực tế. |
 
-The purpose of this section is to convert identified business needs into a structured, traceable business-requirement baseline.
-
-The requirements in this folder focus on:
-
-> **What NovaRetail needs from the future Procure-to-Pay process**
-
-rather than:
-
-> **How the software should technically implement those needs**
-
-Detailed Use Cases are in [Phase 06](../06-system-analysis/README.md); Functional and Non-Functional Requirements are in [Phase 07](../07-software-requirements/README.md).
-
----
-
-## 1. Business Requirements Approach
-
-The project follows a traceable analysis-to-requirement approach.
-
-```text
-Business Problem
-        ↓
-Pain Points
-        ↓
-Root Causes
-        ↓
-Business Objectives
-        ↓
-To-Be Improvements
-        ↓
-Business Rules
-        ↓
-Business Requirements
+Trước: [04 — Thiết kế To-Be](../04-to-be-design/README.md). Tiếp theo: [06 — Phân tích hệ thống](../06-system-analysis/README.md); FR/NFR và tiêu chí kiểm chứng nằm tại [Giai đoạn 07](../07-software-requirements/README.md).

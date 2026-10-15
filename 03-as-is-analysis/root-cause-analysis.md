@@ -1,442 +1,442 @@
-# Root Cause Analysis
+# Phân tích nguyên nhân gốc rễ
 
-## 1. Purpose
+## 1. Mục đích
 
-The purpose of the root-cause analysis is to identify the underlying reasons behind the most significant problems found in NovaRetail's current Procure-to-Pay process.
+Phân tích nguyên nhân gốc rễ nhằm xác định nguyên nhân sâu xa của những vấn đề đáng kể nhất trong quy trình từ mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại của NovaRetail.
 
-The analysis focuses on three high-impact problem areas:
+Phân tích tập trung vào ba nhóm vấn đề có tác động lớn:
 
-1. Purchase Order approval delay;
-2. fragmented and repeated procurement data;
-3. manual three-way matching.
+1. chậm phê duyệt đơn đặt hàng (Purchase Order — PO);
+2. dữ liệu mua hàng phân tán và nhập lặp lại;
+3. đối chiếu ba bên thủ công.
 
-These areas were selected because they directly affect cycle time, operational workload, data quality, and downstream invoice processing.
+Các nhóm này được chọn vì ảnh hưởng trực tiếp đến thời gian chu trình, khối lượng công việc vận hành, chất lượng dữ liệu và xử lý hóa đơn ở các bước sau.
 
-The objective is to avoid treating only the visible symptoms and instead identify the underlying process, data, and technology weaknesses that should guide the To-Be design.
+Mục tiêu là tránh chỉ xử lý biểu hiện bên ngoài và xác định các điểm yếu sâu xa về quy trình, dữ liệu và công nghệ để định hướng thiết kế quy trình tương lai (To-Be).
 
 ---
 
-## 2. Analysis Approach
+## 2. Phương pháp phân tích
 
-A simplified Five Whys approach is used.
+Áp dụng phương pháp Năm câu hỏi tại sao (Five Whys) giản lược.
 
-The analysis follows the logic:
+Phân tích theo logic:
 
 ```text id="xxrddd"
-Observed Problem
+Vấn đề quan sát được
       ↓
-Why does it happen?
+Tại sao xảy ra?
       ↓
-Immediate Cause
+Nguyên nhân trực tiếp
       ↓
-Why does that condition exist?
+Tại sao tồn tại tình trạng đó?
       ↓
-Underlying Cause
+Nguyên nhân sâu xa
       ↓
-Root Cause
+Nguyên nhân gốc rễ
 ```
 
-The analysis is based on the As-Is process defined for this case study.
+Phân tích dựa trên quy trình hiện tại (As-Is) được xác định cho nghiên cứu tình huống này.
 
-Because NovaRetail is a simulated organization, the identified causes are analytical assumptions derived from the modeled process rather than findings from actual employee interviews or production data.
-
----
-
-## 3. RC-01 — Purchase Order Approval Delay
-
-### Observed Problem
-
-Purchase Order approval takes longer than expected.
-
-**Related Pain Point:** PP-01.
+Vì NovaRetail là tổ chức giả lập, các nguyên nhân được xác định là giả định phân tích rút ra từ quy trình được mô hình hóa, không phải kết quả phỏng vấn nhân viên thực tế hoặc dữ liệu vận hành thực tế.
 
 ---
 
-### Five Whys Analysis
+## 3. RC-01 — Chậm phê duyệt đơn đặt hàng
 
-**Why 1 — Why does PO approval take a long time?**
+### Vấn đề quan sát được
 
-Because Purchase Orders may spend significant time waiting for managers to review and respond.
+Việc phê duyệt đơn đặt hàng kéo dài hơn dự kiến.
+
+**Điểm bất cập liên quan:** PP-01.
+
+---
+
+### Phân tích Năm câu hỏi tại sao
+
+**Tại sao 1 — Tại sao phê duyệt PO mất nhiều thời gian?**
+
+Vì đơn đặt hàng có thể phải chờ lâu để quản lý xem xét và phản hồi.
 
 ```text id="omav3q"
-PO Submitted
+PO đã gửi
      ↓
-Waiting
+Chờ đợi
      ↓
-Manager Review
+Quản lý xem xét
 ```
 
 ---
 
-**Why 2 — Why do requests spend time waiting?**
+**Tại sao 2 — Tại sao yêu cầu phải chờ?**
 
-Because approval requests are sent through email and depend on the approver noticing and processing the message.
-
----
-
-**Why 3 — Why does the process depend on email?**
-
-Because the current procurement process does not have a centralized approval queue or standardized workflow.
+Vì yêu cầu phê duyệt được gửi qua email và phụ thuộc vào việc người phê duyệt nhận thấy, xử lý thư.
 
 ---
 
-**Why 4 — Why is there no centralized approval workflow?**
+**Tại sao 3 — Tại sao quy trình phụ thuộc vào email?**
 
-Because Purchase Order preparation and approval activities are managed through disconnected tools and manual communication.
-
----
-
-### Root Cause
-
-> **Lack of a standardized and centralized Purchase Order approval workflow.**
+Vì quy trình mua hàng hiện tại chưa có hàng đợi phê duyệt tập trung hoặc luồng công việc chuẩn hóa.
 
 ---
 
-### Contributing Factors
+**Tại sao 4 — Tại sao chưa có luồng phê duyệt tập trung?**
 
-The root cause may be reinforced by:
-
-* manual approval routing;
-* no centralized list of pending approvals;
-* limited transaction status visibility;
-* no defined escalation mechanism;
-* approval evidence distributed across email.
+Vì việc lập và phê duyệt đơn đặt hàng được quản lý qua các công cụ rời rạc và trao đổi thủ công.
 
 ---
 
-### Business Consequences
+### Nguyên nhân gốc rễ
+
+> **Thiếu luồng phê duyệt đơn đặt hàng được chuẩn hóa và tập trung.**
+
+---
+
+### Yếu tố góp phần
+
+Nguyên nhân gốc rễ có thể bị tác động thêm bởi:
+
+* chuyển phê duyệt thủ công;
+* không có danh sách tập trung các yêu cầu chờ phê duyệt;
+* hạn chế khả năng theo dõi trạng thái giao dịch;
+* chưa xác định cơ chế chuyển cấp xử lý;
+* bằng chứng phê duyệt phân tán trong email.
+
+---
+
+### Hệ quả đối với nghiệp vụ
 
 ```text id="y9nvxb"
-No Standardized Workflow
+Không có luồng công việc chuẩn hóa
           ↓
-Manual Email Routing
+Chuyển thủ công qua email
           ↓
-Waiting Time
+Thời gian chờ
           ↓
-Longer PO Approval Cycle
+Chu trình phê duyệt PO kéo dài
           ↓
-Delayed PO Issuance
+Chậm phát hành PO
 ```
 
 ---
 
-### Improvement Direction
+### Hướng cải tiến
 
-The To-Be process should establish a structured approval workflow with defined approval rules and clear transaction status.
+Quy trình To-Be nên thiết lập luồng phê duyệt có cấu trúc với quy tắc phê duyệt được xác định và trạng thái giao dịch rõ ràng.
 
-This is an improvement direction rather than a final functional requirement.
-
----
-
-## 4. RC-02 — Fragmented and Repeated Procurement Data
-
-### Observed Problems
-
-Procurement information is distributed across several tools and the same information may need to be entered more than once.
-
-**Related Pain Points:**
-
-* PP-02 — Fragmented procurement data;
-* PP-04 — Limited transaction visibility;
-* PP-07 — Duplicate data entry.
+Đây là hướng cải tiến, chưa phải yêu cầu chức năng cuối cùng.
 
 ---
 
-### Five Whys Analysis
+## 4. RC-02 — Dữ liệu mua hàng phân tán và nhập lặp lại
 
-**Why 1 — Why is procurement information entered repeatedly?**
+### Các vấn đề quan sát được
 
-Because different process stages use different files, records, or systems.
+Thông tin mua hàng phân tán trên nhiều công cụ và cùng một thông tin có thể phải nhập nhiều lần.
 
-For example:
+**Các điểm bất cập liên quan:**
+
+* PP-02 — Dữ liệu mua hàng phân tán;
+* PP-04 — Hạn chế khả năng theo dõi giao dịch;
+* PP-07 — Nhập dữ liệu trùng lặp.
+
+---
+
+### Phân tích Năm câu hỏi tại sao
+
+**Tại sao 1 — Tại sao thông tin mua hàng được nhập lặp lại?**
+
+Vì các bước quy trình dùng các tệp, hồ sơ hoặc hệ thống khác nhau.
+
+Ví dụ:
 
 ```text id="22c81g"
-PR Excel
+Yêu cầu mua hàng (PR) trên Excel
    ↓
-PO Record
+Hồ sơ PO
    ↓
-Warehouse Record
+Hồ sơ kho
    ↓
-Accounting Record
+Hồ sơ kế toán
 ```
 
 ---
 
-**Why 2 — Why do process stages use separate records?**
+**Tại sao 2 — Tại sao các bước quy trình dùng hồ sơ riêng?**
 
-Because information is maintained independently by different departments.
-
----
-
-**Why 3 — Why is transaction information maintained independently?**
-
-Because transaction data is not automatically shared across the P2P lifecycle.
+Vì các bộ phận quản lý thông tin độc lập.
 
 ---
 
-**Why 4 — Why is data not automatically shared?**
+**Tại sao 3 — Tại sao thông tin giao dịch được quản lý độc lập?**
 
-Because the current tools are not integrated around a common procurement transaction.
-
----
-
-### Root Cause
-
-> **Lack of an integrated procurement data flow connecting the major stages of the Procure-to-Pay lifecycle.**
+Vì dữ liệu giao dịch không được tự động chia sẻ xuyên suốt vòng đời P2P.
 
 ---
 
-### Contributing Factors
+**Tại sao 4 — Tại sao dữ liệu không được tự động chia sẻ?**
 
-* spreadsheet-based Purchase Requisitions;
-* separate warehouse records;
-* accounting software used independently;
-* email-based information exchange;
-* no common transaction identifier or shared workflow view;
-* limited reuse of existing transaction data.
+Vì các công cụ hiện tại chưa được tích hợp quanh một giao dịch mua hàng chung.
 
 ---
 
-### Business Consequences
+### Nguyên nhân gốc rễ
+
+> **Thiếu luồng dữ liệu mua hàng tích hợp, kết nối các giai đoạn chính trong vòng đời từ mua hàng đến thanh toán.**
+
+---
+
+### Yếu tố góp phần
+
+* yêu cầu mua hàng được lập trên bảng tính;
+* hồ sơ kho tách biệt;
+* phần mềm kế toán được dùng độc lập;
+* trao đổi thông tin qua email;
+* không có mã giao dịch chung hoặc cách theo dõi luồng công việc dùng chung;
+* hạn chế tái sử dụng dữ liệu giao dịch hiện có.
+
+---
+
+### Hệ quả đối với nghiệp vụ
 
 ```text id="pfa81z"
-Disconnected Information Sources
+Nguồn thông tin rời rạc
             ↓
-Manual Data Transfer
+Chuyển dữ liệu thủ công
             ↓
-Duplicate Data Entry
+Nhập dữ liệu trùng lặp
             ↓
-Data Inconsistency
+Dữ liệu không nhất quán
             ↓
-Limited Transaction Visibility
+Hạn chế khả năng theo dõi giao dịch
 ```
 
 ---
 
-### Relationship With Other Pain Points
+### Mối liên hệ với các điểm bất cập khác
 
-This root cause contributes to several observable problems.
+Nguyên nhân gốc rễ này góp phần gây ra nhiều vấn đề quan sát được.
 
 ```text id="1bfrpg"
-Integrated Data Flow Missing
+Thiếu luồng dữ liệu tích hợp
            ↓
      ┌─────┼─────┐
      ↓     ↓     ↓
    PP-02 PP-04 PP-07
 ```
 
-It also contributes indirectly to manual invoice matching because Accounts Payable must collect transaction information from different sources.
+Điều này cũng gián tiếp góp phần gây đối chiếu hóa đơn thủ công vì bộ phận công nợ phải trả phải thu thập thông tin giao dịch từ nhiều nguồn.
 
 ---
 
-### Improvement Direction
+### Hướng cải tiến
 
-The To-Be process should establish a connected transaction flow in which existing procurement information can be reused and accessed across relevant process stages.
-
----
-
-## 5. RC-03 — Manual Three-Way Matching
-
-### Observed Problem
-
-Three-way matching between the Purchase Order, Goods Receipt, and Supplier Invoice is performed manually by Accounts Payable.
-
-**Related Pain Point:** PP-03.
+Quy trình To-Be nên thiết lập luồng giao dịch liên thông, cho phép tái sử dụng và truy cập thông tin mua hàng hiện có qua các bước quy trình liên quan.
 
 ---
 
-### Five Whys Analysis
+## 5. RC-03 — Đối chiếu ba bên thủ công
 
-**Why 1 — Why does AP perform three-way matching manually?**
+### Vấn đề quan sát được
 
-Because the accountant must manually compare the Purchase Order, Goods Receipt, and Supplier Invoice.
+Bộ phận công nợ phải trả thực hiện thủ công việc đối chiếu ba bên giữa đơn đặt hàng, phiếu nhận hàng (Goods Receipt — GR) và hóa đơn nhà cung cấp.
+
+**Điểm bất cập liên quan:** PP-03.
 
 ---
 
-**Why 2 — Why must the documents be manually compared?**
+### Phân tích Năm câu hỏi tại sao
 
-Because the related transaction information is retrieved from separate sources.
+**Tại sao 1 — Tại sao AP thực hiện đối chiếu ba bên thủ công?**
+
+Vì kế toán phải so sánh thủ công đơn đặt hàng, phiếu nhận hàng và hóa đơn nhà cung cấp.
+
+---
+
+**Tại sao 2 — Tại sao phải so sánh chứng từ thủ công?**
+
+Vì thông tin giao dịch liên quan được lấy từ các nguồn riêng biệt.
 
 ```text id="5jp1be"
 PO
    \
     \
-     → AP Accountant → Manual Comparison
+     → Kế toán công nợ phải trả (AP) → So sánh thủ công
     /
 GR /
    \
-    Invoice
+    Hóa đơn
 ```
 
 ---
 
-**Why 3 — Why are the documents retrieved separately?**
+**Tại sao 3 — Tại sao chứng từ được lấy riêng lẻ?**
 
-Because PO, Goods Receipt, and Invoice information are not automatically connected through a single transaction flow.
-
----
-
-**Why 4 — Why are they not automatically connected?**
-
-Because the current process lacks integrated document data and matching capability.
+Vì thông tin PO, phiếu nhận hàng và hóa đơn không được tự động liên kết qua một luồng giao dịch duy nhất.
 
 ---
 
-### Root Cause
+**Tại sao 4 — Tại sao chúng không được tự động liên kết?**
 
-> **Lack of integrated PO, Goods Receipt, and Invoice data with an automated matching mechanism.**
-
----
-
-### Contributing Factors
-
-* fragmented transaction records;
-* manual document retrieval;
-* no automated comparison rules;
-* exception handling through email or phone;
-* limited visibility of document status.
+Vì quy trình hiện tại thiếu dữ liệu chứng từ tích hợp và khả năng đối chiếu.
 
 ---
 
-### Business Consequences
+### Nguyên nhân gốc rễ
+
+> **Thiếu dữ liệu PO, phiếu nhận hàng và hóa đơn tích hợp cùng cơ chế đối chiếu tự động.**
+
+---
+
+### Yếu tố góp phần
+
+* hồ sơ giao dịch phân tán;
+* tìm và lấy chứng từ thủ công;
+* không có quy tắc so sánh tự động;
+* xử lý ngoại lệ qua email hoặc điện thoại;
+* hạn chế khả năng theo dõi trạng thái chứng từ.
+
+---
+
+### Hệ quả đối với nghiệp vụ
 
 ```text id="1qrko2"
-Separate PO / GR / Invoice
+PO / GR / hóa đơn tách biệt
           ↓
-Manual Document Collection
+Thu thập chứng từ thủ công
           ↓
-Manual Comparison
+So sánh thủ công
           ↓
-Higher AP Workload
+Tăng khối lượng công việc của AP
           ↓
-Longer Invoice Processing
+Xử lý hóa đơn kéo dài
           ↓
-Potential Payment Delay
+Có thể chậm thanh toán
 ```
 
 ---
 
-### Improvement Direction
+### Hướng cải tiến
 
-The To-Be process should support automated matching for eligible invoices while allowing transactions with discrepancies to be routed for controlled manual review.
+Quy trình To-Be nên hỗ trợ đối chiếu tự động cho hóa đơn đủ điều kiện, đồng thời cho phép chuyển các giao dịch có sai lệch sang xem xét thủ công có kiểm soát.
 
-Automation should not be assumed to eliminate all manual matching because exception cases may still require investigation.
-
----
-
-## 6. Cross-Cutting Root Causes
-
-The analysis indicates that the three major problems are not independent.
-
-They share several broader underlying weaknesses.
-
-### 6.1 Lack of Process Standardization
-
-Several activities depend on individual communication and manual coordination rather than a defined workflow.
-
-Examples include:
-
-* PO approval;
-* budget checking;
-* exception handling.
+Không nên giả định tự động hóa sẽ loại bỏ toàn bộ đối chiếu thủ công vì các trường hợp ngoại lệ vẫn có thể cần điều tra.
 
 ---
 
-### 6.2 Lack of Integrated Data Flow
+## 6. Nguyên nhân gốc rễ xuyên suốt
 
-Information is stored and transferred independently across different process stages.
+Phân tích cho thấy ba vấn đề chính không độc lập với nhau.
 
-This contributes to:
+Chúng cùng có một số điểm yếu sâu xa rộng hơn.
 
-* fragmented data;
-* duplicate data entry;
-* limited visibility;
-* manual document collection.
+### 6.1 Thiếu chuẩn hóa quy trình
 
----
+Nhiều hoạt động phụ thuộc vào trao đổi riêng lẻ và phối hợp thủ công thay vì luồng công việc được xác định.
 
-### 6.3 Heavy Dependence on Manual Controls
+Ví dụ gồm:
 
-Important control activities rely on employees manually checking and coordinating information.
-
-Examples include:
-
-* budget validation;
-* approval tracking;
-* three-way matching;
-* discrepancy resolution.
+* phê duyệt PO;
+* kiểm tra ngân sách;
+* xử lý ngoại lệ.
 
 ---
 
-## 7. Root Cause Summary
+### 6.2 Thiếu luồng dữ liệu tích hợp
 
-| Root Cause ID | Root Cause                                                         | Primary Pain Points Affected |
+Thông tin được lưu trữ và chuyển giao độc lập qua các bước quy trình khác nhau.
+
+Điều này góp phần gây ra:
+
+* dữ liệu phân tán;
+* nhập dữ liệu trùng lặp;
+* hạn chế khả năng theo dõi;
+* thu thập chứng từ thủ công.
+
+---
+
+### 6.3 Phụ thuộc nhiều vào kiểm soát thủ công
+
+Các hoạt động kiểm soát quan trọng dựa vào việc nhân viên kiểm tra và phối hợp thông tin thủ công.
+
+Ví dụ gồm:
+
+* kiểm tra ngân sách;
+* theo dõi phê duyệt;
+* đối chiếu ba bên;
+* xử lý sai lệch.
+
+---
+
+## 7. Tổng hợp nguyên nhân gốc rễ
+
+| Mã nguyên nhân gốc rễ | Nguyên nhân gốc rễ | Các điểm bất cập chính bị ảnh hưởng |
 | ------------- | ------------------------------------------------------------------ | ---------------------------- |
-| RC-01         | Lack of a standardized PO approval workflow                        | PP-01, PP-04, PP-05          |
-| RC-02         | Lack of an integrated procurement data flow                        | PP-02, PP-04, PP-07          |
-| RC-03         | Lack of integrated document data and automated matching capability | PP-03, indirectly PP-02      |
+| RC-01 | Thiếu luồng phê duyệt PO chuẩn hóa | PP-01, PP-04, PP-05 |
+| RC-02 | Thiếu luồng dữ liệu mua hàng tích hợp | PP-02, PP-04, PP-07 |
+| RC-03 | Thiếu dữ liệu chứng từ tích hợp và khả năng đối chiếu tự động | PP-03, gián tiếp PP-02 |
 
-The analysis suggests that several visible pain points can be addressed through a smaller number of underlying process improvements.
+Phân tích cho thấy có thể xử lý nhiều điểm bất cập dễ nhận thấy thông qua số lượng ít hơn các cải tiến quy trình nền tảng.
 
 ---
 
-## 8. From Root Cause to Improvement Direction
+## 8. Từ nguyên nhân gốc rễ đến hướng cải tiến
 
-The root causes provide the bridge between the As-Is analysis and the To-Be process.
+Các nguyên nhân gốc rễ kết nối phân tích As-Is với quy trình To-Be.
 
 ```text id="jbk56e"
-Root Cause
+Nguyên nhân gốc rễ
      ↓
-Improvement Principle
+Nguyên tắc cải tiến
      ↓
-To-Be Process
+Quy trình To-Be
      ↓
-Business Requirement
+Yêu cầu nghiệp vụ
      ↓
-Functional Requirement
+Yêu cầu chức năng
 ```
 
-Examples:
+Ví dụ:
 
 ```text id="0yi9u3"
 RC-01
-No standardized approval workflow
+Chưa có luồng phê duyệt chuẩn hóa
         ↓
-Standardize approval routing
+Chuẩn hóa chuyển phê duyệt
         ↓
-To-Be PO Approval Process
+Quy trình phê duyệt PO To-Be
 ```
 
 ```text id="npn2g0"
 RC-02
-No integrated procurement data flow
+Chưa có luồng dữ liệu mua hàng tích hợp
         ↓
-Reuse and centralize transaction data
+Tái sử dụng và tập trung dữ liệu giao dịch
         ↓
-Connected PR → PO → GR → Invoice flow
+Luồng PR → PO → GR → hóa đơn liên thông
 ```
 
 ```text id="gn7y49"
 RC-03
-No matching capability
+Chưa có khả năng đối chiếu
         ↓
-Automate eligible matching
+Tự động đối chiếu trường hợp đủ điều kiện
         ↓
-To-Be Three-Way Matching Process
+Quy trình đối chiếu ba bên To-Be
 ```
 
-Detailed system functionality will be defined later during requirements analysis.
+Chức năng hệ thống chi tiết sẽ được xác định sau trong quá trình phân tích yêu cầu.
 
 ---
 
-## 9. Conclusion
+## 9. Kết luận
 
-The root-cause analysis shows that NovaRetail's current Procure-to-Pay problems are largely driven by three structural weaknesses:
+Phân tích nguyên nhân gốc rễ cho thấy các vấn đề P2P hiện tại của NovaRetail chủ yếu bắt nguồn từ ba điểm yếu về cấu trúc:
 
-1. approval activities are not managed through a standardized workflow;
-2. procurement information does not flow consistently across process stages;
-3. invoice matching depends on manually collected transaction data.
+1. hoạt động phê duyệt không được quản lý qua luồng công việc chuẩn hóa;
+2. thông tin mua hàng không luân chuyển nhất quán qua các bước quy trình;
+3. đối chiếu hóa đơn phụ thuộc vào dữ liệu giao dịch được thu thập thủ công.
 
-These findings provide the analytical basis for the To-Be process design.
+Các phát hiện này cung cấp cơ sở phân tích cho thiết kế quy trình To-Be.
 
-The future-state process should therefore focus on improving process standardization, data integration, control visibility, and selective automation rather than simply digitizing the existing manual steps.
+Do đó, quy trình tương lai nên tập trung cải thiện chuẩn hóa quy trình, tích hợp dữ liệu, khả năng theo dõi kiểm soát và tự động hóa có chọn lọc thay vì chỉ số hóa các bước thủ công hiện có.

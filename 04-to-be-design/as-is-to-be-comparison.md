@@ -1,298 +1,298 @@
-# As-Is vs To-Be Process Comparison
+# So sánh quy trình As-Is và To-Be
 
-## Overview
+## Tổng quan
 
-This document compares NovaRetail JSC's current Procure-to-Pay process with the proposed future-state process.
+Tài liệu so sánh quy trình từ mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại của NovaRetail JSC với quy trình tương lai được đề xuất.
 
-The comparison highlights:
+So sánh làm rõ:
 
-* what changes;
-* why the change is needed;
-* which activities remain human responsibilities;
-* which rule-based activities are automated;
-* the expected business effect of each improvement.
+* điều gì thay đổi;
+* vì sao cần thay đổi;
+* hoạt động nào vẫn do con người chịu trách nhiệm;
+* hoạt động theo quy tắc nào được tự động hóa;
+* tác động nghiệp vụ kỳ vọng của từng cải tiến.
 
-The purpose is not to demonstrate that every manual activity should disappear.
+Mục đích không phải chứng minh mọi hoạt động thủ công đều nên biến mất.
 
-The To-Be process retains human judgment where it provides business value while reducing unnecessary manual coordination, repetitive data entry, and inconsistent controls.
+Quy trình To-Be giữ phán đoán của con người ở nơi tạo giá trị nghiệp vụ, đồng thời giảm phối hợp thủ công không cần thiết, nhập liệu lặp lại và kiểm soát không nhất quán.
 
 ---
 
-# 1. Executive Summary
+# 1. Tóm tắt điều hành
 
-The As-Is process can be summarized as:
+Quy trình As-Is có thể tóm tắt là:
 
 ```text
-Manual
+Thủ công
 +
-Fragmented
+Phân tán
 +
-Email-Dependent
+Phụ thuộc email
 +
-Limited Visibility
+Hạn chế khả năng theo dõi
 ```
 
-The proposed To-Be process moves toward:
+Quy trình To-Be đề xuất hướng đến:
 
 ```text
-Standardized Workflow
+Luồng công việc chuẩn hóa
 +
-Connected Transaction Data
+Dữ liệu giao dịch liên thông
 +
-Rule-Based Automation
+Tự động hóa theo quy tắc
 +
-Controlled Exceptions
+Ngoại lệ có kiểm soát
 +
-Improved Traceability
+Cải thiện khả năng truy vết
 ```
 
-The fundamental change is therefore not simply:
+Vì vậy, thay đổi nền tảng không chỉ đơn thuần là:
 
 ```text
-Manual → Digital
+Thủ công → Số hóa
 ```
 
-Instead, it is:
+Mà là:
 
 ```text
-Fragmented Process
+Quy trình phân tán
         ↓
-Connected and Controlled Process
+Quy trình liên thông và có kiểm soát
 ```
 
 ---
 
-# 2. High-Level Comparison
+# 2. So sánh tổng quan
 
-| Area                 | As-Is                       | To-Be                                         |
+|Lĩnh vực| As-Is                       | To-Be                                         |
 | -------------------- | --------------------------- | --------------------------------------------- |
-| Purchase Requisition | Created in Excel            | Created in procurement workflow               |
-| PR Data Validation   | Mainly manual               | System validates required data                |
-| Budget Control       | Manual / inconsistent       | Mandatory budget validation                   |
-| PR Approval          | Email-based                 | Workflow-based                                |
-| Supplier Selection   | Existing approved suppliers | Existing approved suppliers                   |
-| PO Creation          | PR data re-entered          | PR information reused                         |
-| PO Approval Routing  | Manual email routing        | Rule-based workflow routing                   |
-| Finance Approval     | Manually determined         | Applied according to configured rules         |
-| PO Issuance          | Sent after email approval   | Issued only after required workflow approvals |
-| Transaction Data     | Distributed across tools    | Related transaction records connected         |
-| PR/PO Status         | Manual follow-up            | Central workflow status                       |
-| Audit History        | Emails/files                | Central transaction history                   |
-| Goods Receipt        | Separate warehouse record   | GR linked to PO                               |
-| Supplier Invoice     | Separate accounting record  | Invoice linked to PO                          |
-| Three-Way Matching   | Manual                      | Automated for eligible transactions           |
-| Matching Exceptions  | Email / phone               | Structured exception workflow                 |
-| Payment Request      | Prepared manually           | Prepared after matching eligibility           |
-| Payment Approval     | Manual coordination         | Workflow-based approval                       |
-| Bank Payment         | Outside scope               | Outside scope                                 |
+| Yêu cầu mua hàng | Lập trên Excel | Lập trong luồng mua hàng |
+| Kiểm tra dữ liệu PR | Chủ yếu thủ công | Hệ thống kiểm tra dữ liệu bắt buộc |
+| Kiểm soát ngân sách | Thủ công / không nhất quán | Kiểm tra ngân sách bắt buộc |
+| Phê duyệt PR | Qua email | Theo luồng công việc |
+| Lựa chọn nhà cung cấp | Nhà cung cấp hiện có đã phê duyệt | Nhà cung cấp hiện có đã phê duyệt |
+| Lập PO | Nhập lại dữ liệu PR | Tái sử dụng thông tin PR |
+| Chuyển phê duyệt PO | Chuyển email thủ công | Chuyển theo luồng công việc dựa trên quy tắc |
+| Phê duyệt tài chính | Xác định thủ công | Áp dụng theo quy tắc được cấu hình |
+| Phát hành PO | Gửi sau phê duyệt qua email | Chỉ phát hành sau các phê duyệt bắt buộc trong luồng |
+| Dữ liệu giao dịch | Phân tán trên nhiều công cụ | Kết nối hồ sơ giao dịch liên quan |
+| Trạng thái PR/PO | Đôn đốc thủ công | Trạng thái luồng công việc tập trung |
+| Lịch sử kiểm toán | Email/tệp | Lịch sử giao dịch tập trung |
+| Phiếu nhận hàng | Hồ sơ kho riêng | GR liên kết PO |
+| Hóa đơn nhà cung cấp | Hồ sơ kế toán riêng | Hóa đơn liên kết PO |
+| Đối chiếu ba bên | Thủ công | Tự động cho giao dịch đủ điều kiện |
+| Ngoại lệ đối chiếu | Email / điện thoại | Luồng ngoại lệ có cấu trúc |
+| Đề nghị thanh toán | Chuẩn bị thủ công | Chỉ chuẩn bị sau khi đối chiếu hiện hành đạt theo quy tắc áp dụng |
+| Phê duyệt thanh toán | Phối hợp thủ công | Phê duyệt theo luồng công việc |
+| Thanh toán ngân hàng | Ngoài phạm vi | Ngoài phạm vi |
 
 ---
 
-# 3. Purchase Requisition
+# 3. Yêu cầu mua hàng
 
 ## As-Is
 
-The requester prepares the Purchase Requisition using Excel.
+Người yêu cầu lập yêu cầu mua hàng (Purchase Requisition — PR) bằng Excel.
 
 ```text
-Purchasing Need
+Nhu cầu mua hàng
       ↓
-Prepare PR in Excel
+Lập PR trên Excel
       ↓
-Send by Email
+Gửi qua email
 ```
 
-Information is stored in a file before Procurement has a centralized transaction record.
+Thông tin được lưu trong tệp trước khi bộ phận mua hàng có hồ sơ giao dịch tập trung.
 
-### Issues
+### Vấn đề
 
-* fragmented information;
-* limited status visibility;
-* possible duplicate data entry downstream.
+* thông tin phân tán;
+* hạn chế khả năng theo dõi trạng thái;
+* có thể nhập dữ liệu trùng lặp ở các bước sau.
 
 ---
 
 ## To-Be
 
-The requester creates the PR directly within the procurement workflow.
+Người yêu cầu lập PR trực tiếp trong luồng mua hàng.
 
 ```text
-Purchasing Need
+Nhu cầu mua hàng
       ↓
-Create PR
+Lập PR
       ↓
-Submit PR
+Gửi PR
 ```
 
-### Main Change
+### Thay đổi chính
 
-The procurement transaction begins inside the controlled process rather than in an external spreadsheet.
+Giao dịch mua hàng bắt đầu trong quy trình có kiểm soát thay vì bảng tính bên ngoài.
 
-### Expected Effect
+### Tác động kỳ vọng
 
-* earlier transaction visibility;
-* standardized PR information;
-* reusable downstream data.
+* theo dõi giao dịch sớm hơn;
+* thông tin PR chuẩn hóa;
+* dữ liệu tái sử dụng được ở các bước sau.
 
 ---
 
-# 4. PR Validation
+# 4. Kiểm tra PR
 
 ## As-Is
 
-PR information is reviewed manually by downstream users.
+Thông tin PR được người dùng ở các bước sau xem xét thủ công.
 
-Missing or incorrect information may be discovered only after the request has already been sent.
+Thông tin thiếu hoặc sai có thể chỉ được phát hiện sau khi yêu cầu đã gửi.
 
 ---
 
 ## To-Be
 
-The system validates required information before the PR continues.
+Hệ thống kiểm tra thông tin bắt buộc trước khi PR tiếp tục.
 
 ```text
-Submit PR
+Gửi PR
     ↓
-Validate Required Information
+Kiểm tra thông tin bắt buộc
 ```
 
-### Expected Effect
+### Tác động kỳ vọng
 
-Incomplete requests can be identified earlier, reducing unnecessary downstream clarification.
+Có thể nhận diện sớm yêu cầu chưa đầy đủ, giảm làm rõ không cần thiết ở các bước sau.
 
 ---
 
-# 5. Budget Control
+# 5. Kiểm soát ngân sách
 
 ## As-Is
 
-Budget checking is performed manually and may depend on separately available information.
+Kiểm tra ngân sách được thực hiện thủ công và có thể phụ thuộc vào thông tin có sẵn riêng biệt.
 
 ```text
 PR
  ↓
-Manual Budget Check
+Kiểm tra ngân sách thủ công
 ```
 
-The control may therefore be applied inconsistently.
+Do đó, kiểm soát có thể được áp dụng không nhất quán.
 
 ---
 
 ## To-Be
 
-Every submitted PR passes through a standard budget-validation step.
+Mọi PR đã gửi đều qua bước kiểm tra ngân sách tiêu chuẩn.
 
 ```text
-PR Submitted
+PR đã gửi
      ↓
-Validate Budget
+Kiểm tra ngân sách
      ↓
-Budget Available?
+Có đủ ngân sách?
 ```
 
-### If No
+### Nếu không
 
 ```text
-Return PR
+Trả PR
    ↓
-Revise
+Chỉnh sửa
    ↓
-Resubmit
+Gửi lại
 ```
 
-### If Yes
+### Nếu có
 
-The request proceeds to business approval.
+Yêu cầu chuyển sang phê duyệt nghiệp vụ.
 
 ---
 
-## Business Impact
+## Tác động đến nghiệp vụ
 
-The change improves financial control without moving corporate budget management into the project scope.
+Thay đổi cải thiện kiểm soát tài chính mà không đưa quản lý ngân sách doanh nghiệp vào phạm vi dự án.
 
 ---
 
-# 6. Purchase Requisition Approval
+# 6. Phê duyệt yêu cầu mua hàng
 
 ## As-Is
 
-The Store Manager receives the PR through email and manually reviews the request.
+Quản lý cửa hàng nhận PR qua email và xem xét thủ công.
 
-Approval evidence remains within email communication.
+Bằng chứng phê duyệt nằm trong trao đổi email.
 
 ---
 
 ## To-Be
 
-The Store Manager reviews the PR through the procurement workflow.
+Quản lý cửa hàng xem xét PR qua luồng mua hàng.
 
-Relevant information is available within the same transaction.
+Thông tin liên quan có sẵn trong cùng giao dịch.
 
 ```text
-Validated PR
+PR đã kiểm tra đạt
      ↓
-Store Manager Review
+Quản lý cửa hàng xem xét
      ↓
-Approved?
+Được phê duyệt?
 ```
 
 ---
 
-## Main Change
+## Thay đổi chính
 
-The **decision remains human**, but the workflow around the decision becomes structured.
+**Quyết định vẫn do con người đưa ra**, còn luồng công việc quanh quyết định trở nên có cấu trúc.
 
-This distinction is important:
+Phân biệt này quan trọng:
 
 ```text
-Automation
+Tự động hóa
 ≠
-Automatically approving the purchase
+Tự động phê duyệt giao dịch mua
 ```
 
-The system supports the process. The Store Manager remains responsible for the business decision.
+Hệ thống hỗ trợ quy trình. Quản lý cửa hàng vẫn chịu trách nhiệm quyết định nghiệp vụ.
 
 ---
 
-# 7. Supplier Selection
+# 7. Lựa chọn nhà cung cấp
 
 ## As-Is
 
-Procurement selects an existing supplier.
+Bộ phận mua hàng chọn nhà cung cấp hiện có.
 
 ## To-Be
 
-Procurement continues to select a supplier from the approved Supplier Master.
+Bộ phận mua hàng tiếp tục chọn từ danh mục nhà cung cấp đã được phê duyệt.
 
 ---
 
-## What Does Not Change
+## Nội dung giữ nguyên
 
-This is intentionally not replaced by:
+Hoạt động này được chủ ý không thay bằng:
 
-* automatic sourcing;
-* RFQ;
-* supplier bidding;
-* supplier onboarding.
+* tìm nguồn cung tự động;
+* yêu cầu báo giá (RFQ);
+* nhà cung cấp dự thầu;
+* tiếp nhận nhà cung cấp mới.
 
-The improvement project does not need to change every existing activity.
+Dự án cải tiến không cần thay đổi mọi hoạt động hiện có.
 
-Supplier Selection remains a human Procurement responsibility because full strategic sourcing is outside scope.
+Lựa chọn nhà cung cấp vẫn do con người thuộc bộ phận mua hàng chịu trách nhiệm vì tìm nguồn cung chiến lược đầy đủ nằm ngoài phạm vi.
 
 ---
 
-# 8. Purchase Order Creation
+# 8. Lập đơn đặt hàng
 
 ## As-Is
 
-The Procurement Officer creates the PO and may manually re-enter information from the Purchase Requisition.
+Nhân viên mua hàng lập đơn đặt hàng (Purchase Order — PO) và có thể nhập lại thủ công thông tin từ yêu cầu mua hàng.
 
 ```text
 PR
  ↓
-Read Data
+Đọc dữ liệu
  ↓
-Re-enter
+Nhập lại
  ↓
 PO
 ```
@@ -301,233 +301,233 @@ PO
 
 ## To-Be
 
-The Procurement Officer creates the PO using information from the approved PR.
+Nhân viên mua hàng lập PO bằng thông tin từ PR đã phê duyệt.
 
 ```text
-Approved PR
+PR đã phê duyệt
      ↓
-Reuse Data
+Tái sử dụng dữ liệu
      ↓
-Create PO
+Lập PO
 ```
 
-The Procurement Officer adds or updates PO-specific information such as:
+Nhân viên mua hàng bổ sung hoặc cập nhật thông tin riêng của PO như:
 
-* supplier;
-* purchasing price;
-* delivery terms;
-* commercial information.
-
----
-
-## Expected Effect
-
-* fewer manual-entry touchpoints;
-* lower error risk;
-* improved PR-to-PO consistency.
+* nhà cung cấp;
+* giá mua;
+* điều khoản giao hàng;
+* thông tin thương mại.
 
 ---
 
-# 9. Purchase Order Approval Routing
+## Tác động kỳ vọng
+
+* ít điểm nhập liệu thủ công hơn;
+* giảm rủi ro lỗi;
+* cải thiện tính nhất quán từ PR đến PO.
+
+---
+
+# 9. Chuyển phê duyệt đơn đặt hàng
 
 ## As-Is
 
-The Procurement Officer manually sends the PO through email.
+Nhân viên mua hàng gửi PO thủ công qua email.
 
 ```text
-Create PO
+Lập PO
     ↓
-Send Email
+Gửi email
     ↓
-Wait
+Chờ
 ```
 
-The officer may need to follow up manually.
+Nhân viên có thể phải đôn đốc thủ công.
 
 ---
 
 ## To-Be
 
-The system evaluates the applicable approval rules and routes the PO.
+Hệ thống đánh giá quy tắc phê duyệt áp dụng và chuyển PO.
 
 ```text
-Submit PO
+Gửi PO
     ↓
-Evaluate Rules
+Đánh giá quy tắc
     ↓
-Route Approval
+Chuyển phê duyệt
 ```
 
 ---
 
-## Main Change
+## Thay đổi chính
 
-The responsibility for **routing** changes:
+Trách nhiệm **chuyển phê duyệt** thay đổi:
 
 ```text
 As-Is:
-Procurement Officer → Manual Routing
+Nhân viên mua hàng → Chuyển thủ công
 
 To-Be:
-System → Rule-Based Routing
+Hệ thống → Chuyển theo quy tắc
 ```
 
-The responsibility for **approval** does not change:
+Trách nhiệm **phê duyệt** giữ nguyên:
 
 ```text
-Procurement Manager / Finance Manager
-→ Human Decision
+Trưởng bộ phận mua hàng / Trưởng bộ phận tài chính
+→ Quyết định con người
 ```
 
 ---
 
-# 10. Procurement Approval
+# 10. Phê duyệt mua hàng
 
 ## As-Is
 
-The Procurement Manager receives the PO through email and approves or returns it.
+Trưởng bộ phận mua hàng nhận PO qua email, rồi phê duyệt hoặc trả về.
 
-A returned PO requires manual communication and follow-up.
+PO bị trả về cần trao đổi và đôn đốc thủ công.
 
 ---
 
 ## To-Be
 
-The Procurement Manager reviews the PO through the workflow.
+Trưởng bộ phận mua hàng thực hiện phê duyệt mua hàng qua luồng công việc. Phê duyệt của Trưởng bộ phận tài chính là bổ sung khi tiêu chí áp dụng yêu cầu; mọi phê duyệt bắt buộc đều phải có trước phát hành.
 
 ```text
-Review PO
+Xem xét PO
    ↓
-Approved?
-├── Yes → Continue
-└── No  → Return for Correction
+Được phê duyệt?
+├── Có → Tiếp tục
+└── Không → Trả lại để chỉnh sửa
 ```
 
-A corrected PO is resubmitted through the controlled process.
+PO đã chỉnh sửa được gửi lại qua quy trình có kiểm soát.
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* clearer transaction ownership;
-* consistent return/resubmit path;
-* improved approval history.
+* trách nhiệm phụ trách giao dịch rõ hơn;
+* đường trả về/gửi lại nhất quán;
+* cải thiện lịch sử phê duyệt.
 
 ---
 
-# 11. Conditional Financial Approval
+# 11. Phê duyệt tài chính có điều kiện
 
 ## As-Is
 
-Additional financial approval may be required, but routing depends on manual handling.
+Có thể cần phê duyệt tài chính bổ sung, nhưng việc chuyển phụ thuộc vào xử lý thủ công.
 
 ---
 
 ## To-Be
 
-The system evaluates whether additional financial approval is required.
+Hệ thống đánh giá có cần phê duyệt tài chính bổ sung hay không.
 
 ```text
-Procurement Approved
+Đã phê duyệt mua hàng
         ↓
-Finance Approval Required?
+Cần phê duyệt tài chính?
        /                  \
-     No                    Yes
+      Không                Có
      ↓                      ↓
-Continue             Finance Review
+Tiếp tục             Tài chính xem xét
 ```
 
 ---
 
-## Design Improvement
+## Cải tiến thiết kế
 
-The BPMN does not hardcode a specific monetary threshold.
+BPMN không gán cố định ngưỡng tiền cụ thể.
 
-Instead:
+Thay vào đó:
 
-> Approval criteria are maintained as configurable Business Rules.
+> Tiêu chí phê duyệt được duy trì dưới dạng quy tắc nghiệp vụ có thể cấu hình.
 
-This keeps the process design stable if NovaRetail later changes financial approval policy.
+Điều này giữ thiết kế quy trình ổn định nếu NovaRetail thay đổi chính sách phê duyệt tài chính sau này.
 
 ---
 
-# 12. Purchase Order Issuance
+# 12. Phát hành đơn đặt hàng
 
 ## As-Is
 
-Procurement sends the approved PO to the Supplier after confirming the required email approvals.
+Bộ phận mua hàng gửi PO đã phê duyệt cho Nhà cung cấp sau khi xác nhận các phê duyệt qua email bắt buộc.
 
 ---
 
 ## To-Be
 
-The PO can be issued only after the workflow confirms that all required approvals are complete.
+PO chỉ được phát hành sau khi luồng công việc xác nhận mọi phê duyệt bắt buộc đã hoàn tất.
 
 ```text
-Required Approvals Complete?
+Đã hoàn tất các phê duyệt bắt buộc?
        ↓
-      Yes
+       Có
        ↓
-Issue PO
+Phát hành PO
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-The process reduces the risk of sending a PO before required approval conditions have been satisfied.
+Quy trình giảm rủi ro gửi PO trước khi đáp ứng các điều kiện phê duyệt bắt buộc.
 
 ---
 
-# 13. Supplier Interaction
+# 13. Tương tác với nhà cung cấp
 
 ## As-Is
 
-Supplier:
+Nhà cung cấp:
 
 ```text
-Receive PO
+Nhận PO
    ↓
-Prepare Goods
+Chuẩn bị hàng
    ↓
-Deliver Goods
+Giao hàng
    ↓
-Send Invoice
+Gửi hóa đơn
 ```
 
 ## To-Be
 
-The external business interaction remains fundamentally the same.
+Tương tác nghiệp vụ bên ngoài về cơ bản giữ nguyên.
 
 ---
 
-## What Does Not Change
+## Nội dung giữ nguyên
 
-The project does not introduce a Supplier Portal.
+Dự án không bổ sung cổng thông tin nhà cung cấp.
 
-The Supplier remains an external participant and continues to:
+Nhà cung cấp vẫn là bên tham gia bên ngoài và tiếp tục:
 
-* receive the PO;
-* deliver goods;
-* provide an invoice.
+* nhận PO;
+* giao hàng;
+* cung cấp hóa đơn.
 
-This avoids unnecessary scope expansion.
+Điều này tránh mở rộng phạm vi không cần thiết.
 
 ---
 
-# 14. Goods Receipt
+# 14. Phiếu nhận hàng
 
 ## As-Is
 
-Warehouse Staff record Goods Receipt in a separate warehouse file or system.
+Nhân viên kho ghi phiếu nhận hàng (Goods Receipt — GR) trong tệp hoặc hệ thống kho riêng.
 
-The information may not be immediately connected to the procurement transaction.
+Thông tin có thể chưa được kết nối ngay với giao dịch mua hàng.
 
 ---
 
 ## To-Be
 
-Warehouse Staff record Goods Receipt against the related Purchase Order.
+Nhân viên kho ghi phiếu nhận hàng theo đơn đặt hàng liên quan.
 
 ```text
 PO-001
@@ -537,35 +537,35 @@ PO-001
 
 ---
 
-## Main Change
+## Thay đổi chính
 
-The physical receiving activity remains human.
+Hoạt động nhận hàng vật lý vẫn do con người thực hiện.
 
-The improvement concerns the **transaction relationship**, not replacing Warehouse Staff.
-
----
-
-## Expected Effect
-
-* easier identification of related PO;
-* better receiving traceability;
-* direct input for three-way matching.
+Cải tiến liên quan **quan hệ giao dịch**, không thay thế Nhân viên kho.
 
 ---
 
-# 15. Supplier Invoice
+## Tác động kỳ vọng
+
+* dễ xác định PO liên quan hơn;
+* truy vết nhận hàng tốt hơn;
+* đầu vào trực tiếp cho đối chiếu ba bên.
+
+---
+
+# 15. Hóa đơn nhà cung cấp
 
 ## As-Is
 
-AP receives the supplier invoice and records it in the accounting tool.
+AP nhận hóa đơn nhà cung cấp và ghi vào công cụ kế toán.
 
-The accountant may need to manually determine the related PO and Goods Receipt.
+Kế toán có thể phải xác định thủ công PO và phiếu nhận hàng liên quan.
 
 ---
 
 ## To-Be
 
-The Supplier Invoice is recorded against the related Purchase Order.
+Hóa đơn nhà cung cấp được ghi nhận theo đơn đặt hàng liên quan.
 
 ```text
 PO-001
@@ -573,7 +573,7 @@ PO-001
   └── INV-001
 ```
 
-This creates the structure:
+Điều này tạo cấu trúc:
 
 ```text
 PR-001
@@ -585,447 +585,450 @@ PR-001
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-The related transaction data can be retrieved more consistently for matching and review.
+Dữ liệu giao dịch liên quan có thể được truy xuất nhất quán hơn để đối chiếu và xem xét.
 
 ---
 
-# 16. Three-Way Matching
+# 16. Đối chiếu ba bên
 
 ## As-Is
 
-AP performs matching manually.
+AP thực hiện đối chiếu thủ công.
 
 ```text
-Find PO
+Tìm PO
 +
-Find GR
+Tìm GR
 +
-Invoice
+Hóa đơn
    ↓
-Manual Comparison
+So sánh thủ công
 ```
 
 ---
 
 ## To-Be
 
-The system performs matching according to predefined rules.
+Hệ thống thực hiện đối chiếu theo quy tắc được xác định trước.
 
 ```text
 PO
 +
 GR
 +
-Invoice
+Hóa đơn
    ↓
-Automated Matching
+Đối chiếu tự động
 ```
 
-Typical comparison attributes include:
+Các thuộc tính so sánh điển hình gồm:
 
-* supplier;
-* item;
-* quantity;
-* unit price;
-* total amount.
+* nhà cung cấp;
+* mặt hàng;
+* số lượng;
+* đơn giá;
+* tổng tiền.
 
 ---
 
-## Main Change
+## Thay đổi chính
 
-Standard transactions move from:
+Giao dịch thông thường chuyển từ:
 
 ```text
-Human compares every transaction
+Con người so sánh từng giao dịch
 ```
 
-to:
+sang:
 
 ```text
-System checks standard transactions
-Human focuses on exceptions
+Hệ thống kiểm tra giao dịch thông thường
+Con người tập trung vào ngoại lệ
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* reduced repetitive AP work;
-* faster standard invoice processing;
-* more consistent control execution.
+* giảm công việc AP lặp lại;
+* xử lý hóa đơn thông thường nhanh hơn;
+* thực thi kiểm soát nhất quán hơn.
 
 ---
 
-# 17. Matching Exception Handling
+# 17. Xử lý ngoại lệ đối chiếu
 
 ## As-Is
 
-Mismatch investigation may involve:
+Điều tra sai lệch có thể gồm:
 
 ```text
-Email Procurement
+Gửi email cho bộ phận mua hàng
        ↓
-Call Warehouse
+Gọi kho
        ↓
-Contact Supplier
+Liên hệ nhà cung cấp
        ↓
-Wait
+Chờ
        ↓
-Re-check
+Kiểm tra lại
 ```
 
-Exception history may be difficult to reconstruct.
+Lịch sử ngoại lệ có thể khó tái dựng.
 
 ---
 
 ## To-Be
 
-A structured exception is created.
+Ngoại lệ có cấu trúc được tạo.
 
 ```text
-Mismatch
+Sai lệch
    ↓
-Exception Created
+Ngoại lệ đã tạo
    ↓
-Assigned for Review
+Đã giao xem xét
    ↓
-Investigate
+Điều tra
    ↓
-Resolve
+Ghi nhận chỉnh sửa
    ↓
-Re-run Matching
+Chạy lại đối chiếu
+   ↓
+Đạt? Có → Xác nhận ngoại lệ đã xử lý / đủ điều kiện
+     Không → Giữ mở / chặn đề nghị thanh toán
 ```
 
-The exception maintains:
+Ngoại lệ giữ:
 
-* type;
-* related transaction;
-* owner;
-* status;
-* reason;
-* resolution history.
-
----
-
-## Important Design Decision
-
-Exception handling is **not eliminated**.
-
-Automation is applied to the standard path, while complex cases continue to require human judgment.
-
-This prevents the To-Be design from assuming unrealistic 100% straight-through processing.
+* loại;
+* giao dịch liên quan;
+* người phụ trách;
+* trạng thái;
+* lý do;
+* lịch sử xử lý.
 
 ---
 
-# 18. Transaction Status
+## Quyết định thiết kế quan trọng
+
+Xử lý ngoại lệ **không bị loại bỏ**.
+
+Tự động hóa áp dụng cho luồng thông thường, còn trường hợp phức tạp tiếp tục cần phán đoán con người.
+
+Điều này tránh việc thiết kế To-Be giả định thiếu thực tế về xử lý xuyên suốt tự động 100%.
+
+---
+
+# 18. Trạng thái giao dịch
 
 ## As-Is
 
-Users determine PR/PO status through:
+Người dùng xác định trạng thái PR/PO qua:
 
 * email;
-* spreadsheet;
-* contacting Procurement;
-* contacting approvers.
+* bảng tính;
+* liên hệ bộ phận mua hàng;
+* liên hệ người phê duyệt.
 
 ---
 
 ## To-Be
 
-Transactions maintain an explicit current status.
+Giao dịch duy trì trạng thái hiện tại rõ ràng.
 
 ```text
-Submitted
+Đã gửi
 ↓
-Pending Approval
+Chờ phê duyệt
 ↓
-Approved
+Đã phê duyệt
 ↓
-Ordered
+Đã đặt hàng
 ↓
-Received
+Đã nhận hàng
 ↓
-Matching
+Đang đối chiếu
 ↓
-Matched
+Đã đối chiếu đạt
 ↓
-Payment Approved
+Đã phê duyệt thanh toán
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-* reduced status inquiries;
-* easier identification of pending work;
-* improved operational visibility.
+* giảm hỏi trạng thái;
+* dễ nhận diện công việc đang chờ hơn;
+* cải thiện khả năng theo dõi vận hành.
 
 ---
 
-# 19. Audit History
+# 19. Lịch sử kiểm toán
 
 ## As-Is
 
-Approval and transaction evidence is distributed across email and files.
+Bằng chứng phê duyệt và giao dịch phân tán trong email và tệp.
 
 ---
 
 ## To-Be
 
-Important actions are stored as part of transaction history.
+Hành động quan trọng được lưu như một phần lịch sử giao dịch.
 
-Example:
+Ví dụ:
 
-| Transaction | Action    | User                | Time  |
+| Giao dịch | Hành động | Người dùng | Thời gian |
 | ----------- | --------- | ------------------- | ----- |
-| PO-001      | Created   | Procurement Officer | 09:05 |
-| PO-001      | Submitted | Procurement Officer | 09:20 |
-| PO-001      | Approved  | Procurement Manager | 10:10 |
+| PO-001 | Đã tạo | Nhân viên mua hàng | 09:05 |
+| PO-001      |Đã gửi|Nhân viên mua hàng| 09:20 |
+| PO-001      |Đã phê duyệt|Trưởng bộ phận mua hàng| 10:10 |
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-The organization can more easily answer:
+Tổ chức có thể dễ trả lời hơn:
 
 ```text
-Who performed the action?
-When?
-What changed?
-Which transaction was affected?
+Ai thực hiện hành động?
+Khi nào?
+Điều gì thay đổi?
+Giao dịch nào bị ảnh hưởng?
 ```
 
 ---
 
-# 20. Payment Request
+# 20. Đề nghị thanh toán
 
 ## As-Is
 
-After manual matching, AP prepares supporting information for payment approval.
+Sau đối chiếu thủ công, AP chuẩn bị thông tin hỗ trợ phê duyệt thanh toán.
 
 ---
 
 ## To-Be
 
-A Payment Request may be prepared after the invoice satisfies payment-readiness rules.
+Chỉ được chuẩn bị và gửi đề nghị thanh toán khi kết quả đối chiếu hiện hành thỏa mãn quy tắc áp dụng. Chỉnh sửa mà chưa đối chiếu lại đạt không làm hóa đơn đủ điều kiện.
 
 ```text
-Invoice Matched
+Hóa đơn đã đối chiếu đạt
       ↓
-Prepare Payment Request
+Chuẩn bị đề nghị thanh toán
 ```
 
 ---
 
-## Expected Effect
+## Tác động kỳ vọng
 
-Payment preparation occurs only after the required procurement controls are completed.
+Chuẩn bị thanh toán chỉ diễn ra sau khi hoàn tất các kiểm soát mua hàng bắt buộc.
 
 ---
 
-# 21. Payment Approval
+# 21. Phê duyệt thanh toán
 
 ## As-Is
 
-Finance reviews the Payment Request and supporting documents.
+Tài chính xem xét đề nghị thanh toán và chứng từ hỗ trợ.
 
 ## To-Be
 
-Finance continues to make the final payment-approval decision, but the request is routed and tracked through the workflow.
+Tài chính tiếp tục đưa ra quyết định phê duyệt thanh toán cuối cùng, nhưng đề nghị được chuyển và theo dõi qua luồng công việc.
 
 ```text
-Payment Request
+Đề nghị thanh toán
       ↓
-Finance Review
+Tài chính xem xét
       ↓
-Approved?
+Được phê duyệt?
 ```
 
 ---
 
-## What Does Not Change
+## Nội dung giữ nguyên
 
-The Finance Manager remains responsible for the approval decision.
+Trưởng bộ phận tài chính vẫn chịu trách nhiệm quyết định phê duyệt.
 
-Actual bank payment execution is outside scope in both models.
+Thực hiện thanh toán ngân hàng thực tế nằm ngoài phạm vi của cả hai mô hình.
 
 ---
 
-# 22. Manual vs Automated Responsibility
+# 22. Trách nhiệm thủ công và tự động
 
-The To-Be process does not attempt to remove humans from all process stages.
+Quy trình To-Be không cố loại con người khỏi mọi bước quy trình.
 
-| Activity                    | As-Is                     | To-Be                          |
+| Hoạt động | As-Is | To-Be |
 | --------------------------- | ------------------------- | ------------------------------ |
-| Identify purchasing need    | Human                     | Human                          |
-| Create PR                   | Human                     | Human using centralized system |
-| Validate required PR fields | Human / downstream review | Automated                      |
-| Validate budget             | Manual                    | Automated rule-based check     |
-| Approve PR                  | Human                     | Human                          |
-| Select Supplier             | Human                     | Human                          |
-| Create PO                   | Human                     | Human with data reuse          |
-| Route PO approval           | Human                     | Automated                      |
-| Approve PO                  | Human                     | Human                          |
-| Receive goods               | Human                     | Human                          |
-| Inspect goods               | Human                     | Human                          |
-| Record GR                   | Human                     | Human using linked transaction |
-| Record invoice              | Human                     | Human using linked transaction |
-| Standard 3-way matching     | Human                     | Automated                      |
-| Resolve mismatch            | Human                     | Human with structured workflow |
-| Prepare Payment Request     | Human                     | Human                          |
-| Route Payment Request       | Manual                    | Automated                      |
-| Approve Payment Request     | Human                     | Human                          |
+| Xác định nhu cầu mua hàng | Con người | Con người |
+| Lập PR | Con người | Con người dùng hệ thống tập trung |
+| Kiểm tra trường PR bắt buộc | Con người / xem xét ở bước sau | Tự động |
+| Kiểm tra ngân sách | Thủ công | Kiểm tra tự động theo quy tắc |
+| Phê duyệt PR | Con người | Con người |
+| Chọn nhà cung cấp | Con người | Con người |
+| Lập PO | Con người | Con người cùng tái sử dụng dữ liệu |
+| Chuyển phê duyệt PO | Con người | Tự động |
+| Phê duyệt PO | Con người | Con người |
+| Nhận hàng | Con người | Con người |
+| Kiểm tra hàng | Con người | Con người |
+| Ghi GR | Con người | Con người dùng giao dịch liên kết |
+| Ghi hóa đơn | Con người | Con người dùng giao dịch liên kết |
+| Đối chiếu ba bên thông thường | Con người | Tự động |
+| Xử lý sai lệch | Con người | Con người theo luồng có cấu trúc |
+| Chuẩn bị đề nghị thanh toán | Con người | Con người |
+| Chuyển đề nghị thanh toán | Thủ công | Tự động |
+| Phê duyệt đề nghị thanh toán | Con người | Con người |
 
-This distinction reflects the design principle:
+Phân biệt này thể hiện nguyên tắc thiết kế:
 
-> **Automate repeatable rules; retain human judgment where business decisions are required.**
+> **Tự động hóa quy tắc lặp lại; giữ phán đoán con người ở nơi cần quyết định nghiệp vụ.**
 
 ---
 
-# 23. Pain Point Improvement Summary
+# 23. Tổng hợp cải tiến điểm bất cập
 
-| Pain Point | As-Is Condition                         | To-Be Response                  |
+| Điểm bất cập | Tình trạng As-Is | Đáp ứng To-Be |
 | ---------- | --------------------------------------- | ------------------------------- |
-| PP-01      | Email approval creates waiting time     | Workflow-based PO approval      |
-| PP-02      | Data exists in separate sources         | Connected procurement records   |
-| PP-03      | AP manually matches every invoice       | Automated matching + exceptions |
-| PP-04      | Users manually ask for status           | Workflow status                 |
-| PP-05      | Audit evidence distributed across files | Transaction history             |
-| PP-06      | Budget check manual/inconsistent        | Mandatory budget validation     |
-| PP-07      | PR information entered again            | Reuse approved PR data          |
+| PP-01 | Phê duyệt email tạo thời gian chờ | Phê duyệt PO theo luồng công việc |
+| PP-02 | Dữ liệu nằm ở các nguồn riêng | Hồ sơ mua hàng liên thông |
+| PP-03 | AP đối chiếu thủ công từng hóa đơn | Đối chiếu tự động + ngoại lệ |
+| PP-04 | Người dùng hỏi trạng thái thủ công | Trạng thái luồng công việc |
+| PP-05 | Bằng chứng kiểm toán phân tán trong các tệp | Lịch sử giao dịch |
+| PP-06 | Kiểm tra ngân sách thủ công/không nhất quán | Kiểm tra ngân sách bắt buộc |
+| PP-07 | Thông tin PR nhập lại | Tái sử dụng dữ liệu PR đã phê duyệt |
 
 ---
 
-# 24. Expected Business Impact
+# 24. Tác động nghiệp vụ kỳ vọng
 
-## Process Efficiency
+## Hiệu quả quy trình
 
-The To-Be process reduces:
+Quy trình To-Be giảm:
 
-* approval routing effort;
-* repeated data entry;
-* manual document retrieval;
-* manual matching for standard transactions.
-
----
-
-## Data and Visibility
-
-The To-Be process improves:
-
-* PR-to-PO traceability;
-* PO-to-GR traceability;
-* PO-to-Invoice traceability;
-* transaction status visibility.
+* công sức chuyển phê duyệt;
+* nhập dữ liệu lặp lại;
+* tìm và lấy chứng từ thủ công;
+* đối chiếu thủ công cho giao dịch thông thường.
 
 ---
 
-## Control and Governance
+## Dữ liệu và khả năng theo dõi
 
-The To-Be process strengthens:
+Quy trình To-Be cải thiện:
 
-* budget control;
-* approval control;
-* invoice matching control;
-* exception traceability;
-* audit history.
-
----
-
-# 25. What Intentionally Remains Manual
-
-Several activities remain manual because they require business judgment or physical action.
-
-These include:
-
-* identifying purchasing needs;
-* business approval;
-* supplier selection;
-* procurement approval;
-* physical goods inspection;
-* complex exception investigation;
-* Payment Request preparation;
-* final payment approval.
-
-This is intentional.
-
-A well-designed To-Be process does not assume that all manual activity is inefficient.
+* truy vết từ PR đến PO;
+* truy vết từ PO đến GR;
+* truy vết từ PO đến hóa đơn;
+* khả năng theo dõi trạng thái giao dịch.
 
 ---
 
-# 26. Dependencies of the To-Be Process
+## Kiểm soát và quản trị
 
-The proposed future process depends on several conditions.
+Quy trình To-Be tăng cường:
 
-### Reliable Supplier Master
-
-Supplier eligibility depends on accurate approved-supplier information.
-
-### Available Budget Information
-
-Automated budget validation requires accessible and sufficiently current budget data.
-
-### Defined Approval Rules
-
-Approval routing requires business owners to define and maintain approval criteria.
-
-### Transaction Data Quality
-
-Automated matching depends on consistent PO, GR, and Invoice data.
-
-### User Adoption
-
-The process improves only if users conduct procurement activities through the defined workflow rather than continuing to rely on parallel spreadsheets and email processes.
+* kiểm soát ngân sách;
+* kiểm soát phê duyệt;
+* kiểm soát đối chiếu hóa đơn;
+* truy vết ngoại lệ;
+* lịch sử kiểm toán.
 
 ---
 
-# 27. Remaining Design Decisions
+# 25. Những hoạt động chủ ý giữ thủ công
 
-Some values cannot be responsibly finalized at this stage.
+Một số hoạt động vẫn thủ công vì cần phán đoán nghiệp vụ hoặc hành động vật lý.
 
-They include:
+Bao gồm:
 
-* approval monetary thresholds;
-* matching tolerance values;
-* detailed budget-validation policy;
-* exception escalation rules;
-* detailed system statuses;
-* detailed role permissions.
+* xác định nhu cầu mua hàng;
+* phê duyệt nghiệp vụ;
+* lựa chọn nhà cung cấp;
+* phê duyệt mua hàng;
+* kiểm tra hàng vật lý;
+* điều tra ngoại lệ phức tạp;
+* chuẩn bị đề nghị thanh toán;
+* phê duyệt thanh toán cuối cùng.
 
-These will require business-owner validation or further requirements analysis.
+Đây là chủ ý.
+
+Quy trình To-Be được thiết kế tốt không giả định mọi hoạt động thủ công đều kém hiệu quả.
 
 ---
 
-# 28. Scope Consistency
+# 26. Điều kiện phụ thuộc của quy trình To-Be
 
-The To-Be process does not add the following capabilities:
+Quy trình tương lai đề xuất phụ thuộc một số điều kiện.
+
+### Danh mục nhà cung cấp đáng tin cậy
+
+Điều kiện sử dụng nhà cung cấp phụ thuộc thông tin chính xác về nhà cung cấp đã phê duyệt.
+
+### Thông tin ngân sách khả dụng
+
+Kiểm tra ngân sách tự động cần dữ liệu ngân sách truy cập được và đủ cập nhật.
+
+### Quy tắc phê duyệt được xác định
+
+Chuyển phê duyệt cần chủ sở hữu nghiệp vụ xác định và duy trì tiêu chí phê duyệt.
+
+### Chất lượng dữ liệu giao dịch
+
+Đối chiếu tự động phụ thuộc dữ liệu PO, GR và hóa đơn nhất quán.
+
+### Sự chấp nhận sử dụng của người dùng
+
+Quy trình chỉ cải thiện nếu người dùng thực hiện hoạt động mua hàng qua luồng đã xác định thay vì tiếp tục dựa vào bảng tính và quy trình email song song.
+
+---
+
+# 27. Quyết định thiết kế còn lại
+
+Một số giá trị chưa thể được chốt có căn cứ ở giai đoạn này.
+
+Bao gồm:
+
+* ngưỡng tiền phê duyệt;
+* giá trị dung sai đối chiếu;
+* chính sách kiểm tra ngân sách chi tiết;
+* quy tắc chuyển cấp ngoại lệ;
+* trạng thái hệ thống chi tiết;
+* quyền chi tiết theo vai trò.
+
+Các nội dung này cần chủ sở hữu nghiệp vụ xác nhận hoặc phân tích yêu cầu thêm.
+
+---
+
+# 28. Nhất quán phạm vi
+
+Quy trình To-Be không bổ sung các khả năng sau:
 
 ```text
-Supplier Onboarding
-RFQ / RFP
-Tender Management
-Contract Management
-Supplier Scoring
-Demand Forecasting
-Full Warehouse Management
-General Ledger Accounting
-Tax Engine
-Bank Payment Execution
-Supplier Portal
-Full ERP Replacement
+Tiếp nhận nhà cung cấp mới
+Yêu cầu báo giá / đề xuất (RFQ / RFP)
+Quản lý đấu thầu
+Quản lý hợp đồng
+Chấm điểm nhà cung cấp
+Dự báo nhu cầu
+Quản lý kho đầy đủ
+Kế toán sổ cái
+Bộ máy tính thuế
+Thực hiện thanh toán ngân hàng
+Cổng thông tin nhà cung cấp
+Thay thế toàn bộ ERP
 ```
 
-Supplier Selection continues to use the existing approved Supplier Master.
+Lựa chọn nhà cung cấp tiếp tục dùng danh mục nhà cung cấp đã được phê duyệt hiện có.
 
-Bank transfer remains beyond the endpoint of the project.
+Chuyển khoản ngân hàng vẫn nằm ngoài điểm kết thúc dự án.
 
 ---
 
-# 29. Transformation Summary
+# 29. Tổng hợp chuyển đổi
 
-The overall transformation can be represented as:
+Chuyển đổi tổng thể có thể biểu diễn như sau:
 
 ```text
 AS-IS
@@ -1033,57 +1036,57 @@ AS-IS
 
 Excel / Email
       ↓
-Manual Handoffs
+Bàn giao thủ công
       ↓
-Fragmented Data
+Dữ liệu phân tán
       ↓
-Manual Matching
+Đối chiếu thủ công
       ↓
-Limited Visibility
+Hạn chế khả năng theo dõi
 
 
 TO-BE
 ────────────────────────────────
 
-Central Procurement Workflow
+Luồng mua hàng tập trung
       ↓
-Connected Transaction Data
+Dữ liệu giao dịch liên thông
       ↓
-Rule-Based Routing and Controls
+Chuyển và kiểm soát theo quy tắc
       ↓
-Automated Standard Matching
+Đối chiếu thông thường tự động
       ↓
-Structured Exceptions
+Ngoại lệ có cấu trúc
       ↓
-Status + Audit History
+Trạng thái + lịch sử kiểm toán
 ```
 
-The proposed design therefore improves the process without unnecessarily expanding the project into a full enterprise procurement or ERP implementation.
+Vì vậy, thiết kế đề xuất cải thiện quy trình mà không mở rộng không cần thiết thành triển khai toàn bộ hệ thống mua hàng doanh nghiệp hoặc ERP.
 
 ---
 
-# 30. Conclusion
+# 30. Kết luận
 
-The To-Be process addresses the major structural weaknesses identified during the As-Is analysis while preserving necessary human decision-making.
+Quy trình To-Be giải quyết các điểm yếu cấu trúc chính được xác định trong phân tích As-Is, đồng thời giữ việc ra quyết định cần thiết của con người.
 
-The core transformation is:
+Chuyển đổi cốt lõi là:
 
 ```text
-Manual Coordination
+Phối hợp thủ công
       ↓
-Structured Workflow
+Luồng công việc có cấu trúc
 
-Fragmented Records
+Hồ sơ phân tán
       ↓
-Connected Transactions
+Giao dịch liên thông
 
-Manual Standard Checks
+Kiểm tra thông thường thủ công
       ↓
-Rule-Based Automation
+Tự động hóa theo quy tắc
 
-Unstructured Exceptions
+Ngoại lệ thiếu cấu trúc
       ↓
-Controlled Exception Workflow
+Luồng ngoại lệ có kiểm soát
 ```
 
-These changes form the business-process foundation for the BRD, system analysis, SRS, and later requirements traceability activities.
+Các thay đổi này tạo nền tảng quy trình nghiệp vụ cho BRD, phân tích hệ thống, SRS và hoạt động truy vết yêu cầu sau này.

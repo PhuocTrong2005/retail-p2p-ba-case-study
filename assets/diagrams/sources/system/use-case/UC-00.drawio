@@ -1,0 +1,170 @@
+<mxfile host="app.diagrams.net" pages="1">
+  <diagram id="oYf14YIDvGKmm1KfKHWB" name="UC-00">
+    <mxGraphModel dx="2575" dy="1805" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ov-boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;" value="" vertex="1">
+          <mxGeometry height="850" width="1000" x="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ov-system-title" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;autosize=1;resizable=0;" value="&lt;b&gt;Hệ thống quản lý mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="40" width="330" x="585" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="ov-page-title" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;autosize=1;resizable=0;" value="&lt;b&gt;UC-00 — Tổng quan ca sử dụng hệ thống P2P&lt;/b&gt;" vertex="1">
+          <mxGeometry height="26" width="440" x="530" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="label-pr" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontStyle=2;fontSize=14;" value="Yêu cầu mua hàng" vertex="1">
+          <mxGeometry height="25" width="250" x="620" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="label-po" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontStyle=2;fontSize=14;" value="Đơn đặt hàng" vertex="1">
+          <mxGeometry height="25" width="250" x="620" y="325" as="geometry" />
+        </mxCell>
+        <mxCell id="label-invoice" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontStyle=2;fontSize=14;" value="Nhận hàng và hóa đơn" vertex="1">
+          <mxGeometry height="25" width="250" x="620" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="label-payment" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontStyle=2;fontSize=14;" value="Đề nghị thanh toán" vertex="1">
+          <mxGeometry height="25" width="250" x="620" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="label-cross" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontStyle=2;fontSize=14;" value="Theo dõi và quản trị" vertex="1">
+          <mxGeometry height="25" width="250" x="620" y="789" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-requester" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Người yêu cầu / Nhân viên cửa hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="75" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-store-manager" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Quản lý cửa hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="1380" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-budget" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nguồn dữ liệu ngân sách" vertex="1">
+          <mxGeometry height="60" width="30" x="460" y="5" as="geometry" />
+        </mxCell>
+        <mxCell id="uc01" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-01&lt;br&gt;&lt;b&gt;Tạo và gửi&lt;br&gt;yêu cầu mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="230" x="360" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="uc02" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-02&lt;br&gt;&lt;b&gt;Xem xét yêu cầu mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="230" x="900" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-requester-uc01" edge="1" parent="1" source="actor-requester" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0;entryY=0.5;" target="uc01">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-store-uc02" edge="1" parent="1" source="actor-store-manager" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=1;entryY=0.5;" target="uc02">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-budget-uc01" edge="1" parent="1" source="actor-budget" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0.5;entryY=0;" target="uc01">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-proc-officer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nhân viên mua hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="75" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-proc-manager" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Trưởng bộ phận mua hàng" vertex="1">
+          <mxGeometry height="60" width="30" x="1380" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-finance-po" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Trưởng bộ phận tài chính" vertex="1">
+          <mxGeometry height="60" width="30" x="1380" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="uc03" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-03&lt;br&gt;&lt;b&gt;Tạo và gửi&lt;br&gt;đơn đặt hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="230" x="360" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="uc04" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-04&lt;br&gt;&lt;b&gt;Xem xét đơn đặt hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="230" x="900" y="342" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-procofficer-uc03" edge="1" parent="1" source="actor-proc-officer" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0;entryY=0.5;" target="uc03">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-procmanager-uc04" edge="1" parent="1" source="actor-proc-manager" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=1;entryY=0.3;" target="uc04">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-financepo-uc04" edge="1" parent="1" source="actor-finance-po" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=1;entryY=0.75;" target="uc04">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1310" y="475" />
+              <mxPoint x="1310" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="actor-warehouse" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Nhân viên kho" vertex="1">
+          <mxGeometry height="60" width="30" x="75" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-ap-invoice" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Kế toán công nợ phải trả" vertex="1">
+          <mxGeometry height="60" width="30" x="1380" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="uc05" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-05&lt;br&gt;&lt;b&gt;Ghi nhận phiếu nhận hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="300" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="uc06" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-06&lt;br&gt;&lt;b&gt;Xử lý hóa đơn nhà cung cấp&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="635" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="uc07" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-07&lt;br&gt;&lt;b&gt;Xử lý ngoại lệ đối chiếu&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="970" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-warehouse-uc05" edge="1" parent="1" source="actor-warehouse" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0;entryY=0.5;" target="uc05">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ap-uc07" edge="1" parent="1" source="actor-ap-invoice" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=1;entryY=0.5;" target="uc07">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ap-uc06" edge="1" parent="1" source="actor-ap-invoice" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0.75;entryY=1;" target="uc06">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1330" y="635" />
+              <mxPoint x="800" y="635" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="actor-ap-payment" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Kế toán công nợ phải trả" vertex="1">
+          <mxGeometry height="60" width="30" x="75" y="705" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-finance-payment" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Trưởng bộ phận tài chính" vertex="1">
+          <mxGeometry height="60" width="30" x="1380" y="705" as="geometry" />
+        </mxCell>
+        <mxCell id="uc08" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-08&lt;br&gt;&lt;b&gt;Chuẩn bị đề nghị thanh toán&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="475" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="uc09" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-09&lt;br&gt;&lt;b&gt;Xem xét đề nghị thanh toán&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="800" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-ap-uc08" edge="1" parent="1" source="actor-ap-payment" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0;entryY=0.5;" target="uc08">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-finance-uc09" edge="1" parent="1" source="actor-finance-payment" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=1;entryY=0.5;" target="uc09">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uc10" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-10&lt;br&gt;&lt;b&gt;Xem trạng thái giao dịch&lt;/b&gt;" vertex="1">
+          <mxGeometry height="75" width="220" x="300" y="822" as="geometry" />
+        </mxCell>
+        <mxCell id="uc11" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-11&lt;br&gt;&lt;b&gt;Xem lịch sử giao dịch&lt;/b&gt;" vertex="1">
+          <mxGeometry height="75" width="220" x="635" y="819" as="geometry" />
+        </mxCell>
+        <mxCell id="uc12" parent="1" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;" value="UC-12&lt;br&gt;&lt;b&gt;Xem báo cáo mua hàng&lt;/b&gt;" vertex="1">
+          <mxGeometry height="75" width="220" x="970" y="825" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-authorized-operational" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Người dùng nghiệp vụ được cấp quyền" vertex="1">
+          <mxGeometry height="60" width="30" x="395" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-authorized-reviewer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Người rà soát được cấp quyền" vertex="1">
+          <mxGeometry height="60" width="30" x="730" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-management-user" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Người dùng quản lý" vertex="1">
+          <mxGeometry height="60" width="30" x="1065" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-authorized-uc10" edge="1" parent="1" source="actor-authorized-operational" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0.5;entryY=1;" target="uc10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-reviewer-uc11" edge="1" parent="1" source="actor-authorized-reviewer" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0.5;entryY=1;" target="uc11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-management-uc12" edge="1" parent="1" source="actor-management-user" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;entryX=0.5;entryY=1;" target="uc12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="overview-note" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fontSize=11;" value="&lt;b&gt;Các nhóm vai trò tổng quát chỉ dùng trong sơ đồ tổng quan này&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Người dùng nghiệp vụ được cấp quyền:&lt;/b&gt;&lt;br&gt;Người yêu cầu / Nhân viên cửa hàng, Quản lý cửa hàng, Nhân viên mua hàng, Trưởng bộ phận mua hàng, Kế toán công nợ phải trả, Trưởng bộ phận tài chính&lt;br&gt;&lt;br&gt;&lt;b&gt;Người rà soát được cấp quyền:&lt;/b&gt;&lt;br&gt;Trưởng bộ phận mua hàng, Trưởng bộ phận tài chính, Kiểm toán nội bộ&lt;br&gt;&lt;br&gt;&lt;b&gt;Người dùng quản lý:&lt;/b&gt;&lt;br&gt;Trưởng bộ phận mua hàng, Trưởng bộ phận tài chính" vertex="1">
+          <mxGeometry height="175" width="620" x="630" y="-183" as="geometry" />
+        </mxCell>
+        <mxCell id="repeat-note" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;fontSize=11;fontStyle=2;" value="Các biểu tượng Kế toán công nợ phải trả và Trưởng bộ phận tài chính lặp lại đại diện cùng vai trò nghiệp vụ, chỉ để sơ đồ dễ đọc hơn." vertex="1">
+          <mxGeometry height="45" width="620" x="630" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="scope-note" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;fontSize=11;" value="Nhà cung cấp, Giám đốc tài chính (CFO) và Hệ thống kế toán không được mô hình hóa thành tác nhân trực tiếp trong hệ thống ở đường cơ sở hiện tại." vertex="1">
+          <mxGeometry height="35" width="570" x="630" y="-3" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

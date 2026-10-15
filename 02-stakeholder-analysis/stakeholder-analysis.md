@@ -1,676 +1,668 @@
-# Stakeholder Analysis
+# Phân tích các bên liên quan
 
-## 1. Purpose
+## 1. Mục đích
 
-The purpose of the stakeholder analysis is to identify the individuals and business roles that participate in, influence, control, or are affected by NovaRetail's Procure-to-Pay process.
+Phân tích các bên liên quan (Stakeholder) nhằm xác định cá nhân và vai trò nghiệp vụ tham gia, ảnh hưởng, kiểm soát hoặc chịu tác động bởi quy trình mua hàng đến thanh toán (Procure-to-Pay — P2P) của NovaRetail.
 
-The analysis is used to:
+Phân tích được dùng để:
 
-* identify key sources of business requirements;
-* understand stakeholder needs and concerns;
-* determine decision-making and approval authority;
-* define appropriate stakeholder engagement approaches;
-* support BPMN process modeling;
-* identify system actors for later Use Case analysis;
-* clarify responsibilities across the Procure-to-Pay process.
+* xác định nguồn yêu cầu nghiệp vụ chính;
+* hiểu nhu cầu và mối quan tâm của các bên liên quan;
+* xác định thẩm quyền quyết định và phê duyệt;
+* xác định cách phối hợp phù hợp với các bên liên quan;
+* hỗ trợ mô hình hóa quy trình theo ký pháp mô hình quy trình nghiệp vụ (BPMN);
+* xác định tác nhân hệ thống cho phân tích ca sử dụng (Use Case — UC) sau này;
+* làm rõ trách nhiệm xuyên suốt P2P.
 
-The analysis covers the process from Purchase Requisition creation through Payment Approval.
-
----
-
-## 2. Stakeholder Classification
-
-For this project, stakeholders are divided into four groups:
-
-### Executive and Governance Stakeholders
-
-Stakeholders responsible for business sponsorship, financial governance, and compliance.
-
-* CFO
-* Internal Audit
-
-### Process Owners and Decision Makers
-
-Stakeholders with authority over major Procure-to-Pay activities.
-
-* Procurement Manager
-* Finance Manager
-* Store Manager
-
-### Operational Stakeholders
-
-Stakeholders who perform day-to-day Procure-to-Pay activities.
-
-* Store Employee / Requester
-* Procurement Officer
-* Warehouse Staff
-* AP Accountant
-
-### Supporting and External Stakeholders
-
-Stakeholders that support the process or interact with NovaRetail from outside the organization.
-
-* IT Team
-* Supplier
+Phân tích bao phủ từ tạo yêu cầu mua hàng (Purchase Requisition — PR) đến phê duyệt đề nghị thanh toán (Payment Request).
 
 ---
 
-# 3. Stakeholder Register
+## 2. Phân loại các bên liên quan
 
-| ID     | Stakeholder                | Role in P2P                          | Main Responsibilities                                                                 | Main Needs / Expectations                                             | Influence | Interest |
+Trong dự án, các bên liên quan chia thành bốn nhóm:
+
+### Các bên liên quan cấp điều hành và quản trị
+
+Các bên chịu trách nhiệm bảo trợ nghiệp vụ, quản trị tài chính và tuân thủ.
+
+* Giám đốc tài chính (CFO)
+* Kiểm toán nội bộ (Internal Audit)
+
+### Chủ quy trình và người ra quyết định
+
+Các bên có thẩm quyền đối với hoạt động P2P chính.
+
+* Trưởng bộ phận mua hàng (Procurement Manager)
+* Trưởng bộ phận tài chính (Finance Manager)
+* Quản lý cửa hàng (Store Manager)
+
+### Các bên liên quan vận hành
+
+Các bên thực hiện hoạt động P2P hằng ngày.
+
+* Nhân viên cửa hàng / Người yêu cầu (Store Employee / Requester)
+* Nhân viên mua hàng (Procurement Officer)
+* Nhân viên kho (Warehouse Staff)
+* Kế toán công nợ phải trả (AP Accountant — AP)
+
+### Các bên liên quan hỗ trợ và bên ngoài
+
+Các bên hỗ trợ quy trình hoặc tương tác với NovaRetail từ bên ngoài tổ chức.
+
+* Bộ phận công nghệ thông tin (IT Team — IT)
+* Nhà cung cấp (Supplier)
+
+---
+
+# 3. Danh sách các bên liên quan
+
+| ID | Bên liên quan | Vai trò trong P2P | Trách nhiệm chính | Nhu cầu / Kỳ vọng chính | Mức ảnh hưởng | Mức quan tâm |
 | ------ | -------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --------- | -------- |
-| STK-01 | Store Employee / Requester | Purchase requester                   | Identify purchasing needs, create and submit PR                                       | Simple PR creation, clear status tracking, fewer manual steps         | Low       | High     |
-| STK-02 | Store Manager              | Business approver / Cost owner       | Review business need and approve or reject PR                                         | Clear request information, budget visibility, fast approval process   | Medium    | High     |
-| STK-03 | Procurement Officer        | Buyer / Operational procurement user | Review approved PR, select approved supplier, create and manage PO                    | Centralized information, reduced duplicate entry, clear workflow      | Medium    | High     |
-| STK-04 | Procurement Manager        | Procurement Process Owner            | Oversee procurement activities, enforce procurement rules, participate in PO approval | Process control, approval visibility, procurement KPIs                | High      | High     |
-| STK-05 | Warehouse Staff            | Goods receiver                       | Receive goods and record Goods Receipt                                                | Clear PO reference, simple receipt recording, discrepancy capture     | Low       | High     |
-| STK-06 | AP Accountant              | Invoice processing user              | Record supplier invoices, perform 3-way matching, investigate mismatches              | Accurate PO/GR data, automated matching, clear exception workflow     | Medium    | High     |
-| STK-07 | Finance Manager            | Financial Control Owner              | Oversee budget control, financial approval and payment approval                       | Budget compliance, financial visibility, transaction traceability     | High      | High     |
-| STK-08 | CFO                        | Executive Sponsor                    | Provide sponsorship and oversee financial governance                                  | Cost control, process performance, compliance and reliable reporting  | High      | Medium   |
-| STK-09 | Internal Audit             | Governance stakeholder               | Review process controls and transaction history                                       | Complete audit trail, segregation of duties and evidence of approval  | Medium    | Medium   |
-| STK-10 | IT Team                    | Supporting stakeholder               | Support system implementation, access control and integration                         | Stable requirements, clear integration boundaries and maintainability | Medium    | Medium   |
-| STK-11 | Supplier                   | External business stakeholder        | Receive PO, deliver goods and provide supplier invoice                                | Accurate PO information, clear communication and timely processing    | Low       | Medium   |
+| STK-01 | Nhân viên cửa hàng / Người yêu cầu | Người yêu cầu mua hàng | Xác định nhu cầu mua hàng, tạo và gửi yêu cầu mua hàng (PR) | Tạo PR đơn giản, theo dõi trạng thái rõ ràng, giảm bước thủ công | Thấp | Cao |
+| STK-02 | Quản lý cửa hàng | Người phê duyệt nghiệp vụ / Chủ thể chịu trách nhiệm chi phí | Xem xét nhu cầu nghiệp vụ; phê duyệt, từ chối hoặc trả PR để chỉnh sửa | Thông tin yêu cầu rõ ràng, nắm được ngân sách, phê duyệt nhanh | Trung bình | Cao |
+| STK-03 | Nhân viên mua hàng | Nhân viên thu mua / Người dùng nghiệp vụ mua hàng | Xem xét PR đã phê duyệt, chọn nhà cung cấp đã phê duyệt, tạo và quản lý đơn đặt hàng (PO) | Thông tin tập trung, giảm nhập trùng, luồng xử lý rõ ràng | Trung bình | Cao |
+| STK-04 | Trưởng bộ phận mua hàng | Chủ quy trình mua hàng | Giám sát mua hàng, thực thi quy tắc, thực hiện phê duyệt mua hàng bắt buộc cho mọi PO | Kiểm soát quy trình, theo dõi phê duyệt, chỉ số hiệu quả mua hàng (KPI) | Cao | Cao |
+| STK-05 | Nhân viên kho | Người nhận hàng | Nhận hàng và ghi nhận phiếu nhận hàng (GR) | Tham chiếu PO rõ ràng, ghi nhận nhận hàng đơn giản, ghi nhận sai lệch | Thấp | Cao |
+| STK-06 | Kế toán công nợ phải trả (AP) | Người xử lý hóa đơn | Ghi nhận hóa đơn nhà cung cấp, thực hiện đối chiếu ba bên, điều tra sai lệch | Dữ liệu PO/GR chính xác, đối chiếu tự động, luồng xử lý ngoại lệ rõ ràng | Trung bình | Cao |
+| STK-07 | Trưởng bộ phận tài chính | Chủ thể chịu trách nhiệm kiểm soát tài chính | Chịu trách nhiệm chính sách ngân sách, phê duyệt tài chính bổ sung cho PO và phê duyệt đề nghị thanh toán | Tuân thủ ngân sách, nắm được thông tin tài chính, truy vết giao dịch | Cao | Cao |
+| STK-08 | Giám đốc tài chính (CFO) | Nhà bảo trợ cấp điều hành | Bảo trợ và giám sát quản trị tài chính | Kiểm soát chi phí, hiệu quả quy trình, tuân thủ và báo cáo đáng tin cậy | Cao | Trung bình |
+| STK-09 | Kiểm toán nội bộ | Bên liên quan về quản trị | Rà soát kiểm soát quy trình và lịch sử giao dịch | Dấu vết kiểm toán đầy đủ, phân tách nhiệm vụ và bằng chứng phê duyệt | Trung bình | Trung bình |
+| STK-10 | Bộ phận công nghệ thông tin (IT) | Bên liên quan hỗ trợ | Hỗ trợ triển khai hệ thống, kiểm soát truy cập và tích hợp | Yêu cầu ổn định, ranh giới tích hợp rõ ràng và khả năng bảo trì | Trung bình | Trung bình |
+| STK-11 | Nhà cung cấp | Bên liên quan nghiệp vụ bên ngoài | Nhận PO, giao hàng và cung cấp hóa đơn nhà cung cấp | Thông tin PO chính xác, trao đổi rõ ràng và xử lý kịp thời | Thấp | Trung bình |
 
 ---
 
-# 4. Key Stakeholder Roles
+# 4. Vai trò chính của các bên liên quan
 
-## 4.1 Executive Sponsor — CFO
+## 4.1 Nhà bảo trợ cấp điều hành — CFO
 
-The CFO is considered the executive sponsor of the proposed improvement initiative because the Procure-to-Pay process directly affects purchasing expenditure, financial control, auditability, and payment governance.
+CFO được xem là nhà bảo trợ cấp điều hành của sáng kiến cải tiến đề xuất vì P2P tác động trực tiếp đến chi mua hàng, kiểm soát tài chính, khả năng kiểm toán và quản trị thanh toán.
 
-The CFO is not expected to participate in day-to-day procurement activities.
+Không kỳ vọng CFO tham gia hoạt động mua hàng hằng ngày.
 
-Key interests include:
+Các mối quan tâm chính gồm:
 
-* procurement spend visibility;
-* budget control;
-* financial governance;
-* auditability;
-* reduction of processing inefficiencies;
-* achievement of the expected business outcomes.
-
----
-
-## 4.2 Procurement Process Owner — Procurement Manager
-
-The Procurement Manager is considered the primary business process owner for the procurement portion of P2P.
-
-Responsibilities include:
-
-* defining procurement policies;
-* supervising Procurement Officers;
-* ensuring compliance with purchasing rules;
-* overseeing PO processing;
-* defining procurement approval requirements;
-* monitoring procurement performance;
-* providing business requirements for the future procurement process.
-
-The Procurement Manager is one of the most important stakeholders for requirement elicitation.
+* khả năng theo dõi chi mua hàng;
+* kiểm soát ngân sách;
+* quản trị tài chính;
+* khả năng kiểm toán;
+* giảm các điểm kém hiệu quả khi xử lý;
+* đạt kết quả nghiệp vụ kỳ vọng.
 
 ---
 
-## 4.3 Financial Control Owner — Finance Manager
+## 4.2 Chủ quy trình mua hàng — Trưởng bộ phận mua hàng
 
-The Finance Manager represents the financial-control side of the P2P process.
+Trưởng bộ phận mua hàng được xem là chủ quy trình nghiệp vụ chính cho phần mua hàng của P2P.
 
-Key responsibilities include:
+Trách nhiệm gồm:
 
-* defining budget control requirements;
-* defining financial approval requirements;
-* overseeing payment approval;
-* ensuring that financial controls are applied before payment;
-* supporting exception and escalation rules.
+* xác định chính sách mua hàng;
+* giám sát Nhân viên mua hàng;
+* bảo đảm tuân thủ quy tắc mua hàng;
+* giám sát xử lý đơn đặt hàng (Purchase Order — PO);
+* xác định yêu cầu phê duyệt mua hàng;
+* theo dõi hiệu quả mua hàng;
+* cung cấp yêu cầu nghiệp vụ cho quy trình mua hàng tương lai.
 
-The Finance Manager and Procurement Manager therefore represent two different control perspectives:
+Trưởng bộ phận mua hàng là một trong các bên quan trọng nhất khi khai thác yêu cầu.
+
+---
+
+## 4.3 Chủ thể chịu trách nhiệm kiểm soát tài chính — Trưởng bộ phận tài chính
+
+Trưởng bộ phận tài chính đại diện khía cạnh kiểm soát tài chính của P2P.
+
+Trách nhiệm chính gồm:
+
+* xác định yêu cầu kiểm soát ngân sách;
+* xác định yêu cầu phê duyệt tài chính;
+* giám sát phê duyệt đề nghị thanh toán;
+* bảo đảm kiểm soát tài chính được áp dụng trước thanh toán;
+* hỗ trợ quy tắc ngoại lệ và chuyển cấp.
+
+Vì vậy, Trưởng bộ phận tài chính và Trưởng bộ phận mua hàng đại diện hai góc nhìn kiểm soát khác nhau:
 
 ```text
-Procurement Manager
+Trưởng bộ phận mua hàng
         ↓
-Purchasing Policy & Procurement Control
+Chính sách và kiểm soát mua hàng
 
-Finance Manager
+Trưởng bộ phận tài chính
         ↓
-Budget & Financial Control
+Kiểm soát ngân sách và tài chính
 ```
 
 ---
 
-# 5. Stakeholder Needs and Pain Points
+# 5. Nhu cầu và vấn đề của các bên liên quan
 
-## Store Employee / Requester
+## Nhân viên cửa hàng / Người yêu cầu
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* Purchase Requisitions are created manually.
-* Status is difficult to track.
-* Requesters may need to contact other departments for updates.
+* PR được tạo thủ công.
+* Khó theo dõi trạng thái.
+* Người yêu cầu có thể cần liên hệ bộ phận khác để cập nhật.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* standardized PR creation;
-* visible processing status;
-* fewer repeated data-entry activities.
-
----
-
-## Store Manager
-
-### Current concerns
-
-* approval requests may be distributed through email;
-* supporting information may not be immediately available;
-* budget information may require separate verification.
-
-### Expected improvements
-
-* clear approval information;
-* easier access to budget status;
-* faster approval decisions;
-* visible approval history.
+* tạo PR chuẩn hóa;
+* xem được trạng thái xử lý;
+* giảm thao tác nhập liệu lặp lại.
 
 ---
 
-## Procurement Officer
+## Quản lý cửa hàng
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* procurement information is fragmented;
-* PR information may need to be re-entered when creating a PO;
-* manual coordination is required between departments;
-* PO status may be difficult to monitor.
+* yêu cầu phê duyệt có thể được gửi qua email;
+* thông tin hỗ trợ có thể không có ngay;
+* thông tin ngân sách có thể cần kiểm tra riêng.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* centralized procurement information;
-* reuse of approved PR data;
-* structured PO workflow;
-* reduced manual coordination;
-* clear exception status.
+* thông tin phê duyệt rõ ràng;
+* dễ tiếp cận trạng thái ngân sách hơn;
+* quyết định phê duyệt nhanh hơn;
+* xem được lịch sử phê duyệt.
 
 ---
 
-## Procurement Manager
+## Nhân viên mua hàng
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* limited visibility into outstanding approvals;
-* limited procurement performance information;
-* manual approval routing;
-* inconsistent process control.
+* thông tin mua hàng phân tán;
+* thông tin PR có thể cần nhập lại khi tạo PO;
+* cần phối hợp thủ công giữa các bộ phận;
+* trạng thái PO có thể khó theo dõi.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* controlled approval workflow;
-* procurement dashboard;
-* better process monitoring;
-* clear purchasing rules and audit history.
-
----
-
-## Warehouse Staff
-
-### Current concerns
-
-* purchase information may not always be immediately available;
-* receipt information may be maintained separately;
-* discrepancies may require manual communication.
-
-### Expected improvements
-
-* direct reference to approved PO;
-* standardized Goods Receipt recording;
-* clear handling of partial or incorrect deliveries.
+* thông tin mua hàng tập trung;
+* tái sử dụng dữ liệu PR đã phê duyệt;
+* luồng xử lý PO có cấu trúc;
+* giảm phối hợp thủ công;
+* trạng thái ngoại lệ rõ ràng.
 
 ---
 
-## AP Accountant
+## Trưởng bộ phận mua hàng
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* PO, Goods Receipt, and Invoice information may come from separate sources;
-* three-way matching is manual;
-* mismatch investigation requires coordination across departments.
+* khó theo dõi các phê duyệt còn chờ;
+* thông tin hiệu quả mua hàng hạn chế;
+* chuyển phê duyệt thủ công;
+* kiểm soát quy trình thiếu nhất quán.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* access to consistent PO and GR information;
-* automated matching for eligible invoices;
-* clearly identified mismatches;
-* structured exception handling.
+* luồng phê duyệt có kiểm soát;
+* bảng tổng hợp mua hàng;
+* theo dõi quy trình tốt hơn;
+* quy tắc mua hàng và lịch sử kiểm toán rõ ràng.
 
 ---
 
-## Finance Manager
+## Nhân viên kho
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* budget checks may not be consistently performed;
-* financial approvals depend on information from different sources;
-* auditability is limited.
+* thông tin mua hàng có thể không phải lúc nào cũng có ngay;
+* thông tin nhận hàng có thể được quản lý riêng;
+* sai lệch có thể cần trao đổi thủ công.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* consistent budget validation;
-* controlled financial approval;
-* complete transaction history;
-* reliable information before payment approval.
+* tham chiếu trực tiếp PO đã phê duyệt;
+* ghi nhận phiếu nhận hàng (Goods Receipt — GR) chuẩn hóa;
+* xử lý rõ ràng giao hàng một phần hoặc sai hàng.
+
+---
+
+## Kế toán công nợ phải trả
+
+### Mối quan tâm hiện tại
+
+* thông tin PO, GR và hóa đơn có thể đến từ các nguồn riêng;
+* đối chiếu ba bên thủ công;
+* điều tra sai lệch cần phối hợp liên bộ phận.
+
+### Cải tiến kỳ vọng
+
+* tiếp cận thông tin PO và GR nhất quán;
+* đối chiếu tự động cho hóa đơn đủ điều kiện;
+* xác định rõ sai lệch;
+* xử lý ngoại lệ có cấu trúc.
+
+---
+
+## Trưởng bộ phận tài chính
+
+### Mối quan tâm hiện tại
+
+* kiểm tra ngân sách có thể chưa được thực hiện nhất quán;
+* phê duyệt tài chính phụ thuộc thông tin từ nhiều nguồn;
+* khả năng kiểm toán hạn chế.
+
+### Cải tiến kỳ vọng
+
+* kiểm tra ngân sách nhất quán;
+* phê duyệt tài chính có kiểm soát;
+* lịch sử giao dịch đầy đủ;
+* thông tin đáng tin cậy trước phê duyệt đề nghị thanh toán.
 
 ---
 
 ## CFO
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* limited consolidated procurement visibility;
-* risk of uncontrolled expenditure;
-* weak traceability.
+* khả năng theo dõi tổng hợp mua hàng hạn chế;
+* rủi ro chi tiêu không kiểm soát;
+* truy vết yếu.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* procurement KPI reporting;
-* stronger purchasing controls;
-* reliable auditability;
-* improved financial governance.
-
----
-
-## Internal Audit
-
-### Current concerns
-
-* approval evidence may exist across multiple emails and files;
-* transaction changes may be difficult to reconstruct.
-
-### Expected improvements
-
-* complete audit trail;
-* identifiable users and timestamps;
-* traceable approval history;
-* evidence of key control activities.
+* báo cáo chỉ số hiệu quả mua hàng (KPI);
+* kiểm soát mua hàng chặt chẽ hơn;
+* khả năng kiểm toán đáng tin cậy;
+* cải thiện quản trị tài chính.
 
 ---
 
-## IT Team
+## Kiểm toán nội bộ
 
-### Current concerns
+### Mối quan tâm hiện tại
 
-* business information exists across disconnected tools;
-* unclear system boundaries may create difficult integration requirements.
+* bằng chứng phê duyệt có thể nằm trong nhiều email, tệp;
+* có thể khó tái hiện các thay đổi giao dịch.
 
-### Expected improvements
+### Cải tiến kỳ vọng
 
-* clearly defined functional requirements;
-* clearly identified system boundaries;
-* defined user roles;
-* high-level integration requirements.
-
----
-
-## Supplier
-
-### Current concerns
-
-* delayed PO issuance may delay order confirmation;
-* invoice discrepancies may delay payment.
-
-### Expected improvements
-
-* accurate Purchase Orders;
-* clearer transaction processing;
-* fewer avoidable payment delays.
-
-> Supplier is considered an external stakeholder but not necessarily a direct system user. A supplier portal is outside the current project scope.
+* dấu vết kiểm toán đầy đủ;
+* xác định được người dùng và thời điểm;
+* lịch sử phê duyệt truy vết được;
+* bằng chứng hoạt động kiểm soát trọng yếu.
 
 ---
 
-# 6. Power–Interest Analysis
+## Bộ phận công nghệ thông tin
 
-The Power–Interest Matrix is used to determine the level of stakeholder management required during the project.
+### Mối quan tâm hiện tại
 
-It does not define business responsibility within the process. Business responsibilities are addressed separately through RACI.
+* thông tin nghiệp vụ nằm trên các công cụ không kết nối;
+* ranh giới hệ thống chưa rõ có thể tạo yêu cầu tích hợp khó xử lý.
 
-## Manage Closely
+### Cải tiến kỳ vọng
 
-**High influence / High interest**
-
-* Procurement Manager
-* Finance Manager
-
-These stakeholders have significant decision-making authority and are directly involved in the design of the future process.
-
-They should participate actively in:
-
-* requirement workshops;
-* To-Be process validation;
-* business rule definition;
-* requirement prioritization;
-* solution acceptance.
+* yêu cầu chức năng được xác định rõ;
+* ranh giới hệ thống rõ ràng;
+* vai trò người dùng xác định;
+* yêu cầu tích hợp tổng quát.
 
 ---
 
-## Keep Satisfied
+## Nhà cung cấp
 
-**High influence / Lower operational interest**
+### Mối quan tâm hiện tại
+
+* chậm phát hành PO có thể làm chậm xác nhận đơn hàng;
+* sai lệch hóa đơn có thể làm chậm thanh toán.
+
+### Cải tiến kỳ vọng
+
+* PO chính xác;
+* xử lý giao dịch rõ ràng hơn;
+* giảm chậm thanh toán có thể tránh được.
+
+> Nhà cung cấp là bên liên quan bên ngoài nhưng không nhất thiết là người dùng trực tiếp của hệ thống. Cổng nhà cung cấp nằm ngoài phạm vi hiện tại.
+
+---
+
+# 6. Phân tích ảnh hưởng–quan tâm
+
+Ma trận ảnh hưởng–quan tâm (Power–Interest Matrix) được dùng để xác định mức quản lý các bên liên quan cần thiết trong dự án.
+
+Ma trận không xác định trách nhiệm nghiệp vụ trong quy trình. Trách nhiệm được xác định riêng qua ma trận trách nhiệm (RACI).
+
+## Phối hợp chặt chẽ
+
+**Ảnh hưởng cao / Quan tâm cao**
+
+* Trưởng bộ phận mua hàng
+* Trưởng bộ phận tài chính
+
+Các bên này có thẩm quyền quyết định đáng kể và trực tiếp tham gia thiết kế quy trình tương lai.
+
+Họ nên tích cực tham gia:
+
+* buổi làm việc nhóm về yêu cầu;
+* xác nhận quy trình đề xuất tương lai (To-Be);
+* xác định quy tắc nghiệp vụ;
+* ưu tiên yêu cầu;
+* nghiệm thu giải pháp.
+
+---
+
+## Duy trì sự hài lòng
+
+**Ảnh hưởng cao / Quan tâm vận hành thấp hơn**
 
 * CFO
 
-The CFO has high decision-making authority but is not involved in daily P2P operations.
+CFO có thẩm quyền quyết định cao nhưng không tham gia vận hành P2P hằng ngày.
 
-Engagement should focus on:
+Phối hợp nên tập trung vào:
 
-* business outcomes;
-* financial controls;
-* major risks;
-* project progress;
-* KPI and benefit realization.
-
----
-
-## Keep Informed
-
-**Lower or medium influence / High interest**
-
-* Store Employee / Requester
-* Store Manager
-* Procurement Officer
-* Warehouse Staff
-* AP Accountant
-
-These stakeholders interact directly with the process and provide detailed operational requirements.
-
-They should be involved through:
-
-* interviews;
-* process walkthroughs;
-* workshops;
-* prototype reviews;
-* User Acceptance Testing scenarios.
-
-Although Procurement Officers and AP Accountants may not have the highest organizational authority, their operational knowledge makes them critical requirement sources.
+* kết quả nghiệp vụ;
+* kiểm soát tài chính;
+* rủi ro lớn;
+* tiến độ dự án;
+* KPI và hiện thực hóa lợi ích.
 
 ---
 
-## Monitor
+## Duy trì cung cấp thông tin
 
-**Low or medium influence / Moderate interest**
+**Ảnh hưởng thấp hơn hoặc trung bình / Quan tâm cao**
 
-* Supplier
-* Internal Audit
-* IT Team
+* Nhân viên cửa hàng / Người yêu cầu
+* Quản lý cửa hàng
+* Nhân viên mua hàng
+* Nhân viên kho
+* Kế toán công nợ phải trả
 
-This classification now matches the stakeholder register's Power–Interest Grid: STK-09 and STK-10 are both medium influence / medium interest and therefore sit in the Monitor quadrant. It describes engagement intensity, not the value of specialist input.
+Các bên này tương tác trực tiếp với quy trình và cung cấp yêu cầu vận hành chi tiết.
 
-Supplier communication should focus on changes that affect PO receipt, delivery information, or invoice processing. Because Supplier Portal functionality is outside the project scope, supplier involvement in system design is limited.
+Họ nên tham gia qua:
 
----
+* phỏng vấn;
+* rà từng bước quy trình;
+* buổi làm việc nhóm;
+* rà soát mẫu thử;
+* tình huống kiểm thử chấp nhận người dùng (UAT).
 
-## Special Consultative Stakeholders
-
-The following stakeholders remain in the Monitor quadrant for engagement planning but require targeted specialist consultation.
-
-### Internal Audit
-
-Should be consulted when defining:
-
-* audit trail requirements;
-* approval evidence;
-* segregation of duties;
-* control requirements.
-
-### IT Team
-
-Should be consulted when defining:
-
-* system boundaries;
-* integration requirements;
-* role-based access;
-* technical feasibility;
-* non-functional requirements.
+Dù Nhân viên mua hàng và Kế toán công nợ phải trả có thể không có thẩm quyền tổ chức cao nhất, kiến thức vận hành khiến họ trở thành nguồn yêu cầu trọng yếu.
 
 ---
 
-# 7. Stakeholder Engagement Approach
+## Theo dõi
 
-| Stakeholder         | Engagement Method                                   | Frequency / Stage                      | Main Purpose                                 |
+**Ảnh hưởng thấp hoặc trung bình / Quan tâm vừa phải**
+
+* Nhà cung cấp
+* Kiểm toán nội bộ
+* Bộ phận công nghệ thông tin
+
+Phân loại này hiện khớp ma trận ảnh hưởng–quan tâm trong danh sách bên liên quan: STK-09 và STK-10 đều ảnh hưởng trung bình / quan tâm trung bình nên thuộc nhóm Theo dõi. Phân loại mô tả cường độ phối hợp, không phải giá trị đóng góp chuyên môn.
+
+Trao đổi với nhà cung cấp nên tập trung vào thay đổi tác động đến nhận PO, thông tin giao hàng hoặc xử lý hóa đơn. Do chức năng cổng nhà cung cấp ngoài phạm vi, mức tham gia thiết kế hệ thống của nhà cung cấp được giới hạn.
+
+---
+
+## Các bên tham vấn chuyên môn
+
+Các bên sau vẫn ở nhóm Theo dõi khi lập kế hoạch phối hợp nhưng cần được tham vấn chuyên môn theo nội dung cụ thể.
+
+### Kiểm toán nội bộ
+
+Nên được tham vấn khi xác định:
+
+* yêu cầu dấu vết kiểm toán;
+* bằng chứng phê duyệt;
+* phân tách nhiệm vụ;
+* yêu cầu kiểm soát.
+
+### Bộ phận công nghệ thông tin
+
+Nên được tham vấn khi xác định:
+
+* ranh giới hệ thống;
+* yêu cầu tích hợp;
+* truy cập theo vai trò;
+* tính khả thi kỹ thuật;
+* yêu cầu phi chức năng.
+
+---
+
+# 7. Cách phối hợp các bên liên quan
+
+| Bên liên quan | Phương thức phối hợp | Tần suất / Giai đoạn | Mục đích chính |
 | ------------------- | --------------------------------------------------- | -------------------------------------- | -------------------------------------------- |
-| Procurement Manager | Workshops, interviews, requirement reviews          | Throughout analysis                    | Process ownership and requirement validation |
-| Finance Manager     | Workshops, rule-definition sessions                 | Throughout analysis                    | Financial controls and approvals             |
-| Procurement Officer | Interviews, process walkthroughs, prototype reviews | As-Is and To-Be analysis               | Operational procurement requirements         |
-| AP Accountant       | Interviews, process walkthroughs                    | As-Is, To-Be and SRS                   | Invoice and matching requirements            |
-| Store Manager       | Interviews and workflow review                      | PR and approval analysis               | Approval requirements                        |
-| Store Employee      | Interview / usability review                        | PR and UI analysis                     | Requester requirements                       |
-| Warehouse Staff     | Process walkthrough                                 | Goods Receipt analysis                 | Receiving requirements                       |
-| CFO                 | Management review                                   | Major milestones                       | Business outcome and governance validation   |
-| Internal Audit      | Control review                                      | Requirement validation                 | Audit and control requirements               |
-| IT Team             | Technical consultation                              | SRS and integration analysis           | Feasibility and integration                  |
-| Supplier            | Limited consultation                                | Where external interaction is affected | PO and invoice interaction                   |
+| Trưởng bộ phận mua hàng | Làm việc nhóm, phỏng vấn, rà soát yêu cầu | Xuyên suốt phân tích | Trách nhiệm chủ quy trình và xác nhận yêu cầu |
+| Trưởng bộ phận tài chính | Làm việc nhóm, phiên xác định quy tắc | Xuyên suốt phân tích | Kiểm soát và phê duyệt tài chính |
+| Nhân viên mua hàng | Phỏng vấn, rà từng bước quy trình, rà soát mẫu thử | Phân tích hiện trạng và đề xuất tương lai | Yêu cầu vận hành mua hàng |
+| Kế toán công nợ phải trả (AP) | Phỏng vấn, rà từng bước quy trình | Hiện trạng, đề xuất tương lai và đặc tả yêu cầu phần mềm (SRS) | Yêu cầu hóa đơn và đối chiếu |
+| Quản lý cửa hàng | Phỏng vấn và rà soát luồng xử lý | Phân tích PR và phê duyệt | Yêu cầu phê duyệt |
+| Nhân viên cửa hàng | Phỏng vấn / rà soát tính dễ sử dụng | Phân tích PR và giao diện người dùng (UI) | Yêu cầu của người yêu cầu |
+| Nhân viên kho | Rà từng bước quy trình | Phân tích nhận hàng | Yêu cầu nhận hàng |
+| Giám đốc tài chính (CFO) | Rà soát quản lý | Các mốc chính | Xác nhận kết quả nghiệp vụ và quản trị |
+| Kiểm toán nội bộ | Rà soát kiểm soát | Xác nhận yêu cầu | Yêu cầu kiểm toán và kiểm soát |
+| Bộ phận công nghệ thông tin (IT) | Tham vấn kỹ thuật | Phân tích SRS và tích hợp | Tính khả thi và tích hợp |
+| Nhà cung cấp | Tham vấn giới hạn | Khi tương tác bên ngoài bị ảnh hưởng | Tương tác PO và hóa đơn |
 
 ---
 
-# 8. Preliminary RACI Matrix
+# 8. Ma trận RACI sơ bộ
 
-The RACI matrix below provides a high-level view of business responsibility.
+RACI dưới đây là ma trận quy trình cho vai trò con người. Hệ thống quản lý mua hàng (Procurement Management System) thực hiện kiểm tra ngân sách và đối chiếu tự động; bảng xác định chủ thể chính sách, điều phối và rà soát của con người, không xem hệ thống là vai trò con người.
 
-It is preliminary because detailed approval authority will later depend on business rules and approval thresholds.
+Ma trận là sơ bộ vì thẩm quyền phê duyệt chi tiết sau này phụ thuộc quy tắc nghiệp vụ và ngưỡng phê duyệt.
 
-**R — Responsible:** performs the activity
-**A — Accountable:** ultimately owns the outcome
-**C — Consulted:** provides input
-**I — Informed:** receives information
+**R — Thực hiện (Responsible):** thực hiện hoạt động
+**A — Chịu trách nhiệm cuối cùng (Accountable):** chịu trách nhiệm cuối cùng về kết quả
+**C — Được tham vấn (Consulted):** cung cấp ý kiến
+**I — Được thông báo (Informed):** nhận thông tin
 
-| Activity                           | Requester | Store Manager | Procurement Officer | Procurement Manager | Warehouse Staff | AP Accountant | Finance Manager |
-| ---------------------------------- | --------- | ------------- | ------------------- | ------------------- | --------------- | ------------- | --------------- |
-| Create and Submit PR               | R/A       | I             | I                   | I                   | -               | -             | -               |
-| Approve Business Need / PR         | I         | R/A           | C                   | I                   | -               | -             | C*              |
-| Validate Budget                    | I         | C             | I                   | I                   | -               | -             | A               |
-| Select Approved Supplier           | -         | -             | R                   | A                   | -               | -             | -               |
-| Create Purchase Order              | -         | -             | R                   | A                   | -               | -             | I               |
-| Approve Purchase Order             | I         | I             | C                   | R/A*                | -               | C             | R/A*            |
-| Record Goods Receipt               | -         | -             | I                   | I                   | R/A             | I             | -               |
-| Record / Validate Supplier Invoice | -         | -             | I                   | -                   | C               | R/A           | I               |
-| Perform Three-Way Matching         | -         | -             | C                   | I                   | C               | R             | A               |
-| Resolve Matching Exception         | -         | -             | R/C                 | C                   | R/C             | R             | A               |
-| Approve Payment Request            | -         | -             | I                   | I                   | -               | C             | R/A             |
-| Review Audit Evidence              | -         | -             | I                   | C                   | I               | C             | C               |
+| Hoạt động | Người yêu cầu | Quản lý cửa hàng | Nhân viên mua hàng | Trưởng bộ phận mua hàng | Nhân viên kho | Kế toán công nợ phải trả (AP) | Trưởng bộ phận tài chính | Kiểm toán nội bộ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Tạo và gửi yêu cầu mua hàng (PR) | R/A | I | I | I | - | - | - | - |
+| Phê duyệt nhu cầu nghiệp vụ / PR | I | R/A | C | I | - | - | C* | - |
+| Kiểm tra ngân sách | I | C | I | I | - | - | A | - |
+| Chọn nhà cung cấp đã phê duyệt | - | - | R | A | - | - | - | - |
+| Tạo đơn đặt hàng (PO) | - | - | R | A | - | - | I | - |
+| Phê duyệt mua hàng cho PO | I | I | C | R/A | - | C | I | - |
+| Phê duyệt tài chính bổ sung cho PO (có điều kiện) | I | I | C | C | - | C | R/A | - |
+| Ghi nhận phiếu nhận hàng (GR) | - | - | I | I | R/A | I | - | - |
+| Ghi nhận / Kiểm tra hóa đơn nhà cung cấp | - | - | I | - | C | R/A | I | - |
+| Thực hiện đối chiếu ba bên | - | - | C | I | C | R | A | - |
+| Xử lý ngoại lệ đối chiếu | - | - | R/C | C | R/C | R | A | - |
+| Phê duyệt đề nghị thanh toán | - | - | I | I | - | C | R/A | - |
+| Rà soát bằng chứng kiểm toán | - | - | I | C | I | C | C | R/A |
 
-`*` Approval responsibility may change depending on approval thresholds and business rules.
+Với **Kiểm tra ngân sách**, hệ thống thực hiện bằng thông tin Nguồn dữ liệu ngân sách (Budget Data Source) (UC-01/FR-02). Trưởng bộ phận tài chính `A` nghĩa là chịu trách nhiệm chính sách/kiểm soát ngân sách, không tính toán thủ công. AP `R` trong đối chiếu tự động là khởi chạy/điều phối nghiệp vụ và xem xét kết quả; hệ thống thực hiện so sánh.
 
-For example, PO approval may be assigned to:
+`R/A` nghĩa là cả hai trách nhiệm áp dụng cho cùng vai trò. `R/C` trong **Xử lý ngoại lệ đối chiếu** phụ thuộc đầu vào cần thiết: Nhân viên mua hàng hoặc Nhân viên kho chịu trách nhiệm cung cấp thông tin điều tra/chỉnh sửa bắt buộc thuộc nghiệp vụ của mình và được tham vấn khi chỉ cần làm rõ. AP điều phối vụ việc, Tài chính chịu trách nhiệm kết quả kiểm soát tài chính. Không cấp quyền sửa trực tiếp chứng từ đã phê duyệt/phát hành; quy trình chỉnh sửa và chuyển cấp còn mở. `C*` nghĩa là tham vấn Tài chính để làm rõ kiểm soát tài chính khi xem xét PR, còn Quản lý cửa hàng giữ quyết định nghiệp vụ; không phải bước phê duyệt PR bổ sung.
+
+**Rà soát bằng chứng kiểm toán** giao Kiểm toán nội bộ trách nhiệm thực hiện/cuối cùng đối với rà soát kiểm toán, nhất quán UC-11. Mua hàng và Tài chính cũng có thể xem lịch sử được phép theo UC-11; phạm vi truy cập vẫn thuộc OD-07. RACI quy trình này khác [RACI rà soát/ký duyệt tài liệu yêu cầu nghiệp vụ (BRD)](../05-brd/approval-and-signoff.md#6-ma-trận-phê-duyệt). Cả `R` và `A` đều không cấp quyền hệ thống; chưa có ký duyệt thực tế của các bên liên quan.
+
+Mọi PO phải có phê duyệt của Trưởng bộ phận mua hàng. Phê duyệt của Trưởng bộ phận tài chính là bổ sung có điều kiện; tiêu chí áp dụng và các ngưỡng còn mở theo OD-01/OD-02. Phải hoàn tất mọi phê duyệt bắt buộc trước phát hành, PO bị trả lại được chỉnh sửa và gửi lại qua luồng áp dụng. CFO vẫn là nhà bảo trợ cấp điều hành, có thể rà soát định hướng dự án/BRD nhưng không phê duyệt PO vận hành.
+
+---
+
+# 9. Giới hạn quan trọng của RACI
+
+Không nên dùng RACI thay mô hình quy trình BPMN.
+
+RACI xác định trách nhiệm:
 
 ```text
-Lower-value PO
-→ Procurement Manager
-
-Higher-value PO
-→ Finance Manager
-
-High-value / exceptional PO
-→ CFO
+Ai thực hiện?
+Ai chịu trách nhiệm cuối cùng?
+Ai phải được tham vấn?
+Ai phải được thông báo?
 ```
 
-The exact thresholds are intentionally not finalized in the stakeholder analysis. They will be defined later in the Business Rules and To-Be process.
-
----
-
-# 9. Important RACI Limitation
-
-The RACI matrix should not be used as a replacement for the BPMN process model.
-
-RACI identifies responsibility:
+BPMN sau này mô tả:
 
 ```text
-Who is responsible?
-Who is accountable?
-Who must be consulted?
-Who must be informed?
+Hoạt động xảy ra khi nào?
+Điều gì xảy ra trước và sau?
+Quyết định nào được đưa ra?
+Thông tin di chuyển thế nào?
+Có ngoại lệ nào?
 ```
 
-BPMN will later describe:
-
-```text
-When does the activity occur?
-What happens before and after it?
-What decisions are made?
-How does information move?
-What exceptions exist?
-```
-
-The two artifacts therefore serve different purposes.
+Vì vậy hai tài liệu phục vụ mục đích khác nhau.
 
 ---
 
-# 10. Requirement Elicitation Priorities
+# 10. Ưu tiên khai thác yêu cầu
 
-Not all stakeholders provide the same type of information.
+Không phải mọi bên liên quan cung cấp cùng loại thông tin.
 
-For detailed requirement elicitation, the project should prioritize the following roles.
+Để khai thác yêu cầu chi tiết, dự án nên ưu tiên các vai trò sau.
 
-### Priority 1 — Operational and Process Knowledge
+### Ưu tiên 1 — Kiến thức vận hành và quy trình
 
-**Procurement Officer**
+**Nhân viên mua hàng**
 
-Primary source for:
+Nguồn chính cho:
 
-* PR processing;
-* supplier selection;
-* PO creation;
-* procurement exceptions;
-* operational pain points.
+* xử lý PR;
+* chọn nhà cung cấp;
+* tạo PO;
+* ngoại lệ mua hàng;
+* vấn đề vận hành.
 
-**AP Accountant**
+**Kế toán công nợ phải trả**
 
-Primary source for:
+Nguồn chính cho:
 
-* supplier invoice processing;
-* three-way matching;
-* invoice exceptions.
+* xử lý hóa đơn nhà cung cấp;
+* đối chiếu ba bên;
+* ngoại lệ hóa đơn.
 
-### Priority 2 — Business Rules and Control
+### Ưu tiên 2 — Quy tắc nghiệp vụ và kiểm soát
 
-**Procurement Manager**
+**Trưởng bộ phận mua hàng**
 
-Primary source for:
+Nguồn chính cho:
 
-* procurement policies;
-* PO rules;
-* procurement approval requirements.
+* chính sách mua hàng;
+* quy tắc PO;
+* yêu cầu phê duyệt mua hàng.
 
-**Finance Manager**
+**Trưởng bộ phận tài chính**
 
-Primary source for:
+Nguồn chính cho:
 
-* budget control;
-* payment control;
-* financial approval requirements.
+* kiểm soát ngân sách;
+* kiểm soát thanh toán;
+* yêu cầu phê duyệt tài chính.
 
-### Priority 3 — Supporting Process Requirements
+### Ưu tiên 3 — Yêu cầu hỗ trợ quy trình
 
-**Store Manager / Requester**
+**Quản lý cửa hàng / Người yêu cầu**
 
-Provide requirements related to:
+Cung cấp yêu cầu liên quan:
 
-* purchase request creation;
-* PR approval;
-* status visibility.
+* tạo yêu cầu mua hàng;
+* phê duyệt PR;
+* khả năng theo dõi trạng thái.
 
-**Warehouse Staff**
+**Nhân viên kho**
 
-Provides requirements related to:
+Cung cấp yêu cầu liên quan:
 
-* Goods Receipt;
-* quantity discrepancies;
-* partial delivery.
+* phiếu nhận hàng;
+* sai lệch số lượng;
+* giao hàng một phần.
 
-### Specialist Validation
+### Xác nhận chuyên môn
 
-**Internal Audit**
+**Kiểm toán nội bộ**
 
-Validates:
+Xác nhận:
 
-* auditability;
-* control requirements;
-* segregation of duties.
+* khả năng kiểm toán;
+* yêu cầu kiểm soát;
+* phân tách nhiệm vụ.
 
-**IT Team**
+**Bộ phận công nghệ thông tin**
 
-Validates:
+Xác nhận:
 
-* technical feasibility;
-* system boundaries;
-* integration assumptions.
+* tính khả thi kỹ thuật;
+* ranh giới hệ thống;
+* giả định tích hợp.
 
 ---
 
-# 11. Stakeholder vs. System Actor
+# 11. Bên liên quan và tác nhân hệ thống
 
-A stakeholder is not automatically a system actor.
+Bên liên quan không tự động là tác nhân hệ thống.
 
-For example:
+Ví dụ:
 
 ```text
 CFO
-→ Stakeholder
-→ May primarily consume reports
-→ Does not necessarily perform daily transactions
+→ Bên liên quan
+→ Có thể chủ yếu sử dụng báo cáo
+→ Không nhất thiết thực hiện giao dịch hằng ngày
 ```
 
 ```text
-Supplier
-→ External stakeholder
-→ Interacts with the P2P process
-→ Supplier Portal is outside current scope
-→ Therefore may not be a direct system actor
+Nhà cung cấp
+→ Bên liên quan bên ngoài
+→ Tương tác với P2P
+→ Cổng nhà cung cấp ngoài phạm vi hiện tại
+→ Vì vậy có thể không là tác nhân hệ thống trực tiếp
 ```
 
-The final set of system actors will be determined later during Use Case modeling.
+Tập tác nhân hệ thống cuối cùng sẽ được xác định khi mô hình hóa UC sau này.
 
-Likely operational system actors include:
+Tác nhân hệ thống vận hành dự kiến gồm:
 
-* Requester;
-* Store Manager;
-* Procurement Officer;
-* Procurement Manager;
-* Warehouse Staff;
-* AP Accountant;
-* Finance Manager.
+* Người yêu cầu;
+* Quản lý cửa hàng;
+* Nhân viên mua hàng;
+* Trưởng bộ phận mua hàng;
+* Nhân viên kho;
+* Kế toán công nợ phải trả;
+* Trưởng bộ phận tài chính.
 
 ---
 
-# 12. Analysis Summary
+# 12. Tóm tắt phân tích
 
-The stakeholder analysis identifies three stakeholder groups that will have the greatest influence on the proposed solution.
+Phân tích xác định ba nhóm bên liên quan có ảnh hưởng lớn nhất đến giải pháp đề xuất.
 
-### Operational Users
-
-```text
-Requester
-Procurement Officer
-Warehouse Staff
-AP Accountant
-```
-
-They provide detailed requirements about how the process is actually performed.
-
-### Business and Control Owners
+### Người dùng vận hành
 
 ```text
-Store Manager
-Procurement Manager
-Finance Manager
+Người yêu cầu
+Nhân viên mua hàng
+Nhân viên kho
+Kế toán công nợ phải trả
 ```
 
-They define approval, purchasing, budget, and control requirements.
+Họ cung cấp yêu cầu chi tiết về cách quy trình thực tế được thực hiện.
 
-### Governance and Supporting Roles
+### Chủ thể nghiệp vụ và kiểm soát
+
+```text
+Quản lý cửa hàng
+Trưởng bộ phận mua hàng
+Trưởng bộ phận tài chính
+```
+
+Họ xác định yêu cầu phê duyệt, mua hàng, ngân sách và kiểm soát.
+
+### Vai trò quản trị và hỗ trợ
 
 ```text
 CFO
-Internal Audit
-IT Team
-Supplier
+Kiểm toán nội bộ
+Bộ phận công nghệ thông tin
+Nhà cung cấp
 ```
 
-They provide sponsorship, governance, specialist input, or external process interaction.
+Họ cung cấp bảo trợ, quản trị, ý kiến chuyên môn hoặc tương tác quy trình từ bên ngoài.
 
-The stakeholder model established in this analysis will be used as an input for the As-Is BPMN process, To-Be process, Business Requirements, Use Cases, and system access-control requirements.
+Mô hình bên liên quan trong phân tích này là đầu vào cho quy trình BPMN hiện trạng (As-Is), quy trình đề xuất tương lai, yêu cầu nghiệp vụ, UC và yêu cầu kiểm soát truy cập hệ thống.

@@ -1,10 +1,10 @@
 # Phân tích quy trình từ mua hàng đến thanh toán hiện tại (As-Is)
 
-> **Điều hướng giai đoạn:** Mục đích: mô hình hóa quy trình hiện tại và phân tích vấn đề. Nội dung: BPMN As-Is, điểm bất cập và nguyên nhân gốc rễ. Tiếp theo: [04 — Thiết kế To-Be](../04-to-be-design/README.md).
-
 ## 1. Mục đích phân tích
 
-Mô hình hóa quy trình mua hàng đến thanh toán (P2P) hiện tại để xác định bàn giao thủ công, điểm bất cập, điểm nghẽn và khoảng trống kiểm soát làm đầu vào cho To-Be. Đây là mô hình giả lập, giữ nguyên đặc điểm dùng bảng tính, email và đối chiếu thủ công của hiện trạng.
+Phần này mô tả quy trình mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại: các bộ phận bàn giao thông tin ra sao, công việc chờ ở đâu và bước nào còn phụ thuộc thao tác thủ công. Sơ đồ BPMN thể hiện luồng xử lý; hai tài liệu bên dưới phân tích điểm bất cập và nguyên nhân để làm căn cứ đề xuất quy trình To-Be.
+
+Đây là mô hình hiện trạng giả lập, sử dụng bảng tính, email và đối chiếu thủ công; không phải kết quả khảo sát một doanh nghiệp thực tế.
 
 **Đọc theo nhu cầu:** [BPMN](#4-bpmn-quy-trình-as-is) · [Diễn giải quy trình](#5-diễn-giải-từng-bước-quy-trình-hiện-tại) · [Điểm nghẽn](#8-phân-tích-điểm-nghẽn).
 
@@ -75,7 +75,7 @@ Ví dụ:
 * Đối chiếu ba bên được thực hiện thủ công.
 * Trạng thái giao dịch và lịch sử phê duyệt không có sẵn tập trung.
 
-Các đặc điểm này được chủ ý giữ lại vì là cơ sở của phân tích As-Is.
+Các đặc điểm này là căn cứ để phân tích điểm bất cập của quy trình hiện tại.
 
 ---
 
@@ -153,7 +153,7 @@ Nếu đơn đặt hàng bị từ chối hoặc cần chỉnh sửa, đơn đư
 Một số đơn đặt hàng cũng có thể cần phê duyệt tài chính bổ sung tùy quy tắc phê duyệt áp dụng.
 
 **Quan sát:**
-Nguồn gây chậm chính không nhất thiết là bản thân việc xem xét, mà là thời gian chờ do phê duyệt qua email và đôn đốc thủ công.
+Thời gian chờ phản hồi email và đôn đốc thủ công có thể làm chậm phê duyệt, ngay cả khi việc xem xét PO không mất nhiều thời gian.
 
 **Các điểm bất cập liên quan:** PP-01, PP-04, PP-05.
 
@@ -281,7 +281,7 @@ Bảy điểm bất cập PP-01–PP-07 được tổng hợp và phân tích t�
 
 ## 7. Phân nhóm điểm bất cập
 
-Ba nhóm là hiệu quả quy trình, dữ liệu/khả năng theo dõi và kiểm soát/quản trị. Xem [bảng phân nhóm](./pain-point-analysis.md#2-tổng-hợp-điểm-bất-cập), [quan hệ giữa các vấn đề](./pain-point-analysis.md#4-mối-liên-hệ-giữa-các-điểm-bất-cập) và [ưu tiên](./pain-point-analysis.md#5-ưu-tiên-các-điểm-bất-cập).
+Các điểm bất cập được chia thành ba nhóm: hiệu quả quy trình, dữ liệu và khả năng theo dõi, kiểm soát và quản trị. Xem [bảng phân nhóm](./pain-point-analysis.md#2-tổng-hợp-điểm-bất-cập), [quan hệ giữa các vấn đề](./pain-point-analysis.md#4-mối-liên-hệ-giữa-các-điểm-bất-cập) và [ưu tiên](./pain-point-analysis.md#5-ưu-tiên-các-điểm-bất-cập).
 
 ---
 
@@ -389,8 +389,8 @@ Tài liệu nguyên nhân gốc rễ giữ đầy đủ chuỗi phân tích, y�
 
 - Quy trình phân tán tạo nhiều bàn giao thủ công và khoảng trống thông tin.
 - Lập PR, phê duyệt, nhập PO, kiểm tra ngân sách, thu thập chứng từ, đối chiếu và xử lý ngoại lệ phụ thuộc nhiều vào thao tác thủ công.
-- Khó xác định trạng thái, người xử lý tiếp theo, thời gian chờ và lịch sử phê duyệt; bằng chứng kiểm soát ngân sách/kiểm toán thiếu tập trung.
-- Khi khối lượng mua hàng tăng, công việc tìm chứng từ, nhập lại và đối chiếu thủ công tạo rủi ro mở rộng.
+- Các bộ phận khó xác định trạng thái, người xử lý tiếp theo và thời gian chờ. Lịch sử phê duyệt và bằng chứng kiểm tra ngân sách nằm ở nhiều nơi, gây khó khăn cho việc xem xét và kiểm toán.
+- Khi khối lượng mua hàng tăng, các bộ phận phải dành thêm công sức tìm chứng từ, nhập lại dữ liệu và đối chiếu thủ công.
 
 ---
 
@@ -409,4 +409,4 @@ Các hướng cải tiến chính gồm:
 * giảm đối chiếu hóa đơn thủ công;
 * cung cấp cách xử lý ngoại lệ có cấu trúc.
 
-Các phát hiện này sẽ được dùng làm đầu vào trực tiếp cho thiết kế quy trình P2P To-Be.
+Các phát hiện này là đầu vào cho [thiết kế quy trình To-Be](../04-to-be-design/README.md).

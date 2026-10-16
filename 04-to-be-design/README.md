@@ -1,12 +1,10 @@
 # Thiết kế quy trình từ mua hàng đến thanh toán tương lai (To-Be)
 
-> **Điều hướng giai đoạn:** Mục đích: xác định quy trình tương lai và các kiểm soát. Nội dung: BPMN To-Be, quy tắc nghiệp vụ, so sánh và bản đồ cải tiến. Tiếp theo: [05 — Yêu cầu nghiệp vụ](../05-brd/README.md).
-
 ## Tổng quan
 
-Giai đoạn này đề xuất quy trình mua hàng đến thanh toán (P2P) dựa trên điểm bất cập và nguyên nhân As-Is. Kết quả chính là luồng chuẩn hóa, dữ liệu liên thông, kiểm tra ngân sách bắt buộc, phê duyệt có kiểm soát và đối chiếu tự động kết hợp xử lý ngoại lệ. Quyết định nghiệp vụ vẫn do người có thẩm quyền thực hiện.
+Phần này đề xuất cách xử lý các vấn đề của quy trình mua hàng đến thanh toán (Procure-to-Pay — P2P) hiện tại. Sơ đồ To-Be mô tả thứ tự xử lý, người quyết định và cách hệ thống kiểm tra ngân sách, chuyển phê duyệt, liên kết chứng từ và đối chiếu ba bên. Các quyết định nghiệp vụ vẫn do người có thẩm quyền thực hiện.
 
-Phạm vi chỉ gồm hàng hóa hữu hình từ lập PR đến **Đề nghị thanh toán đã được phê duyệt**; thực hiện thanh toán ngân hàng nằm ngoài phạm vi.
+Phạm vi chỉ gồm hàng hóa hữu hình từ lập yêu cầu mua hàng (Purchase Requisition — PR) đến **Đề nghị thanh toán đã được phê duyệt**; thực hiện thanh toán ngân hàng nằm ngoài phạm vi.
 
 | Đọc theo nhu cầu | Nội dung |
 | --- | --- |
@@ -18,11 +16,7 @@ Phạm vi chỉ gồm hàng hóa hữu hình từ lập PR đến **Đề nghị
 
 ## 1. Mục tiêu thiết kế quy trình
 
-Quy trình To-Be được thiết kế để hỗ trợ mục tiêu nghiệp vụ sau:
-
-> **Cải thiện hiệu quả, tính minh bạch, nhất quán và kiểm soát của quy trình P2P tại NovaRetail.**
-
-Thiết kế tương lai hỗ trợ năm mục tiêu dự án:
+Quy trình To-Be hướng tới giảm thời gian chờ phê duyệt, giảm nhập lại dữ liệu và giúp các bộ phận theo dõi chứng từ, quyết định và ngoại lệ. Năm mục tiêu dự án bên dưới nêu các hướng cải tiến này:
 
 | ID | Mục tiêu nghiệp vụ |
 | ------ | --------------------------------------------------- |
@@ -44,7 +38,7 @@ Năm nguyên tắc được dùng khi thiết kế quy trình tương lai.
 
 Hoạt động phê duyệt và giao dịch nên theo luồng công việc được xác định thay vì phụ thuộc trao đổi email riêng lẻ và đôn đốc thủ công.
 
-Hệ thống quản lý việc chuyển, còn người dùng nghiệp vụ có thẩm quyền vẫn chịu trách nhiệm quyết định phê duyệt.
+Hệ thống chuyển chứng từ đến người xử lý phù hợp; người có thẩm quyền quyết định phê duyệt.
 
 ---
 
@@ -83,9 +77,7 @@ Các điểm kiểm soát chính gồm kiểm tra ngân sách, phê duyệt PR/P
 
 ### 2.5 Cải thiện khả năng theo dõi và truy vết
 
-Quy trình tương lai nên duy trì bản ghi nhất quán về thông tin giao dịch quan trọng.
-
-Có thể bao gồm:
+Quy trình tương lai nên lưu các thông tin cần để theo dõi giao dịch và xem lại quyết định, có thể gồm:
 
 * trạng thái giao dịch hiện tại;
 * người dùng chịu trách nhiệm;
@@ -94,7 +86,7 @@ Có thể bao gồm:
 * dấu thời gian hành động;
 * lịch sử giao dịch.
 
-Điều này cải thiện khả năng theo dõi vận hành và kiểm toán.
+Những thông tin này giúp người được cấp quyền theo dõi công việc và kiểm tra lịch sử giao dịch.
 
 ---
 
@@ -146,7 +138,7 @@ Dự án không bao gồm cổng thông tin nhà cung cấp. Vì vậy, trao đ�
 
 Ảnh xem trước phía trên giúp theo dõi toàn quy trình; mở ảnh đầy đủ để đọc nhãn của sơ đồ rộng. Nguồn, trang tương ứng và lịch sử kiểm tra được ghi tại [danh mục nguồn sơ đồ](../assets/diagrams/sources/README.md); [URL trình biên tập bên ngoài](../assets/diagrams/editable-references/to-be-p2p-diagram-url.txt) là tham chiếu lịch sử.
 
-Mô hình phân biệt đồng bộ tiếp nhận với kiểm tra dữ liệu bắt buộc và chờ; đối chiếu không đạt giữ ngoại lệ, đối chiếu lại đạt xác nhận đã xử lý.
+Nhân viên kho ghi nhận phiếu nhận hàng (GR), còn Kế toán công nợ phải trả ghi nhận hóa đơn. Sau khi cả hai nhánh hoàn tất ghi nhận, hệ thống kiểm tra thông tin PO, GR và hóa đơn bắt buộc; nếu thiếu thì chờ bổ sung, khi đủ mới chạy đối chiếu ba bên. Khi đối chiếu không đạt, ngoại lệ vẫn mở; chỉ đối chiếu lại đạt mới xác nhận ngoại lệ đã xử lý.
 
 Mô hình BPMN phân biệt:
 
@@ -267,7 +259,7 @@ PR bị từ chối dừng lại, không được mở lại hoặc gửi lại 
 
 #### Trả lại để chỉnh sửa
 
-Quyết định Trả lại để chỉnh sửa riêng cần lý do và cho phép Người yêu cầu chỉnh sửa, gửi lại; kiểm tra trường bắt buộc và ngân sách chạy lại trước bước Quản lý cửa hàng xem xét.
+Khi trả lại PR để chỉnh sửa, Quản lý cửa hàng phải ghi lý do. Người yêu cầu được chỉnh sửa và gửi lại; hệ thống kiểm tra lại trường bắt buộc và ngân sách trước khi chuyển PR cho Quản lý cửa hàng xem xét.
 
 Kiểm tra ngân sách và phê duyệt nghiệp vụ được coi là kiểm soát riêng:
 
@@ -312,7 +304,7 @@ Nhân viên mua hàng bổ sung thông tin riêng của PO như:
 
 #### Cải tiến
 
-Quy trình tương lai giảm nhu cầu nhập lại thủ công thông tin đã có.
+Tái sử dụng dữ liệu PR phù hợp giúp giảm nhu cầu nhập lại thông tin khi lập PO.
 
 **Điểm bất cập liên quan:** PP-07.
 **Mục tiêu liên quan:** OBJ-02.
@@ -539,8 +531,9 @@ Ngoại lệ đối chiếu có thể gồm:
 
 * sai lệch số lượng;
 * sai lệch giá;
-* phiếu nhận hàng chưa đầy đủ;
 * thông tin hóa đơn không chính xác.
+
+Nếu thiếu phiếu nhận hàng hoặc dữ liệu GR bắt buộc phục vụ đối chiếu, giao dịch phải chờ bổ sung trước khi đối chiếu và chưa đủ điều kiện chuẩn bị hoặc gửi đề nghị thanh toán. Chính sách nhận hàng một phần vẫn còn mở theo OD-08.
 
 Kế toán công nợ phải trả xem xét ngoại lệ và phối hợp với bên liên quan khi cần.
 
@@ -562,7 +555,7 @@ Quy trình tương lai chuyển xử lý ngoại lệ từ phối hợp không c
 
 Sau khi kết quả đối chiếu hiện hành thỏa mãn quy tắc áp dụng, Kế toán công nợ phải trả được phép chuẩn bị và gửi đề nghị thanh toán (Payment Request). Thiếu dữ liệu hoặc đối chiếu không đạt chặn cả hai hành động. Chỉnh sửa được ghi riêng; chỉ đối chiếu lại đạt mới xác nhận ngoại lệ đã xử lý và khôi phục điều kiện.
 
-Đề nghị thanh toán tham chiếu chứng từ mua hàng liên quan để Tài chính có thể xem xét giao dịch nhất quán.
+Đề nghị thanh toán giữ tham chiếu đến các chứng từ mua hàng liên quan để Trưởng bộ phận tài chính có thể xem căn cứ khi quyết định.
 
 ---
 
@@ -606,9 +599,7 @@ Thực hiện thanh toán thực tế qua ngân hàng nằm ngoài phạm vi d�
 
 Theo dõi trạng thái và lịch sử kiểm toán được coi là hành vi toàn hệ thống, không phải tác vụ BPMN riêng sau mỗi hoạt động.
 
-Với giao dịch chính, hệ thống nên duy trì thông tin như:
-
-Ví dụ:
+Ví dụ dưới đây minh họa cách ghi hành động, người thực hiện và thời điểm của một giao dịch:
 
 ```text
 PO-001
@@ -665,11 +656,11 @@ Truy vết chi tiết được ghi trong:
 
 ## 14. Chuyển đổi từ As-Is sang To-Be
 
-Từ phối hợp thủ công, dữ liệu phân tán sang luồng chuẩn hóa, dữ liệu liên thông, tự động hóa theo quy tắc và ngoại lệ có kiểm soát. Xem [so sánh từng khâu](./as-is-to-be-comparison.md#3-yêu-cầu-mua-hàng) để biết căn cứ và phần chủ ý giữ thủ công.
+To-Be đề xuất thay việc chuyển tệp và đôn đốc qua email bằng luồng chuyển xử lý trong hệ thống, tái sử dụng dữ liệu đã có và ghi lại quá trình xử lý ngoại lệ. Xem [so sánh từng khâu](./as-is-to-be-comparison.md#3-yêu-cầu-mua-hàng) để biết căn cứ và những việc vẫn do con người thực hiện.
 
 ## 15. Kết quả nghiệp vụ kỳ vọng
 
-Thiết kế kỳ vọng giảm thời gian chờ, nhập lại và thu thập/đối chiếu chứng từ thủ công; cải thiện khả năng theo dõi, nhất quán và kiểm toán. Đây là kỳ vọng giả lập, chưa phải lợi ích đã đo. Chi tiết tại [tác động nghiệp vụ kỳ vọng](./as-is-to-be-comparison.md#24-tác-động-nghiệp-vụ-kỳ-vọng) và [mục tiêu/định nghĩa đo lường](../01-business-context/project-objectives.md).
+Thiết kế hướng tới giảm thời gian chờ phê duyệt, nhập lại dữ liệu và thu thập chứng từ để đối chiếu thủ công. Thông tin trạng thái và lịch sử được lưu để các bộ phận theo dõi và kiểm toán. Đây là kỳ vọng của case study; các chỉ số hiệu quả (KPI) là mục tiêu giả định, chưa phải lợi ích đã đo. Chi tiết tại [tác động nghiệp vụ kỳ vọng](./as-is-to-be-comparison.md#24-tác-động-nghiệp-vụ-kỳ-vọng) và [mục tiêu/định nghĩa đo lường](../01-business-context/project-objectives.md).
 
 ---
 
@@ -789,4 +780,4 @@ Tiếp theo: [05 — Yêu cầu nghiệp vụ](../05-brd/README.md).
 
 NovaRetail JSC là công ty giả lập được tạo cho dự án hồ sơ năng lực phân tích nghiệp vụ này.
 
-Khối lượng quy trình, chỉ tiêu, quy tắc và kịch bản nghiệp vụ trong kho này được giả lập cho mục đích phân tích và minh họa, không thể hiện dữ liệu vận hành của tổ chức thực tế.
+Số liệu nghiệp vụ mô phỏng là dữ liệu tổng hợp, không phải dữ liệu vận hành của tổ chức thực tế. Quy trình, quy tắc và kịch bản được đề xuất để phân tích và minh họa; chưa có ký duyệt của các bên liên quan thực tế.

@@ -2,9 +2,11 @@
 
 ## Mục đích và kết quả chính
 
-Nối vấn đề, mục tiêu, BRQ, FR/NFR, UC và tiêu chí chấp nhận để rà soát mạch phân tích. RTM ghi rõ mức độ bao phủ một phần, khoảng thiếu và OD-01–OD-08; sáu quyết định nghiệp vụ nền tảng là đường cơ sở do chủ dự án chốt cho nghiên cứu tình huống.
+Phần này giúp người đọc lần theo một yêu cầu từ vấn đề và mục tiêu đến ca sử dụng, yêu cầu phần mềm và tiêu chí chấp nhận. Ma trận truy vết yêu cầu (Requirements Traceability Matrix — RTM) nối yêu cầu nghiệp vụ (BRQ), yêu cầu chức năng (FR), phi chức năng (NFR), ca sử dụng (UC) và tiêu chí chấp nhận (AC).
 
-Có **37 AC** cho kiểm chứng tương lai; mọi AC vẫn chưa được kiểm tra. Các quyết định còn mở chưa phải chính sách đã xác nhận, và hồ sơ chưa có ký duyệt doanh nghiệp thật.
+RTM ghi rõ phần mới được bao phủ một phần, phần còn thiếu và các quyết định còn mở OD-01–OD-08. Sáu quyết định nghiệp vụ nền tảng là đường cơ sở do chủ dự án chốt cho case study.
+
+Có **37 AC** để chuẩn bị kiểm thử sau này; chưa AC nào được thực thi kiểm thử. Các quyết định còn mở chưa phải chính sách đã xác nhận. Hồ sơ chưa có ký duyệt của các bên liên quan thực tế.
 
 ## Đọc sâu
 

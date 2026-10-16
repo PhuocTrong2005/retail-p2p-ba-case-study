@@ -1,12 +1,10 @@
 # 06 — Phân tích hệ thống
 
-> **Điều hướng giai đoạn:** Mục đích: mô hình hóa tác nhân hệ thống và mục tiêu người dùng, chưa thiết kế phần mềm. Nội dung: ca sử dụng, sơ đồ hoạt động và phân tích ranh giới hệ thống. Tiếp theo: [07 — Yêu cầu phần mềm](../07-software-requirements/README.md).
-
 ## 1. Tổng quan
 
-Chuyển quy trình To-Be và yêu cầu nghiệp vụ thành ranh giới, tác nhân và mô hình tương tác của **Hệ thống quản lý mua hàng** được đề xuất. Có 12 UC chính, UC-00 tổng quan và ba sơ đồ hoạt động; đây là mô hình phân tích, chưa thiết kế hoặc triển khai phần mềm.
+Phần này xác định ai sử dụng **Hệ thống quản lý mua hàng**, mỗi người cần thực hiện việc gì và hệ thống phản hồi ra sao theo quy trình To-Be. Các ca sử dụng (Use Case — UC) mô tả tương tác; sơ đồ hoạt động làm rõ thứ tự xử lý và các nhánh quyết định. Có 12 UC chính, UC-00 tổng quan và ba sơ đồ hoạt động; đây là mô hình phân tích, chưa thiết kế hoặc triển khai phần mềm.
 
-Phạm vi gồm hàng hóa hữu hình, từ lập PR đến phê duyệt đề nghị thanh toán. Mua dịch vụ và thực hiện thanh toán ngân hàng nằm ngoài phạm vi.
+Phạm vi gồm hàng hóa hữu hình, từ lập yêu cầu mua hàng (Purchase Requisition — PR) đến phê duyệt đề nghị thanh toán. Mua dịch vụ và thực hiện thanh toán ngân hàng nằm ngoài phạm vi.
 
 **Đọc theo nhu cầu:** [Danh mục UC và sơ đồ](#42-danh-mục-ca-sử-dụng) · [Đặc tả kịch bản](./use-case-specifications.md) · [Sơ đồ hoạt động](#5-sơ-đồ-hoạt-động) · [Ánh xạ BRQ–UC](#8-truy-vết-từ-yêu-cầu-nghiệp-vụ-đến-ca-sử-dụng).
 
@@ -20,7 +18,7 @@ Các mục tiêu người dùng được liệt kê trong [danh mục UC](#42-da
 
 ### Điều kiện phụ thuộc bên ngoài / hỗ trợ
 
-Mô hình hiện tại đưa **Nguồn dữ liệu ngân sách** vào như hệ thống hỗ trợ bên ngoài vì cần thông tin ngân sách để kiểm tra ngân sách tự động.
+**Nguồn dữ liệu ngân sách** là hệ thống hỗ trợ bên ngoài, cung cấp thông tin cho bước kiểm tra ngân sách tự động.
 
 Các thành phần sau được chủ ý không mô hình hóa là tác nhân hệ thống trực tiếp:
 
@@ -77,13 +75,13 @@ Sơ đồ tổng quan trình bày mục tiêu hệ thống chính và tác nhân
 
 ### 4.3 Đặc tả ca sử dụng chi tiết
 
-[Đặc tả UC-01–UC-12](./use-case-specifications.md) giữ mục tiêu, tác nhân, điều kiện tiên quyết, luồng chính/thay thế, ngoại lệ, điều kiện sau, nguồn BRQ/BR và OD. README này giữ danh mục điều hướng, không kể lại các kịch bản đó.
+[Đặc tả UC-01–UC-12](./use-case-specifications.md) mô tả mục tiêu, tác nhân, điều kiện trước và sau, luồng chính, nhánh thay thế và ngoại lệ của từng UC. Tài liệu cũng ghi nguồn yêu cầu nghiệp vụ (BRQ), quy tắc nghiệp vụ (BR) và quyết định còn mở (OD). Dùng danh mục phía trên để chọn UC, sau đó mở đặc tả để đọc kịch bản.
 
 ---
 
 ## 5. Sơ đồ hoạt động
 
-Sơ đồ hoạt động chỉ được dùng cho luồng mà quyết định, chuyển xử lý hoặc vòng lặp ngoại lệ cần chi tiết hành vi nhiều hơn sơ đồ ca sử dụng có thể cung cấp riêng lẻ.
+Ba sơ đồ hoạt động dưới đây làm rõ các quyết định, bước chuyển xử lý và vòng lặp ngoại lệ trong luồng phê duyệt PR, phê duyệt PO và đối chiếu hóa đơn.
 
 ### 5.1 Luồng phê duyệt PR
 
@@ -134,7 +132,7 @@ Phân tích hệ thống tuân theo đường cơ sở nghiệp vụ được th
 - Xử lý hóa đơn nhà cung cấp giới hạn ở giao dịch mua theo PO trong phạm vi hiện tại.
 - Đối chiếu ba bên đánh giá thông tin PO, GR và hóa đơn.
 - Sai lệch tạo ngoại lệ có kiểm soát.
-- Kết quả đối chiếu lại hiện hành đạt phải xác nhận ngoại lệ đã xử lý trước chuẩn bị hoặc gửi đề nghị thanh toán; chỉ ghi nhận chỉnh sửa không cấp điều kiện này.
+- Sau chỉnh sửa, phải đối chiếu lại đạt mới xác nhận ngoại lệ đã xử lý và đủ điều kiện chuẩn bị hoặc gửi đề nghị thanh toán. Chỉ ghi nhận chỉnh sửa chưa đủ để chuyển tiếp.
 
 ### Đề nghị thanh toán
 
@@ -154,7 +152,7 @@ Phân tích hệ thống tuân theo đường cơ sở nghiệp vụ được th
 
 ## 7. Quyết định nghiệp vụ còn mở
 
-Các nội dung sau được chủ ý giữ chưa giải quyết và không được coi là quy tắc hệ thống đã xác nhận:
+Các quyết định dưới đây vẫn còn mở, chưa phải quy tắc hệ thống đã được xác nhận:
 
 | ID | Quyết định còn mở |
 |---|---|
@@ -187,7 +185,7 @@ Các quyết định này sẽ được làm rõ trong phân tích yêu cầu ch
 | BRQ-10 — Phê duyệt đề nghị thanh toán có kiểm soát | UC-08, UC-09 |
 | BRQ-11 — Báo cáo mua hàng cơ bản | UC-12 |
 
-Ánh xạ này kết nối tài liệu yêu cầu nghiệp vụ với yêu cầu hệ thống chi tiết sẽ được xác định trong SRS.
+Ánh xạ này cho biết UC nào xử lý từng yêu cầu nghiệp vụ; SRS cụ thể hóa các UC thành yêu cầu phần mềm.
 
 ---
 
@@ -198,6 +196,6 @@ Các quyết định này sẽ được làm rõ trong phân tích yêu cầu ch
 
 ## 10. Chuyển tiếp sang SRS
 
-[SRS](../07-software-requirements/srs.md) cụ thể hóa UC thành FR/NFR và tiêu chí chấp nhận; [RTM](../08-traceability/requirements-traceability-matrix.md) tổng hợp truy vết và khoảng thiếu. Có mô hình hoặc tiêu chí không đồng nghĩa đã kiểm thử phần mềm hay nghiệm thu.
+[Đặc tả yêu cầu phần mềm (SRS)](../07-software-requirements/srs.md) cụ thể hóa UC thành yêu cầu chức năng (FR), phi chức năng (NFR) và tiêu chí chấp nhận (AC). [Ma trận truy vết yêu cầu (RTM)](../08-traceability/requirements-traceability-matrix.md) ghi các liên kết và phần còn thiếu. Các mô hình và tiêu chí này chưa phải kết quả kiểm thử phần mềm hoặc nghiệm thu.
 
 Trước: [05 — Yêu cầu nghiệp vụ](../05-brd/README.md). Tiếp theo: [07 — Yêu cầu phần mềm](../07-software-requirements/README.md).

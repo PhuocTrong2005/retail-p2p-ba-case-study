@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "schema_version": "1.0",
+    "data_label": "Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.",
+    "purpose": "Dữ liệu demo PR giai đoạn 3A, dùng lại cho prototype 3B.",
+    "limitations": [
+      "Nội dung chứng từ, danh mục và lý do được xây dựng cho demo.",
+      "Không phải chứng từ doanh nghiệp, báo giá hoặc giá thị trường đã xác minh.",
+      "Không đóng OD hay bổ sung policy; OD-03, OD-06 và OD-07 vẫn mở.",
+      "Quyền demo không phải kiểm soát truy cập thực tế."
+    ],
+    "history_coverage": {
+      "complete_through": "2026-10-10T12:00:00+07:00",
+      "scope": "Toàn bộ chuỗi sự kiện xem xét của đúng năm PR-A–PR-E trong seed đến mốc ban đầu; không đại diện log vận hành hay audit đầy đủ.",
+      "all_seed_prs_included": true
+    }
+  },
+  "demo_config": {
+    "timezone": "Asia/Ho_Chi_Minh",
+    "initial_time": "2026-10-10T12:00:00+07:00",
+    "cohort": {
+      "start_inclusive": "2026-10-01T00:00:00+07:00",
+      "end_exclusive": "2026-10-08T00:00:00+07:00"
+    },
+    "initial_user_id": "REQ-01",
+    "unit_id": "UNIT-01",
+    "currency": "VND",
+    "future_budget_simulation": {
+      "default_outcome": "PASS",
+      "selection_behavior": "Giữ lựa chọn cho các lần thử Gửi/Gửi lại sau đến khi đổi; khôi phục về PASS. Không ngẫu nhiên, không tự tiêu thụ, không sửa bằng chứng lịch sử.",
+      "outcomes": [
+        { "id": "PASS", "label": "Đạt" },
+        { "id": "INSUFFICIENT", "label": "Không đủ ngân sách" },
+        { "id": "UNAVAILABLE", "label": "Nguồn dữ liệu ngân sách không khả dụng" }
+      ]
+    }
+  },
+  "reference_data": {
+    "roles": [
+      { "id": "REQUESTER", "label": "Người yêu cầu" },
+      { "id": "STORE_MANAGER", "label": "Quản lý cửa hàng" }
+    ],
+    "users": [
+      { "id": "REQ-01", "display_name": "Người yêu cầu mẫu", "role_id": "REQUESTER", "unit_id": "UNIT-01" },
+      { "id": "MGR-01", "display_name": "Quản lý cửa hàng mẫu", "role_id": "STORE_MANAGER", "unit_id": "UNIT-01" }
+    ],
+    "units": [
+      { "id": "UNIT-01", "name": "Đơn vị mẫu", "active": true, "reviewer_id": "MGR-01" }
+    ],
+    "cost_centers": [
+      { "id": "CC-OPS", "name": "Vận hành cửa hàng", "unit_id": "UNIT-01", "active": true },
+      { "id": "CC-DISPLAY", "name": "Trưng bày hàng hóa", "unit_id": "UNIT-01", "active": true },
+      { "id": "CC-STOCK", "name": "Kho cửa hàng", "unit_id": "UNIT-01", "active": true }
+    ]
+  },
+  "purchase_requisitions": [
+    {
+      "pr_id": "PR-A",
+      "requester_id": "REQ-01",
+      "unit_id": "UNIT-01",
+      "cost_center_id": "CC-OPS",
+      "business_reason": "Thay hai máy quét thường mất kết nối tại hai quầy thu ngân để giảm gián đoạn khi thanh toán.",
+      "needed_by": "2026-10-15",
+      "item": {
+        "description": "Máy quét mã vạch 2D cầm tay, kết nối USB",
+        "quantity": 2,
+        "estimated_unit_price": 1250000
+      }
+    },
+    {
+      "pr_id": "PR-B",
+      "requester_id": "REQ-01",
+      "unit_id": "UNIT-01",
+      "cost_center_id": "CC-DISPLAY",
+      "business_reason": "Bổ sung vị trí ghi giá cho khu hàng khuyến mại để khách dễ đối chiếu giá khi chọn hàng.",
+      "needed_by": "2026-10-18",
+      "item": {
+        "description": "Kẹp bảng giá nhựa trong, gắn mép kệ dày 20 mm",
+        "quantity": 40,
+        "estimated_unit_price": 12000
+      }
+    },
+    {
+      "pr_id": "PR-C",
+      "requester_id": "REQ-01",
+      "unit_id": "UNIT-01",
+      "cost_center_id": "CC-STOCK",
+      "business_reason": "Tách hàng chờ lên kệ theo sáu khu kho để tránh lẫn hàng khi bổ sung; mỗi khu dùng hai thùng luân phiên, cần tổng cộng 12 thùng.",
+      "needed_by": "2026-10-16",
+      "item": {
+        "description": "Thùng nhựa có nắp 60 lít, xếp chồng được",
+        "quantity": 12,
+        "estimated_unit_price": 180000
+      },
+      "demo_clarification": {
+        "return_event_id": "C-2",
+        "resubmit_event_id": "C-3",
+        "business_reason_before_clarification": "Tách hàng chờ lên kệ theo khu kho để tránh lẫn hàng khi bổ sung.",
+        "note": "Ghi chú nội dung demo được bổ sung cho lần gửi lại C-3: lý do nghiệp vụ hiện tại làm rõ sáu khu kho, mỗi khu hai thùng luân phiên, tổng 12 thùng; số lượng không đổi. Đây không phải sự kiện chỉnh sửa, bản audit hoặc bằng chứng thời điểm chỉnh sửa."
+      }
+    },
+    {
+      "pr_id": "PR-D",
+      "requester_id": "REQ-01",
+      "unit_id": "UNIT-01",
+      "cost_center_id": "CC-OPS",
+      "business_reason": "Bổ sung giấy cho bốn quầy thu ngân để duy trì in hóa đơn trong đợt bán hàng cuối tuần.",
+      "needed_by": "2026-10-09",
+      "item": {
+        "description": "Cuộn giấy in nhiệt K80, khổ 80 mm, dài 45 m",
+        "quantity": 40,
+        "estimated_unit_price": 18000
+      }
+    },
+    {
+      "pr_id": "PR-E",
+      "requester_id": "REQ-01",
+      "unit_id": "UNIT-01",
+      "cost_center_id": "CC-DISPLAY",
+      "business_reason": "Tạo điểm trưng bày riêng tại lối vào cho nhóm hàng theo mùa để khách dễ tìm sản phẩm.",
+      "needed_by": "2026-10-20",
+      "item": {
+        "description": "Kệ trưng bày thép 4 tầng, rộng 90 cm, sâu 40 cm",
+        "quantity": 2,
+        "estimated_unit_price": 1600000
+      }
+    }
+  ],
+  "historical_checks": [
+    { "check_reference": "CHK-A-1", "event_id": "A-1", "simulated": true, "required_fields_passed": true, "budget_check_passed": true },
+    { "check_reference": "CHK-B-1", "event_id": "B-1", "simulated": true, "required_fields_passed": true, "budget_check_passed": true },
+    { "check_reference": "CHK-C-1", "event_id": "C-1", "simulated": true, "required_fields_passed": true, "budget_check_passed": true },
+    { "check_reference": "CHK-C-3", "event_id": "C-3", "simulated": true, "required_fields_passed": true, "budget_check_passed": true },
+    { "check_reference": "CHK-D-1", "event_id": "D-1", "simulated": true, "required_fields_passed": true, "budget_check_passed": true },
+    { "check_reference": "CHK-E-1", "event_id": "E-1", "simulated": true, "required_fields_passed": true, "budget_check_passed": true }
+  ],
+  "events": [
+    {
+      "event_id": "A-1", "pr_id": "PR-A", "event_type": "FIRST_VALID_SUBMIT",
+      "occurred_at": "2026-10-02T09:00:00+07:00", "event_order": 1, "review_round": 1, "actor_id": "REQ-01",
+      "required_fields_passed": true, "budget_check_passed": true, "check_reference": "CHK-A-1"
+    },
+    {
+      "event_id": "B-1", "pr_id": "PR-B", "event_type": "FIRST_VALID_SUBMIT",
+      "occurred_at": "2026-10-03T10:00:00+07:00", "event_order": 1, "review_round": 1, "actor_id": "REQ-01",
+      "required_fields_passed": true, "budget_check_passed": true, "check_reference": "CHK-B-1"
+    },
+    {
+      "event_id": "B-2", "pr_id": "PR-B", "event_type": "RETURN_FOR_EDIT",
+      "occurred_at": "2026-10-09T14:00:00+07:00", "event_order": 2, "review_round": 1, "actor_id": "MGR-01",
+      "return_reason": "Làm rõ căn cứ cần 40 kẹp bảng giá: nêu số vị trí cần bổ sung tại khu khuyến mại và số kẹp dùng cho mỗi vị trí."
+    },
+    {
+      "event_id": "C-1", "pr_id": "PR-C", "event_type": "FIRST_VALID_SUBMIT",
+      "occurred_at": "2026-09-29T08:00:00+07:00", "event_order": 1, "review_round": 1, "actor_id": "REQ-01",
+      "required_fields_passed": true, "budget_check_passed": true, "check_reference": "CHK-C-1"
+    },
+    {
+      "event_id": "C-2", "pr_id": "PR-C", "event_type": "RETURN_FOR_EDIT",
+      "occurred_at": "2026-09-30T11:00:00+07:00", "event_order": 2, "review_round": 1, "actor_id": "MGR-01",
+      "return_reason": "Làm rõ căn cứ cần 12 thùng: nêu số khu kho sử dụng và số thùng cho mỗi khu để xem xét nhu cầu."
+    },
+    {
+      "event_id": "C-3", "pr_id": "PR-C", "event_type": "VALID_RESUBMIT",
+      "occurred_at": "2026-10-06T12:00:00+07:00", "event_order": 3, "review_round": 2, "actor_id": "REQ-01",
+      "required_fields_passed": true, "budget_check_passed": true, "check_reference": "CHK-C-3"
+    },
+    {
+      "event_id": "D-1", "pr_id": "PR-D", "event_type": "FIRST_VALID_SUBMIT",
+      "occurred_at": "2026-10-04T15:00:00+07:00", "event_order": 1, "review_round": 1, "actor_id": "REQ-01",
+      "required_fields_passed": true, "budget_check_passed": true, "check_reference": "CHK-D-1"
+    },
+    {
+      "event_id": "D-2", "pr_id": "PR-D", "event_type": "APPROVE",
+      "occurred_at": "2026-10-05T09:00:00+07:00", "event_order": 2, "review_round": 1, "actor_id": "MGR-01"
+    },
+    {
+      "event_id": "E-1", "pr_id": "PR-E", "event_type": "FIRST_VALID_SUBMIT",
+      "occurred_at": "2026-10-07T10:00:00+07:00", "event_order": 1, "review_round": 1, "actor_id": "REQ-01",
+      "required_fields_passed": true, "budget_check_passed": true, "check_reference": "CHK-E-1"
+    },
+    {
+      "event_id": "E-2", "pr_id": "PR-E", "event_type": "REJECT",
+      "occurred_at": "2026-10-08T00:00:00+07:00", "event_order": 2, "review_round": 1, "actor_id": "MGR-01"
+    }
+  ]
+}

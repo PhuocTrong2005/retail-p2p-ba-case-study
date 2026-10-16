@@ -6,7 +6,7 @@ NovaRetail JSC là **doanh nghiệp bán lẻ giả lập tại Việt Nam** tro
 
 Tôi phân tích quy trình hiện tại, đề xuất cách xử lý từng bước và viết yêu cầu phần mềm kèm tiêu chí chấp nhận.
 
-**Xem sản phẩm:** [Tài liệu yêu cầu nghiệp vụ (BRD)](./05-brd/business-requirements-document.md) · [Sơ đồ quy trình đề xuất](./assets/diagrams/exports/to-be/p2p-to-be.png) · [Wireframe yêu cầu mua hàng (PR)](./wireframes/pr/README.md).
+**Xem sản phẩm:** [Tài liệu yêu cầu nghiệp vụ (BRD)](./05-brd/business-requirements-document.md) · [Sơ đồ quy trình đề xuất](./assets/diagrams/exports/to-be/p2p-to-be.png) · [Wireframe tĩnh PR](./wireframes/pr/README.md) · [Prototype PR và hướng dẫn chạy](./prototype/pr/README.md) · [Kết quả kiểm chứng prototype](./prototype/pr/verification.md).
 
 ## 2. Bài toán nghiệp vụ
 
@@ -56,14 +56,27 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 
 **Wireframe tĩnh.** Bộ [wireframe PR](./wireframes/pr/README.md) có bốn màn hình: danh sách của Người yêu cầu, tạo/chỉnh sửa, chi tiết PR và hàng đợi của Quản lý cửa hàng. Tải repository về máy, sau đó mở [wireframes/pr/index.html](./wireframes/pr/index.html) bằng trình duyệt; các nút lưu, gửi và quyết định là mẫu tĩnh. Có thể xem nhanh qua [ảnh hàng đợi](./wireframes/pr/previews/pr-04-queue.png) hoặc [các ảnh tiêu biểu](./wireframes/pr/README.md#ảnh-tiêu-biểu). Hướng dẫn mở, ảnh và phạm vi kiểm tra được ghi trong [README wireframe](./wireframes/pr/README.md#kiểm-tra-và-giới-hạn).
 
+**Prototype tương tác.** Bản [prototype PR](./prototype/pr/README.md) cho phép tạo và lưu PR, gửi và gửi lại, phê duyệt, trả lại, từ chối và xem lịch sử quy trình. Ba metric thể hiện số PR đang chờ xem xét, thời gian chờ theo vòng và tỷ lệ PR từng bị trả lại. Để thao tác, tải repository và làm theo [hướng dẫn chạy local](./prototype/pr/README.md#chạy-local); liên kết tài liệu trên GitHub không phải demo chạy trực tiếp. Dữ liệu chỉ tồn tại trong bộ nhớ trang; tải lại hoặc khôi phục sẽ đưa về dữ liệu mẫu.
+
+Hai ảnh dưới đây được chụp trực tiếp trong cùng phiên kiểm tra trình duyệt, minh họa hai tình huống riêng. Nguồn ảnh, thời điểm chụp thực tế và kết quả nằm trong [README prototype](./prototype/pr/README.md#ảnh-trực-tiếp-hiện-hành) và [tài liệu kiểm chứng](./prototype/pr/verification.md).
+
+**Dữ liệu tổng hợp — hàng đợi ban đầu, Quản lý cửa hàng (MGR-01), mốc mô phỏng 10/10/2026 12:00 UTC+07:00.**
+
+![Prototype PR: hàng đợi của Quản lý cửa hàng tại mốc mô phỏng 12:00](./prototype/pr/evidence/pr-04-queue-12.png)
+
+**Dữ liệu tổng hợp — mở form tạo PR chưa lưu, Người yêu cầu (REQ-01), mốc mô phỏng 10/10/2026 12:00 UTC+07:00.**
+
+![Prototype PR: form tạo PR chưa lưu của Người yêu cầu tại mốc mô phỏng 12:00](./prototype/pr/evidence/pr-02-form.png)
+
 Tra thuật ngữ tại [glossary](./glossary.md). [Các quyết định nghiệp vụ nền tảng](./08-traceability/baseline-decisions.md) giải thích ranh giới đã chọn; [danh mục sơ đồ](./assets/diagrams/sources/README.md) dẫn tới nguồn Draw.io và ảnh xuất.
 
 ## 7. Trạng thái và giới hạn
 
 - Số liệu nghiệp vụ mô phỏng là **dữ liệu tổng hợp**. Các chỉ tiêu trong [mục tiêu dự án](./01-business-context/project-objectives.md) là **mục tiêu giả định**, chưa phải kết quả đo lợi ích vận hành.
 - Vai trò và nhu cầu của các bên liên quan được giả định cho nghiên cứu tình huống. Chưa có phỏng vấn, xác nhận hoặc ký duyệt của các bên liên quan thực tế; [khung ký duyệt BRD](./05-brd/approval-and-signoff.md) chỉ mô tả việc cần làm.
-- Các AC chưa được thực thi kiểm thử phần mềm; chưa có kiểm thử chấp nhận người dùng (UAT). Kiểm tra hiển thị wireframe không xác nhận các AC đã đạt hoặc hệ thống đã được triển khai.
+- Đã có prototype PR và [kiểm chứng đạt trong phạm vi prototype đã xác định](./prototype/pr/verification.md); chưa triển khai vận hành, chưa kiểm thử chấp nhận người dùng (UAT) hoặc stakeholder sign-off. Kết quả này không đồng nghĩa 37 AC đã được kiểm thử đạt. Phân quyền demo, lịch sử quy trình và đồng hồ mô phỏng không chứng minh bảo mật, audit đầy đủ hoặc SLA thực tế.
 - Các quyết định còn mở (Open Decision — OD) từ OD-01 đến OD-08 vẫn được ghi tại [RTM](./08-traceability/requirements-traceability-matrix.md), gồm chính sách ngân sách, phê duyệt tài chính bổ sung, dung sai đối chiếu và quyền chi tiết theo vai trò.
+- Các khoảng trống bao phủ yêu cầu trong RTM vẫn còn mở. Phần được kiểm chứng một phần hoặc ngoài phạm vi prototype được ghi riêng trong tài liệu kiểm chứng; kết quả prototype không thay đổi coverage của SRS/RTM.
 - Một số thông tin chứng từ trên wireframe chưa được bổ sung. Cần bổ sung và xem xét dữ liệu mẫu trước khi dùng giao diện để đánh giá một quyết định nghiệp vụ cụ thể.
 
 ## 8. Những điểm rút ra từ phân tích

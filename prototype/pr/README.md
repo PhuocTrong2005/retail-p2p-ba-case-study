@@ -202,3 +202,75 @@ H1 kiểm tra kỹ thuật local bằng Chrome/155.0.8059.40 headless qua CDP v�
 Cả artifact dưới đường dẫn con và server local cũ đều khởi tạo 5 PR ở REQ-01, ngân sách PASS/Đạt, thời gian `2026-10-10T12:00:00+07:00`; đổi MGR-01 thấy PR-A/PR-C, `195,00`/`96,00 giờ`, `25,00%` với `1 / 4 PR`. Kiểm tra này thuộc H1, không phải UAT hoặc chạy lại chuỗi nghiệp vụ 3C. H2 kiểm tra bản static theo nghiệp vụ; H3 mới thiết lập/công bố hosting. H1 chưa publish, cấu hình Pages/workflow, commit, push hoặc merge.
 
 Kết quả test H1: chạy toàn bộ bốn file *.test.mjs đúng một lượt sau sửa, **50 test thực chạy, 50 đạt, 0 lỗi, 0 bỏ qua** (49 test hiện có và một test đóng gói mới). Test đóng gói kiểm tra đúng danh sách/byte, tái tạo không giữ file thừa và thiếu seed phải thất bại trước khi thay đầu ra. SHA-256 seed, cả bốn module logic, wireframe/font/giấy phép và mọi file tracked ngoài bốn file đã chủ ý sửa đều khớp snapshot trước sửa. Đã kiểm tra diff, liên kết mới, git diff --check và git check-ignore -v: chỉ artifact bị ignore, source và thư mục dist khác không bị ignore.
+
+## Kiểm tra bản static
+
+**H2 hoàn tất trong phạm vi kiểm tra local này.** Kết quả dưới đây đến từ phiên trình duyệt mới trên **Build A**, không lấy kết quả server local cũ, 3C hoặc test Node để kết luận H2. Không phải UAT hoặc xác nhận quyền/bảo mật thực tế.
+
+**Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
+
+Nguồn: branch `pr-static`, commit `dac523d6cbb87643dce222b077b96e03ce18beb6`, working tree sạch trước kiểm tra. Windows/PowerShell, Node **v22.14.0**, **Chrome/155.0.8059.40 headless**, Chrome DevTools Protocol qua Node WebSocket có sẵn; không cài dependency. Phiên đạt chạy **16/10/2026 15:17:57.105–15:18:57.161 UTC+07:00**. Viewport **1440×1000**, thêm bốn màn hình ở **1280×1000**, **1440×1000**, **390×1000**; zoom 100%, `deviceScaleFactor=1`, `visualViewport.scale=1`.
+
+Lệnh build từ root repo:
+
+```powershell
+& $prNode prototype/pr/build-static.mjs
+```
+
+`$prNode` dùng executable đã ghi ở H1. Chỉ script build tạo lại `prototype/pr/dist/`, không xóa thủ công. Build A có đúng **13 file** theo danh sách H1, từng byte khớp nguồn: HTML/CSS/app, bốn module logic, seed, bốn TTF và OFL; không test/QA/server/tài liệu/ảnh. Manifest gắn commit nguồn và SHA-256 từng file nguồn/artifact. Sau toàn bộ thao tác trình duyệt, **13/13 file khớp manifest Build A; file khác: không có**. Toàn bộ 119 file tracked khớp snapshot trước khi bổ sung mục README này; không sửa seed, logic, nguồn ứng dụng, QA trong repo, wireframe hoặc `verification.md`.
+
+Snapshot, manifest đầy đủ, helper/server tạm, log CDP và ảnh bố cục thử nằm ngoài repo tại `C:\Users\ASUS\AppData\Local\Temp\pr-static-h2-64ae55aa24c94bff92dcc1d28c32cefc\`: `snapshot.json` (đã đọc lại trước build), `build-a-manifest.json`, `build-a-after-browser.json`, `h2-browser-results.json`, `network-audit.json`, `cdp-events.json`, `server-requests.ndjson`. Temp có thể bị hệ điều hành dọn; năm ảnh chuỗi chuẩn bên dưới được giữ trong repo.
+
+Server thử `serve-artifact.mjs` nằm trong thư mục Temp trên, dùng `node:http` và `node:fs`, bind loopback/cổng khả dụng, chỉ ánh xạ `/retail-p2p-ba-case-study/` đến **trực tiếp `prototype/pr/dist/`**. Không khởi động/import `serve.mjs`, không lấy tài nguyên từ wireframe, không fallback hoặc rewrite. Helper QA chỉ kết nối URL server đã khởi động độc lập. URL thực tế: **http://127.0.0.1:50838/retail-p2p-ba-case-study/**. Server và trình duyệt do lượt H2 tạo đã dừng sau kiểm tra; URL này không còn được phục vụ.
+
+| Kiểm tra kỹ thuật | Mong đợi | Thực chạy / kết luận |
+| --- | --- | --- |
+| Truy cập `/` | 404 hoặc trang không chứa ứng dụng | **404**, nội dung `Not found`, không có `#app`; đạt phép thử không fallback, không suy thành yêu cầu hosting. |
+| Truy cập đường dẫn con, điều hướng và tải lại | Tài nguyên lấy từ artifact, đúng MIME, khởi tạo không lỗi | **37 request trình duyệt / 13 URL duy nhất** gồm lượt đọc giấy phép; tất cả dưới prefix, HTTP 200, không request ngoài artifact. HTML/CSS/ES module/JSON/TTF/text đúng MIME; không lỗi tải hoặc console trong ứng dụng. |
+| Font tiếng Việt | Glyph thật dùng Be Vietnam Pro | `CSS.getPlatformFontsForNode`: Bold ở h1, Medium ở nhãn dữ liệu tổng hợp, SemiBold ở h2, Regular ở footer; đều custom font, có glyph tiếng Việt. Bốn TTF tải thành công; OFL đọc được từ artifact. Đạt. |
+| Desktop 1280/1440, 100% | Không chồng chữ, cắt nút hoặc cuộn ngang toàn trang | Bốn màn hình mỗi kích thước: `scrollWidth <= clientWidth`, chữ trong nút nằm trong hộp nút; đã đọc ảnh thật, không thấy chồng/cắt. Nhãn dữ liệu tổng hợp và giới hạn lưu bộ nhớ hiển thị. Đạt. |
+| Bổ sung 390 px | Quan sát responsive, không chặn desktop | Bốn màn hình không cuộn ngang toàn trang; bảng rộng cuộn ngang trong vùng bảng. Không kết luận đã thao tác đầy đủ mọi nút ở mobile. |
+
+Chuỗi chuẩn chạy **liên tục từ seed trong một phiên**, không xen Lưu nháp/Lưu phần sửa hoặc reset giữa bốn mốc. Đổi ngân sách/chuyển vai được đối chiếu không tăng giờ. Ngữ cảnh nhóm dưới đây lần lượt là số PR chờ xem xét/chờ chỉnh sửa trong nhóm kỳ, khác quần thể hàng đợi.
+
+| Mốc mô phỏng / bước | Mong đợi | Thực chạy | Kết luận |
+| --- | --- | --- | --- |
+| 12:00, seed; MGR-01, Đạt | Hàng đợi A/C; 195/96 giờ; 1/4 = 25%; nhóm 1/1 | A/C, `195,00`/`96,00 giờ`, `25,00%`, `1 / 4 PR`, nhóm 1/1 | Đạt |
+| 13:00, REQ-01 gửi lại B, nguồn không khả dụng; chuyển MGR-01 | B giữ Chờ chỉnh sửa; A/C 196/97 giờ; 25%; nhóm 1/1 | B chưa vào hàng đợi; A/C `196,00`/`97,00 giờ`, `25,00%`, nhóm 1/1 | Đạt |
+| 14:00, đổi Đạt, REQ-01 gửi lại B; chuyển MGR-01 | B mở vòng 2; A/B/C 197/0/98 giờ; 25%; nhóm 2/0 | Đúng ba PR, B vòng 2; `197,00`/`0,00`/`98,00 giờ`, `25,00%`, nhóm 2/0 | Đạt |
+| 15:00, MGR-01 trả A với lý do hợp lệ | A rời hàng đợi; B/C 1/99 giờ; 2/4 = 50%; nhóm 1/1 | B/C, `1,00`/`99,00 giờ`, `50,00%`, `2 / 4 PR`, nhóm 1/1 | Đạt |
+| Reset sau chuỗi | Seed 5 PR, REQ-01, Đạt, 12:00 | Đúng 5 PR ban đầu, vai trò/ngân sách/đồng hồ phục hồi | Đạt |
+
+Mỗi kịch bản độc lập sau đây đều reset trước khi chạy. Kết quả lấy từ DOM/đồng hồ/lịch sử hiển thị và thao tác trình duyệt, không truy cập trực tiếp đối tượng session để thay cho UI.
+
+| Kịch bản | Mong đợi | Thực chạy / kết luận |
+| --- | --- | --- |
+| Lưu nháp thiếu trường rồi rời/mở lại | Giữ nội dung, chưa chuyển xem xét, tăng một giờ | PR-NEW-1 giữ lý do nhập, trung tâm chi phí còn trống, Nháp, 13:00. Đạt. |
+| Lưu phần sửa B bị trả lại | Giữ Chờ chỉnh sửa và nội dung đã lưu | Rời/mở lại có lý do mới, Chờ chỉnh sửa, 13:00. Đạt. |
+| Gửi thiếu trường | Giữ dữ liệu, lỗi tại trường/tổng hợp, chưa kiểm tra ngân sách, +1 giờ | Năm trường lỗi có thông báo, focus tổng hợp rồi liên kết tới trung tâm chi phí; lý do đã nhập còn nguyên, 13:00 dù chọn Không đủ ngân sách. Đạt. |
+| Ngân sách không đủ | Chặn chuyển xem xét | B vẫn Chờ chỉnh sửa, 13:00; hàng đợi chỉ A/C. Đạt. Nguồn không khả dụng và gửi lại Đạt đã thử riêng trong chuỗi chuẩn. |
+| Trả lại thiếu lý do | Không tạo quyết định, không tăng giờ | Báo lý do không trống; A còn Chờ xem xét, lịch sử không tăng, vẫn 12:00. Đạt. |
+| Phê duyệt A | Đóng vòng, cập nhật danh sách/hàng đợi | A Đã duyệt, thời gian chờ Không áp dụng, lịch sử có một quyết định, sẵn sàng Mua hàng ngoài demo; hàng đợi còn C, danh sách ghi Đã duyệt, 13:00. Đạt. |
+| Từ chối A: hủy rồi xác nhận | Hủy giữ phiên; xác nhận đóng vòng, không sửa/gửi lại | Hủy giữ nguyên DOM nghiệp vụ/giờ/ngữ cảnh; xác nhận A Đã từ chối, Không áp dụng, hàng đợi còn C, 13:00. Người yêu cầu không có nút sửa hoặc gửi lại trên danh sách/chi tiết. Đạt trong phạm vi UI. |
+| Bấm lặp Gửi lại / Lưu nháp | Chỉ xử lý một lần | Gửi B hai lần sát nhau chỉ thêm một lần gửi lại (ba mục lịch sử), 13:00; Lưu nháp lặp chỉ tạo một PR mới (sáu PR), 13:00. Đạt. |
+| Tìm mã/mô tả, không có kết quả, xóa tìm | Trim, không phân biệt hoa/thường; khôi phục danh sách | `  pr-b  ` tìm B; `MÁY QUÉT` tìm A; chuỗi không khớp báo rỗng; Xóa tìm kiếm trở về năm PR, không tăng giờ. Đạt. |
+| Rời form chưa lưu | Tiếp tục giữ nhập; bỏ thay đổi bỏ phần chưa lưu | Hủy rời form giữ lý do mới; hủy đổi vai giữ REQ-01; xác nhận bỏ thay đổi rồi mở lại có giá trị cũ, vẫn 12:00. Đạt. |
+| Hủy reset | Giữ nguyên cả phần nhập và kịch bản/ngữ cảnh | Form, lý do chưa lưu, lựa chọn Không đủ ngân sách, giờ và vai trò giữ nguyên. Đạt. |
+| Tải lại sau thay đổi dữ liệu | Bỏ thay đổi, về seed/12:00/REQ-01/Đạt | Phê duyệt A rồi đổi ngân sách và reload: A lại Chờ xem xét, lịch sử một mục seed, năm PR và mặc định phục hồi. Request sau điều hướng/reload vẫn từ đường dẫn con. Đạt. |
+| beforeunload trên Chrome đã nêu | Ghi quan sát theo thao tác cụ thể | Click/`Input.insertText` thật vào form bẩn, `Page.reload`: Chrome mở beforeunload; hủy giữ form/nhập, chấp nhận reload về seed. Chỉ chứng minh thao tác reload trên Chrome headless này. |
+
+**23 mục kiểm tra trong log đạt**, gồm các mốc chuỗi và kiểm tra kỹ thuật; thêm 12 bản ghi bố cục (bốn màn hình × ba viewport). Không phát hiện lỗi ứng dụng/đóng gói cần sửa. Lượt helper đầu lúc 15:17:06–15:17:33 bị dừng vì helper để panel demo mở che nút Xem xét; đã sửa helper **ngoài repo** để đóng panel trước click, xác nhận hash vẫn 13/13, chạy lại toàn bộ phiên đạt nêu trên. Log lượt dừng giữ riêng `h2-browser-attempt1.json`/`cdp-events-attempt1.json`; không dùng lượt thiếu bước đó làm bằng chứng đạt. Không chạy lại test Node vì không sửa code ứng dụng/logic/server/đóng gói hoặc QA trong repo; số 50/50 ở H1 không được dùng thay kết quả H2.
+
+Năm ảnh chụp mới trực tiếp bằng `Page.captureScreenshot`, viewport 1440×1000, có vai trò/giờ/kịch bản ngân sách trên giao diện; giờ chụp thực theo 16/10/2026 UTC+07:00:
+
+| Ảnh | Giờ chụp thực | Vai trò / giờ mô phỏng / ngân sách |
+| --- | --- | --- |
+| [static-queue-12.png](./evidence/static/static-queue-12.png) | 15:17:57.467 | MGR-01 / 12:00 10/10/2026 / Đạt |
+| [static-queue-13.png](./evidence/static/static-queue-13.png) | 15:17:58.815 | MGR-01 / 13:00 10/10/2026 / Nguồn dữ liệu ngân sách không khả dụng |
+| [static-queue-14.png](./evidence/static/static-queue-14.png) | 15:18:00.188 | MGR-01 / 14:00 10/10/2026 / Đạt |
+| [static-queue-15.png](./evidence/static/static-queue-15.png) | 15:18:02.248 | MGR-01 / 15:00 10/10/2026 / Đạt |
+| [static-reset.png](./evidence/static/static-reset.png) | 15:18:03.242 | REQ-01 / 12:00 10/10/2026 / Đạt, reset sau chuỗi |
+
+**Giới hạn:** seed chỉ có PR-A–PR-E đều thuộc REQ-01; H2 chỉ xác nhận UI hiển thị đúng năm PR của dữ liệu mẫu, chưa chứng minh UI loại PR của người yêu cầu khác. Không dùng fixture đổi chủ sở hữu trong H2. Đã đọc đối chiếu test `SIM-03 scopes detail/history/form/actions by owner and unit; metrics use entire unit` trong [session.test.mjs](./test/session.test.mjs), có OTHER-OWNER/OTHER-UNIT và kiểm tra chặn; đó là bằng chứng lớp logic đã có, không phải phép thử UI H2 mới. Chuyển vai không thay thế kiểm tra lọc theo chủ sở hữu. Chưa thử browser khác, headful, đóng tab/cửa sổ, đầy đủ ca biên metric, accessibility hoặc UAT; không suy rộng quan sát beforeunload. Giới hạn mobile bảng cuộn nội bộ như trên.
+
+Chỉ bổ sung mục README này và năm ảnh static; kết quả 3C trong `verification.md` giữ nguyên. Không stage/commit `dist/`, không workflow, Pages, hosting công khai, commit, push hoặc merge trong H2.

@@ -1,0 +1,20 @@
+// Local QA helper; launches only the browser/profile owned by this task.
+import { spawn } from 'node:child_process';
+import { mkdtempSync, existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createServer } from 'node:net';
+const arg=(key,fallback)=>process.argv.find(a=>a.startsWith(`--${key}=`))?.slice(key.length+3) ?? fallback;
+const browser=arg('browser','C:/Program Files/Google/Chrome/Application/chrome.exe');
+const port=Number(arg('cdp-port','9226'));
+if (!existsSync(browser) || !Number.isInteger(port) || port<1 || port>65535) throw new Error('Provide an existing --browser and valid --cdp-port');
+const check=createServer();
+await new Promise((resolve,reject)=>{ check.once('error',reject); check.listen(port,'127.0.0.1',resolve); });
+await new Promise(resolve=>check.close(resolve));
+const profile=mkdtempSync(join(tmpdir(),'pr-browser-'));
+const args=['--headless=new','--no-sandbox','--disable-gpu','--disable-software-rasterizer','--in-process-gpu','--no-first-run',`--remote-debugging-port=${port}`,`--user-data-dir=${profile}`,'about:blank'];
+const child=spawn(browser,args,{windowsHide:true,stdio:['ignore','ignore','pipe']});
+console.log(JSON.stringify({pid:child.pid,browser,args,profile,endpoint:`http://127.0.0.1:${port}`}));
+child.stderr.pipe(process.stderr);
+process.on('SIGINT',()=>child.kill());
+await new Promise((resolve,reject)=>{ child.once('exit',resolve); child.once('error',reject); });

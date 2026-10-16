@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prototype PR · NovaRetail</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <header class="top"><div class="top-inner">
+    <div class="brand">NovaRetail</div>
+    <div class="header-context" id="context">Đang nạp dữ liệu…</div>
+    <div class="header-time">Thời gian mô phỏng<time id="clock"></time></div>
+  </div></header>
+  <div class="review-bar"><div class="review-inner">
+    <span class="wire-note">Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.</span>
+    <details class="demo"><summary>Điều khiển demo</summary><div class="demo-controls">
+      <p class="small">Chuyển vai trò chỉ đổi ngữ cảnh demo, không phải đăng nhập hoặc bảo mật thực tế.</p>
+      <label for="role">Vai trò</label><select id="role"><option value="REQ-01">Người yêu cầu · REQ-01</option><option value="MGR-01">Quản lý cửa hàng · MGR-01</option></select>
+      <label for="budget">Kết quả ngân sách lần kiểm tra tiếp theo</label><select id="budget"><option value="PASS">Đạt</option><option value="INSUFFICIENT">Không đủ ngân sách</option><option value="UNAVAILABLE">Nguồn dữ liệu ngân sách không khả dụng</option></select>
+      <button class="btn secondary" id="reset" type="button">Khôi phục dữ liệu mẫu</button>
+    </div></details>
+  </div></div>
+  <div class="demo-state" id="demo-state"></div>
+  <main class="shell" id="app" aria-live="polite"><p>Đang nạp dữ liệu mẫu…</p></main>
+  <footer class="shell footer">Dữ liệu chỉ giữ trong bộ nhớ trang. Tải lại sẽ mất thay đổi và trở về dữ liệu mẫu. Không phải chứng từ doanh nghiệp hoặc giá thị trường đã xác minh.</footer>
+  <dialog id="confirm-dialog" aria-labelledby="dialog-title">
+    <h2 id="dialog-title"></h2><p id="dialog-message"></p>
+    <div class="actions"><button id="dialog-cancel" class="btn secondary" type="button">Hủy</button><button id="dialog-confirm" class="btn" type="button">Xác nhận</button></div>
+  </dialog>
+</body>
+</html>

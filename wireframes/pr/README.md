@@ -2,6 +2,8 @@
 
 Mở trực tiếp [index.html](./index.html) trong Chrome. Bộ chọn **Xem kịch bản** ở góc trên bên phải mở bốn màn hình và các biến thể; chọn lại tiêu đề bộ chọn để thu gọn. Liên kết chuyển góc xem, ô nhập cho phép thử gõ, còn nút nghiệp vụ là mẫu tĩnh. Dòng **“Wireframe — thao tác nghiệp vụ chưa được triển khai”** luôn có trên trang.
 
+**Đây là wireframe tĩnh, chưa phải demo chức năng.** Ảnh preview phục vụ review giao diện và nội dung; các thao tác lưu, gửi, xem xét và quyết định chưa được triển khai.
+
 Nguồn chỉnh sửa: `index.html` và `styles.css`. Font local và giấy phép giữ trong thư mục này. Không cần cài thư viện hoặc chạy server. Bộ ảnh hiện hành duy nhất nằm trong `previews/`; ảnh thử ở 1280 px, ảnh mở phần giải thích và hồ sơ trình duyệt đặt ngoài repository.
 
 ## Bố cục hiện hành
@@ -83,6 +85,26 @@ Một bộ duy nhất gồm **8 ảnh**, chụp Chrome ở chiều rộng **1440
 | Trả lại/chỉnh sửa | [pr-02-returned.png](./previews/pr-02-returned.png) |
 | Quản lý xem xét PR-A | [pr-03-manager-review.png](./previews/pr-03-manager-review.png) |
 | Xác nhận từ chối PR-A | [pr-03-reject-confirm.png](./previews/pr-03-reject-confirm.png) |
+
+Bộ 8 ảnh hiện hành được giữ trong repository. Chỉ xóa ảnh thử cũ, ảnh lỗi hoặc ảnh trùng sau khi kiểm kê; không xóa ảnh hiện hành đang được dùng để review hoặc được liên kết trong tài liệu.
+
+### Ảnh tiêu biểu
+
+**Lỗi gửi — xác định trường cần sửa, giữ nội dung đã nhập**
+
+![Wireframe tĩnh: lỗi gửi PR và các trường bắt buộc](./previews/pr-02-submit-error.png)
+
+**Quản lý xem xét PR — thông tin chứng từ, thời gian chờ và nhóm quyết định**
+
+![Wireframe tĩnh: Quản lý cửa hàng xem xét PR-A](./previews/pr-03-manager-review.png)
+
+**Trả lại có lý do — Người yêu cầu lưu phần sửa và gửi lại**
+
+![Wireframe tĩnh: PR-B chờ chỉnh sửa sau khi được trả lại có lý do](./previews/pr-02-returned.png)
+
+**Xác nhận từ chối — thể hiện hậu quả trước quyết định**
+
+![Wireframe tĩnh: xác nhận từ chối PR-A](./previews/pr-03-reject-confirm.png)
 
 Đã kiểm kê và xóa 14 PNG screenshot cũ, mỗi tên dưới đây có hai bản **1280** và **1440**: `preview-scr01-{1280,1440}.png`, `preview-scr02-{1280,1440}.png`, `preview-scr03-{1280,1440}.png`, `preview-scr04-{1280,1440}.png`, `preview-submit-error-{1280,1440}.png`, `preview-returned-{1280,1440}.png`, `preview-manager-reject-{1280,1440}.png`. Chúng chỉ là ảnh xuất của wireframe, không phải nguồn. Các liên kết đã chuyển sang `previews/`; font/giấy phép, ảnh tham chiếu màu, diagram P2P, PNG nghiệp vụ và Draw.io được giữ nguyên.
 

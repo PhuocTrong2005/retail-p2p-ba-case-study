@@ -163,3 +163,42 @@ Snapshot trước sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-review-ifsd27so
 - Vùng chính dùng “Nhóm PR trong kỳ”, giữ kỳ, thời điểm báo cáo, tỷ lệ/tử/mẫu số và số PR chờ xem xét/chờ sửa. ID metric và chi tiết chẩn đoán, gồm các số 0, nằm trong Cách tính và chất lượng dữ liệu. Chi tiết PR cũng chuyển dòng chẩn đoán vào phần mở rộng. Khi fixture có năm hồ sơ không xác định, cảnh báo ngắn vẫn nhìn thấy bên ngoài; mở phần chi tiết thấy đúng số lượng. Không ẩn số PR chờ sửa bằng 0 vì đó là thông tin nghiệp vụ cần giữ.
 
 Đã chạy lại 49 test Node và toàn bộ QA trình duyệt; chuỗi chuẩn giữ nguyên kết quả. Chín ảnh hiện hành được chụp lại trực tiếp, giữ đúng nhãn mốc mô phỏng; bảng giờ chụp ghi phiên sau review.
+
+## H1 — artifact static local (16/10/2026)
+
+Nguồn H1: `main` tại `ec1bcbaeece2adefbe78e16f4d87a7afaa5f4d0f`; đã xác minh `42f6c57`, `07e5f68`, `ec1bcba` là commit tồn tại trong lịch sử HEAD. Branch `pr-prototype` cùng HEAD (ahead/behind 0/0), working tree sạch trước khi tạo `pr-static`. Các kết quả 3B.2/3C bên trên giữ nguyên phạm vi và phiên bản lịch sử.
+
+Đóng gói từ root repo bằng Node có sẵn (H1 thực dùng **v22.14.0**):
+
+```powershell
+$prNode = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+& $prNode prototype/pr/build-static.mjs
+```
+
+[build-static.mjs](./build-static.mjs) đọc đủ nguồn trước khi thay đầu ra, lỗi nếu thiếu file, rồi tạo lại `prototype/pr/dist/`. Đây là artifact tự sinh, không chỉnh tay hoặc commit; ignore chỉ `/prototype/pr/dist/`. Nguồn chính vẫn ở `prototype/pr/`; font nguồn duy nhất vẫn ở `wireframes/pr/`. Không cài dependency.
+
+Gói gồm đúng **13 file**: `index.html`, `styles.css`, `app.mjs`; bốn module trong `logic/`; `data/seed.json`; bốn TTF Be Vietnam Pro 400/500/600/700 và `fonts/OFL.txt`. Sao chép byte từ danh sách nguồn tường minh; không đưa test/fixture/QA/server/README/ảnh/wireframe/snapshot/log vào gói. Build thành công mới dùng artifact; build lỗi không được coi đầu ra cũ là bản mới.
+
+Thử bằng server tĩnh thông thường dưới đường dẫn con; ví dụ dùng Python có sẵn, từ root repo (không dùng `serve.mjs` để phục vụ gói):
+
+```powershell
+$prStaticRoot = Join-Path ([System.IO.Path]::GetTempPath()) ('pr-static-preview-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $prStaticRoot | Out-Null
+Copy-Item -LiteralPath prototype/pr/dist -Destination (Join-Path $prStaticRoot 'retail-p2p-ba-case-study') -Recurse
+python -m http.server 8082 --bind 127.0.0.1 --directory $prStaticRoot
+```
+
+Mở `http://127.0.0.1:8082/retail-p2p-ba-case-study/` (có dấu `/` cuối). Dừng server này bằng Ctrl+C khi xong; nếu cổng bận, chọn cổng khác. Đây là bản sao artifact tạm để thử, không phải nguồn cần bảo trì. Hosting sau này chỉ cần phục vụ file và directory index, có MIME ES module; không router hoặc rewrite. Cách chạy local cũ ở phần trên vẫn giữ nguyên; `file://` không thuộc phạm vi hỗ trợ.
+
+Chạy toàn bộ test prototype, gồm kiểm tra đóng gói:
+
+```powershell
+$prTests = @(Get-ChildItem prototype/pr/test/*.test.mjs | ForEach-Object FullName)
+& $prNode --test @prTests
+```
+
+H1 kiểm tra kỹ thuật local bằng Chrome/155.0.8059.40 headless qua CDP và server filesystem độc lập, dùng cổng ngẫu nhiên: mọi request runtime nằm dưới `/retail-p2p-ba-case-study/`, HTTP 200 đúng MIME cho HTML/CSS/module/seed/bốn font, giấy phép truy cập được. File ngoài gói và URL không tồn tại trả 404, không có fallback. Không lỗi console ảnh hưởng khởi tạo. `CSS.getPlatformFontsForNode` xác nhận glyph thực dùng Be Vietnam Pro (Bold trên tiêu đề/brand, Medium trên đồng hồ), không chỉ computed CSS; cả bốn weight tải được.
+
+Cả artifact dưới đường dẫn con và server local cũ đều khởi tạo 5 PR ở REQ-01, ngân sách PASS/Đạt, thời gian `2026-10-10T12:00:00+07:00`; đổi MGR-01 thấy PR-A/PR-C, `195,00`/`96,00 giờ`, `25,00%` với `1 / 4 PR`. Kiểm tra này thuộc H1, không phải UAT hoặc chạy lại chuỗi nghiệp vụ 3C. H2 kiểm tra bản static theo nghiệp vụ; H3 mới thiết lập/công bố hosting. H1 chưa publish, cấu hình Pages/workflow, commit, push hoặc merge.
+
+Kết quả test H1: chạy toàn bộ bốn file *.test.mjs đúng một lượt sau sửa, **50 test thực chạy, 50 đạt, 0 lỗi, 0 bỏ qua** (49 test hiện có và một test đóng gói mới). Test đóng gói kiểm tra đúng danh sách/byte, tái tạo không giữ file thừa và thiếu seed phải thất bại trước khi thay đầu ra. SHA-256 seed, cả bốn module logic, wireframe/font/giấy phép và mọi file tracked ngoài bốn file đã chủ ý sửa đều khớp snapshot trước sửa. Đã kiểm tra diff, liên kết mới, git diff --check và git check-ignore -v: chỉ artifact bị ignore, source và thư mục dist khác không bị ignore.

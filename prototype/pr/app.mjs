@@ -1,6 +1,6 @@
 import { createPRSession } from './logic/pr-session.mjs';
 
-const response = await fetch('./data/seed.json');
+const response = await fetch(new URL('./data/seed.json', import.meta.url));
 if (!response.ok) throw new Error('Không nạp được dữ liệu mẫu');
 const seed = await response.json();
 const session = createPRSession(seed);

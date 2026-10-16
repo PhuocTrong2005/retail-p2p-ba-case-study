@@ -6,7 +6,9 @@ NovaRetail JSC là **doanh nghiệp bán lẻ giả lập tại Việt Nam** tro
 
 Tôi phân tích quy trình hiện tại, đề xuất cách xử lý từng bước và viết yêu cầu phần mềm kèm tiêu chí chấp nhận.
 
-**Xem sản phẩm:** [Tài liệu yêu cầu nghiệp vụ (BRD)](./05-brd/business-requirements-document.md) · [Sơ đồ quy trình đề xuất](./assets/diagrams/exports/to-be/p2p-to-be.png) · [Wireframe tĩnh PR](./wireframes/pr/README.md) · [Prototype PR và hướng dẫn chạy](./prototype/pr/README.md) · [Kết quả kiểm chứng prototype](./prototype/pr/verification.md).
+[Mở demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn sử dụng](prototype/pr/README.md#hướng-dẫn-thử-nhanh) · [Kết quả kiểm chứng](prototype/pr/verification.md)
+
+Prototype minh họa việc tạo, gửi và xem xét yêu cầu mua hàng, xử lý trả lại và theo dõi ba chỉ số PR bằng dữ liệu tổng hợp.
 
 ## 2. Bài toán nghiệp vụ
 
@@ -39,7 +41,7 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 
 ## 6. Sản phẩm và hướng dẫn đọc
 
-**Tài liệu phân tích.** Mở BRD để đọc nhu cầu và phạm vi chung. Dùng bảng dưới đây để tìm tài liệu theo phần việc cần xem.
+**Tài liệu phân tích.** Mở [tài liệu yêu cầu nghiệp vụ (BRD)](./05-brd/business-requirements-document.md) để đọc nhu cầu và phạm vi chung. Dùng bảng dưới đây để tìm tài liệu theo phần việc cần xem.
 
 | Phần việc | Sản phẩm trong repo |
 | --- | --- |
@@ -56,9 +58,11 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 
 **Wireframe tĩnh.** Bộ [wireframe PR](./wireframes/pr/README.md) có bốn màn hình: danh sách của Người yêu cầu, tạo/chỉnh sửa, chi tiết PR và hàng đợi của Quản lý cửa hàng. Tải repository về máy, sau đó mở [wireframes/pr/index.html](./wireframes/pr/index.html) bằng trình duyệt; các nút lưu, gửi và quyết định là mẫu tĩnh. Có thể xem nhanh qua [ảnh hàng đợi](./wireframes/pr/previews/pr-04-queue.png) hoặc [các ảnh tiêu biểu](./wireframes/pr/README.md#ảnh-tiêu-biểu). Hướng dẫn mở, ảnh và phạm vi kiểm tra được ghi trong [README wireframe](./wireframes/pr/README.md#kiểm-tra-và-giới-hạn).
 
-**Prototype tương tác.** Bản [prototype PR](./prototype/pr/README.md) cho phép tạo và lưu PR, gửi và gửi lại, phê duyệt, trả lại, từ chối và xem lịch sử quy trình. Ba metric thể hiện số PR đang chờ xem xét, thời gian chờ theo vòng và tỷ lệ PR từng bị trả lại. Để thao tác, tải repository và làm theo [hướng dẫn chạy local](./prototype/pr/README.md#chạy-local); liên kết tài liệu trên GitHub không phải demo chạy trực tiếp. Dữ liệu chỉ tồn tại trong bộ nhớ trang; tải lại hoặc khôi phục sẽ đưa về dữ liệu mẫu.
+**Prototype tương tác.** Bản [prototype PR](./prototype/pr/README.md) cho phép tạo và lưu PR, gửi và gửi lại, phê duyệt, trả lại, từ chối và xem lịch sử quy trình. Ba chỉ số thể hiện số PR đang chờ xem xét, thời gian chờ theo vòng và tỷ lệ PR từng bị trả lại. Mở [demo công khai](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) và làm theo [hướng dẫn thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh); nếu muốn chạy trên máy, xem [hướng dẫn chạy local](./prototype/pr/README.md#chạy-local). Dữ liệu chỉ tồn tại trong bộ nhớ trang; tải lại hoặc khôi phục sẽ đưa về dữ liệu mẫu.
 
 Hai ảnh dưới đây được chụp trực tiếp trong cùng phiên kiểm tra trình duyệt, minh họa hai tình huống riêng. Nguồn ảnh, thời điểm chụp thực tế và kết quả nằm trong [README prototype](./prototype/pr/README.md#ảnh-trực-tiếp-hiện-hành) và [tài liệu kiểm chứng](./prototype/pr/verification.md).
+
+Đây là các tình huống minh họa; ảnh không phản ánh trạng thái của phiên hiện tại.
 
 **Dữ liệu tổng hợp — hàng đợi ban đầu, Quản lý cửa hàng (MGR-01), mốc mô phỏng 10/10/2026 12:00 UTC+07:00.**
 
@@ -72,9 +76,11 @@ Tra thuật ngữ tại [glossary](./glossary.md). [Các quyết định nghiệ
 
 ## 7. Trạng thái và giới hạn
 
-- Số liệu nghiệp vụ mô phỏng là **dữ liệu tổng hợp**. Các chỉ tiêu trong [mục tiêu dự án](./01-business-context/project-objectives.md) là **mục tiêu giả định**, chưa phải kết quả đo lợi ích vận hành.
-- Vai trò và nhu cầu của các bên liên quan được giả định cho nghiên cứu tình huống. Chưa có phỏng vấn, xác nhận hoặc ký duyệt của các bên liên quan thực tế; [khung ký duyệt BRD](./05-brd/approval-and-signoff.md) chỉ mô tả việc cần làm.
-- Đã có prototype PR và [kiểm chứng đạt trong phạm vi prototype đã xác định](./prototype/pr/verification.md); chưa triển khai vận hành, chưa kiểm thử chấp nhận người dùng (UAT) hoặc stakeholder sign-off. Kết quả này không đồng nghĩa 37 AC đã được kiểm thử đạt. Phân quyền demo, lịch sử quy trình và đồng hồ mô phỏng không chứng minh bảo mật, audit đầy đủ hoặc SLA thực tế.
+- Đã có prototype PR truy cập công khai; chưa phải hệ thống vận hành. [Kết quả kiểm chứng](./prototype/pr/verification.md) chỉ xác nhận phạm vi prototype, không đồng nghĩa toàn bộ tiêu chí chấp nhận đã được kiểm thử đạt.
+- Dữ liệu và kết quả nghiệp vụ là mô phỏng bằng **dữ liệu tổng hợp**. Các chỉ tiêu trong [mục tiêu dự án](./01-business-context/project-objectives.md) là **mục tiêu giả định**, chưa phải kết quả đo lợi ích vận hành.
+- UI chỉ chứng minh phạm vi dữ liệu mẫu của Người yêu cầu REQ-01; chưa kiểm tra với PR của người khác.
+- Kiểm tra công khai thực hiện trên Chrome headless, bản desktop. Phân quyền demo, lịch sử quy trình và đồng hồ mô phỏng không chứng minh bảo mật, lịch sử kiểm toán đầy đủ hoặc thời gian xử lý thực tế.
+- Vai trò và nhu cầu của các bên liên quan được giả định cho nghiên cứu tình huống. Chưa có phỏng vấn, kiểm thử chấp nhận người dùng (UAT) hoặc stakeholder sign-off; [khung ký duyệt BRD](./05-brd/approval-and-signoff.md) chỉ mô tả việc cần làm.
 - Các quyết định còn mở (Open Decision — OD) từ OD-01 đến OD-08 vẫn được ghi tại [RTM](./08-traceability/requirements-traceability-matrix.md), gồm chính sách ngân sách, phê duyệt tài chính bổ sung, dung sai đối chiếu và quyền chi tiết theo vai trò.
 - Các khoảng trống bao phủ yêu cầu trong RTM vẫn còn mở. Phần được kiểm chứng một phần hoặc ngoài phạm vi prototype được ghi riêng trong tài liệu kiểm chứng; kết quả prototype không thay đổi coverage của SRS/RTM.
 - Một số thông tin chứng từ trên wireframe chưa được bổ sung. Cần bổ sung và xem xét dữ liệu mẫu trước khi dùng giao diện để đánh giá một quyết định nghiệp vụ cụ thể.

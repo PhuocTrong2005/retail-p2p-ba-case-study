@@ -1,8 +1,29 @@
 # Prototype PR — tích hợp UI 3B.2
 
+**Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](#hướng-dẫn-thử-nhanh)
+
 **Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.**
 
 **Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
+
+## Hướng dẫn thử nhanh
+
+Mỗi lần tải trang là một phiên mới, bắt đầu lúc **10/10/2026 12:00 UTC+07:00**, vai trò **Người yêu cầu**, ngân sách mặc định **Đạt**. Tải lại sẽ xóa tiến trình. Chuỗi dưới đây **không có thao tác Lưu nháp hoặc Lưu phần sửa xen giữa**, để mốc 13:00–15:00 khớp các ví dụ; chỉ chuyển sang Quản lý sau bước 4.
+
+1. Mở [demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) ở vai trò **Người yêu cầu · REQ-01**.
+2. Trong **PR của tôi**, bấm **Chỉnh sửa** ở **PR-B** đang **Chờ chỉnh sửa**.
+3. Mở **Điều khiển demo**, chọn ngân sách **Nguồn dữ liệu ngân sách không khả dụng** trước khi bấm **Gửi lại**. Đồng hồ đến **13:00**; B vẫn Chờ chỉnh sửa và có thông báo nguồn không khả dụng.
+4. Đổi ngân sách sang **Đạt**, rồi bấm **Gửi lại**. Đồng hồ đến **14:00**; B chuyển sang Chờ xem xét, vòng 2.
+5. Trong **Điều khiển demo**, chuyển vai trò sang **Quản lý cửa hàng · MGR-01**. Bấm **Xem xét** ở PR-A, chọn **Trả lại để chỉnh sửa**, nhập lý do, rồi bấm **Hoàn tất trả lại**. Đồng hồ đến **15:00**.
+6. Bấm **Về hàng đợi**: còn B/C, thời gian chờ **1,00/99,00 giờ**, tỷ lệ trả lại **50,00% (2/4 PR)**. Để bắt đầu lại, mở **Điều khiển demo**, bấm **Khôi phục dữ liệu mẫu** rồi xác nhận **Khôi phục**: dữ liệu mẫu, Người yêu cầu, ngân sách Đạt và đồng hồ 12:00 được phục hồi.
+
+## Trạng thái và giới hạn
+
+- Prototype đã truy cập công khai qua GitHub Pages; chưa phải hệ thống vận hành. Dữ liệu và kết quả nghiệp vụ là mô phỏng bằng dữ liệu tổng hợp.
+- Dữ liệu chỉ lưu trong bộ nhớ trang. Đồng hồ tăng theo thao tác demo, không phải thời gian xử lý thực tế; chọn ngân sách hoặc chuyển vai trò không tăng giờ. Chuyển vai trò không phải đăng nhập hoặc bảo mật thực tế.
+- UI chỉ chứng minh phạm vi dữ liệu mẫu của Người yêu cầu REQ-01; chưa kiểm tra UI với PR của người khác. Kiểm tra quyền bằng fixture ở lớp logic không thay thế bằng chứng UI này.
+- Kiểm tra công khai thực hiện trên Chrome headless, bản desktop 1280/1440 px. Chưa UAT hoặc stakeholder sign-off; chưa kết luận cho mọi trình duyệt hay quyền truy cập thực tế.
+- OD và các khoảng trống bao phủ yêu cầu vẫn mở theo [RTM](../../08-traceability/requirements-traceability-matrix.md); kết quả prototype không thay đổi coverage của SRS/RTM.
 
 Bốn màn hình HTML/CSS/ES modules nối với lớp logic 3B.1. Dữ liệu chỉ tồn tại trong bộ nhớ trang, không localStorage/sessionStorage, backend hoặc database. Tải lại/reset phục hồi seed, lịch sử, ID, vai trò REQ-01, ngân sách Đạt và 10/10/2026 12:00 UTC+07:00. Kiểm tra tích hợp 3B.2 không thay thế kiểm chứng 3C bên dưới hoặc UAT; không tuyên bố AC đã pass. OD-03/06/07 vẫn mở.
 

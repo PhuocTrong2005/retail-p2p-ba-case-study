@@ -1,0 +1,104 @@
+name: Deploy PR demo to Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'prototype/pr/index.html'
+      - 'prototype/pr/styles.css'
+      - 'prototype/pr/app.mjs'
+      - 'prototype/pr/logic/**'
+      - 'prototype/pr/data/seed.json'
+      - 'prototype/pr/build-static.mjs'
+      - 'prototype/pr/serve.mjs'
+      - 'prototype/pr/test/**'
+      - 'wireframes/pr/BeVietnamPro-Regular.ttf'
+      - 'wireframes/pr/BeVietnamPro-Medium.ttf'
+      - 'wireframes/pr/BeVietnamPro-SemiBold.ttf'
+      - 'wireframes/pr/BeVietnamPro-Bold.ttf'
+      - 'wireframes/pr/OFL.txt'
+      - '.github/workflows/deploy-pr-demo.yml'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22.14.0'
+          package-manager-cache: false
+      - name: Test all prototype modules and packaging
+        run: node --test prototype/pr/test/*.test.mjs
+      - name: Build static package
+        run: node prototype/pr/build-static.mjs
+      - name: Verify exact artifact paths and source bytes
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readdir, readFile } from 'node:fs/promises';
+          import { createHash } from 'node:crypto';
+          const root = 'prototype/pr/dist/';
+          const expected = ['index.html', 'styles.css', 'app.mjs', 'data/seed.json',
+            'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs',
+            'fonts/BeVietnamPro-Regular.ttf', 'fonts/BeVietnamPro-Medium.ttf',
+            'fonts/BeVietnamPro-SemiBold.ttf', 'fonts/BeVietnamPro-Bold.ttf', 'fonts/OFL.txt'].sort();
+          const actual = [];
+          async function walk(prefix = '') {
+            for (const entry of await readdir(root + prefix, { withFileTypes: true })) {
+              const name = prefix + entry.name;
+              assert.ok(!entry.isSymbolicLink(), `Unexpected symlink: ${name}`);
+              if (entry.isDirectory()) {
+                assert.ok(['data', 'logic', 'fonts'].includes(name), `Unexpected directory: ${name}`);
+                await walk(name + '/');
+              } else {
+                assert.ok(entry.isFile(), `Unexpected special file: ${name}`);
+                actual.push(name);
+              }
+            }
+          }
+          await walk();
+          assert.deepEqual(actual.sort(), expected);
+          for (const name of expected) {
+            const source = name.startsWith('fonts/')
+              ? 'wireframes/pr/' + name.slice(6) : 'prototype/pr/' + name;
+            const bytes = await readFile(root + name);
+            assert.deepEqual(bytes, await readFile(source), `Source mismatch: ${name}`);
+            console.log(createHash('sha256').update(bytes).digest('hex'), name);
+          }
+          console.log('Verified 13/13 artifact paths and source bytes');
+          NODE
+      - name: Upload only the static package
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: prototype/pr/dist/
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

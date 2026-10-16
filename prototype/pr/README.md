@@ -4,7 +4,9 @@
 
 **Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
 
-Bốn màn hình HTML/CSS/ES modules nối với lớp logic 3B.1. Dữ liệu chỉ tồn tại trong bộ nhớ trang, không localStorage/sessionStorage, backend hoặc database. Tải lại/reset phục hồi seed, lịch sử, ID, vai trò REQ-01, ngân sách Đạt và 10/10/2026 12:00 UTC+07:00. Kiểm tra prototype này chưa phải UAT hoặc nghiệm thu 3C; không tuyên bố AC đã pass. OD-03/06/07 vẫn mở.
+Bốn màn hình HTML/CSS/ES modules nối với lớp logic 3B.1. Dữ liệu chỉ tồn tại trong bộ nhớ trang, không localStorage/sessionStorage, backend hoặc database. Tải lại/reset phục hồi seed, lịch sử, ID, vai trò REQ-01, ngân sách Đạt và 10/10/2026 12:00 UTC+07:00. Kiểm tra tích hợp 3B.2 không thay thế kiểm chứng 3C bên dưới hoặc UAT; không tuyên bố AC đã pass. OD-03/06/07 vẫn mở.
+
+Kết quả [kiểm chứng prototype 3C](./verification.md) ghi kịch bản, nguồn yêu cầu, kết quả, phiên bản/lớp kiểm tra và giới hạn; không phải UAT hoặc stakeholder sign-off.
 
 ## Nguồn và kiểm tra trước khi sửa
 

@@ -1,0 +1,342 @@
+# Kiểm chứng prototype PR — 3C
+
+## 1. Phạm vi, phiên bản, môi trường và thời điểm kiểm chứng
+
+**Kết luận: 3C hoàn tất trong phạm vi kiểm chứng prototype đã xác định dưới đây.** Không phải UAT, stakeholder sign-off, kiểm thử toàn bộ P2P hoặc bằng chứng về bảo mật, SLA và hiệu quả vận hành thực tế.
+
+**Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
+
+### Phạm vi và phiên bản
+
+- Branch `pr-prototype`, HEAD **`42f6c57fddce68b6e096ef46ce40e95f529dd732`**. Đầu lượt chỉ có ` M wireframes/pr/README.md`; không detached HEAD, không thiếu nguồn hoặc thay đổi chưa được giải thích; không tìm thấy AGENTS.md áp dụng.
+- Phần được kiểm chứng: bốn màn hình PR, handler, ngân sách/đồng hồ/phạm vi demo SIM-01–04, ba metric, tìm kiếm, cảnh báo phần nhập chưa lưu, reset và server tĩnh. Một mặt hàng mỗi PR theo seed 3A; không PO, GR, hóa đơn hoặc thanh toán.
+- Seed: [seed.json](./data/seed.json), [quy tắc dữ liệu](./data/README.md); chủ sở hữu REQ-01, người xem xét MGR-01, Đơn vị mẫu. `T0=2026-10-10T12:00:00+07:00`; kỳ `[2026-10-01T00:00:00+07:00, 2026-10-08T00:00:00+07:00)`.
+- Trước lần chạy bổ sung đã xác định **PR-CHK-01–18 là cốt lõi**, **PR-CHK-19–21 là bổ sung**, ghi trong `plan.json` ngoài repo. Không đổi mức theo kết quả. Các ID này chưa có trong repo khi kiểm tra trước khi tạo tài liệu.
+- Snapshot đã đọc lại trước sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-verification-3c-qmo7j31o\snapshot.json`, gồm branch/HEAD/status và SHA-256 34 file prototype/nguồn/README wireframe. Các file chương trình, test, QA, seed và ảnh khớp nội dung commit trên; 3C chỉ thêm tài liệu này và liên kết README, không sửa code.
+
+### Nguồn đã đọc trực tiếp
+
+| Nguồn hiện hành | ID được đọc và sử dụng |
+| --- | --- |
+| [Use case](../../06-system-analysis/use-case-specifications.md) | UC-01, UC-02, UC-10, UC-11, UC-12. UC-11/12 được đọc để phân biệt lịch sử/báo cáo demo với chức năng cho các vai trò của baseline. |
+| [Business rules](../../04-to-be-design/business-rules.md) | BR-01–BR-05, BR-25–BR-27: dữ liệu, ngân sách, ba quyết định, ranh giới mua hàng, trạng thái, lịch sử, quyền. |
+| [SRS](../../07-software-requirements/srs.md) | Mục 2.1; FR-01–03, FR-14–16; NFR-01–04; AC-01–06, AC-20–26, AC-33–34. AC-26/33 dùng để chỉ rõ phần PO/GR/hóa đơn ngoài prototype. |
+| [Baseline decisions](../../08-traceability/baseline-decisions.md) | G1-D03, G1-D04, G1-D05; phân biệt trả lại/từ chối, hàng hóa hữu hình và ranh giới sửa/mở lại. Không đổi các quyết định này. |
+| [Hành vi 2A](../../06-system-analysis/pr-behavior-analysis.md) | PR-BHV-01–18 và PR-SCR-01–04; các câu hỏi 2A được cụ thể hóa bằng SIM, không dùng đề xuất cũ để thay quyết định 2B. |
+| [Quyết định 2B](../../06-system-analysis/pr-prototype-decisions.md) | SIM-01–04, validation ngày/số/chuỗi và lưu bộ nhớ phiên. OD-03/06/07 còn mở. |
+| [Metric](../../08-traceability/pr-metrics-design.md) | PR-MET-01–03; thứ tự `(occurred_at,event_order)`, xét đến và gồm T, kỳ `[S,E)`, giờ liên tục, half-up, chất lượng riêng từng metric và năm ví dụ. |
+| [README prototype](./README.md), logic/test/QA/ảnh | Đọc implementation và assertion thực tế để xác định điều gì đã được chứng minh; không lấy số test hoặc ảnh làm nội dung yêu cầu. |
+
+### Môi trường, thời gian và quy ước bằng chứng
+
+Windows/PowerShell; Node **v22.14.0** tại `C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe`. Chrome đang có trên máy: **155.0.8059.40**, khớp báo cáo CDP được tái sử dụng. Không cài dependency. Lượt 3C không mở trình duyệt/server demo; các test server chỉ mở và đóng server riêng trên cổng loopback tạm.
+
+Giờ thực trong tài liệu theo **16/10/2026, UTC+07:00**; không nhầm với giờ mô phỏng **10/10/2026**. Ký hiệu bằng chứng dùng thống nhất cho từng kịch bản:
+
+| Mã bằng chứng / lớp | Nội dung, phiên bản và thời điểm |
+| --- | --- |
+| **N-S / logic** | [session.test.mjs](./test/session.test.mjs), đọc seed bằng [fixtures.mjs](./test/fixtures.mjs); chạy tại HEAD 42f6c57 trong bộ 49 test lúc **11:01:43.718–11:01:44.005**. |
+| **N-M / logic metric** | [metrics.test.mjs](./test/metrics.test.mjs), cùng phiên Node trên; fixture là bản sao, không ghi seed. |
+| **N-H / HTTP tĩnh** | [server.test.mjs](./test/server.test.mjs), cùng phiên Node trên; không phải kiểm thử UI hoặc pentest. |
+| **N-C / logic, chuỗi riêng** | Test `SIM-04 standard sequence, without intervening saves` trong N-S, chạy riêng tại HEAD 42f6c57 lúc **11:00:58.682–11:00:58.840**, 1 test đạt; cũng chạy trong bộ 49 sau đó, không cộng thành 50 test riêng biệt. |
+| **U2 / tích hợp UI** | Báo cáo gốc `M2 draft, reopen, field errors, safe rendering, all budget outcomes, valid first submit and double save guard` lúc **10:38:51.556** và `M2 save returned content keeps returned status` lúc **10:38:53.440**. |
+| **U3 / tích hợp UI** | `M3 standard sequence 12/13/14/15/reset matches all expected outputs` lúc **10:39:03.539**, `M3 approve/reject/cancel and empty queue` lúc **10:39:10.080**. |
+| **U4 / tích hợp UI** | `M4 search, clear, dirty leave/role cancel/discard and reset cancel` lúc **10:39:16.158**, `M4 browser reload and beforeunload observation` lúc **10:39:17.775**. |
+| **UF / UI với fixture phản hồi** | `M1/M4 unknown/no-data fixture, visible quality warning, not-applicable detail and 16px controls` lúc **10:39:35.941**; bản sao phản hồi seed có events/checks rỗng; sau đó tải lại seed thật. |
+| **U5 / bố cục và font thực** | 12 kiểm tra bốn màn hình tại 1280/1440/390 px, **10:39:18.733–10:39:32.630**; CDP `CSS.getPlatformFontsForNode` cho bốn weight font local; không suy ra tính dễ hiểu với người dùng thật. |
+| **UQ / review hàng đợi** | 8 bản ghi `queueReviews`: 1280/1440 px × bốn mốc 12/13/14/15; nút một dòng, cao 46 px, vừa ô; ID/chẩn đoán không xuất hiện khi phần mở rộng đóng; không đổi giờ khi resize. |
+| **P / ảnh trực tiếp, hỗ trợ quan sát** | Chín ảnh PNG trong [evidence](./evidence/pr-01-list.png), công cụ `Page.captureScreenshot`, Chrome/CDP, viewport 1440 px; bảng ảnh và giờ chụp thực tế trong README. Ảnh hỗ trợ quan sát, không chứng minh thứ tự validation, quyền hoặc tính đúng log. |
+
+Toàn bộ U2/U3/U4/UF/U5/UQ thuộc phiên Chrome headless **10:38:46.044–10:39:35.942**, URL đã kiểm tra `http://127.0.0.1:8080/`, cùng bộ thay đổi working tree sau review đã tạo commit 42f6c57. Kết quả đọc lại: **21 mục kiểm tra trình duyệt**, **8 lượt kiểm tra hàng đợi**, **9 ảnh**, không lỗi console trang. Đây không phải số kịch bản PR-CHK hoặc số AC đạt.
+
+### Kiểm kê và quyết định tái sử dụng
+
+1. Đã đọc log gốc, không chỉ README: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-review-ifsd27so\browser-results.json` có assertion/check, `sequence`, `queueReviews`, browser/version, giờ thực và `screenshots`; không có `failure`, `consoleErrors` rỗng. Log TAP gốc có 49 tên test và tổng 49 đạt, 0 lỗi.
+2. Đã đối chiếu 17 đường dẫn thực trong commit 42f6c57, file chương trình/QA/test/seed hiện tại với blob commit, chín ảnh/nhãn/giờ chụp với báo cáo và README. Logic và 45 test/fixture 3B.1 không đổi từ commit logic. Không có diff làm thay đổi kết quả sau phiên 3B.2; dữ liệu, scenario và expected value trong QA khớp báo cáo.
+3. Vì vậy tái sử dụng **bằng chứng UI và ảnh** 3B.2; không chạy lại toàn bộ desktop/mobile, không chụp thêm hoặc thay ảnh cũ. Hash đo ở 3C là kiểm tra đối chiếu **hiện tại**, không được diễn giải thành metadata đã ghi tại lúc chạy 3B.2.
+4. Log TAP gốc thiếu giờ thực tuyệt đối, nên đã chạy bổ sung test chuỗi riêng và một lần bộ Node hiện hành, ghi start/end, HEAD, lệnh, exit code, SHA-256 trước/sau. Không tạo timestamp quá khứ. Bộ 49 hiện tại đạt, mã/seed không thay đổi bởi test.
+5. Bản sao log gốc, hash và quyết định phạm vi nằm ngoài repo tại snapshot 3C: `reused/`, `evidence-audit.json`, `plan.json`, `standard-sequence-3c.txt/.json`, `node-suite-3c.txt/.json`. Hash là SHA-256; Temp có thể bị dọn. Các kết quả và liên kết nguồn tái lập cần thiết được giữ trong tài liệu này, không tạo thêm báo cáo bàn giao trong repo.
+
+Lệnh đã chạy bổ sung từ root repo:
+
+```powershell
+$prNode = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+& $prNode --test '--test-name-pattern=^SIM-04 standard sequence, without intervening saves$' prototype/pr/test/session.test.mjs
+& $prNode --test prototype/pr/test/session.test.mjs prototype/pr/test/metrics.test.mjs prototype/pr/test/server.test.mjs
+```
+
+Tái lập UI dùng [hướng dẫn server/trình duyệt trong README](./README.md). Script [browser-qa.mjs](./qa/browser-qa.mjs) đã có kết quả U nêu trên; script tồn tại không phải bằng chứng tự động cho mọi lần chạy tương lai. [launch-browser.mjs](./qa/launch-browser.mjs) chỉ là công cụ mở browser/profile QA, không được đếm như test nghiệp vụ.
+
+## 2. Kịch bản và kết quả
+
+Tất cả kịch bản dùng seed/reset làm điều kiện đầu, trừ fixture ghi rõ. **Đạt** nghĩa là expected value của kịch bản trong lớp kiểm tra được chỉ định đã được chứng minh; không có nghĩa toàn bộ yêu cầu baseline đã đạt. Môi trường/phiên bản/thời điểm lấy theo mã N/U/P ở phần 1; không gán giờ Node cho UI hoặc giờ UI cho ảnh khác.
+
+### PR-CHK-01 — Tạo, lưu và mở lại nháp chưa đầy đủ
+
+- **Mức/nguồn:** Cốt lõi; UC-01, BR-01, FR-01, AC-01/25, G1-D05, SIM-02/03/04; PR-BHV-01–04.
+- **Đầu vào/bước:** REQ-01 mở Tạo PR; nhập lý do, để các trường khác thiếu; Lưu nháp; về danh sách rồi mở PR-NEW-1. Với N-S, lấy bản sao form rồi sửa bản sao để kiểm tra không làm đổi dữ liệu phiên.
+- **Mong đợi:** Mở form chưa tạo PR đã lưu hoặc tăng giờ; tự gắn người/đơn vị; lưu tăng 1 giờ, giữ phần nhập, không mở vòng; mở lại không tăng giờ.
+- **Thực tế/trạng thái:** **Đạt**. UI từ 5 PR thành có nháp đã lưu, mở lại giữ nội dung; logic xác nhận sự kiện rỗng, bản sao trả về độc lập và metric không coi nháp rõ nguồn là hồ sơ thiếu log.
+- **Bằng chứng/lớp:** N-S test `new form is unsaved; save incomplete draft and reopen copies` (dòng 47); U2; [P form mới](./evidence/pr-02-form.png). Lưu/mở UI và invariants logic được kiểm tra riêng.
+
+### PR-CHK-02 — Validation trước ngân sách, giữ dữ liệu và focus lỗi
+
+- **Mức/nguồn:** Cốt lõi; UC-01 A1, BR-01, FR-01, AC-01, SIM-01/04 và validation 2B; PR-BHV-03/05.
+- **Đầu vào/bước:** Tạo PR thiếu trường; chọn UNAVAILABLE; thử gửi với `29/02/2026`, số lượng `1e3` ở logic. UI lưu lý do rồi gửi khi còn thiếu năm trường, chọn liên kết lỗi; bổ sung trường để tiếp tục.
+- **Mong đợi:** Gửi thất bại tăng đúng 1 giờ, không kiểm tra ngân sách, không sự kiện mở vòng; dữ liệu lỗi giữ lại; summary được focus, từng liên kết dẫn đến trường có nhãn/lỗi tương ứng. Validation theo tám trường, không ép ngày tương lai hoặc chỉ số nguyên.
+- **Thực tế/trạng thái:** **Đạt**. N-S ghi `budget_checked=false`, field error, lịch sử rỗng và dữ liệu `1e3` còn nguyên; U2 xác nhận focus `errors`, link đến `field-cost_center_id`, phần nhập giữ lại. Ngày nhuận, Unicode trống, số lẻ/giá 0 và tham chiếu sai được kiểm tra thêm bằng Node.
+- **Bằng chứng/lớp:** N-S dòng 71, 215, 225; U2; [P lỗi gửi](./evidence/pr-02-submit-error.png). Không lấy thông báo/ảnh để suy ra validation chưa gọi ngân sách; kết luận đó dựa trên assertion logic.
+
+### PR-CHK-03 — Hai nhánh ngân sách chặn và lựa chọn giữ nguyên
+
+- **Mức/nguồn:** Cốt lõi; UC-01 A2, BR-02/03, FR-02, AC-02/03; SIM-01/02/04; PR-BHV-06/09.
+- **Đầu vào/bước:** Mỗi nhánh bắt đầu reset. N-S dùng B đủ trường, chọn INSUFFICIENT hoặc UNAVAILABLE và gửi lại hai lần; UI U2 dùng PR mới đủ trường, lần lượt thử hai lựa chọn.
+- **Mong đợi:** Hai mã kết quả khác nhau; mỗi lần gửi tăng 1 giờ; không mở vòng; lựa chọn không tự tiêu thụ; B vẫn Chờ chỉnh sửa, PR mới vẫn Nháp. UNAVAILABLE không kết luận thiếu ngân sách.
+- **Thực tế/trạng thái:** **Đạt**. N-S kiểm tra `INSUFFICIENT_BUDGET`/`BUDGET_UNAVAILABLE`, hai lần thử giữ kịch bản, B có đúng hai sự kiện cũ; U2 xác nhận hai thông báo phân biệt. Không có công thức/số dư ngân sách được kiểm chứng.
+- **Bằng chứng/lớp:** Hai test động `budget INSUFFICIENT persists across attempts; no review round` / `budget UNAVAILABLE persists across attempts; no review round` trong N-S; U2, [P B nguồn không khả dụng](./evidence/pr-02-returned-13.png).
+
+### PR-CHK-04 — Gửi hợp lệ lần đầu
+
+- **Mức/nguồn:** Cốt lõi; UC-01 luồng chính, BR-01/02, FR-01/02, AC-02; SIM-01/02/04; PR-BHV-07.
+- **Đầu vào/bước:** Nháp mới hợp lệ: CC-OPS, lý do/mô tả không trống, ngày `15/10/2026`, số lượng `1.5`, giá `0`; chọn PASS, Gửi rồi thử gửi lặp.
+- **Mong đợi:** Chuẩn hóa số/ngày, `FIRST_VALID_SUBMIT`, vòng/order 1, REQ-01, timestamp sau tăng; có check_reference và bằng chứng đạt; PR vào hàng đợi, lần gửi đầu sau kỳ không vào nhóm PR trong kỳ.
+- **Thực tế/trạng thái:** **Đạt**. N-S xác nhận ngày ISO/số 1.5, event đúng, gửi lặp bị chặn không tăng giờ, hàng chờ thành 3 nhưng mẫu số kỳ vẫn 4; U2 chuyển sang chi tiết Chờ xem xét.
+- **Bằng chứng/lớp:** N-S `first valid submission uses normalized numbers/date and blocks repeat` dòng 95; U2. Event/check/ID được chứng minh ở logic, không chỉ từ UI.
+
+### PR-CHK-05 — Phê duyệt và ranh giới Mua hàng
+
+- **Mức/nguồn:** Cốt lõi; UC-02 luồng chính, BR-04/05, FR-03, AC-04, G1-D03; SIM-02/03/04; PR-BHV-12.
+- **Đầu vào/bước:** Reset; MGR-01 mở A đang chờ, Phê duyệt; thử quyết định lại; ở UI duyệt A/C rồi mở hàng đợi.
+- **Mong đợi:** APPROVE đóng vòng 1 ở giờ sau tăng, nhãn Đã duyệt, `ready_for_purchasing=true`; không quyết định lần hai, không còn trong hàng đợi. Không suy ra PO đã tạo.
+- **Thực tế/trạng thái:** **Đạt**. N-S kiểm tra cờ sẵn sàng, chặn quyết định và sửa/gửi sau duyệt; U3 xác nhận hành động quyết định biến mất, hàng đợi rỗng sau duyệt A/C.
+- **Bằng chứng/lớp:** N-S `approve closes round, makes available to purchasing and blocks second decision` dòng 118; U3. Xử lý PO ngoài phạm vi.
+
+### PR-CHK-06 — Trả lại thiếu lý do và trả lại hợp lệ
+
+- **Mức/nguồn:** Cốt lõi; UC-02 A2, BR-04, FR-03, AC-06/34; SIM-02/04, validation chuỗi 2B; PR-BHV-11/14.
+- **Đầu vào/bước:** MGR-01 mở A đang chờ; mở Trả lại, thử lý do rỗng/space/tab/NBSP (logic), rồi nhập lý do cụ thể và hoàn tất; Người yêu cầu mở PR.
+- **Mong đợi:** Lý do không hợp lệ không đổi PR/event/giờ; lý do hợp lệ được ghi và đóng đúng vòng, tăng 1 giờ; trả về Người yêu cầu với hướng dẫn sửa/gửi lại và kiểm tra lại.
+- **Thực tế/trạng thái:** **Đạt**. N-S đối chiếu toàn bộ trạng thái trước/sau các yêu cầu sai; U3 giữ 14:00 khi lý do thiếu, trả A tại 15:00 khi hợp lệ. Người yêu cầu thấy lý do/bước tiếp theo.
+- **Bằng chứng/lớp:** N-S dòng 105; U3; [P sau trả A](./evidence/pr-04-queue-15.png), ảnh chỉ xác nhận kết quả hàng đợi, không thay bằng chứng atomic của yêu cầu sai.
+
+### PR-CHK-07 — Lưu phần sửa, gửi lại thất bại và thành công
+
+- **Mức/nguồn:** Cốt lõi; UC-01 A3/UC-02 A2, BR-04, FR-01–03, AC-06/34, G1-D03/D05; SIM-01/02/04; PR-BHV-04/08.
+- **Đầu vào/bước:** Reset; REQ-01 sửa lý do B, Lưu phần sửa rồi mở lại. Ca độc lập: gửi lại B với ngân sách bị chặn, sau đó PASS; ca chuỗi chuẩn không xen lưu.
+- **Mong đợi:** Lưu tăng 1 giờ, giữ Chờ chỉnh sửa/vòng 1 đã đóng; lỗi không mở vòng; đạt mới mở vòng 2 bằng VALID_RESUBMIT, có kiểm tra trường/ngân sách lại.
+- **Thực tế/trạng thái:** **Đạt**. N-S xác nhận bản chứng từ chưa đổi trước lưu và đúng hai sự kiện cũ sau lưu; U2 giữ nhãn. N-S/U3 xác nhận B chỉ mở vòng 2 tại gửi đạt, không gộp với lỗi ngân sách hoặc lần lưu.
+- **Bằng chứng/lớp:** N-S dòng 62, các test ngân sách, N-C; U2/U3; [P B chờ sửa 13:00](./evidence/pr-02-returned-13.png), [P B mở vòng 14:00](./evidence/pr-04-queue-14.png).
+
+### PR-CHK-08 — Từ chối, hủy xác nhận và không mở lại
+
+- **Mức/nguồn:** Cốt lõi; UC-02 A1, BR-04, FR-03, AC-05, G1-D03/D05; SIM-02/03/04; PR-BHV-13.
+- **Đầu vào/bước:** Reset; MGR-01 mở A, mở/hủy xác nhận; mở lại và xác nhận. Logic thử confirmed không phải boolean true, sau quyết định thử sửa/lưu/gửi/quyết định lại; có cả E đã từ chối từ seed.
+- **Mong đợi:** Mở/hủy không tăng giờ; chỉ xác nhận true mới REJECT đóng vòng, không bắt lý do từ chối; không mở lại hoặc chuyển Mua hàng.
+- **Thực tế/trạng thái:** **Đạt**. U3 hủy giữ 12:00, xác nhận ra Đã từ chối và không còn nút quyết định; N-S chặn các phương thức sau từ chối và không ghi return_reason vào REJECT.
+- **Bằng chứng/lớp:** N-S dòng 127; U3. Không coi thử gọi handler bằng Node là đã thao tác lại nút UI bị loại bỏ.
+
+### PR-CHK-09 — Chặn sai vai/ngữ cảnh, PR đã duyệt và thao tác lặp
+
+- **Mức/nguồn:** Cốt lõi; BR-04/27, FR-03, AC-20 (phần demo), G1-D05; SIM-02/03/04; PR-BHV-12–14/16.
+- **Đầu vào/bước:** N-S thử Người yêu cầu quyết định, Quản lý gửi/tạo/sửa thay, sửa/lưu/gửi PR đang chờ hoặc đã duyệt/từ chối, quyết định lần hai, gửi lặp và định danh trùng. U2 bấm lưu hai lần liên tiếp.
+- **Mong đợi:** Handler chặn dù không dựa vào ẩn nút; không dữ liệu/event/giờ thừa. Chỉ lần lưu đầu được xử lý trong cặp bấm lặp UI.
+- **Thực tế/trạng thái:** **Đạt** ở lớp ghi rõ. N-S các guard đúng, PR có định danh mâu thuẫn không được quyết định; U2 giờ chỉ từ 12:00 sang 13:00 sau double save. Không phải bằng chứng chống tấn công hoặc phân quyền thật.
+- **Bằng chứng/lớp:** N-S dòng 95, 118, 127, 140, 177, 233; U2/U3 cho chặn UI và xử lý bấm lặp. Các request sai vai trực tiếp là kiểm tra **logic**.
+
+### PR-CHK-10 — Phạm vi danh sách, hàng đợi, lịch sử và metric
+
+- **Mức/nguồn:** Cốt lõi; UC-10/11 (phần PR), BR-25–27, FR-14/15, AC-20–22 (phần demo); SIM-03; PR-BHV-01/10/15–18.
+- **Đầu vào/bước:** UI seed: REQ-01 đọc năm PR của mình; chuyển MGR-01 xem A/C và mở chi tiết/lịch sử. Logic thêm bản sao fixture khác chủ và khác đơn vị; gọi list/detail/history/openForm/edit/submit/decide/metrics.
+- **Mong đợi:** REQ chỉ đọc PR của mình; Quản lý đọc đơn vị mẫu, queue chỉ đang chờ; lịch sử chỉ đọc; Người yêu cầu không có tổng hợp đơn vị. Metric của Quản lý vẫn gồm B/D/E trong kỳ dù ngoài queue; mở chi tiết không đổi mẫu số.
+- **Thực tế/trạng thái:** **Đạt** trong SIM-03. N-S chặn fixture không được phép, queue 2, mẫu số 4; U3 có đúng tập/mẫu số. Fixture khác chủ/đơn vị chỉ được kiểm tra **logic**, không tuyên bố thử UI đăng nhập hoặc ma trận quyền thật.
+- **Bằng chứng/lớp:** N-S `SIM-03 scopes detail/history/form/actions by owner and unit; metrics use entire unit` dòng 151; U3; [P danh sách](./evidence/pr-01-list.png), [P hàng đợi](./evidence/pr-04-queue-12.png).
+
+### PR-CHK-11 — Tìm kiếm và kết quả rỗng
+
+- **Mức/nguồn:** Cốt lõi; UC-10 A1, PR-BHV-01, brief UI 3B.2; không thêm yêu cầu tìm nâng cao.
+- **Đầu vào/bước:** Reset ở danh sách; tìm `  pr-b  `, `MÁY QUÉT`, chuỗi không khớp; Xóa tìm kiếm. Ca riêng duyệt A/C để queue rỗng.
+- **Mong đợi:** Trim/không phân biệt hoa thường; lọc theo mã/mô tả; có rỗng và cách xóa; queue rỗng không tính PR đang sửa/đã quyết định; không tăng giờ do tìm/xem.
+- **Thực tế/trạng thái:** **Đạt**. U4 có một dòng cho từng tìm kiếm khớp, thông báo rỗng, xóa trở lại năm dòng; U3 có queue rỗng. Không có filter báo cáo doanh nghiệp được chứng minh.
+- **Bằng chứng/lớp:** U4/U3; [app.mjs](./app.mjs) `listView/queueView` và assertion trong [QA](./qa/browser-qa.mjs). Đây là bằng chứng UI, không suy ra từ test Node.
+
+### PR-CHK-12 — Rời form/đổi vai với phần nhập chưa lưu
+
+- **Mức/nguồn:** Cốt lõi theo brief 3B.2 và quy ước lưu phiên 2B; PR-BHV-03/04/16. Không bổ sung AC mới.
+- **Đầu vào/bước:** REQ-01 mở B, nhập lý do mới; chọn về danh sách, chọn Tiếp tục chỉnh sửa; đổi MGR-01 rồi hủy; cuối cùng rời form bằng Bỏ thay đổi, mở lại B.
+- **Mong đợi:** Cảnh báo trong ứng dụng; hủy giữ form/role/giờ, bỏ phần nhập không làm đổi bản đã lưu. Không dựa vào beforeunload thay cảnh báo nội bộ.
+- **Thực tế/trạng thái:** **Đạt**. U4 giữ form, role REQ-01 khi hủy và không còn chuỗi chưa lưu khi mở lại B; không tăng giờ.
+- **Bằng chứng/lớp:** U4; QA assertion dialog/role/value; không cần và không tạo ảnh mới cho một dialog đã có trace thao tác.
+
+### PR-CHK-13 — Thao tác không tăng giờ
+
+- **Mức/nguồn:** Cốt lõi; SIM-04, PR-BHV-01/10/15–18.
+- **Đầu vào/bước:** Từ T0, xem/list/detail/history, mở form, sửa chưa lưu, đổi vai/kịch bản, mở/hủy từ chối/reset và yêu cầu trái vai/thiếu lý do trả; đối chiếu context trước/sau.
+- **Mong đợi:** Chỉ các thao tác nghiệp vụ được xử lý mới tăng giờ theo SIM; các thao tác trên không tạo event hay thay lịch sử. Không lấy giờ máy.
+- **Thực tế/trạng thái:** **Đạt**. N-S so context bất biến ở các guard/read/control; U2/U3/U4 xác nhận các mốc mong đợi, hủy giữ giờ. Resize ở UQ cũng không đổi thời điểm báo cáo.
+- **Bằng chứng/lớp:** N-S dòng 47, 105, 127, 140, 193; U2/U3/U4/UQ. Nguồn timestamp từ handler, không phải nhãn ảnh.
+
+### PR-CHK-14 — Reset, hủy reset và tải lại
+
+- **Mức/nguồn:** Cốt lõi; SIM-01/02/03/04, lưu phiên 2B; brief UI 3B.2.
+- **Đầu vào/bước:** Thay nội dung, phát sinh sự kiện/PR mới, đổi vai/ngân sách; reset chưa xác nhận rồi xác nhận. UI hủy reset khi INSUFFICIENT; tải lại sau phần nhập thay đổi và chấp nhận cảnh báo.
+- **Mong đợi:** Hủy giữ nguyên; xác nhận/reset/reload đưa về năm PR, T0, REQ-01, PASS, xóa input/feedback/query phát sinh; ID cấp lại xác định, thay đổi phiên trước không lọt sang phiên sau.
+- **Thực tế/trạng thái:** **Đạt**. N-S đối chiếu list/context và ID/event sau reset; U4 hủy giữ ngân sách/giờ, reload trả đúng mặc định; U3 reset chuỗi chuẩn khớp seed.
+- **Bằng chứng/lớp:** N-S `reset confirmation, isolation, history and deterministic IDs` dòng 193; U3/U4. Không chứng minh lưu bền vì prototype cố ý không lưu bền.
+
+### PR-CHK-15 — Ba metric trong chuỗi chuẩn liên tục
+
+- **Mức/nguồn:** Cốt lõi; PR-MET-01–03, SIM-01–04, PR-BHV-18.
+- **Đầu vào/bước:** Chạy đúng bảng chuỗi bên dưới, không xen Lưu; REQ-01 gửi B tại 13/14, MGR-01 trả A tại 15; reset qua điều khiển demo. Chuyển vai/chọn ngân sách không tăng giờ.
+- **Mong đợi:** Số PR chờ/giờ chờ/tử mẫu số và ngữ cảnh nhóm đúng từng mốc; B chỉ mở vòng tại 14; C ngoài kỳ dù trong queue.
+- **Thực tế/trạng thái:** **Đạt**. N-C và N-S có assertion từng PR/giờ và dữ liệu diagnostic; U3 có bốn bản ghi `sequence` và reset được assert; ảnh giữ đúng mốc. Bảng không dùng kết quả hardcode trong seed để thay phép tính.
+- **Bằng chứng/lớp:** N-C, N-S dòng 13, N-M baseline; U3 và bốn ảnh queue-12/13/14/15. Các mốc mới chạy ở **logic 3C**; UI là trace **3B.2 tái sử dụng**, không phải UI chạy lại ở 11:00.
+
+### PR-CHK-16 — Ca biên metric và dữ liệu thiếu/không hợp lệ
+
+- **Mức/nguồn:** Cốt lõi; quy ước/quality PR-MET-01–03, SIM-02/04.
+- **Đầu vào/bước:** N-M dùng fixture riêng: lần đầu đúng S/E; quyết định đúng T/sau T; cùng timestamp đảo thứ tự mảng/order sai; hai lần trả; nhóm rỗng; xung đột ID; thiếu timestamp/offset/check/lý do/log; log chưa đầy đủ; bản ghi không gắn PR; thời lượng 1.005 giờ và nhỏ hơn điểm giữa 1 ms.
+- **Mong đợi:** S gồm/E loại, T gồm; thứ tự nguồn quyết định; mỗi PR trả nhiều lần chỉ đếm một; mẫu số 0 là Không có dữ liệu; thiếu/lỗi không mặc định nháp hoặc 0. Chưa xác định nhóm, lịch sử trả lại, tình trạng ngữ cảnh được tách riêng; đã biết từng trả không đủ kết luận còn chờ sửa. Half-up chỉ khi hiển thị, giờ gốc giữ nguyên.
+- **Thực tế/trạng thái:** **Đạt** ở **logic** N-M: A=1.005 giờ hiển thị 1,01; thiếu log không thành nháp; số không xác định chia nhóm đúng; unlinked ghi Không xác định đầy đủ; duplicate giống nhau dùng một lần. UF chỉ chứng minh UI cảnh báo/nhãn cho một fixture rỗng log, không thay toàn bộ các ca biên logic.
+- **Bằng chứng/lớp:** N-M các test ở dòng 18–207; N-S dòng 170; UF kiểm tra cảnh báo ngoài details và chẩn đoán khi mở. Không tuyên bố đã thao tác UI cho mọi ca biên.
+
+### PR-CHK-17 — Phần làm rõ của C và lịch sử tối thiểu
+
+- **Mức/nguồn:** Cốt lõi theo dữ liệu 3A đã chốt; SIM-03, PR-BHV-15, quy tắc sự kiện metric.
+- **Đầu vào/bước:** Mở C; đọc nội dung hiện tại, ba sự kiện và ghi chú; ở logic đối chiếu `resubmit_event_id`, lý do trước làm rõ và payload lịch sử.
+- **Mong đợi:** Ghi chú gắn C-3; không ngụ ý nội dung hiện tại là snapshot tại C-1; không event/timestamp giả; lịch sử không tự tái dựng chứng từ quá khứ.
+- **Thực tế/trạng thái:** **Đạt**. N-S xác nhận C-3, ba sự kiện, `document_snapshots_available=false`; U có ghi chú đúng vị trí C-3, [P chi tiết C](./evidence/pr-03-detail-c.png).
+- **Bằng chứng/lớp:** N-S dòng 183; UI check `M1 four screens render seed and C-3 context` lúc 10:38:54.952 và P. Không suy ra full audit từ kết quả này.
+
+### PR-CHK-18 — Bảo toàn seed, bằng chứng ngân sách và bản sao phiên
+
+- **Mức/nguồn:** Cốt lõi; SIM-01/03/04, giới hạn dữ liệu 3A và brief 3C.
+- **Đầu vào/bước:** N-S giữ bản sao input/hash file; tạo/gửi PR mới, đổi ngân sách và gửi B thất bại, duyệt A rồi reset; đối chiếu đối tượng, file và lịch sử seed. 3C đối chiếu SHA-256 snapshot trước/sau và nguồn commit.
+- **Mong đợi:** Lựa chọn ngân sách tương lai không đổi bằng chứng quá khứ; không mutate đối tượng seed/file seed; không rò thay đổi giữa phiên; file cần bảo toàn giữ nguyên.
+- **Thực tế/trạng thái:** **Đạt**. N-S giữ đối tượng và hash file, lịch sử ban đầu khôi phục; metric baseline không đổi chỉ vì chọn ngân sách khác. Hash trước/sau cả bộ 49 test giống nhau. File seed còn khớp `b9232f3`; source thiết kế còn khớp `b579cdc`.
+- **Bằng chứng/lớp:** N-S dòng 140/193/203; N-M baseline; `node-suite-3c.json` và snapshot 3C. Bảo toàn file trên đĩa và input object là hai kiểm tra khác nhau, không đánh tráo.
+
+### PR-CHK-19 — Bố cục, font, nút và phần chẩn đoán
+
+- **Mức/nguồn:** Bổ sung; brief/review 3B.2, PR-BHV-10/16–18; hỗ trợ một phần NFR-04.
+- **Đầu vào/bước:** Bốn màn hình 1280/1440 và bổ sung 390 px; ở mỗi mốc queue 12/13/14/15 thử 1280/1440, phần mở rộng đóng; kiểm tra glyph/font thực, control 16 px; mở chẩn đoán với fixture.
+- **Mong đợi:** Không tràn ngang toàn trang, nút Xem xét một dòng/vừa ô; vùng chính dùng Nhóm PR trong kỳ, chẩn đoán/ID trong mở rộng, cảnh báo vẫn hiện khi cần.
+- **Thực tế/trạng thái:** **Đạt** trong kích thước/browser đã kiểm tra. UQ cả tám lượt: nút cao 46 px, một dòng, vừa ô; U5 bốn weight custom font; UF cảnh báo nhìn thấy bên ngoài. Không kết luận mọi thiết bị, accessibility hoặc người dùng hiểu.
+- **Bằng chứng/lớp:** U5/UQ/UF, bốn ảnh queue và [ảnh form](./evidence/pr-02-form.png); ảnh kiểm tra 1280 nằm ngoài repo, không thêm bộ ảnh trùng.
+
+### PR-CHK-20 — beforeunload trong Chrome headless
+
+- **Mức/nguồn:** Bổ sung theo brief UI 3B.2; cảnh báo nội bộ bắt buộc đã kiểm tra riêng ở PR-CHK-12.
+- **Đầu vào/bước:** Form có phần nhập chưa lưu; click thật và `Input.insertText`; `Page.reload`, dismiss rồi reload/accept.
+- **Mong đợi:** Ghi nhận đúng khả năng của browser; hủy còn form, chấp nhận reload về seed. Không đòi chuỗi hộp thoại giống nhau giữa các browser.
+- **Thực tế/trạng thái:** **Đạt** cho phép thử này: lúc **10:39:17.333**, Chrome/CDP phát `type=beforeunload`, `hasBrowserHandler=true`, message rỗng; dismiss giữ form, accept khôi phục dữ liệu/config. Không khẳng định đã xem giao diện hộp thoại native headful, đóng tab/cửa sổ hoặc thử browser khác.
+- **Bằng chứng/lớp:** U4 `beforeunload` trong log gốc; không có ảnh dựng/hộp thoại giả. Các hành vi chưa thử được công bố ở phần 4, không tính đạt ngoài phép thử này.
+
+### PR-CHK-21 — Server tĩnh và tài nguyên local
+
+- **Mức/nguồn:** Bổ sung theo brief 3B.2; không phải AC/NFR bảo mật thực tế.
+- **Đầu vào/bước:** N-H mở server riêng cổng loopback tạm; GET HTML/CSS/module/JSON/font/license, HEAD, POST/PUT/DELETE và các đường dẫn traversal/.git/test/README/encoding sai.
+- **Mong đợi:** Chỉ allowlist được phục vụ, MIME đúng, HEAD không body, method ghi 405, đường dẫn không cho phép 404/encoding lỗi 400; đóng server test của mình.
+- **Thực tế/trạng thái:** **Đạt**: bốn test N-H đúng các status/MIME/body; tài nguyên thật cũng được tải trong phiên U. Không chứng minh chống mọi tấn công hoặc bảo mật phân quyền của ứng dụng.
+- **Bằng chứng/lớp:** N-H bốn test dòng 16/22/29/34; [serve.mjs](./serve.mjs); lớp HTTP, không mô tả như test thao tác UI.
+
+### Chuỗi chuẩn: mong đợi và thực tế
+
+**Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
+
+Mọi mốc bên trái là **10/10/2026, UTC+07:00**. Các số ngữ cảnh là chờ xem xét/chờ chỉnh sửa trong cùng nhóm PR trong kỳ; không gồm C. Điều khiển demo không phải vai trò nghiệp vụ thứ ba.
+
+| Mốc / thao tác | Mong đợi | Thực tế N-C / N-S (logic 3C) và U3 (UI 3B.2) | Kết luận |
+| --- | --- | --- | --- |
+| 12:00, khởi tạo REQ-01 | A/C chờ; A195/C96 giờ; 1/4=25%; 1/1 | 2 PR; A195/C96; 1/4=25%; 1/1 | Khớp |
+| 13:00, REQ-01 gửi B, UNAVAILABLE | A/C chờ; A196/C97; B chưa mở vòng; 25%; 1/1 | 2 PR; A196/C97; không thêm event B; 25%; 1/1 | Khớp |
+| 14:00, REQ-01 gửi B, PASS | A/B/C chờ; A197/B0/C98; 25%; 2/0 | 3 PR; A197/B0/C98; VALID_RESUBMIT vòng 2; 25%; 2/0 | Khớp |
+| 15:00, MGR-01 trả A có lý do | B/C chờ; B1/C99; 2/4=50%; 1/1 | 2 PR; B1/C99; A Chờ chỉnh sửa/Không áp dụng tuổi chờ; 50%; 1/1 | Khớp |
+| Reset xác nhận qua demo | Seed, T0, REQ-01, PASS; số ban đầu | Đúng năm PR và dữ liệu/config ban đầu; A195/C96; 25%; 1/1 | Khớp |
+
+U3 được ghi thực lúc 10:38:56.189 / 10:38:57.977 / 10:38:59.692 / 10:39:02.493 và assert reset lúc 10:39:03.539, ngày 16/10. N-C ghi đúng cùng các giá trị trong output diagnostic lúc 11:00:58; không xen lưu, không đổi timestamp seed. N-S lặp lại chuỗi trong bộ test lúc 11:01:43–44. B trả sau cuối kỳ vẫn vào tử số; C gửi lại trong kỳ nhưng lần đầu trước kỳ nên ngoài nhóm.
+
+### Tổng hợp trạng thái, không phải tỷ lệ coverage
+
+| Nhóm | Đạt | Không đạt | Chưa kiểm tra | Bị chặn |
+| --- | ---: | ---: | ---: | ---: |
+| Cốt lõi PR-CHK-01–18 | 18 | 0 | 0 | 0 |
+| Bổ sung PR-CHK-19–21, chỉ phép thử đã mô tả | 3 | 0 | 0 | 0 |
+
+49 là số test Node trong bộ hiện hành, không phải số PR-CHK. 21 mục QA và 8 lượt queue cũng không phải mẫu số coverage yêu cầu. Không cộng các số này hoặc công bố tỷ lệ pass/coverage chung.
+
+## 3. Đối chiếu yêu cầu
+
+Mức bao phủ dùng đúng bốn giá trị: **Đầy đủ**, **Một phần**, **Chưa được kiểm chứng**, **Ngoài phạm vi prototype**. “Đầy đủ” dưới đây chỉ dùng cho quy ước SIM/metric hoặc hành vi demo đã giới hạn rõ; không suy ra toàn bộ AC/NFR đạt. Không sửa SRS/RTM.
+
+| ID nguồn | Nội dung kiểm chứng | Kịch bản / bằng chứng | Mức bao phủ | Phần chưa được chứng minh |
+| --- | --- | --- | --- | --- |
+| UC-01 | Nháp, kiểm tra và gửi/gửi lại PR | 01–04, 07; N-S/U2/U3 | Một phần | Đủ trong prototype/SIM; xác thực, nguồn ngân sách/đơn vị thật và lưu bền không có. |
+| UC-02 | Duyệt/từ chối/trả lại và ghi quyết định | 05–09; N-S/U3 | Một phần | Đủ trong prototype/SIM; thẩm quyền và xử lý Mua hàng thật không được chứng minh. |
+| UC-10 | Xem trạng thái/tìm giao dịch có quyền | 10–13; N-S/U4 | Một phần | Chỉ PR, hai vai demo; không toàn P2P/tham chiếu liên chứng từ hoặc xác thực thật. |
+| UC-11 | Lịch sử giao dịch theo quyền | 10, 17; N-S/P C | Một phần | Chỉ chuỗi quy trình tối thiểu SIM-03, không chức năng audit của các vai trò baseline. |
+| UC-12 | Báo cáo mua hàng cho các vai trò baseline | 15–16 chỉ là phần minh họa metric | Ngoài phạm vi prototype | Báo cáo/bộ lọc cho Trưởng bộ phận mua hàng/Tài chính không triển khai; không lấy metric của MGR-01 để nhận là UC-12 đạt. |
+| BR-01 | Tám trường, nháp thiếu trường | 01–02/04; N-S/U2 | Một phần | Đủ với dữ liệu và danh mục demo; xác nhận nghiệp vụ/nguồn danh mục thật chưa có. |
+| BR-02, BR-03 | Cổng ngân sách trước xem xét | 02–04/07; N-S/U2 | Một phần | Chỉ kết quả định trước SIM-01; không kiểm chứng chính sách/nguồn ngân sách thật. |
+| BR-04 | Ba quyết định đúng vai/ngữ cảnh | 05–10; N-S/U3 | Một phần | Quyền/thẩm quyền thật, tính hợp lý nhu cầu mua thật chưa được chứng minh. |
+| BR-05 | Chỉ PR đã duyệt sẵn sàng Mua hàng | 05/08/09; N-S | Một phần | Cờ ready_for_purchasing không thay bằng chứng chặn/tạo PO thực tế. |
+| BR-25 | Trạng thái và bước tiếp theo | 05–10/14; N-S/U | Một phần | Năm nhãn SIM-02, không state model cuối cùng toàn P2P; OD-06 mở. |
+| BR-26 | Giao dịch/người/hành động/thời điểm | 05–08/10/17; N-S/U3 | Một phần | Không log mọi chỉnh sửa/tạo/lưu, không bất biến, lưu trữ, truy vấn audit toàn hệ thống. |
+| BR-27 | Hành động theo vai trò | 09/10; N-S/U3/U4 | Một phần | Guard demo không chứng minh bảo mật, phiên đăng nhập hoặc ma trận quyền thật. |
+| FR-01 | Tạo/lưu/kiểm tra/gửi PR | 01–04/07; N-S/U2 | Một phần | Đủ trong prototype/SIM, một mặt hàng; không nguồn danh tính thật/lưu bền/mọi thiết kế nhiều dòng. |
+| FR-02 | Yêu cầu và chặn theo kiểm tra ngân sách | 02–04; N-S/U2 | Một phần | Không tích hợp hoặc công thức/hạn mức; OD-03 vẫn mở. |
+| FR-03 | Quyết định và gửi lại có kiểm tra | 05–09; N-S/U3 | Một phần | Đủ nhánh mô phỏng; không cấp quyền hoặc chuyển Mua hàng thật. |
+| FR-14 | Trạng thái/tham chiếu P2P trong quyền | 10/11/17; N-S/U | Một phần | Thiếu tham chiếu PR–PO–GR–hóa đơn và các giao dịch/vai khác. |
+| FR-15 | Lưu/hiển thị lịch sử có quyền | 10/17; N-S/U | Một phần | Chỉ lưu trong bộ nhớ chuỗi PR tối thiểu, không full audit/lưu bền. |
+| FR-16 | Báo cáo cho Trưởng bộ phận mua hàng/Tài chính | Không có kịch bản triển khai chức năng này | Ngoài phạm vi prototype | SIM-03 cho MGR-01 xem metric demo không thay yêu cầu FR-16. |
+| AC-01 | Lỗi cấp trường, chặn gửi, vẫn lưu nháp | 01/02; N-S/U2/P lỗi | Một phần | Đủ trong prototype/SIM; chưa UAT tính dễ hiểu hoặc toàn hệ thống thật. |
+| AC-02 | Ngân sách phải kiểm tra trước xem xét | 02–04; N-S/U2 | Một phần | Đủ thứ tự/cổng demo, chưa nguồn ngân sách thật. |
+| AC-03 | Chặn và giữ kết quả kiểm tra không đạt | 03/07; N-S/U2 | Một phần | Feedback phiên demo; chưa lưu kết quả bền trong hệ thống vận hành. |
+| AC-04 | Duyệt, sẵn sàng mua và ghi quyết định | 05; N-S/U3 | Một phần | Đủ trong prototype/SIM; không quy trình Mua hàng thật. |
+| AC-05 | Từ chối, chặn tiếp và không mở lại | 08/09; N-S/U3 | Một phần | Đủ handler/UI demo; không xác thực/quyền thật. |
+| AC-06 | Trả lý do, sửa và kiểm tra lại | 06/07; N-S/U2/U3 | Một phần | Đủ trong prototype/SIM; chưa nghiệp vụ/nguồn ngân sách thật. |
+| AC-20 | Không lộ dữ liệu/hành động thiếu quyền | 09/10; N-S fixture | Một phần | Chỉ guard demo; seed/module local vẫn thuộc dữ liệu browser, không bằng chứng kiểm soát truy cập thực tế. |
+| AC-21 | Trạng thái và tham chiếu giao dịch hiện có | 10/17; N-S/P | Một phần | Chỉ trạng thái PR; không hồ sơ PR/PO có chứng từ liên kết trong baseline. |
+| AC-22 | Xác định giao dịch/người/hành động/thời điểm | 05–08/17; N-S/U3 | Một phần | Chỉ sự kiện PR trọng yếu được mô phỏng; không mọi hành động P2P hoặc NFR audit đầy đủ. |
+| AC-23, AC-24 | Lọc/không dữ liệu báo cáo đúng quyền | 16 chỉ kiểm tra nhãn metric demo | Ngoài phạm vi prototype | Không bộ lọc/báo cáo/quyền cho vai trò FR-16; nhãn Không có dữ liệu không chứng minh toàn AC-24. |
+| AC-25 | Giữ nháp chưa đầy đủ, không chuyển xem xét | 01; N-S/U2 | Một phần | Đủ trong phiên prototype/SIM; không lưu bền hoặc xác thực thật. |
+| AC-26 | Chặn tạo PO từ PR chưa duyệt | Không thử tạo PO | Ngoài phạm vi prototype | Không coi cờ sẵn sàng hoặc PR không trong queue là bằng chứng chặn API tạo PO. |
+| AC-33 | Liên kết nguồn PR–PO–GR/hóa đơn | Không có bộ chứng từ liên kết | Ngoài phạm vi prototype | Không triển khai PO/GR/hóa đơn hoặc kiểm tra tham chiếu xuyên luồng. |
+| AC-34 | Hiện lý do và hướng sửa/gửi lại | 06/07; N-S/U2/P B | Một phần | Đủ trong prototype/SIM; chưa xác nhận người dùng hiểu theo NFR-04. |
+| NFR-01 | Truy cập theo vai trò | 09/10 | Một phần | Kiểm tra guard demo, không bảo mật/thực thi quyền thực tế; OD-07 mở. |
+| NFR-02 | Lịch sử kiểm toán hành động trọng yếu | 10/17 | Một phần | Không bất biến, lưu bền, mọi thay đổi hoặc toàn P2P. |
+| NFR-03 | Toàn vẹn PR–PO, PO–GR/hóa đơn | Không có luồng liên chứng từ | Ngoài phạm vi prototype | Không kiểm chứng toàn vẹn liên chứng từ. |
+| NFR-04 | Lỗi/trạng thái/quyết định dễ hiểu | 02/06/11/12/19 | Một phần | Có nhãn/focus/lỗi quan sát được; chưa nghiên cứu khả dụng, accessibility hoặc người dùng hiểu. |
+| G1-D03/D05 | Phân biệt duyệt/từ chối/trả lại/nháp | 01/05–09 | Một phần | Đủ nhánh PR trong prototype/SIM, không các nhánh PO/Payment Request thuộc quyết định. |
+| G1-D04 | Hàng hóa hữu hình | 01/04/17 và seed | Một phần | Bộ demo chỉ hàng hóa; không chứng minh toàn bộ kiểm soát phạm vi của hệ thống thật. |
+| SIM-01 | Ba kết quả, validation trước ngân sách, lựa chọn độc lập quá khứ | 02–04/07/13/18 | Đầy đủ — trong phạm vi prototype/SIM | Không suy ra ngân sách thật. |
+| SIM-02 | Năm nhãn, lỗi khác quyết định, không mở lại | 01–09/14/16 | Đầy đủ — trong phạm vi prototype/SIM | Không state model doanh nghiệp cuối cùng. |
+| SIM-03 | Hai vai/đơn vị, chủ sở hữu, lịch sử/metric giới hạn | 09/10/15/17 | Đầy đủ — trong phạm vi prototype/SIM | Các fixture trái phạm vi kiểm tra ở logic; không quyền thật. |
+| SIM-04 | Đồng hồ, reset, timestamp/thứ tự và metric | 01–16/18 | Đầy đủ — trong phạm vi prototype/SIM | Không SLA, thời gian xử lý thật hoặc lợi ích vận hành. |
+| PR-MET-01 | Vòng hiện tại còn mở, quần thể đơn vị, unknown | 10/15/16; N-M/U3/UF | Đầy đủ — trong mô hình sự kiện prototype đã xác định | Không chứng minh đầy đủ của log vận hành thật. |
+| PR-MET-02 | Tuổi chờ vòng hiện tại, raw/half-up/nhãn | 15/16; N-M/U3/UF | Đầy đủ — trong mô hình sự kiện prototype đã xác định | Ca biên ở logic; không tuyên bố mọi ca đã thử UI hoặc giờ làm việc/SLA. |
+| PR-MET-03 | Lần đầu `[S,E)`, từng trả một lần, N/D, ngữ cảnh và quality | 10/15/16; N-M/U3/UF | Đầy đủ — trong mô hình sự kiện prototype đã xác định | Không dữ liệu vận hành thật hoặc mọi chính sách ngoài mô hình. |
+| PR-BHV-01–04 | Danh sách/tạo/nhập/lưu/mở nháp | 01/02/07/11/12 | Đầy đủ — trong phạm vi prototype/SIM | Một mặt hàng, bộ nhớ phiên; không toàn chức năng P2P. |
+| PR-BHV-05–09 | Validation/ngân sách/gửi/gửi lại | 02–04/07/18 | Đầy đủ — trong phạm vi prototype/SIM | Không nguồn ngân sách thật. |
+| PR-BHV-10–14 | Chi tiết/lý do/ba quyết định | 05–09/10/17 | Đầy đủ — trong phạm vi prototype/SIM | Không xác thực/thẩm quyền thật hoặc bước Mua hàng. |
+| PR-BHV-15–18 | Lịch sử/chi tiết theo vai/queue/metric | 10/13/15–17/19 | Đầy đủ — trong phạm vi prototype/SIM | Chỉ lịch sử quy trình SIM-03; không UC-11/12 đầy đủ. |
+
+Các số 01–21 trong cột kịch bản là hậu tố của PR-CHK, không phải AC. Không có phép tính tỷ lệ coverage chung hoặc kết luận “37 AC pass”; các dòng baseline một phần không được nâng thành đầy đủ nhờ dòng SIM đạt.
+
+## 4. Vấn đề phát hiện và giới hạn
+
+Không phát hiện lỗi triển khai mới cần sửa trong phạm vi 3C. Không sửa expectation, không thay test/QA/code/ảnh để đạt kết quả. Các điểm dưới đây phân biệt khoảng thiếu bằng chứng đã bù, giới hạn prototype và policy mở; không tạo lỗi giả.
+
+| Mã / loại | Mô tả và bước tái hiện | Mong đợi / thực tế | Ảnh hưởng / trạng thái |
+| --- | --- | --- | --- |
+| EV-01 — Thiếu bằng chứng | Mở log TAP 3B.2: có 49 tên/kết quả và duration nhưng không absolute start/end. | Cần phiên bản/giờ thực truy được. Đã chạy N-C và bộ 49 tại HEAD 42f6c57, ghi metadata/hash trước/sau. | Khoảng thiếu về truy vết thời điểm Node; **đã bù trong 3C**, không giả timestamp cũ, không lỗi nghiệp vụ. |
+| LIMIT-01 — Giới hạn prototype | Đổi vai qua điều khiển demo; không có đăng nhập hoặc server nghiệp vụ. | Handler guard hoạt động trong SIM; không thể coi là thực thi quyền thật, dù case 09/10 đạt. | Ngoài phần bảo mật thực tế; **còn giới hạn theo thiết kế**, NFR-01/AC-20 chỉ một phần. |
+| LIMIT-02 — Giới hạn prototype | Xem lịch sử rồi tải lại; chỉ năm loại event xem xét, không mọi lần tạo/lưu/chỉnh trường. | Quy trình tối thiểu đúng; không có audit bất biến/lưu bền/toàn P2P hoặc snapshot chứng từ quá khứ. | **Còn giới hạn theo thiết kế**, BR-26/FR-15/NFR-02 chỉ một phần. |
+| LIMIT-03 — Giới hạn kiểm chứng | U5/UI mới thử Chrome headless và kích thước nêu trên; beforeunload chỉ thử reload. | Có bằng chứng cho các phép thử đã nêu; chưa thử headful, browser khác, đóng tab/cửa sổ, assistive technology hoặc UAT người dùng. | **Chưa kiểm chứng các mở rộng này**, không nằm trong danh sách cốt lõi đã xác định; không báo đạt accessibility/tính dễ hiểu toàn bộ. |
+| LIMIT-04 — Giới hạn phạm vi | Cố tái lập AC-26/33 hoặc UC-12: không có luồng PO/GR/hóa đơn/báo cáo cho vai trò baseline. | PR chỉ sẵn sàng Mua hàng và có metric demo; không có các chức năng liên chứng từ. | **Ngoài phạm vi prototype**, không tính là yêu cầu đạt. |
+| OD-03/06/07 — Policy còn mở | Xem SIM và nguồn quyết định: công thức ngân sách, state model cuối cùng và quyền chi tiết chưa chốt. | Demo có lựa chọn được chấp thuận riêng; không được suy ra policy doanh nghiệp hoặc đóng OD. | **Giữ mở**, không đổi baseline/SIM/SRS/RTM. |
+
+Các log Temp có thể mất sau khi hệ điều hành dọn; đó là giới hạn lưu chứng cứ cục bộ, không thay đổi kết quả đã ghi trong tài liệu. Có thể tái lập bằng test/QA đã dẫn nguồn; không lấy việc script tồn tại để mặc định lần tái lập tương lai đạt.
+
+Đối chiếu cuối lượt với snapshot: seed, README dữ liệu, các file logic/test/QA/ảnh, baseline, SRS/RTM, thiết kế metric/SIM và README wireframe được bảo toàn; phần bổ sung chỉ `verification.md` và liên kết trong README prototype. Seed giữ SHA-256 `6d23e6d1a0e2fd31b9fdc40e573b9ee497927e997906d26df052e5e2c8f9feca`. Không stage, commit, push, merge, đổi branch hoặc hosting. Không khởi tạo server/browser demo mới cần dừng; các server test N-H được đóng trong test.
+
+**3C hoàn tất** vì 18 kịch bản cốt lõi đều có kết quả và bằng chứng truy được nguồn, không còn cốt lõi Không đạt/Chưa kiểm tra/Bị chặn. Kết luận này chỉ xác nhận phạm vi kiểm chứng prototype trong tài liệu, không xác nhận toàn bộ yêu cầu hệ thống đã được kiểm thử, được doanh nghiệp chấp thuận hoặc vận hành an toàn/hiệu quả.

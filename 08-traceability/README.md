@@ -6,7 +6,7 @@ Phần này giúp người đọc lần theo một yêu cầu từ vấn đề v
 
 RTM ghi rõ phần mới được bao phủ một phần, phần còn thiếu và các quyết định còn mở OD-01–OD-08. Sáu quyết định nghiệp vụ nền tảng là đường cơ sở do chủ dự án chốt cho case study.
 
-Có **37 AC** để chuẩn bị kiểm thử sau này; chưa AC nào được thực thi kiểm thử. Các quyết định còn mở chưa phải chính sách đã xác nhận. Hồ sơ chưa có ký duyệt của các bên liên quan thực tế.
+Có **37 AC** thuộc baseline P2P, chưa được xác nhận đạt đầy đủ trên một hệ thống triển khai. Repository đã có [bằng chứng kiểm chứng prototype PR](../prototype/pr/verification.md) trong phạm vi mô phỏng; kết quả này không thay đổi mức bao phủ yêu cầu. Các quyết định còn mở chưa phải chính sách đã xác nhận. Chưa có UAT, nghiệm thu hoặc ký duyệt của các bên liên quan thực tế.
 
 ## Đọc sâu
 

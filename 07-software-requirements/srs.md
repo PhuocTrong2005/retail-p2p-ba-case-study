@@ -2,7 +2,7 @@
 
 ## 1. Mục đích, phạm vi và quy ước
 
-Đặc tả yêu cầu phần mềm (Software Requirements Specification — SRS) này xây dựng yêu cầu hệ thống cho Hệ thống quản lý mua hàng (Procurement Management System) từ danh mục yêu cầu nghiệp vụ (BRQ) và đường cơ sở ca sử dụng (UC). Phạm vi gồm mua hàng hóa hữu hình (hàng bán lại, vật tư vận hành, văn phòng phẩm, thiết bị), từ tạo yêu cầu mua hàng (Purchase Requisition — PR) đến phê duyệt đề nghị thanh toán (Payment Request). Mua dịch vụ, nghiệm thu và đối chiếu dịch vụ ngoài đường cơ sở. Không bao gồm thực hiện thanh toán ngân hàng và không khẳng định đã thiết kế giải pháp, thực hiện kiểm thử hoặc được các bên liên quan phê duyệt.
+Đặc tả yêu cầu phần mềm (Software Requirements Specification — SRS) này xây dựng yêu cầu hệ thống cho Hệ thống quản lý mua hàng (Procurement Management System) từ danh mục yêu cầu nghiệp vụ (BRQ) và đường cơ sở ca sử dụng (UC). Phạm vi gồm mua hàng hóa hữu hình (hàng bán lại, vật tư vận hành, văn phòng phẩm, thiết bị), từ tạo yêu cầu mua hàng (Purchase Requisition — PR) đến phê duyệt đề nghị thanh toán (Payment Request). Mua dịch vụ, nghiệm thu và đối chiếu dịch vụ ngoài đường cơ sở. Không bao gồm thực hiện thanh toán ngân hàng và không khẳng định đã thiết kế giải pháp toàn hệ thống, kiểm thử đầy đủ baseline P2P hoặc được các bên liên quan thực tế phê duyệt.
 
 `FR-xx` định danh yêu cầu chức năng (Functional Requirement), `NFR-xx` định danh yêu cầu phi chức năng (Non-functional Requirement), `AC-xx` định danh tiêu chí chấp nhận (Acceptance Criteria). Mỗi tham chiếu nguồn trỏ đến đường cơ sở nghiệp vụ đã xác lập; các quyết định còn mở vẫn chưa chốt. Đơn đặt hàng (Purchase Order — PO) và phiếu nhận hàng (Goods Receipt — GR) giữ nguyên viết tắt. Các vai trò gồm Người yêu cầu (Requester), Quản lý cửa hàng (Store Manager), Nhân viên mua hàng (Procurement Officer), Trưởng bộ phận mua hàng (Procurement Manager), Nhân viên kho (Warehouse Staff), Kế toán công nợ phải trả (AP Accountant — AP) và Trưởng bộ phận tài chính (Finance Manager).
 
@@ -61,7 +61,7 @@ NFR-01 và NFR-02 có mức độ bao phủ tổng quát; chi tiết lần lư�
 
 ## 4. Tiêu chí chấp nhận cho luồng trọng yếu
 
-Đường cơ sở có **37 tiêu chí chấp nhận (AC-01–AC-37)**. Mọi tiêu chí đều **được xác định cho kiểm chứng tương lai; chưa thực hiện kiểm tra**. AC-25–AC-37 bổ sung kiểm tra cho yêu cầu hiện có; không xác nhận bao phủ đầy đủ hoặc hoàn tất kiểm thử chấp nhận người dùng (UAT).
+Đường cơ sở có **37 tiêu chí chấp nhận (AC-01–AC-37)**, chưa được xác nhận đạt đầy đủ trên một hệ thống triển khai. Một số hành vi liên quan đã được [kiểm chứng trong prototype PR](../prototype/pr/verification.md) theo phạm vi mô phỏng; kết quả này không thay đổi mức bao phủ yêu cầu và không phải kiểm thử chấp nhận người dùng (UAT) hoặc ký duyệt của các bên liên quan thực tế. AC-25–AC-37 bổ sung kiểm tra cho yêu cầu hiện có; không xác nhận bao phủ đầy đủ hoặc hoàn tất UAT.
 
 ### Kiểm tra PR và ngân sách
 

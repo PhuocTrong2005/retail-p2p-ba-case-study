@@ -4,7 +4,7 @@
 
 Phần này mô tả hệ thống phải làm gì và dùng tiêu chí nào để kiểm tra yêu cầu. Đặc tả yêu cầu phần mềm (Software Requirements Specification — SRS) gồm **16 yêu cầu chức năng (FR), 4 yêu cầu phi chức năng (NFR) và 37 tiêu chí chấp nhận (AC)**, dựa trên yêu cầu nghiệp vụ (BRQ) và ca sử dụng (UC).
 
-Mỗi AC nêu điều kiện Cho trước/Khi/Thì và nguồn nghiệp vụ để chuẩn bị kiểm thử sau này. Các AC chưa được thực thi kiểm thử; chưa có kết quả kiểm thử phần mềm hoặc kiểm thử chấp nhận người dùng (UAT).
+Mỗi AC nêu điều kiện Cho trước/Khi/Thì và nguồn nghiệp vụ để chuẩn bị kiểm thử baseline P2P. Các AC chưa được xác nhận đạt đầy đủ trên một hệ thống triển khai. Một số hành vi liên quan đã được [kiểm chứng trong prototype PR](../prototype/pr/verification.md) theo phạm vi mô phỏng; kết quả này không thay đổi mức bao phủ yêu cầu và không phải kiểm thử chấp nhận người dùng (UAT) hoặc ký duyệt của các bên liên quan thực tế.
 
 ## Đọc sâu
 

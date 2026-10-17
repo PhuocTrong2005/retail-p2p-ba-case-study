@@ -2,7 +2,7 @@
 
 ## Mục đích và trạng thái
 
-Ma trận truy vết yêu cầu (Requirements Traceability Matrix — RTM) gọn này truy vết vấn đề nghiệp vụ được mô hình hóa qua mục tiêu, yêu cầu nghiệp vụ (BRQ), yêu cầu chức năng (FR), ca sử dụng (UC) và tiêu chí chấp nhận (Acceptance Criteria — AC). Đường cơ sở có 37 tiêu chí chấp nhận (AC-01–AC-37), gồm 13 tiêu chí bổ sung AC-25–AC-37. AC chỉ là điều kiện kiểm chứng tương lai; chưa thực hiện kiểm thử và không khẳng định phê duyệt của các bên liên quan. Có tiêu chí, bao phủ một phần và trạng thái thực hiện là các khái niệm riêng: mọi tiêu chí vẫn chưa được kiểm tra. Các viết tắt chứng từ gồm yêu cầu mua hàng (PR), đơn đặt hàng (PO), phiếu nhận hàng (GR); đề nghị thanh toán (Payment Request).
+Ma trận truy vết yêu cầu (Requirements Traceability Matrix — RTM) gọn này truy vết vấn đề nghiệp vụ được mô hình hóa qua mục tiêu, yêu cầu nghiệp vụ (BRQ), yêu cầu chức năng (FR), ca sử dụng (UC) và tiêu chí chấp nhận (Acceptance Criteria — AC). Đường cơ sở có 37 tiêu chí chấp nhận (AC-01–AC-37), gồm 13 tiêu chí bổ sung AC-25–AC-37. Các AC thuộc baseline P2P, chưa được xác nhận đạt đầy đủ trên một hệ thống triển khai. Một số hành vi liên quan đã được [kiểm chứng trong prototype PR](../prototype/pr/verification.md) theo phạm vi mô phỏng; kết quả này không thay đổi mức bao phủ yêu cầu và không phải UAT hoặc ký duyệt của các bên liên quan thực tế. Có tiêu chí, bao phủ một phần và trạng thái thực hiện là các khái niệm riêng. Các viết tắt chứng từ gồm yêu cầu mua hàng (PR), đơn đặt hàng (PO), phiếu nhận hàng (GR); đề nghị thanh toán (Payment Request).
 
 | Vấn đề | Mục tiêu | BRQ | FR(s) | Ca sử dụng | Tiêu chí chấp nhận |
 | --- | --- | --- | --- | --- | --- |
@@ -29,7 +29,7 @@ Tiêu chí kiểm chứng xuyên suốt: AC-19 bao phủ điều kiện nhà cun
 
 ### Mức độ bao phủ NFR qua tiêu chí chấp nhận
 
-Mức độ bao phủ dưới đây mô tả tiêu chí đã xác định, không phải kết quả kiểm thử. Yêu cầu phi chức năng (NFR) NFR-01/02 có mức độ bao phủ tổng quát; chi tiết phụ thuộc OD-07/danh mục sự kiện. Không dòng nào xác nhận sẵn sàng nghiệm thu toàn bộ, bao phủ đầy đủ hoặc hoàn tất kiểm thử chấp nhận người dùng (UAT). Mọi tiêu chí được tham chiếu vẫn chưa được kiểm tra.
+Mức độ bao phủ dưới đây mô tả tiêu chí đã xác định, không phải kết quả kiểm thử. Yêu cầu phi chức năng (NFR) NFR-01/02 có mức độ bao phủ tổng quát; chi tiết phụ thuộc OD-07/danh mục sự kiện. Không dòng nào xác nhận sẵn sàng nghiệm thu toàn bộ, bao phủ đầy đủ hoặc hoàn tất kiểm thử chấp nhận người dùng (UAT). Kiểm chứng prototype không xác nhận các tiêu chí được tham chiếu đã đạt đầy đủ, bảo mật thực tế hoặc lịch sử kiểm toán đầy đủ.
 
 | NFR | Mức độ bao phủ qua AC đã xác định | Mức độ | Ranh giới / Khoảng thiếu còn lại |
 | --- | --- | --- | --- |
@@ -82,7 +82,7 @@ Toàn văn tiêu chí Cho trước (Given)/Khi (When)/Thì (Then) và nguồn ng
 - FR-12: AC-30 thêm chuẩn bị/gửi thành công bởi người có quyền và hai lần kiểm tra điều kiện đã có. AC-16 giữ kiểm soát chặn; các tiêu chí không liệt kê mọi tình huống thay đổi điều kiện.
 - FR-14: AC-33 kiểm tra hiển thị tham chiếu nguồn trên luồng hợp lệ; AC-35/AC-36 kiểm tra thông tin ngoại lệ mở/chờ dữ liệu đã xác lập; AC-37 kiểm tra vị trí phê duyệt/trả lại đề nghị thanh toán đã xác lập. Theo dõi trạng thái vòng đời GR, các chuyển trạng thái khác của hóa đơn/ngoại lệ/đề nghị thanh toán và khả năng xem theo vai trò/hồ sơ vẫn chỉ một phần theo OD-06/OD-07. AC-10 kiểm tra ghi nhận/liên kết GR, không phải mô hình trạng thái GR đầy đủ. Báo cáo AC-23 vẫn là bao phủ hỗ trợ.
 
-Các bổ sung này khép lại một số trường hợp thiếu tiêu chí, không phải mọi khoảng thiếu bao phủ. NFR-03/04 vẫn chỉ một phần, mọi tiêu chí chưa được kiểm tra và hành vi UC/FR hiện có vẫn là đường cơ sở yêu cầu.
+Các bổ sung này khép lại một số trường hợp thiếu tiêu chí, không phải mọi khoảng thiếu bao phủ. NFR-03/04 vẫn chỉ một phần, các AC baseline P2P chưa được xác nhận đạt đầy đủ trên một hệ thống triển khai và hành vi UC/FR hiện có vẫn là đường cơ sở yêu cầu.
 
 ## Mức độ bao phủ quy tắc nghiệp vụ và ràng buộc
 
@@ -135,4 +135,4 @@ Các bổ sung này khép lại một số trường hợp thiếu tiêu chí, k
 
 1. Xác nhận giả định và quyết định còn mở với chủ thể nghiệp vụ liên quan trước khi thiết kế.
 2. Chỉ chuyển từng tiêu chí chấp nhận thành kiểm thử thực thi được sau khi biết giải pháp và quyết định chính sách.
-3. Ghi bằng chứng kiểm thử và trạng thái phê duyệt riêng; kho hồ sơ năng lực này chưa có cả hai.
+3. Ghi bằng chứng kiểm thử và trạng thái phê duyệt riêng; repository đã có [bằng chứng kiểm chứng prototype PR](../prototype/pr/verification.md), chưa có UAT, nghiệm thu hoặc ký duyệt của các bên liên quan thực tế.

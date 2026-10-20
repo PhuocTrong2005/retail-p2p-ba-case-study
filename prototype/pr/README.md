@@ -1,10 +1,14 @@
-# Prototype PR — tích hợp UI 3B.2
+# Prototype yêu cầu mua hàng (PR)
+
+<a id="prototype-pr--tích-hợp-ui-3b2"></a>
 
 **Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](#hướng-dẫn-thử-nhanh)
 
 **Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.**
 
 **Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
+
+[Câu chuyện portfolio](../../case-study.md) · [Kết quả kiểm chứng prototype](./verification.md) · [Đọc sâu: triển khai và kiểm tra](#đọc-sâu-triển-khai-và-kiểm-tra-đã-ghi-nhận)
 
 ## Hướng dẫn thử nhanh
 
@@ -25,21 +29,55 @@ Mỗi lần tải trang là một phiên mới, bắt đầu lúc **10/10/2026 1
 - Kiểm tra công khai thực hiện trên Chrome headless, bản desktop 1280/1440 px. Chưa UAT hoặc stakeholder sign-off; chưa kết luận cho mọi trình duyệt hay quyền truy cập thực tế.
 - OD và các khoảng trống bao phủ yêu cầu vẫn mở theo [RTM](../../08-traceability/requirements-traceability-matrix.md); kết quả prototype không thay đổi coverage của SRS/RTM.
 
-Bốn màn hình HTML/CSS/ES modules nối với lớp logic 3B.1. Dữ liệu chỉ tồn tại trong bộ nhớ trang, không localStorage/sessionStorage, backend hoặc database. Tải lại/reset phục hồi seed, lịch sử, ID, vai trò REQ-01, ngân sách Đạt và 10/10/2026 12:00 UTC+07:00. Kiểm tra tích hợp 3B.2 không thay thế kiểm chứng 3C bên dưới hoặc UAT; không tuyên bố AC đã pass. OD-03/06/07 vẫn mở.
-
-Kết quả [kiểm chứng prototype 3C](./verification.md) ghi kịch bản, nguồn yêu cầu, kết quả, phiên bản/lớp kiểm tra và giới hạn; không phải UAT hoặc stakeholder sign-off.
-
-## Nguồn và kiểm tra trước khi sửa
-
-Branch `pr-prototype`, HEAD `e72287ecf1ede6d7a88ddb3560e5dc81f7c639a1`; không detached HEAD. Đọc trực tiếp danh sách đường dẫn và trạng thái file trong commit: đúng tám file được thêm, gồm README kỹ thuật, bốn module logic và ba file test/fixture. Nội dung local khớp commit; đầu lượt chỉ có ` M wireframes/pr/README.md`.
-
-`b579cdc` và `b9232f3` đều tồn tại, là tổ tiên của HEAD. Seed và README dữ liệu khớp `b9232f3`; ba tài liệu thiết kế khớp `b579cdc`. Nguồn tham chiếu: [2A](../../06-system-analysis/pr-behavior-analysis.md), [SIM/2B](../../06-system-analysis/pr-prototype-decisions.md), [metric](../../08-traceability/pr-metrics-design.md), [wireframe](../../wireframes/pr/README.md), [HTML nguồn](../../wireframes/pr/index.html), [CSS nguồn](../../wireframes/pr/styles.css), [seed 3A](./data/seed.json), [giới hạn dữ liệu](./data/README.md). Thứ tự sự kiện là `(occurred_at, event_order)` trong từng PR; không ưu tiên loại sự kiện.
-
-Snapshot đọc lại thành công trước khi sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-snapshot-wmyg96ub\snapshot.json`. Có branch/HEAD/status, danh sách tám file commit, SHA-256 mọi file tracked và bản sao trước sửa của tám file logic/test/README. Các log Node/CDP nằm cùng thư mục tạm; không tạo báo cáo bàn giao riêng trong repo.
+Kết quả [kiểm chứng prototype](./verification.md) ghi kịch bản, nguồn yêu cầu, kết quả, phiên bản/lớp kiểm tra và giới hạn; không phải UAT hoặc stakeholder sign-off.
 
 ## Chạy local
 
-Node thực tế **v22.14.0**, có sẵn của IntelliJ, không có trong PATH; không cài/nâng cấp công cụ. Từ root repo, PowerShell:
+Cần Node.js có lệnh `node` trong PATH. Từ root repository:
+
+```powershell
+node prototype/pr/serve.mjs
+```
+
+Mở **http://127.0.0.1:8080/**. Nếu cổng bận, dùng `node prototype/pr/serve.mjs --port=8081` và mở **http://127.0.0.1:8081/**. Dừng server bằng Ctrl+C khi xong; không dừng tiến trình khác để lấy cổng. Không hỗ trợ mở prototype qua `file://`.
+
+Runtime được ghi nhận trong các lượt kiểm tra là Node **v22.14.0**. Đường dẫn Node riêng của máy tác giả và cấu hình máy chủ nằm trong [ghi nhận môi trường](#môi-trường-và-máy-chủ-local-của-lượt-tích-hợp).
+
+## Sử dụng
+
+- Khởi tạo ở **Người yêu cầu · REQ-01**. PR của tôi có tìm mã/mô tả, trim và không phân biệt hoa/thường; có xóa tìm kiếm và thông báo rỗng. Tạo PR chỉ mở form chưa lưu. Lưu nháp thiếu trường rồi mở lại; PR trả lại dùng Lưu phần sửa/Gửi lại và giữ Chờ chỉnh sửa.
+- Tám trường dùng nội dung seed; người yêu cầu/đơn vị chỉ đọc. Không validation native chặn handler. Lỗi gửi giữ phần nhập, focus tổng hợp lỗi; liên kết dẫn tới trường có lỗi và thông báo cạnh trường. Không đủ ngân sách khác với nguồn không khả dụng; chỉ gọi kiểm tra ngân sách sau validation đạt.
+- **Điều khiển demo** chọn REQ-01/MGR-01, ba kết quả ngân sách và Khôi phục dữ liệu mẫu. Không có vai trò nghiệp vụ thứ ba. Chọn ngân sách/đổi vai không tăng giờ; lựa chọn giữ đến khi đổi và không sửa bằng chứng quá khứ. Phân quyền chỉ mô phỏng; handler vẫn kiểm tra quyền/ngữ cảnh.
+- **MGR-01** xem hàng đợi và chi tiết trong đơn vị mẫu, chỉ quyết định PR đủ điều kiện. Trả lại cần lý do; từ chối cần xác nhận hậu quả. Mở/hủy xác nhận không gọi quyết định hoặc tăng giờ. PR đã duyệt/từ chối không có hành động sửa/gửi lại/quyết định lần hai.
+- Rời form/đổi vai khi có phần nhập chưa lưu mở cảnh báo nội bộ: Tiếp tục chỉnh sửa hoặc Bỏ thay đổi. Hủy reset giữ nguyên dữ liệu/lựa chọn/giờ; xác nhận reset xóa cả trạng thái UI, tìm kiếm và phần nhập.
+- Chỉ handler sở hữu validation, sự kiện và tăng giờ. UI giữ phần nhập cục bộ trước thao tác, không tính metric hoặc thời gian nghiệp vụ bằng cách thứ hai. Có khóa xử lý và bỏ click thứ hai trong double-click; không tự retry ghi. Nội dung người dùng được tạo bằng DOM/textContent, không chèn HTML.
+- Nháp tạo mới có nguồn riêng; thiếu log không bị coi là nháp. Chi tiết chỉ là nội dung hiện tại. Ghi chú làm rõ C xuất hiện tại **C-3**, không ngụ ý có tại C-1 hoặc tái dựng snapshot quá khứ.
+
+## Ảnh trực tiếp hiện hành
+
+Một bộ chín PNG từ `Page.captureScreenshot`, Chrome 155/CDP, viewport 1440 px, chụp cả trang; không ảnh dựng hoặc ảnh wireframe thay thế. Bảng ghi giờ thực ngày **16/10/2026 UTC+07:00**; cột mô phỏng là **10/10/2026**. Mỗi ảnh giữ vai trò, đồng hồ và lựa chọn ngân sách.
+
+| Ảnh | Tình huống / vai trò | Giờ chụp thực tế | Giờ mô phỏng |
+| --- | --- | --- | --- |
+| [pr-01-list.png](./evidence/pr-01-list.png) | PR-SCR-01, năm PR seed; REQ-01 | 10:38:46.269 | 12:00 |
+| [pr-02-form.png](./evidence/pr-02-form.png) | PR-SCR-02, tạo form chưa lưu; REQ-01 | 10:38:46.834 | 12:00 |
+| [pr-02-submit-error.png](./evidence/pr-02-submit-error.png) | Lỗi gửi/focus/giữ phần nhập; REQ-01 | 10:38:48.892 | 14:00, ca riêng |
+| [pr-03-detail-c.png](./evidence/pr-03-detail-c.png) | PR-SCR-03, C vòng 2, ghi chú tại C-3; REQ-01 | 10:38:54.949 | 12:00 |
+| [pr-04-queue-12.png](./evidence/pr-04-queue-12.png) | PR-SCR-04, chuỗi chuẩn ban đầu; MGR-01 | 10:38:56.271 | 12:00 |
+| [pr-02-returned-13.png](./evidence/pr-02-returned-13.png) | B gửi lại, nguồn không khả dụng, giữ Chờ chỉnh sửa; REQ-01 | 10:38:57.694 | 13:00 |
+| [pr-04-queue-13.png](./evidence/pr-04-queue-13.png) | A196/C97, B chưa mở vòng; MGR-01 | 10:38:58.056 | 13:00 |
+| [pr-04-queue-14.png](./evidence/pr-04-queue-14.png) | A197/B0/C98, ba PR chờ; MGR-01 | 10:38:59.777 | 14:00 |
+| [pr-04-queue-15.png](./evidence/pr-04-queue-15.png) | B1/C99, A chờ sửa, tỷ lệ 50%; MGR-01 | 10:39:02.569 | 15:00 |
+
+## Đọc sâu: triển khai và kiểm tra đã ghi nhận
+
+Các mục dưới đây bảo toàn hồ sơ theo từng giai đoạn, phiên bản và ngày kiểm tra. Branch, HEAD, Git status, đường dẫn Temp và các câu “chưa push/hosting/3C” mô tả **thời điểm của lượt được ghi nhận**, không phải trạng thái repository hiện tại. Prototype hiện đã có demo công khai ở đầu trang. Log Temp có thể đã bị dọn; kết quả lịch sử không phải kết quả vừa chạy lại trong lượt biên tập portfolio.
+
+Bốn màn hình HTML/CSS/ES modules nối với lớp logic 3B.1. Dữ liệu chỉ tồn tại trong bộ nhớ trang, không localStorage/sessionStorage, backend hoặc database. Tải lại/reset phục hồi seed, lịch sử, ID, vai trò REQ-01, ngân sách Đạt và 10/10/2026 12:00 UTC+07:00. Kiểm tra tích hợp 3B.2 không thay thế [kiểm chứng 3C](./verification.md) hoặc UAT; không tuyên bố AC đã pass. OD-03/06/07 vẫn mở.
+
+### Môi trường và máy chủ local của lượt tích hợp
+
+Node trong lượt tích hợp đã ghi nhận: **v22.14.0**, có sẵn của IntelliJ, không có trong PATH; không cài/nâng cấp công cụ. Từ root repo, PowerShell:
 
 ```powershell
 $prNode = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
@@ -59,17 +97,15 @@ Lệnh trên đã chạy và kiểm tra tại **http://127.0.0.1:8080/**. Nếu 
 
 MIME tương ứng HTML/CSS/JavaScript/JSON/TTF/text. Chỉ GET/HEAD; không API ghi. Đường dẫn ngoài danh sách, traversal, `.git`, test, README và chính server không được phục vụ. Không công khai toàn repository; realpath được kiểm tra trong thư mục cho phép.
 
-## Sử dụng
+### Nguồn và kiểm tra trước khi sửa
 
-- Khởi tạo ở **Người yêu cầu · REQ-01**. PR của tôi có tìm mã/mô tả, trim và không phân biệt hoa/thường; có xóa tìm kiếm và thông báo rỗng. Tạo PR chỉ mở form chưa lưu. Lưu nháp thiếu trường rồi mở lại; PR trả lại dùng Lưu phần sửa/Gửi lại và giữ Chờ chỉnh sửa.
-- Tám trường dùng nội dung seed; người yêu cầu/đơn vị chỉ đọc. Không validation native chặn handler. Lỗi gửi giữ phần nhập, focus tổng hợp lỗi; liên kết dẫn tới trường có lỗi và thông báo cạnh trường. Không đủ ngân sách khác với nguồn không khả dụng; chỉ gọi kiểm tra ngân sách sau validation đạt.
-- **Điều khiển demo** chọn REQ-01/MGR-01, ba kết quả ngân sách và Khôi phục dữ liệu mẫu. Không có vai trò nghiệp vụ thứ ba. Chọn ngân sách/đổi vai không tăng giờ; lựa chọn giữ đến khi đổi và không sửa bằng chứng quá khứ. Phân quyền chỉ mô phỏng; handler vẫn kiểm tra quyền/ngữ cảnh.
-- **MGR-01** xem hàng đợi và chi tiết trong đơn vị mẫu, chỉ quyết định PR đủ điều kiện. Trả lại cần lý do; từ chối cần xác nhận hậu quả. Mở/hủy xác nhận không gọi quyết định hoặc tăng giờ. PR đã duyệt/từ chối không có hành động sửa/gửi lại/quyết định lần hai.
-- Rời form/đổi vai khi có phần nhập chưa lưu mở cảnh báo nội bộ: Tiếp tục chỉnh sửa hoặc Bỏ thay đổi. Hủy reset giữ nguyên dữ liệu/lựa chọn/giờ; xác nhận reset xóa cả trạng thái UI, tìm kiếm và phần nhập.
-- Chỉ handler sở hữu validation, sự kiện và tăng giờ. UI giữ phần nhập cục bộ trước thao tác, không tính metric hoặc thời gian nghiệp vụ bằng cách thứ hai. Có khóa xử lý và bỏ click thứ hai trong double-click; không tự retry ghi. Nội dung người dùng được tạo bằng DOM/textContent, không chèn HTML.
-- Nháp tạo mới có nguồn riêng; thiếu log không bị coi là nháp. Chi tiết chỉ là nội dung hiện tại. Ghi chú làm rõ C xuất hiện tại **C-3**, không ngụ ý có tại C-1 hoặc tái dựng snapshot quá khứ.
+Branch `pr-prototype`, HEAD `e72287ecf1ede6d7a88ddb3560e5dc81f7c639a1`; không detached HEAD. Đọc trực tiếp danh sách đường dẫn và trạng thái file trong commit: đúng tám file được thêm, gồm README kỹ thuật, bốn module logic và ba file test/fixture. Nội dung local khớp commit; đầu lượt chỉ có ` M wireframes/pr/README.md`.
 
-## Module và kiểm tra
+`b579cdc` và `b9232f3` đều tồn tại, là tổ tiên của HEAD. Seed và README dữ liệu khớp `b9232f3`; ba tài liệu thiết kế khớp `b579cdc`. Nguồn tham chiếu: [2A](../../06-system-analysis/pr-behavior-analysis.md), [SIM/2B](../../06-system-analysis/pr-prototype-decisions.md), [metric](../../08-traceability/pr-metrics-design.md), [wireframe](../../wireframes/pr/README.md), [HTML nguồn](../../wireframes/pr/index.html), [CSS nguồn](../../wireframes/pr/styles.css), [seed 3A](./data/seed.json), [giới hạn dữ liệu](./data/README.md). Thứ tự sự kiện là `(occurred_at, event_order)` trong từng PR; không ưu tiên loại sự kiện.
+
+Snapshot đọc lại thành công trước khi sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-snapshot-wmyg96ub\snapshot.json`. Có branch/HEAD/status, danh sách tám file commit, SHA-256 mọi file tracked và bản sao trước sửa của tám file logic/test/README. Các log Node/CDP nằm cùng thư mục tạm; không tạo báo cáo bàn giao riêng trong repo.
+
+### Module và kiểm tra
 
 [app.mjs](./app.mjs) nối bốn màn hình; [index.html](./index.html) giữ shell và điều khiển demo; [styles.css](./styles.css) tái sử dụng CSS đã duyệt, chỉ điều chỉnh đường dẫn font và bổ sung trạng thái tương tác/dialog. [pr-session.mjs](./logic/pr-session.mjs), [validation.mjs](./logic/validation.mjs), [metrics.mjs](./logic/metrics.mjs), [time.mjs](./logic/time.mjs) giữ nguyên byte so với commit logic; không sửa hợp đồng 3B.1.
 
@@ -81,7 +117,7 @@ PR-MET-01/02 theo hàng chờ hiện tại; PR-MET-03 dùng toàn cohort của �
 
 Kết quả cuối: **49 test, 49 đạt, 0 lỗi, 0 bỏ qua**: 45 test logic được giữ nguyên và bốn test server mới trong [server.test.mjs](./test/server.test.mjs). Test logic so sánh đối tượng seed trong bộ nhớ trước/sau và hash file. Kiểm tra SHA-256 cuối tác vụ là bằng chứng riêng cho bảo toàn file trên đĩa, không thay thế kiểm tra đối tượng.
 
-### Trình duyệt và cách tái lập
+#### Trình duyệt và cách tái lập
 
 Windows, **Chrome/155.0.8059.40 headless**, Chrome DevTools Protocol qua Node WebSocket có sẵn, không Playwright/dependency mới. Phiên sau review dùng profile tạm `C:\Users\ASUS\AppData\Local\Temp\pr-browser-ZwKkIy`, CDP `127.0.0.1:9226`. Các lần Chrome/Edge khởi động ban đầu chưa mở được CDP; phiên kiểm tra thành công dùng `--headless=new --no-sandbox --disable-gpu --disable-software-rasterizer --in-process-gpu --no-first-run`, chỉ truy cập prototype local.
 
@@ -113,7 +149,7 @@ Font render được kiểm tra bằng `CSS.getPlatformFontsForNode`: BeVietnamP
 
 **beforeunload:** lúc **10:39:17.333 UTC+07:00**, click chuột thật vào trường và nhập bằng `Input.insertText`, rồi `Page.reload`. Chrome phát `Page.javascriptDialogOpening` với `type=beforeunload`, `hasBrowserHandler=true`, message rỗng. Dismiss giữ form; accept tải lại và trở về seed, REQ-01, Đạt, T0. Đây là quan sát protocol trong Chrome headless, không khẳng định giao diện/nội dung hộp thoại native giống các trình duyệt khác. Chưa thử đóng tab/cửa sổ hoặc trình duyệt khác; browser có thể không hiện cảnh báo nếu chưa có tương tác hoặc khi tiến trình bị đóng. Cảnh báo nội bộ không phụ thuộc beforeunload.
 
-### Chuỗi chuẩn thực chạy
+#### Chuỗi chuẩn thực chạy
 
 **Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
 
@@ -127,23 +163,7 @@ Không xen lưu nháp. Khởi tạo REQ-01; REQ-01 gửi lại B tại 13:00/14:
 | 15:00, MGR-01 trả A | 2 chờ; B1/C99; 2/4=50%; 1/1 | 2; B1/C99; A chờ sửa; 50%; 1/1 | Khớp |
 | Reset xác nhận | T0, seed và cấu hình khởi tạo | Đúng năm PR, REQ-01, Đạt, 12:00 | Khớp |
 
-## Ảnh trực tiếp hiện hành
-
-Một bộ chín PNG từ `Page.captureScreenshot`, Chrome 155/CDP, viewport 1440 px, chụp cả trang; không ảnh dựng hoặc ảnh wireframe thay thế. Bảng ghi giờ thực ngày **16/10/2026 UTC+07:00**; cột mô phỏng là **10/10/2026**. Mỗi ảnh giữ vai trò, đồng hồ và lựa chọn ngân sách.
-
-| Ảnh | Tình huống / vai trò | Giờ chụp thực tế | Giờ mô phỏng |
-| --- | --- | --- | --- |
-| [pr-01-list.png](./evidence/pr-01-list.png) | PR-SCR-01, năm PR seed; REQ-01 | 10:38:46.269 | 12:00 |
-| [pr-02-form.png](./evidence/pr-02-form.png) | PR-SCR-02, tạo form chưa lưu; REQ-01 | 10:38:46.834 | 12:00 |
-| [pr-02-submit-error.png](./evidence/pr-02-submit-error.png) | Lỗi gửi/focus/giữ phần nhập; REQ-01 | 10:38:48.892 | 14:00, ca riêng |
-| [pr-03-detail-c.png](./evidence/pr-03-detail-c.png) | PR-SCR-03, C vòng 2, ghi chú tại C-3; REQ-01 | 10:38:54.949 | 12:00 |
-| [pr-04-queue-12.png](./evidence/pr-04-queue-12.png) | PR-SCR-04, chuỗi chuẩn ban đầu; MGR-01 | 10:38:56.271 | 12:00 |
-| [pr-02-returned-13.png](./evidence/pr-02-returned-13.png) | B gửi lại, nguồn không khả dụng, giữ Chờ chỉnh sửa; REQ-01 | 10:38:57.694 | 13:00 |
-| [pr-04-queue-13.png](./evidence/pr-04-queue-13.png) | A196/C97, B chưa mở vòng; MGR-01 | 10:38:58.056 | 13:00 |
-| [pr-04-queue-14.png](./evidence/pr-04-queue-14.png) | A197/B0/C98, ba PR chờ; MGR-01 | 10:38:59.777 | 14:00 |
-| [pr-04-queue-15.png](./evidence/pr-04-queue-15.png) | B1/C99, A chờ sửa, tỷ lệ 50%; MGR-01 | 10:39:02.569 | 15:00 |
-
-## Mapping 18 hành vi
+### Mapping 18 hành vi
 
 Nguồn dòng từ file 2A đã đọc trực tiếp, vẫn khớp `b579cdc`. S = `logic/pr-session.mjs`, V = `logic/validation.mjs`, M = `logic/metrics.mjs`; UI = `app.mjs`; QA = `qa/browser-qa.mjs`. Kết quả dưới đây chỉ trong phạm vi prototype/Chrome đã nêu, không coi là nghiệm thu toàn bộ hành vi hoặc full audit.
 
@@ -170,13 +190,13 @@ Nguồn dòng từ file 2A đã đọc trực tiếp, vẫn khớp `b579cdc`. S 
 
 Giới hạn còn lại: chưa thử trình duyệt khác/headful, đóng tab/cửa sổ, công nghệ hỗ trợ hoặc UAT người dùng. 390 px đã kiểm tra bổ sung, không đại diện kiểm thử mọi thiết bị. Lịch sử chỉ là quy trình SIM-03, không audit đầy đủ. Các giá/nhu cầu demo không được xác minh thực tế. Không có lỗi chức năng cốt lõi còn mở được ghi nhận trong phiên kiểm tra này.
 
-## Kiểm tra bảo toàn cuối lượt
+### Kiểm tra bảo toàn cuối lượt
 
 Đối chiếu SHA-256 với snapshot: seed, README dữ liệu, toàn bộ wireframe (gồm README thay đổi sẵn), ba tài liệu thiết kế và toàn bộ file tracked ngoài README kỹ thuật giữ nguyên. Bốn module logic và ba test/fixture của 3B.1 cũng giữ nguyên. Seed trên đĩa vẫn khớp blob trong `b9232f3`; ba thiết kế vẫn khớp `b579cdc`.
 
 Đã kiểm tra liên kết/ảnh/Markdown, whitespace file mới và `git diff --check`. Chỉ README kỹ thuật tracked được sửa; các file mới nằm trong `prototype/pr/`. README wireframe vẫn là thay đổi chưa commit từ trước, không stage. Commit triển khai 3B.2 chỉ chứa các file thuộc `prototype/pr/`, không gồm thay đổi có sẵn của wireframe. Không push/merge hoặc bắt đầu 3C.
 
-## Hai điểm UI đã sửa sau review
+### Hai điểm UI đã sửa sau review
 
 Snapshot trước sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-review-ifsd27so\snapshot.json`. Không đổi module tính toán, phạm vi dữ liệu, seed hoặc các số đo.
 
@@ -185,7 +205,7 @@ Snapshot trước sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-review-ifsd27so
 
 Đã chạy lại 49 test Node và toàn bộ QA trình duyệt; chuỗi chuẩn giữ nguyên kết quả. Chín ảnh hiện hành được chụp lại trực tiếp, giữ đúng nhãn mốc mô phỏng; bảng giờ chụp ghi phiên sau review.
 
-## H1 — artifact static local (16/10/2026)
+### H1 — artifact static local (16/10/2026)
 
 Nguồn H1: `main` tại `ec1bcbaeece2adefbe78e16f4d87a7afaa5f4d0f`; đã xác minh `42f6c57`, `07e5f68`, `ec1bcba` là commit tồn tại trong lịch sử HEAD. Branch `pr-prototype` cùng HEAD (ahead/behind 0/0), working tree sạch trước khi tạo `pr-static`. Các kết quả 3B.2/3C bên trên giữ nguyên phạm vi và phiên bản lịch sử.
 
@@ -224,7 +244,7 @@ Cả artifact dưới đường dẫn con và server local cũ đều khởi t�
 
 Kết quả test H1: chạy toàn bộ bốn file *.test.mjs đúng một lượt sau sửa, **50 test thực chạy, 50 đạt, 0 lỗi, 0 bỏ qua** (49 test hiện có và một test đóng gói mới). Test đóng gói kiểm tra đúng danh sách/byte, tái tạo không giữ file thừa và thiếu seed phải thất bại trước khi thay đầu ra. SHA-256 seed, cả bốn module logic, wireframe/font/giấy phép và mọi file tracked ngoài bốn file đã chủ ý sửa đều khớp snapshot trước sửa. Đã kiểm tra diff, liên kết mới, git diff --check và git check-ignore -v: chỉ artifact bị ignore, source và thư mục dist khác không bị ignore.
 
-## Kiểm tra bản static
+### Kiểm tra bản static
 
 **H2 hoàn tất trong phạm vi kiểm tra local này.** Kết quả dưới đây đến từ phiên trình duyệt mới trên **Build A**, không lấy kết quả server local cũ, 3C hoặc test Node để kết luận H2. Không phải UAT hoặc xác nhận quyền/bảo mật thực tế.
 

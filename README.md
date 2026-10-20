@@ -6,30 +6,21 @@ NovaRetail JSC là **doanh nghiệp bán lẻ giả lập tại Việt Nam** tro
 
 Tôi phân tích quy trình hiện tại, đề xuất cách xử lý từng bước và viết yêu cầu phần mềm kèm tiêu chí chấp nhận.
 
-[Mở demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn sử dụng](prototype/pr/README.md#hướng-dẫn-thử-nhanh) · [Kết quả kiểm chứng](prototype/pr/verification.md)
+[Đọc case study](./case-study.md) · [Mở demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn sử dụng](prototype/pr/README.md#hướng-dẫn-thử-nhanh) · [Kết quả kiểm chứng](prototype/pr/verification.md)
 
 Prototype minh họa việc tạo, gửi và xem xét yêu cầu mua hàng, xử lý trả lại và theo dõi ba chỉ số PR bằng dữ liệu tổng hợp.
 
 ## 2. Bài toán nghiệp vụ
 
-- Yêu cầu phê duyệt được gửi qua email; các bộ phận phải hỏi lại để biết chứng từ đang chờ ai xử lý.
-- Thông tin từ PR có thể phải nhập lại khi lập đơn đặt hàng (Purchase Order — PO); hồ sơ mua hàng, kho và kế toán được lưu riêng.
-- Kế toán phải thu thập PO, phiếu nhận hàng (Goods Receipt — GR) và hóa đơn để đối chiếu ba bên thủ công. Thiếu chứng từ hoặc có sai lệch làm chậm bước chuẩn bị đề nghị thanh toán.
-
-Chi tiết vấn đề và nguyên nhân nằm trong [phát biểu vấn đề](./01-business-context/problem-statement.md) và [phân tích hiện trạng](./03-as-is-analysis/README.md).
+Dữ liệu mua hàng phân tán làm chậm bàn giao, phê duyệt và đối chiếu. Đọc [case study](./case-study.md) để theo dõi mạch vấn đề → quyết định → prototype → kiểm chứng; [phát biểu vấn đề](./01-business-context/problem-statement.md) và [phân tích hiện trạng](./03-as-is-analysis/README.md) giữ căn cứ chi tiết.
 
 ## 3. Vai trò và công việc thực hiện
 
-Trong case study này, tôi thực hiện các công việc sau:
-
-- Xác định vấn đề và phạm vi; mô tả vai trò của các bên liên quan và bảng phân công trách nhiệm (RACI).
-- Thể hiện các bước bàn giao, phê duyệt và xử lý sai lệch bằng sơ đồ quy trình hiện tại (As-Is) và quy trình đề xuất (To-Be).
-- Viết quy tắc nghiệp vụ, BRD và các ca sử dụng (Use Case — UC) với điều kiện trước, luồng chính và nhánh thay thế.
-- Nối yêu cầu nghiệp vụ với yêu cầu phần mềm, UC và tiêu chí chấp nhận (Acceptance Criteria — AC) trong ma trận truy vết yêu cầu (RTM).
+Tôi thực hiện phân tích nghiệp vụ, xây dựng và rà soát tài liệu, vẽ sơ đồ, thiết kế UI và các hoạt động kiểm tra. Codex hỗ trợ triển khai code theo yêu cầu và các quyết định đã thống nhất. [Case study](./case-study.md) trình bày công việc qua ba quyết định BA.
 
 ## 4. Phạm vi
 
-**Trong phạm vi phân tích:** mua hàng hóa hữu hình, từ lập PR đến phê duyệt đề nghị thanh toán. Các bước gồm xem xét PR, lập và phê duyệt PO, ghi GR, xử lý hóa đơn, đối chiếu và xử lý ngoại lệ. Tài liệu cũng mô tả yêu cầu xem trạng thái, lịch sử giao dịch và báo cáo mua hàng.
+**Trong phạm vi phân tích:** mua hàng hóa hữu hình, từ lập PR đến phê duyệt đề nghị thanh toán. Các bước gồm xem xét PR, lập và phê duyệt đơn đặt hàng (PO), ghi phiếu nhận hàng (GR), xử lý hóa đơn, đối chiếu và xử lý ngoại lệ. Tài liệu cũng mô tả yêu cầu xem trạng thái, lịch sử giao dịch và báo cáo mua hàng.
 
 **Ngoài phạm vi:** mua dịch vụ, thực hiện thanh toán ngân hàng, tiếp nhận nhà cung cấp mới và tìm nguồn cung, quản lý kho chi tiết, xử lý thuế, kế toán đầy đủ và thay thế hệ thống quản trị doanh nghiệp (ERP). Điểm kết thúc là đề nghị thanh toán được phê duyệt; việc chuyển tiền nằm ngoài quy trình này. Xem [phạm vi chi tiết](./01-business-context/scope.md).
 
@@ -60,17 +51,7 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 
 **Prototype tương tác.** Bản [prototype PR](./prototype/pr/README.md) cho phép tạo và lưu PR, gửi và gửi lại, phê duyệt, trả lại, từ chối và xem lịch sử quy trình. Ba chỉ số thể hiện số PR đang chờ xem xét, thời gian chờ theo vòng và tỷ lệ PR từng bị trả lại. Mở [demo công khai](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) và làm theo [hướng dẫn thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh); nếu muốn chạy trên máy, xem [hướng dẫn chạy local](./prototype/pr/README.md#chạy-local). Dữ liệu chỉ tồn tại trong bộ nhớ trang; tải lại hoặc khôi phục sẽ đưa về dữ liệu mẫu.
 
-Hai ảnh dưới đây được chụp trực tiếp trong cùng phiên kiểm tra trình duyệt, minh họa hai tình huống riêng. Nguồn ảnh, thời điểm chụp thực tế và kết quả nằm trong [README prototype](./prototype/pr/README.md#ảnh-trực-tiếp-hiện-hành) và [tài liệu kiểm chứng](./prototype/pr/verification.md).
-
-Đây là các tình huống minh họa; ảnh không phản ánh trạng thái của phiên hiện tại.
-
-**Dữ liệu tổng hợp — hàng đợi ban đầu, Quản lý cửa hàng (MGR-01), mốc mô phỏng 10/10/2026 12:00 UTC+07:00.**
-
-![Prototype PR: hàng đợi của Quản lý cửa hàng tại mốc mô phỏng 12:00](./prototype/pr/evidence/pr-04-queue-12.png)
-
-**Dữ liệu tổng hợp — mở form tạo PR chưa lưu, Người yêu cầu (REQ-01), mốc mô phỏng 10/10/2026 12:00 UTC+07:00.**
-
-![Prototype PR: form tạo PR chưa lưu của Người yêu cầu tại mốc mô phỏng 12:00](./prototype/pr/evidence/pr-02-form.png)
+Xem [tình huống trả lại và gửi lại trong case study](./case-study.md#4-giải-pháp-và-bằng-chứng-kiểm-chứng) hoặc [bộ ảnh prototype và nguồn ghi nhận](./prototype/pr/README.md#ảnh-trực-tiếp-hiện-hành). Ảnh minh họa dữ liệu tổng hợp, không phản ánh trạng thái phiên demo hiện tại.
 
 Tra thuật ngữ tại [glossary](./glossary.md). [Các quyết định nghiệp vụ nền tảng](./08-traceability/baseline-decisions.md) giải thích ranh giới đã chọn; [danh mục sơ đồ](./assets/diagrams/sources/README.md) dẫn tới nguồn Draw.io và ảnh xuất.
 
@@ -83,10 +64,8 @@ Tra thuật ngữ tại [glossary](./glossary.md). [Các quyết định nghiệ
 - Vai trò và nhu cầu của các bên liên quan được giả định cho nghiên cứu tình huống. Chưa có phỏng vấn, kiểm thử chấp nhận người dùng (UAT) hoặc stakeholder sign-off; [khung ký duyệt BRD](./05-brd/approval-and-signoff.md) chỉ mô tả việc cần làm.
 - Các quyết định còn mở (Open Decision — OD) từ OD-01 đến OD-08 vẫn được ghi tại [RTM](./08-traceability/requirements-traceability-matrix.md), gồm chính sách ngân sách, phê duyệt tài chính bổ sung, dung sai đối chiếu và quyền chi tiết theo vai trò.
 - Các khoảng trống bao phủ yêu cầu trong RTM vẫn còn mở. Phần được kiểm chứng một phần hoặc ngoài phạm vi prototype được ghi riêng trong tài liệu kiểm chứng; kết quả prototype không thay đổi coverage của SRS/RTM.
-- Một số thông tin chứng từ trên wireframe chưa được bổ sung. Cần bổ sung và xem xét dữ liệu mẫu trước khi dùng giao diện để đánh giá một quyết định nghiệp vụ cụ thể.
+- Placeholder và thông tin chứng từ chưa được bổ sung thuộc **wireframe tĩnh**. Prototype dùng bộ dữ liệu tổng hợp riêng đã được ghi nhận tại [tài liệu dữ liệu](./prototype/pr/data/README.md); không suy giới hạn placeholder của wireframe sang dữ liệu prototype. Nội dung demo chưa được xác minh như chứng từ hoặc nhu cầu mua thực tế.
 
 ## 8. Những điểm rút ra từ phân tích
 
-- PR bị trả lại phải được kiểm tra lại thông tin và ngân sách trước khi chuyển xem xét. PR bị từ chối không có đường chỉnh sửa hoặc gửi lại trong phạm vi đã xác định.
-- Mọi PO cần phê duyệt mua hàng; phê duyệt tài chính bổ sung chỉ áp dụng khi thỏa điều kiện chính sách. Hoàn tất phê duyệt mới làm PO đủ điều kiện phát hành; bước phát hành cho nhà cung cấp được ghi nhận riêng.
-- Hóa đơn thiếu thông tin đối chiếu phải chờ bổ sung. Nếu có sai lệch, sau chỉnh sửa phải đối chiếu lại đạt mới xác nhận ngoại lệ đã xử lý. Cả chuẩn bị và gửi đề nghị thanh toán đều cần kết quả đối chiếu hiện hành đạt.
+Đọc [ba quyết định BA](./case-study.md#3-phân-tích-và-ba-quyết-định-quan-trọng) và [bài học, giới hạn, hướng tiếp theo](./case-study.md#5-kết-quả-giới-hạn-bài-học-và-hướng-tiếp-theo). Các kiểm soát toàn P2P vẫn được giữ trong [quy tắc nghiệp vụ](./04-to-be-design/business-rules.md) và [quyết định nền tảng](./08-traceability/baseline-decisions.md).

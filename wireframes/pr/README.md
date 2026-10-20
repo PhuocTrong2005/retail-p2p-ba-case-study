@@ -2,7 +2,7 @@
 
 Mở trực tiếp [index.html](./index.html) trong Chrome. Bộ chọn **Xem kịch bản** ở góc trên bên phải mở bốn màn hình và các biến thể; chọn lại tiêu đề bộ chọn để thu gọn. Liên kết chuyển góc xem, ô nhập cho phép thử gõ, còn nút nghiệp vụ là mẫu tĩnh. Dòng **“Wireframe — thao tác nghiệp vụ chưa được triển khai”** luôn có trên trang.
 
-**Đây là wireframe tĩnh, chưa phải demo chức năng.** Ảnh preview phục vụ review giao diện và nội dung; các thao tác lưu, gửi, xem xét và quyết định chưa được triển khai.
+**Đây là wireframe tĩnh, chưa phải demo chức năng.** Ảnh preview phục vụ review giao diện và nội dung; các thao tác lưu, gửi, xem xét và quyết định chưa được triển khai trong bộ wireframe này. Một phần hành vi PR đã được minh họa và kiểm chứng riêng trong [prototype tương tác](../../prototype/pr/README.md) và [tài liệu kiểm chứng](../../prototype/pr/verification.md).
 
 Nguồn chỉnh sửa: `index.html` và `styles.css`. Font local và giấy phép giữ trong thư mục này. Không cần cài thư viện hoặc chạy server. Bộ ảnh hiện hành duy nhất nằm trong `previews/`; ảnh thử ở 1280 px, ảnh mở phần giải thích và hồ sơ trình duyệt đặt ngoài repository.
 
@@ -115,7 +115,7 @@ Bộ 8 ảnh hiện hành được giữ trong repository. Chỉ xóa ảnh th�
 - **Font:** 20 mẫu DevTools ghi đúng Be Vietnam Pro và bốn weight thực tế, gồm chữ tiếng Việt trong input/textarea. Chưa khẳng định mọi glyph ở mọi nền tảng đều được kiểm tra.
 - **Nhãn/liên kết/focus:** 58 input/textarea/select đều có nhãn gắn bằng ID; 57 liên kết fragment có đích, ID không trùng; tài nguyên local và liên kết Markdown được đối chiếu. Thử bàn phím mở bộ chọn bằng Enter, Tab tới liên kết; liên kết tổng hợp lỗi chuyển focus đến ô cần sửa, Tab tới ô kế tiếp. Focus có outline 3 px. Nút nghiệp vụ bị vô hiệu hóa theo phạm vi wireframe.
 - **Tương phản:** tính relative luminance theo WCAG trên cặp màu sử dụng. Chữ chính/giấy **13,19:1**; xanh/trắng **6,88:1**; chữ phụ/giấy **6,09:1**; tiêu đề cột/nền bảng **8,08:1**; chữ lỗi/nền lỗi **6,75:1**; cảnh báo/nền cảnh báo **6,02:1**; thông báo wireframe/nền kem **11,52:1**. Viền ô nhập/trắng **3,40:1**; focus/nền giấy **4,49:1**. Đây là kiểm tra các cặp bị ảnh hưởng, không tuyên bố đạt toàn bộ accessibility.
-- **Phạm vi:** nguồn HTML/CSS, font/giấy phép, README và bộ preview hiện hành trong `wireframes/pr/` được lưu phiên bản Git cho giai đoạn 2C. Không có xử lý PR, tính metric, đồng hồ chạy, lưu dữ liệu hoặc backend. Không kiểm thử chức năng, AC, bảo mật hay UAT; role trên giao diện chỉ là ngữ cảnh demo. Chưa push hoặc hosting.
+- **Phạm vi:** nguồn HTML/CSS, font/giấy phép, README và bộ preview hiện hành trong `wireframes/pr/` được lưu phiên bản Git cho giai đoạn 2C. Không có xử lý PR, tính metric, đồng hồ chạy, lưu dữ liệu hoặc backend. Không kiểm thử chức năng, AC, bảo mật hay UAT; role trên giao diện chỉ là ngữ cảnh demo. Ghi nhận “chưa push hoặc hosting” thuộc thời điểm giai đoạn 2C của wireframe; prototype tương tác hiện có [demo công khai](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/).
 
 ## Nhận diện và tham khảo
 

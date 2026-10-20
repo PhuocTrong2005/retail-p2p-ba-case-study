@@ -11,6 +11,6 @@ Mỗi AC nêu điều kiện Cho trước/Khi/Thì và nguồn nghiệp vụ đ�
 - [Đặc tả yêu cầu phần mềm (SRS)](./srs.md): toàn văn FR/NFR/AC và nguồn truy vết.
 - [Ma trận truy vết yêu cầu (RTM) và phần còn thiếu](../08-traceability/requirements-traceability-matrix.md): cho biết yêu cầu nào có AC và phần nào mới được bao phủ một phần. NFR-01/02 có mức bao phủ tổng quát; chi tiết còn phụ thuộc quyết định OD-07 và danh mục sự kiện. Mức dễ hiểu của NFR-04 vẫn cần xác nhận với người dùng. Việc có AC không đồng nghĩa đã thực hiện kiểm tra.
 
-Đọc căn cứ tại [tài liệu yêu cầu nghiệp vụ và danh mục BRQ](../05-brd/README.md), [quy tắc nghiệp vụ](../04-to-be-design/business-rules.md) và [phân tích hệ thống](../06-system-analysis/README.md). SRS chưa xác định kiến trúc phần mềm; các yêu cầu chưa phải chức năng đã triển khai.
+Đọc căn cứ tại [tài liệu yêu cầu nghiệp vụ và danh mục BRQ](../05-brd/README.md), [quy tắc nghiệp vụ](../04-to-be-design/business-rules.md) và [phân tích hệ thống](../06-system-analysis/README.md). SRS chưa xác định kiến trúc phần mềm cho toàn bộ baseline P2P; baseline này chưa được triển khai đầy đủ. Một phần hành vi PR đã được minh họa trong [prototype tương tác](../prototype/pr/README.md) và [kiểm chứng theo phạm vi mô phỏng](../prototype/pr/verification.md), không đồng nghĩa mọi yêu cầu hoặc toàn bộ 37 AC đã đạt.
 
 Tiếp theo: [08 — Truy vết](../08-traceability/README.md).

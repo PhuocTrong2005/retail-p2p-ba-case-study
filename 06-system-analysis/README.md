@@ -2,7 +2,7 @@
 
 ## 1. Tổng quan
 
-Phần này xác định ai sử dụng **Hệ thống quản lý mua hàng**, mỗi người cần thực hiện việc gì và hệ thống phản hồi ra sao theo quy trình To-Be. Các ca sử dụng (Use Case — UC) mô tả tương tác; sơ đồ hoạt động làm rõ thứ tự xử lý và các nhánh quyết định. Có 12 UC chính, UC-00 tổng quan và ba sơ đồ hoạt động; đây là mô hình phân tích, chưa thiết kế hoặc triển khai phần mềm.
+Phần này xác định ai sử dụng **Hệ thống quản lý mua hàng**, mỗi người cần thực hiện việc gì và hệ thống phản hồi ra sao theo quy trình To-Be. Các ca sử dụng (Use Case — UC) mô tả tương tác; sơ đồ hoạt động làm rõ thứ tự xử lý và các nhánh quyết định. Có 12 UC chính, UC-00 tổng quan và ba sơ đồ hoạt động; đây là mô hình phân tích của baseline P2P, chưa được triển khai đầy đủ thành hệ thống. Một phần hành vi PR đã được minh họa trong [prototype tương tác](../prototype/pr/README.md) và [kiểm chứng theo phạm vi mô phỏng](../prototype/pr/verification.md); kết quả này không xác nhận toàn bộ baseline P2P đã được triển khai hoặc kiểm thử đạt.
 
 Phạm vi gồm hàng hóa hữu hình, từ lập yêu cầu mua hàng (Purchase Requisition — PR) đến phê duyệt đề nghị thanh toán. Mua dịch vụ và thực hiện thanh toán ngân hàng nằm ngoài phạm vi.
 

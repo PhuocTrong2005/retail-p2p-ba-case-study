@@ -47,6 +47,8 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 
 [Thiết kế phép đo PR](./08-traceability/pr-metrics-design.md) bổ sung cách xác định số PR đang chờ, thời gian chờ theo vòng xem xét và tỷ lệ PR từng bị trả lại.
 
+[Đánh giá phương án cải tiến P2P](./09-solution-evaluation/options-assessment.md) so sánh ba hướng giải pháp và nêu kiến nghị có điều kiện; Odoo 19.0 chỉ là tham chiếu tài liệu.
+
 **Wireframe tĩnh.** Bộ [wireframe PR](./wireframes/pr/README.md) có bốn màn hình: danh sách của Người yêu cầu, tạo/chỉnh sửa, chi tiết PR và hàng đợi của Quản lý cửa hàng. Tải repository về máy, sau đó mở [wireframes/pr/index.html](./wireframes/pr/index.html) bằng trình duyệt; các nút lưu, gửi và quyết định là mẫu tĩnh. Có thể xem nhanh qua [ảnh hàng đợi](./wireframes/pr/previews/pr-04-queue.png) hoặc [các ảnh tiêu biểu](./wireframes/pr/README.md#ảnh-tiêu-biểu). Hướng dẫn mở, ảnh và phạm vi kiểm tra được ghi trong [README wireframe](./wireframes/pr/README.md#kiểm-tra-và-giới-hạn).
 
 **Prototype tương tác.** Bản [prototype PR](./prototype/pr/README.md) cho phép tạo và lưu PR, gửi và gửi lại, phê duyệt, trả lại, từ chối và xem lịch sử quy trình. Ba chỉ số thể hiện số PR đang chờ xem xét, thời gian chờ theo vòng và tỷ lệ PR từng bị trả lại. Mở [demo công khai](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) và làm theo [hướng dẫn thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh); nếu muốn chạy trên máy, xem [hướng dẫn chạy local](./prototype/pr/README.md#chạy-local). Dữ liệu chỉ tồn tại trong bộ nhớ trang; tải lại hoặc khôi phục sẽ đưa về dữ liệu mẫu.

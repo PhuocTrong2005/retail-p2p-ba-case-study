@@ -1,1 +1,7 @@
 /prototype/pr/dist/
+
+# NovaRetail ERP lab: local secrets, runtime data and backups
+/10-erp-lab/.env
+/10-erp-lab/secrets/
+/10-erp-lab/backups/
+/10-erp-lab/runtime/

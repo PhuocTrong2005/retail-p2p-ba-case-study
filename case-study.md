@@ -6,6 +6,8 @@ NovaRetail là doanh nghiệp bán lẻ giả lập tại Việt Nam. Thông tin
 
 Tôi phân tích quy trình mua hàng đến thanh toán (P2P), từ tạo yêu cầu mua hàng (PR) đến phê duyệt đề nghị thanh toán. Prototype chỉ minh họa PR.
 
+Phần ERP đã hoàn tất ở phạm vi phân tích và thiết kế: phân tích mức phù hợp của Odoo Community, thiết kế phần bổ sung cho kiểm soát G1-D01 và xây dựng 30 kịch bản kiểm chứng. Chưa triển khai hoặc kiểm chứng trên ERP; [README ERP lab](./10-erp-lab/README.md) ghi phạm vi và giới hạn, còn [thiết kế chi tiết](./10-erp-lab/lab-design.md) giữ các kết quả mong đợi chưa thực hiện.
+
 Tôi thực hiện phân tích nghiệp vụ, xây dựng và rà soát tài liệu, vẽ sơ đồ, thiết kế UI và các hoạt động kiểm tra. Codex hỗ trợ triển khai code theo yêu cầu và các quyết định đã thống nhất.
 
 [Thử demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh) · [Tài liệu kiểm chứng](./prototype/pr/verification.md)
@@ -68,4 +70,8 @@ Ba bài học tôi rút ra:
 
 Sau prototype, tôi đã bổ sung [so sánh ba hướng cải tiến P2P và kiến nghị có điều kiện](./09-solution-evaluation/options-assessment.md): chuẩn hóa công cụ hiện có, xây workflow riêng và sử dụng ERP phù hợp. Phân tích lấy kiểm soát mua hàng/hóa đơn (OBJ-04) làm ưu tiên dẫn dắt, với theo dõi dữ liệu và truy vết (OBJ-03/05) hỗ trợ; chưa đủ bằng chứng chọn giải pháp cuối cùng.
 
-Odoo 19.0 chỉ được nghiên cứu qua tài liệu chính thức, chưa cấu hình hoặc kiểm chứng ERP thực tế và chưa quyết định mua/triển khai. Hướng tiếp theo được đề xuất là giữ toàn chuỗi P2P làm bản đồ đối chiếu thiết kế và, sau khi được duyệt, thử trước G1-D01 bằng dữ liệu tổng hợp: thiếu dữ liệu, đối chiếu không đạt, chỉnh sửa/đối chiếu lại và kiểm tra riêng lúc chuẩn bị/gửi đề nghị. Các chủ đề khác nằm trong backlog xác minh; lab giả lập không đòi hỏi có hệ thống kế toán/ngân sách thật. Chuẩn hóa công cụ hiện có có thể hỗ trợ chuyển tiếp nhưng chưa chứng minh đáp ứng các yêu cầu hệ thống tự kiểm tra/chặn.
+Tôi đã đối chiếu tài liệu và source Odoo Community 19.0 để phân tích phần chuẩn, cấu hình và khoảng thiếu; [thiết kế ERP](./10-erp-lab/lab-design.md) đề xuất phần bổ sung cho G1-D01 và 30 kịch bản về dữ liệu thiếu, ngoại lệ, tính hiện hành, kiểm tra riêng khi chuẩn bị/gửi, đồng thời và thử lại. Lab Mức A dự kiến dùng kết quả định trước để kiểm chứng cơ chế chặn, chưa kiểm chứng thuật toán đối chiếu ba bên. Chưa triển khai addon, tạo fixture trên ERP hoặc thực hiện 30 kịch bản; chưa chứng minh Odoo đáp ứng G1-D01, chưa có UAT hoặc kết quả vận hành ERP.
+
+Chủ dự án chọn [chốt phần ERP ở phạm vi phân tích và thiết kế](./10-erp-lab/README.md) cho phiên bản portfolio này, sau kiểm kê cho thấy tài nguyên local hạn chế. Đây là quyết định phạm vi, không phải kết luận máy chắc chắn không chạy được Odoo. Triển khai và kiểm chứng thực tế là hướng mở rộng tùy chọn, cần được đánh giá và giao việc riêng; không còn là công việc bắt buộc đang chờ. Các đề xuất có điều kiện trong hồ sơ thiết kế/đánh giá được giữ nguyên như lịch sử phân tích, không phải kết quả đã chạy hoặc quyết định mua/triển khai ERP.
+
+Toàn chuỗi P2P vẫn là bản đồ đối chiếu thiết kế; dữ liệu lab dự kiến là tổng hợp và không đòi hỏi có hệ thống kế toán/ngân sách thật. Chuẩn hóa công cụ hiện có có thể hỗ trợ chuyển tiếp nhưng chưa chứng minh đáp ứng các yêu cầu hệ thống tự kiểm tra/chặn. Các OD và khoảng trống bao phủ yêu cầu vẫn còn mở; kết quả prototype PR giữ nguyên phạm vi đã kiểm chứng riêng.

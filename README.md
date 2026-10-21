@@ -10,6 +10,8 @@ Tôi phân tích quy trình hiện tại, đề xuất cách xử lý từng bư
 
 Prototype minh họa việc tạo, gửi và xem xét yêu cầu mua hàng, xử lý trả lại và theo dõi ba chỉ số PR bằng dữ liệu tổng hợp.
 
+Phần ERP đã hoàn tất ở phạm vi phân tích và thiết kế: phân tích mức phù hợp của Odoo Community, thiết kế phần bổ sung cho kiểm soát G1-D01 và xây dựng 30 kịch bản kiểm chứng. Chưa triển khai hoặc kiểm chứng trên ERP; xem [phạm vi ERP](./10-erp-lab/README.md) và [thiết kế chi tiết](./10-erp-lab/lab-design.md).
+
 ## 2. Bài toán nghiệp vụ
 
 Dữ liệu mua hàng phân tán làm chậm bàn giao, phê duyệt và đối chiếu. Đọc [case study](./case-study.md) để theo dõi mạch vấn đề → quyết định → prototype → kiểm chứng; [phát biểu vấn đề](./01-business-context/problem-statement.md) và [phân tích hiện trạng](./03-as-is-analysis/README.md) giữ căn cứ chi tiết.
@@ -48,6 +50,8 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 [Thiết kế phép đo PR](./08-traceability/pr-metrics-design.md) bổ sung cách xác định số PR đang chờ, thời gian chờ theo vòng xem xét và tỷ lệ PR từng bị trả lại.
 
 [Đánh giá phương án cải tiến P2P](./09-solution-evaluation/options-assessment.md) so sánh ba hướng giải pháp và nêu kiến nghị có điều kiện; Odoo 19.0 chỉ là tham chiếu tài liệu.
+
+**Phân tích và thiết kế ERP.** [README ERP lab](./10-erp-lab/README.md) ghi phạm vi đã chốt, kết quả kiểm kê môi trường và giới hạn. [Thiết kế](./10-erp-lab/lab-design.md) gồm phân tích mức phù hợp qua tài liệu/source Community, phần bổ sung dự kiến và 30 kịch bản chưa thực hiện. Lab Mức A dự kiến dùng kết quả định trước để kiểm chứng cơ chế chặn; chưa kiểm chứng thuật toán đối chiếu ba bên hoặc chứng minh Odoo đáp ứng G1-D01. Triển khai thực tế là hướng mở rộng tùy chọn.
 
 **Wireframe tĩnh.** Bộ [wireframe PR](./wireframes/pr/README.md) có bốn màn hình: danh sách của Người yêu cầu, tạo/chỉnh sửa, chi tiết PR và hàng đợi của Quản lý cửa hàng. Tải repository về máy, sau đó mở [wireframes/pr/index.html](./wireframes/pr/index.html) bằng trình duyệt; các nút lưu, gửi và quyết định là mẫu tĩnh. Có thể xem nhanh qua [ảnh hàng đợi](./wireframes/pr/previews/pr-04-queue.png) hoặc [các ảnh tiêu biểu](./wireframes/pr/README.md#ảnh-tiêu-biểu). Hướng dẫn mở, ảnh và phạm vi kiểm tra được ghi trong [README wireframe](./wireframes/pr/README.md#kiểm-tra-và-giới-hạn).
 

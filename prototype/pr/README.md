@@ -1,8 +1,10 @@
-# Prototype yêu cầu mua hàng (PR)
+# Prototype yêu cầu mua hàng và đơn đặt hàng (PR → PO)
 
 <a id="prototype-pr--tích-hợp-ui-3b2"></a>
 
 **Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](#hướng-dẫn-thử-nhanh)
+
+**P2 hiện có ở local, chưa công bố.** Liên kết Pages trên giữ bản PR đã công bố trước P2; chưa push/deploy thay đổi PR → PO. Xem [hướng dẫn PO local](#p2--thử-liên-thông-pr--po-trên-local) và [kết quả kiểm chứng P2](./verification.md#5-p2--liên-thông-pr--po-local). GR, hóa đơn, đối chiếu và đề nghị thanh toán chưa triển khai.
 
 **Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.**
 
@@ -47,11 +49,62 @@ Runtime được ghi nhận trong các lượt kiểm tra là Node **v22.14.0**.
 
 - Khởi tạo ở **Người yêu cầu · REQ-01**. PR của tôi có tìm mã/mô tả, trim và không phân biệt hoa/thường; có xóa tìm kiếm và thông báo rỗng. Tạo PR chỉ mở form chưa lưu. Lưu nháp thiếu trường rồi mở lại; PR trả lại dùng Lưu phần sửa/Gửi lại và giữ Chờ chỉnh sửa.
 - Tám trường dùng nội dung seed; người yêu cầu/đơn vị chỉ đọc. Không validation native chặn handler. Lỗi gửi giữ phần nhập, focus tổng hợp lỗi; liên kết dẫn tới trường có lỗi và thông báo cạnh trường. Không đủ ngân sách khác với nguồn không khả dụng; chỉ gọi kiểm tra ngân sách sau validation đạt.
-- **Điều khiển demo** chọn REQ-01/MGR-01, ba kết quả ngân sách và Khôi phục dữ liệu mẫu. Không có vai trò nghiệp vụ thứ ba. Chọn ngân sách/đổi vai không tăng giờ; lựa chọn giữ đến khi đổi và không sửa bằng chứng quá khứ. Phân quyền chỉ mô phỏng; handler vẫn kiểm tra quyền/ngữ cảnh.
+- **Điều khiển demo** giữ REQ-01/MGR-01 và ba kết quả ngân sách; P2 bổ sung BUY-01 (Nhân viên mua hàng), PM-01 (Trưởng bộ phận mua hàng), FIN-01 (Trưởng bộ phận tài chính) cùng lựa chọn tuyến PO. Đổi vai/ngân sách/tuyến không tăng giờ; tuyến chốt theo từng vòng gửi PO. Reset khôi phục cả PR/PO/clock/counter/cấu hình/UI; phân quyền chỉ mô phỏng, handler vẫn kiểm tra vai/ngữ cảnh/thế hệ phiên.
 - **MGR-01** xem hàng đợi và chi tiết trong đơn vị mẫu, chỉ quyết định PR đủ điều kiện. Trả lại cần lý do; từ chối cần xác nhận hậu quả. Mở/hủy xác nhận không gọi quyết định hoặc tăng giờ. PR đã duyệt/từ chối không có hành động sửa/gửi lại/quyết định lần hai.
 - Rời form/đổi vai khi có phần nhập chưa lưu mở cảnh báo nội bộ: Tiếp tục chỉnh sửa hoặc Bỏ thay đổi. Hủy reset giữ nguyên dữ liệu/lựa chọn/giờ; xác nhận reset xóa cả trạng thái UI, tìm kiếm và phần nhập.
 - Chỉ handler sở hữu validation, sự kiện và tăng giờ. UI giữ phần nhập cục bộ trước thao tác, không tính metric hoặc thời gian nghiệp vụ bằng cách thứ hai. Có khóa xử lý và bỏ click thứ hai trong double-click; không tự retry ghi. Nội dung người dùng được tạo bằng DOM/textContent, không chèn HTML.
 - Nháp tạo mới có nguồn riêng; thiếu log không bị coi là nháp. Chi tiết chỉ là nội dung hiện tại. Ghi chú làm rõ C xuất hiện tại **C-3**, không ngụ ý có tại C-1 hoặc tái dựng snapshot quá khứ.
+
+## P2 — Thử liên thông PR → PO trên local
+
+Chạy server bằng lệnh trong [Chạy local](#chạy-local). Giữ `prototype/pr/` và URL gốc; chưa cài dependency mới. Toàn bộ bước dưới diễn ra trong một trang/một phiên. Mở Điều khiển demo để chuyển vai, rồi đóng panel để thao tác phần nội dung. Tải lại hoặc xác nhận Khôi phục dữ liệu mẫu sẽ mất tiến trình và trở về T0; hủy reset giữ cả phần nhập chưa lưu.
+
+1. Khôi phục dữ liệu, ở REQ-01 bấm **Tạo PR**, nhập đủ trường và **Gửi**. Có thể dùng lượng có phần lẻ, giá ước tính 0 và ngày lịch hợp lệ; không ép ngày tương lai. Đồng hồ 13:00 nếu không xen lưu/lần gửi lỗi.
+2. Chuyển **MGR-01**, mở PR vừa tạo ở hàng đợi và **Phê duyệt**: 14:00.
+3. Chuyển **BUY-01**: PR vừa duyệt xuất hiện ngay trong **PR sẵn sàng lập PO**. Bấm **Lập PO** trên chính PR đó: 15:00. PR-D chỉ là cách vào nhanh trên cùng seed nếu muốn thử PO riêng.
+4. Xem PR nguồn/số phê duyệt, nội dung kế thừa chỉ đọc và giá ước tính PR. Chọn **NCC mẫu A**, nhập **Giá mua** riêng; giá hữu hạn ≥ 0, cho phép 0, dấu chấm cho phần lẻ. Thông tin giao hàng/thương mại tùy chọn. Hai NCC không đủ điều kiện hiển thị nhưng không cho chọn; không có onboarding. Không hiển thị tổng PO hoặc ngưỡng tiền để suy tuyến.
+5. Trong Điều khiển demo chọn tuyến cho lần gửi: mặc định **Không cần Tài chính bổ sung**. Bấm **Gửi PO**: 16:00. PO chuyển Mua hàng duyệt; đổi lựa chọn sau gửi không đổi tuyến đã chốt.
+6. Chuyển **PM-01**, mở PO và **Phê duyệt PO**: 17:00. Nếu không cần Finance, PO **Đủ điều kiện phát hành**, vẫn **Chưa phát hành**. Nếu đã chọn cần Finance, còn chờ **FIN-01** duyệt bổ sung; phát hành bị chặn đến khi đủ mọi phê duyệt.
+7. Chuyển **BUY-01**, mở PO và **Phát hành mô phỏng**: 18:00 trên tuyến không Finance và không có thao tác xen thêm. Ghi người/giờ đúng một lần; không email. Thiếu phê duyệt, phát hành lặp hoặc bấm lặp không tăng giờ/không thêm sự kiện phát hành.
+8. Bấm **Mở PR nguồn**, kiểm tra đúng ID và lịch sử gửi/duyệt thực tế; **Quay lại ngữ cảnh PO** đưa về hồ sơ trước đó, không đổi vai hoặc clock. Chuyển vai/module không làm mất dữ liệu phiên.
+
+PM-01 hoặc FIN-01 tại đúng bước có thể **Trả lại PO**, lý do không trống; thiếu lý do không ghi quyết định/tăng giờ. BUY-01 sửa/gửi lại; vòng mới đánh giá tuyến lại và bắt đầu từ PM-01, phê duyệt cũ chỉ còn lịch sử. Không có nhánh từ chối PO, sửa PO đang duyệt/đã duyệt/phát hành hoặc sửa PR nguồn đã duyệt.
+
+PO chưa đầy đủ có thể lưu nháp; số/NCC đã nhập không hợp lệ bị báo lỗi, giữ phần nhập UI để sửa. Gửi lỗi trong ngữ cảnh cho phép tăng đúng một giờ, không chuyển duyệt. Chỉ có một PO mỗi PR: chọn lại sẽ mở PO đang có. Form bẩn có cảnh báo rời/chuyển vai; không có autosave hoặc lưu bền.
+
+### Tổ chức module và metric trong P2
+
+- [session-context.mjs](./logic/session-context.mjs) sở hữu clock, actor, cấu hình, cấp ID/thế hệ reset; [p2p-session.mjs](./logic/p2p-session.mjs) khởi tạo đúng một miền PR và một miền PO, kiểm tra token thế hệ/actor/mã thao tác trước mutation. [po-session.mjs](./logic/po-session.mjs) giữ chứng từ, vòng/tuyến/phê duyệt/lịch sử PO. [pr-session.mjs](./logic/pr-session.mjs) nhận context dùng chung; API tương thích cũ vẫn phục vụ test PR riêng, runtime không tạo phiên PR thứ hai.
+- [app.mjs](./app.mjs) tái dùng DOM helpers, bảng/panel/callout/dialog và bốn view PR hiện có, thêm ngữ cảnh danh sách/form/chi tiết PO. [po-catalog.json](./data/po-catalog.json) chỉ thêm ba actor PO và ba NCC tổng hợp; không sao chép PR/user/đơn vị seed gốc. Font/CSS nền, validation PR, time/metric và cohort cũ được giữ.
+- API đọc PR đã duyệt có kiểm tra vai/phạm vi và bằng chứng APPROVE; Mua hàng không giả danh REQ-01. PO giữ PR ID/APPROVE ID thật và snapshot lúc lập; không dựng snapshot PR ở các mốc quá khứ. Quyền/historical log chỉ là mô phỏng trong trình duyệt.
+- Cùng clock: reset rồi BUY-01 lập PO từ PR-D đưa T đến 13:00; A/C vẫn chờ và tuổi chờ thành 196/97 giờ, số chờ 2, tỷ lệ 25%. Chỉ kéo dài coverage cho lịch sử PR phiên biết đầy đủ; fixture thiếu vẫn không xác định. Muốn tái lập chuỗi PR 12/13/14/15, reset chung rồi chạy riêng chuỗi **Hướng dẫn thử nhanh**, không xen thao tác PO.
+- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** cho P2, cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Workflow chưa sửa, vẫn chứa kiểm tra gói PR cũ; cần cập nhật trong P5 trước công bố, không dùng workflow cũ làm bằng chứng P2 đã deploy.
+
+### Tái lập kiểm tra P2
+
+Dùng Node v22.14.0 có sẵn (đường dẫn thực đã ghi ở phần đọc sâu), không cài dependency:
+
+```powershell
+$p2Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p2Tests = @(Get-ChildItem prototype/pr/test/*.test.mjs | ForEach-Object FullName)
+& $p2Node --test --test-reporter=spec @p2Tests
+```
+
+Lượt P2 ngày 22/10/2026: **63 test thực chạy, 63 đạt**, gồm 50 test cũ và 13 test PR–PO mới. Các assertion PR cũ không đổi; package/server tests chỉ mở rộng tài nguyên P2. Kết quả, phiên bản và giới hạn ghi tại [verification mục 5](./verification.md#5-p2--liên-thông-pr--po-local).
+
+Chạy server ở terminal riêng, rồi dùng helper trình duyệt hiện có; chọn cổng chưa dùng, không dừng tiến trình khác:
+
+```powershell
+& $p2Node prototype/pr/serve.mjs --port=8087
+# Terminal khác:
+& $p2Node prototype/pr/qa/launch-browser.mjs --cdp-port=9237
+# Terminal kiểm tra:
+& $p2Node prototype/pr/qa/browser-qa.mjs --scope=p2 --cdp=http://127.0.0.1:9237 --url=http://127.0.0.1:8087/ --output="$env:TEMP/p2-browser-results" --evidence-dir="$env:TEMP/p2-browser-evidence"
+```
+
+[browser-qa.mjs](./qa/browser-qa.mjs) dùng lại CDP client/click/fill/screenshot hiện có; [p2-scenarios.mjs](./qa/p2-scenarios.mjs) chỉ chứa kịch bản mới. Mỗi lượt mở/đóng một trang riêng để không nhận lại exception cũ từ trang khác. `--evidence-dir` cho phép giữ ảnh thử ngoài repo; không ghi đè ảnh PR lịch sử. Dừng đúng server/browser do mình mở sau kiểm tra.
+
+Ba ảnh P2 giữ từ lượt cuối: [PO từ PR mới duyệt](./evidence/p2-01-linked-po-form.png), [phát hành mô phỏng](./evidence/p2-02-issued-live-pr.png), [chặn khi thiếu Finance](./evidence/p2-03-finance-blocked.png). Ảnh chỉ hỗ trợ quan sát, không thay test handler/nguồn sự kiện. Phần **Ảnh trực tiếp hiện hành** và các mục đọc sâu dưới đây giữ hồ sơ PR theo phiên bản lịch sử; không dùng chúng chứng minh P2 mới đã chạy.
 
 ## Ảnh trực tiếp hiện hành
 

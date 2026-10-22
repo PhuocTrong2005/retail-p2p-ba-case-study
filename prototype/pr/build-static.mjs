@@ -5,7 +5,8 @@ import { dirname, join } from 'node:path';
 
 const output = fileURLToPath(new URL('./dist/', import.meta.url));
 const appFiles = ['index.html', 'styles.css', 'app.mjs', 'data/seed.json',
-  'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs'];
+  'data/po-catalog.json', 'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs',
+  'logic/session-context.mjs', 'logic/p2p-session.mjs', 'logic/po-session.mjs'];
 const fontFiles = ['BeVietnamPro-Regular.ttf', 'BeVietnamPro-Medium.ttf',
   'BeVietnamPro-SemiBold.ttf', 'BeVietnamPro-Bold.ttf', 'OFL.txt'];
 const sources = [

@@ -6,7 +6,8 @@ import { resolve, dirname, sep } from 'node:path';
 const root = dirname(fileURLToPath(import.meta.url));
 const fontRoot = resolve(root, '../../wireframes/pr');
 const appFiles = ['index.html', 'styles.css', 'app.mjs', 'data/seed.json',
-  'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs'];
+  'data/po-catalog.json', 'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs',
+  'logic/session-context.mjs', 'logic/p2p-session.mjs', 'logic/po-session.mjs'];
 const fontFiles = ['BeVietnamPro-Regular.ttf', 'BeVietnamPro-Medium.ttf', 'BeVietnamPro-SemiBold.ttf', 'BeVietnamPro-Bold.ttf', 'OFL.txt'];
 const mime = { '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.mjs':'text/javascript; charset=utf-8',
   '.json':'application/json; charset=utf-8', '.ttf':'font/ttf', '.txt':'text/plain; charset=utf-8' };

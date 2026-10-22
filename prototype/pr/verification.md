@@ -1,5 +1,7 @@
 # Kiểm chứng prototype PR — 3C
 
+Các mục 1–4 dưới đây là hồ sơ PR 3C theo phiên bản/thời điểm đã ghi, được bảo toàn. Phần mở rộng PR → PO local ngày 22/10/2026 có kết quả riêng tại [mục 5](#5-p2--liên-thông-pr--po-local); không suy kết quả P2 sang GR/hóa đơn/đề nghị hoặc demo Pages chưa được cập nhật.
+
 ## 1. Phạm vi, phiên bản, môi trường và thời điểm kiểm chứng
 
 **Kết luận: 3C hoàn tất trong phạm vi kiểm chứng prototype đã xác định dưới đây.** Không phải UAT, stakeholder sign-off, kiểm thử toàn bộ P2P hoặc bằng chứng về bảo mật, SLA và hiệu quả vận hành thực tế.
@@ -340,3 +342,74 @@ Các log Temp có thể mất sau khi hệ điều hành dọn; đó là giới 
 Đối chiếu cuối lượt với snapshot: seed, README dữ liệu, các file logic/test/QA/ảnh, baseline, SRS/RTM, thiết kế metric/SIM và README wireframe được bảo toàn; phần bổ sung chỉ `verification.md` và liên kết trong README prototype. Seed giữ SHA-256 `6d23e6d1a0e2fd31b9fdc40e573b9ee497927e997906d26df052e5e2c8f9feca`. Không stage, commit, push, merge, đổi branch hoặc hosting. Không khởi tạo server/browser demo mới cần dừng; các server test N-H được đóng trong test.
 
 **3C hoàn tất** vì 18 kịch bản cốt lõi đều có kết quả và bằng chứng truy được nguồn, không còn cốt lõi Không đạt/Chưa kiểm tra/Bị chặn. Kết luận này chỉ xác nhận phạm vi kiểm chứng prototype trong tài liệu, không xác nhận toàn bộ yêu cầu hệ thống đã được kiểm thử, được doanh nghiệp chấp thuận hoặc vận hành an toàn/hiệu quả.
+
+## 5 P2 — Liên thông PR → PO local
+
+**P2 hoàn tất trong phạm vi PR → PO đã chạy trên local dưới đây.** Một ứng dụng, một phiên PR/PO, một clock. Không xác nhận toàn bộ AC đạt, UAT, bảo mật server, audit đầy đủ hoặc lợi ích vận hành. P3/P4 chưa triển khai; không có GR/hóa đơn/đề nghị thanh toán hoạt động. P2 chưa được commit code, push hoặc deploy trong lượt này.
+
+### Nguồn, phiên bản và môi trường P2
+
+- Branch `p2p-prototype-design`, đầu lượt HEAD `7b9ee2afdc1d2a5eb17d2341fbfce4b13947d3c7`; index rỗng, chỉ thiết kế P1 untracked, không tìm thấy AGENTS.md áp dụng. Theo brief P2, chỉ stage thiết kế rồi chạy `git diff --cached --check` và commit **`5d47caceec7d5d852b00b19f843490cd281ce5c9`**, thông điệp `docs: add connected P2P prototype design`. Code P2 được kiểm tra là working tree chưa commit trên HEAD này; commit thiết kế không chứa code P2.
+- [Thiết kế P1](../../06-system-analysis/p2p-prototype-design.md): phần PR/PO được brief P2 chấp thuận; BHV-01–07 và phần P2 của CHK-01–05/16–20. [UC-03/04](../../06-system-analysis/use-case-specifications.md), [BR-05–12, BR-25–27](../../04-to-be-design/business-rules.md), [G1-D02/03/05](../../08-traceability/baseline-decisions.md), [SRS](../../07-software-requirements/srs.md) FR-01–07, AC-01–09/19/26–28/33 và NFR liên quan là căn cứ; mapping không xác nhận bao phủ đầy đủ từng AC.
+- Kế thừa [hành vi PR](../../06-system-analysis/pr-behavior-analysis.md), [SIM-01–04](../../06-system-analysis/pr-prototype-decisions.md), [metric PR](../../08-traceability/pr-metrics-design.md), [seed](./data/seed.json), code/UI/tests hiện hữu. Seed, module validation/time/metrics và kỳ cohort không đổi. Không suy lựa chọn lab ERP thành policy web.
+- Snapshot trước sửa ngoài repo: `C:\Users\ASUS\AppData\Local\Temp\p2p-p2-fa0cce8b-4590-4bf2-b45b-59ffb8c2d019`, có HEAD/status/index, bản sao thiết kế trước chốt và SHA-256 của 129 file tracked đầu lượt; đã đọc lại và đối chiếu hash bản sao trước sửa. Các log/ảnh thử/manifest bên dưới cũng nằm ở đó; Temp có thể bị dọn.
+- Windows/PowerShell, Node **v22.14.0** có sẵn tại đường dẫn trong README. Chrome **155.0.8059.85 headless**, CDP, không dependency mới. Server tác vụ `http://127.0.0.1:8087/`, chỉ loopback và allowlist; browser tác vụ CDP `127.0.0.1:9237`, profile Temp riêng. Đây là URL local trong phiên kiểm tra, không cam kết server còn chạy sau bàn giao.
+
+### Test Node và gói local
+
+Lệnh từ root repo:
+
+```powershell
+$p2Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p2Tests = @(Get-ChildItem prototype/pr/test/*.test.mjs | ForEach-Object FullName)
+& $p2Node --test --test-reporter=spec @p2Tests
+```
+
+Lượt cuối thực chạy: **63 test, 63 đạt, 0 lỗi, 0 bỏ qua**; log `node-final.txt` ngoài repo. Bao gồm 50 test cũ và 13 test mới trong [p2p.test.mjs](./test/p2p.test.mjs). Giữ nguyên assertion và bytes của [session.test.mjs](./test/session.test.mjs), [metrics.test.mjs](./test/metrics.test.mjs), [fixtures.mjs](./test/fixtures.mjs); [server.test.mjs](./test/server.test.mjs) và [package.test.mjs](./test/package.test.mjs) mở rộng danh sách tài nguyên P2. Các lượt đầu 45 test PR/metric và 62 test sau thêm PO là kiểm tra trung gian, không thay kết quả cuối 63 test.
+
+Test mới kiểm tra PR duyệt thật → PO dùng đúng APPROVE, ineligible/missing/ambiguous source và bằng chứng thiếu; một PO mỗi PR; snapshot detached/trường nguồn RO; NCC không đủ điều kiện/giá không hợp lệ/giá 0 và phần lẻ; nháp chưa đủ; hai tuyến; Procurement bắt buộc; PM/Finance trả thiếu/đủ lý do; vòng mới không dùng duyệt cũ; phát hành 0/+1/0; sai vai/ngữ cảnh; token replay, actor cũ/thế hệ reset cũ dù ID cấp lại; clock/coverage và PR-only chuẩn sau reset; mở lại form PR qua facade runtime.
+
+`node prototype/pr/build-static.mjs` đã chạy local: **17 file** trong `prototype/pr/dist/`, từng byte khớp source; `artifact-manifest.json` ngoài repo giữ SHA-256 từng file. Package test kiểm tra đúng paths/bytes, build lặp loại file thừa và fail trước thay output khi thiếu seed. Server test giữ traversal/.git/test/README ngoài allowlist bị chặn và chỉ GET/HEAD. Không thử toàn bộ artifact qua Pages trong P2; workflow vẫn nguyên bản với kiểm tra gói PR cũ, cần cập nhật/kiểm chứng P5 trước công bố.
+
+### Trình duyệt thực chạy và kịch bản P2
+
+Lệnh thực chạy cuối:
+
+```powershell
+& $p2Node prototype/pr/qa/browser-qa.mjs --scope=p2 --cdp=http://127.0.0.1:9237 --url=http://127.0.0.1:8087/ --output=C:/Users/ASUS/AppData/Local/Temp/p2p-p2-fa0cce8b-4590-4bf2-b45b-59ffb8c2d019/browser-final --evidence-dir=C:/Users/ASUS/AppData/Local/Temp/p2p-p2-fa0cce8b-4590-4bf2-b45b-59ffb8c2d019/evidence-final
+```
+
+Lượt cuối **22/10/2026 10:07:52.940–10:08:27.253 UTC+07:00**, log `browser-final/browser-results.json`: **15 mục kiểm tra đạt**, gồm 10 bản ghi bố cục (5 ngữ cảnh × 1280/1440 px) và 5 nhóm kiểm tra chức năng/tài nguyên. Con số này là mô tả lượt thực chạy, không chỉ tiêu coverage hoặc bằng chứng mỗi nhóm phủ toàn bộ AC. Các bước dùng CDP click chuột vào nút, input/select qua DOM events; bấm lặp được kích hoạt có chủ đích bằng hai `click()` liên tiếp. Không dùng truy cập session nội bộ thay cho kết quả UI.
+
+**Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.** Mọi mốc trong bảng là **10/10/2026, UTC+07:00** mô phỏng, khác ngày kiểm tra thực 22/10/2026.
+
+| Kịch bản / vai trò | Mong đợi | Thực tế quan sát và kết luận |
+| --- | --- | --- |
+| PR mới → PO, REQ-01/MGR-01/BUY-01 | PR gửi/duyệt thật dùng ngay để lập PO, không reload/dataset khác; PR ID/APPROVE đúng | REQ-01 gửi PR-NEW-1 13:00, MGR-01 duyệt 14:00, BUY-01 thấy ngay và lập PO-DEMO-1 15:00, snapshot lượng 1.5/giá PR 0; APPROVE `DEMO-EVENT-2`. **Đạt UI + Node** |
+| Validation PO và focus, BUY-01 | Thiếu trường/giá âm chặn, giữ phần nhập, focus tổng hợp/trường; NCC không đủ điều kiện không chọn; giá 0 được phép | Gửi thiếu 16:00 focus `po-errors`, liên kết focus `po-supplier_id`; giá -1 chặn 17:00 và giữ giá -1. NCC inactive option disabled; sửa giá 0 rồi gửi hợp lệ 18:00. **Đạt UI**; NaN/vô cực/định dạng/nhà cung cấp giả và các biến thể khác ở **Node** |
+| Bấm lặp, tuyến không Finance và phát hành, PM-01/BUY-01 | Một lần gửi; trước đủ duyệt không phát hành/tick; đủ điều kiện khác đã phát hành; phát hành đúng một lần | Gửi lặp chỉ vào vòng 1 lúc 18:00; nút phát hành khóa/click không đổi giờ. PM-01 duyệt 19:00 mới đủ điều kiện. BUY-01 phát hành lặp chỉ một sự kiện 20:00, tổng lịch sử 4 mục Create/Submit/Approve/Issue. **Đạt UI + Node** |
+| Mở ngược PR và quay lại, BUY-01 | Đúng PR/lịch sử, không tự đổi vai hoặc T | Tại 20:00 mở PR-NEW-1, đúng nội dung và 2 sự kiện PR thực; vẫn BUY-01; quay đúng PO-DEMO-1, T không đổi. **Đạt UI** |
+| Tuyến Finance chốt theo vòng, BUY-01/PM-01/FIN-01 | Finance không duyệt trước Procurement; đổi điều khiển không đổi vòng đã gửi; còn thiếu Finance thì chặn phát hành | Reset riêng: PR-D tạo PO 13:00, gửi tuyến Có 14:00; đổi control Không nhưng tuyến vẫn Có. FIN-01 chưa có nút duyệt trước PM; PM duyệt 15:00, BUY còn khóa phát hành/click không đổi giờ. **Đạt UI + Node** |
+| Finance trả lại/gửi lại, FIN-01/BUY-01/PM-01 | Trả thiếu lý do không tick; trả đủ rồi sửa/gửi lại phải duyệt lại từ Procurement, giữ lịch sử | FIN trả thiếu lý do vẫn 15:00/focus reason; đủ lý do trả 16:00. BUY sửa thương mại/gửi lại tuyến Có 17:00, vòng 2 chờ PM, chưa phát hành; PM duyệt 18:00, FIN duyệt 19:00, BUY phát hành 20:00. **Đạt UI**; nhánh PM trả lại cũng **đạt Node** |
+| Form bẩn/chuyển vai, BUY-01 | Cảnh báo, hủy giữ nhập/actor/giờ | Đang nhập giá mua 0 sau lỗi lúc 17:00, thử đổi PM mở xác nhận; hủy giữ BUY-01, phần nhập và T=17:00. **Đạt UI** |
+| Clock chung với PR-D, BUY-01 → MGR-01 | T tăng nhưng không thêm sự kiện PR/cohort mới | Reset; BUY lập PO từ PR-D 13:00, chuyển MGR thấy 2 chờ, A196/C97 giờ, 25%. **Đạt UI + Node**; coverage thiếu vẫn không xác định kiểm tra riêng ở **Node** |
+| Chuỗi PR chuẩn, REQ-01/MGR-01 | Sau reset không xen PO phải giữ 12/13/14/15, công thức/cohort không đổi | 12:00 A195/C96, 2 chờ/25%; B nguồn không khả dụng 13:00 giữ chờ sửa/A196/C97; B đạt 14:00 A197/B0/C98/3 chờ; trả A 15:00 B1/C99/2 chờ/50%. **Đạt UI + Node** |
+| Reset/reload, token cũ | Về seed PR/PO rỗng/T0/REQ/PASS/tuyến Không; form thế hệ cũ không tác động dữ liệu ID tái dùng | Reset và reload UI đúng mặc định/PO rỗng. Actor cũ, command replay và PR/PO form token trước reset khi ID cấp lại bị chặn không mutation/tick ở **Node**; không dùng Node để tuyên bố UI đã thử replay form DOM cũ |
+
+Đã kiểm tra 1280/1440 px, `deviceScaleFactor=1`, không cuộn ngang toàn trang tại PR list, PO list/form/chi tiết phát hành và PR nguồn. Đã xem ảnh thực tế: chữ tiếng Việt và nội dung/nút không chồng/cắt trong các ngữ cảnh này. PO dùng panel/bảng/lỗi/dialog/CSS nền hiện có; bốn view PR được giữ. CDP `CSS.getPlatformFontsForNode` xác nhận glyph custom Be Vietnam Pro Bold trên h1, SemiBold trên nút, Regular trên nhãn dữ liệu tổng hợp. **33 response tài nguyên**, tất cả local HTTP 200, không lỗi console trang trong lượt cuối. Không suy cảnh báo stderr của tiến trình Chrome thành lỗi console ứng dụng.
+
+Ba ảnh cuối được sao chép byte từ `evidence-final/` sau khi xem kiểm tra; không ghi đè ảnh PR lịch sử:
+
+| Ảnh | Giờ chụp thực 22/10/2026 UTC+07:00 | Vai trò / giờ mô phỏng |
+| --- | --- | --- |
+| [p2-01-linked-po-form.png](./evidence/p2-01-linked-po-form.png) | 10:07:56.804 | BUY-01 / 15:00; PO từ PR mới duyệt thật |
+| [p2-02-issued-live-pr.png](./evidence/p2-02-issued-live-pr.png) | 10:08:02.839 | BUY-01 / 20:00; phát hành mô phỏng một lần |
+| [p2-03-finance-blocked.png](./evidence/p2-03-finance-blocked.png) | 10:08:09.800 | BUY-01 / 15:00; chưa đủ Finance, phát hành khóa |
+
+### Vấn đề đã sửa, bảo toàn nguồn và giới hạn P2
+
+Lượt `browser-attempt1` dừng ở hồi quy mở PR-B vì facade phiên chung thiếu `openForm`, dù luồng PO trước đó đã chạy; đã bổ sung API đọc/mở lại form và test runtime tương ứng. Lượt `browser-attempt2` thực hiện được các nhóm nghiệp vụ nhưng kiểm tra console nhận lại exception cũ của trang dùng chung từ lượt trước. Harness được sửa mở một trang mới do lượt kiểm tra sở hữu; lượt `browser-final` chạy lại toàn bộ và không lỗi console. Hai lượt cũ giữ log/ảnh riêng trong Temp, không làm bằng chứng đạt hoặc dùng ảnh của lượt thiếu bước. Form submit handler cũng giữ generation lúc render để form trước reset không dùng generation mới.
+
+SHA-256 bytes seed trong working tree ở đầu và cuối P2 cùng là `252d27b40eaa68f146ca34dc90b826a92b9c8e65ebd173eba5d5901ad4a1543f`; khớp snapshot đầu lượt. Không thay giá trị hash ghi cho phiên bản lịch sử 3C ở mục trước bằng hash working tree P2. Tests so cả object đầu vào và bytes file; kiểm tra hash cuối riêng xác nhận mọi nguồn ngoài `prototype/pr/` của 129 file tracked đầu lượt, ảnh/font/wireframe và baseline/metric/SIM/ERP không đổi. P1 chỉ cập nhật chấp thuận và commit đầu lượt, không ghi kết quả P2 ngược vào kế hoạch G; file thiết kế không đổi sau commit. `dist/` tự sinh/ignored, không stage/commit. Kết quả `git diff --check`, kiểm tra file mới và Git status cuối phản hồi trong chat; không lấy số liệu kiểm tra cũ làm kết quả mới.
+
+Giới hạn còn lại: quyền theo vai chỉ mô phỏng trong browser, một đơn vị, một dòng/một PO mỗi PR; snapshot PO chỉ từ lúc lập, không tái dựng PR lịch sử. Browser UI chỉ thử dữ liệu seed/PR mới của REQ-01; ngoài đơn vị và thiếu log bằng fixtures ở logic, chưa xác nhận UI lọc toàn bộ ma trận quyền. Chưa thử mọi trình duyệt, headful, mobile P2, công cụ trợ năng/UAT, beforeunload/đóng tab của P2 hoặc mọi tổ hợp trả lại trên UI. Không có backend/lưu bền/NCC thật/email; chưa P3/P4, chưa đối chiếu hay thanh toán, chưa kiểm chứng/công bố artifact đầy đủ P5. Không có lỗi kiểm soát trọng yếu còn biết trong phạm vi P2 đã chạy; không suy thành toàn bộ SRS/AC đạt.

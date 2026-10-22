@@ -190,3 +190,5 @@ dialog::backdrop { background: #17352966; }
 .callout textarea { display: block; width: 100%; min-height: 90px; padding: 10px; margin: 8px 0; border: 1px solid var(--control); border-radius: 4px; }
 button.back { border: 0; background: transparent; padding: 0; text-decoration: underline; color: var(--dark); }
 .status-line { margin-bottom: 16px; }
+.module-nav { padding-top: 10px; padding-bottom: 0; }
+[data-screen^='PO-'] dd { overflow-wrap: anywhere; }

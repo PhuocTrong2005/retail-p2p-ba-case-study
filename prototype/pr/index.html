@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Prototype PR · NovaRetail</title>
+  <title>Prototype PR → PO · NovaRetail</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.mjs"></script>
@@ -15,15 +15,18 @@
     <div class="header-time">Thời gian mô phỏng<time id="clock"></time></div>
   </div></header>
   <div class="review-bar"><div class="review-inner">
-    <span class="wire-note">Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.</span>
+    <span class="wire-note">Prototype PR → PO — dữ liệu tổng hợp, không phải hệ thống vận hành.</span>
     <details class="demo"><summary>Điều khiển demo</summary><div class="demo-controls">
       <p class="small">Chuyển vai trò chỉ đổi ngữ cảnh demo, không phải đăng nhập hoặc bảo mật thực tế.</p>
       <label for="role">Vai trò</label><select id="role"><option value="REQ-01">Người yêu cầu · REQ-01</option><option value="MGR-01">Quản lý cửa hàng · MGR-01</option></select>
       <label for="budget">Kết quả ngân sách lần kiểm tra tiếp theo</label><select id="budget"><option value="PASS">Đạt</option><option value="INSUFFICIENT">Không đủ ngân sách</option><option value="UNAVAILABLE">Nguồn dữ liệu ngân sách không khả dụng</option></select>
+      <label for="finance-route">Tuyến PO cho lần gửi tiếp theo</label><select id="finance-route"><option value="false">Không cần Tài chính bổ sung</option><option value="true">Có Tài chính bổ sung</option></select>
+      <p class="small">Mua hàng phê duyệt bắt buộc. Lựa chọn chỉ chốt khi gửi/gửi lại PO; không đổi tuyến vòng đang chờ.</p>
       <button class="btn secondary" id="reset" type="button">Khôi phục dữ liệu mẫu</button>
     </div></details>
   </div></div>
   <div class="demo-state" id="demo-state"></div>
+  <nav class="shell module-nav" id="module-nav" aria-label="Điều hướng công việc"></nav>
   <main class="shell" id="app" aria-live="polite"><p>Đang nạp dữ liệu mẫu…</p></main>
   <footer class="shell footer">Dữ liệu chỉ giữ trong bộ nhớ trang. Tải lại sẽ mất thay đổi và trở về dữ liệu mẫu. Không phải chứng từ doanh nghiệp hoặc giá thị trường đã xác minh.</footer>
   <dialog id="confirm-dialog" aria-labelledby="dialog-title">

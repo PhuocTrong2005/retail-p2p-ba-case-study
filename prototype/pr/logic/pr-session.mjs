@@ -1,4 +1,5 @@
-import { timestamp, atDemoOffset } from './time.mjs';
+import { timestamp } from './time.mjs';
+import { createSessionContext } from './session-context.mjs';
 import { validatePR, nonblank } from './validation.mjs';
 import { inspectHistory, calculateMetrics, STATUS } from './metrics.mjs';
 
@@ -8,39 +9,45 @@ const editable = status => status === STATUS.DRAFT || status === STATUS.RETURNED
 const editableKeys = new Set(['cost_center_id', 'business_reason', 'needed_by', 'item']);
 
 // A small in-memory session, not an audit store. No I/O, DOM, or real clock.
-export function createPRSession(seed) {
+export function createPRSession(seed, sharedContext = null) {
   const initial = clone(seed);
-  let data, now, userId, budget, nextPR, nextEvent, forms, explicitDrafts, completeIds, feedback;
+  const runtime = sharedContext ?? createSessionContext(initial);
+  const now = () => runtime.context().time;
+  const userId = () => runtime.context().user_id;
+  let data, forms, explicitDrafts, completeIds, feedback;
   const requesterId = initial.demo_config.initial_user_id;
   const unitId = initial.demo_config.unit_id;
   const managerId = initial.reference_data.units.find(u => u.id === unitId)?.reviewer_id;
   function initialize() {
-    data = clone(initial); now = data.demo_config.initial_time; userId = requesterId; budget = 'PASS';
+    data = clone(initial);
     if (!Array.isArray(data.events)) data.events = [];
     if (!Array.isArray(data.historical_checks)) data.historical_checks = [];
-    nextPR = 1; nextEvent = 1; forms = new Map(); explicitDrafts = new Set(); feedback = new Map();
+    forms = new Map(); explicitDrafts = new Set(); feedback = new Map();
     completeIds = new Set(data.purchase_requisitions.filter(p => {
       const c = p.history_coverage ?? data.metadata?.history_coverage;
-      return timestamp(c?.complete_through) >= timestamp(now) &&
+      return timestamp(c?.complete_through) >= timestamp(now()) &&
         (p.history_coverage !== undefined || c?.all_seed_prs_included === true);
     }).map(p => p.pr_id));
   }
   initialize();
-  const user = () => data.reference_data.users.find(u => u.id === userId);
-  const isRequester = () => userId === requesterId && user()?.role_id === 'REQUESTER' && user()?.unit_id === unitId;
-  const isManager = () => userId === managerId && user()?.role_id === 'STORE_MANAGER' && user()?.unit_id === unitId;
-  const owns = p => isRequester() && p.requester_id === userId && p.unit_id === unitId;
-  const readable = p => p && (owns(p) || (isManager() && p.unit_id === unitId));
+  const user = () => data.reference_data.users.find(u => u.id === userId());
+  const isRequester = () => userId() === requesterId && user()?.role_id === 'REQUESTER' && user()?.unit_id === unitId;
+  const isManager = () => userId() === managerId && user()?.role_id === 'STORE_MANAGER' && user()?.unit_id === unitId;
+  const owns = p => isRequester() && p.requester_id === userId() && p.unit_id === unitId;
+  const purchasingReader = () => ['PROCUREMENT_OFFICER', 'PROCUREMENT_MANAGER', 'FINANCE_MANAGER'].includes(runtime.actor()?.role_id) && runtime.actor()?.unit_id === unitId;
+  const readable = p => p && (owns(p) || (isManager() && p.unit_id === unitId) ||
+    (purchasingReader() && p.unit_id === unitId && analysis(p).status === STATUS.APPROVED));
   const find = id => data.purchase_requisitions.find(p => p.pr_id === id);
-  const analysis = p => inspectHistory(data, p, now, { explicitDrafts: [...explicitDrafts] });
+  const analysis = p => inspectHistory(data, p, now(), { explicitDrafts: [...explicitDrafts] });
   const statusOf = p => forms.has(p.pr_id) && !find(p.pr_id) ? STATUS.DRAFT : analysis(p).status;
-  function tick() {
-    now = atDemoOffset(timestamp(now) + 3600000);
+  runtime.onReset(initialize);
+  runtime.onTick(time => {
     // Extend completeness only for histories actually known to this session.
     for (const p of data.purchase_requisitions) {
-      if (completeIds.has(p.pr_id)) p.history_coverage = { complete_through: now };
+      if (completeIds.has(p.pr_id)) p.history_coverage = { complete_through: time };
     }
-  }
+  });
+  const tick = () => runtime.tick();
   function working(id) {
     const p = forms.get(id) ?? find(id);
     if (!p || !owns(p)) return null;
@@ -49,7 +56,7 @@ export function createPRSession(seed) {
   function persist(p) {
     const existing = find(p.pr_id);
     const saved = clone(p);
-    if (completeIds.has(p.pr_id)) saved.history_coverage = { complete_through: now };
+    if (completeIds.has(p.pr_id)) saved.history_coverage = { complete_through: now() };
     if (existing) data.purchase_requisitions[data.purchase_requisitions.indexOf(existing)] = saved;
     else data.purchase_requisitions.push(saved);
     forms.delete(p.pr_id);
@@ -57,13 +64,13 @@ export function createPRSession(seed) {
   }
   function append(p, type, round, extra = {}) {
     let id;
-    do { id = `DEMO-EVENT-${nextEvent++}`; }
+    do { id = runtime.nextId('DEMO-EVENT-'); }
     while (data.events.some(e => e.event_id === id) || data.historical_checks.some(c => c.check_reference === `CHK-${id}`));
     const orders = data.events.filter(e => e.pr_id === p.pr_id).map(e => e.event_order);
-    const event = { event_id: id, pr_id: p.pr_id, event_type: type, occurred_at: now,
-      event_order: Math.max(0, ...orders) + 1, review_round: round, actor_id: userId, ...extra };
+    const event = { event_id: id, pr_id: p.pr_id, event_type: type, occurred_at: now(),
+      event_order: Math.max(0, ...orders) + 1, review_round: round, actor_id: userId(), ...extra };
     data.events.push(event);
-    completeIds.add(p.pr_id); p.history_coverage = { complete_through: now };
+    completeIds.add(p.pr_id); p.history_coverage = { complete_through: now() };
     return event;
   }
   function processHistory(p) {
@@ -75,7 +82,7 @@ export function createPRSession(seed) {
     const p = find(id);
     if (!readable(p)) return fail('NOT_FOUND_OR_FORBIDDEN');
     const a = analysis(p);
-    const age = calculateMetrics(data, now, { unitId, explicitDrafts: [...explicitDrafts] }).met02.values.find(v => v.pr_id === id);
+    const age = calculateMetrics(data, now(), { unitId, explicitDrafts: [...explicitDrafts] }).met02.values.find(v => v.pr_id === id);
     const lastReturn = [...a.events].reverse().find(e => e.event_type === 'RETURN_FOR_EDIT');
     return { ok: true, pr: clone(p), status: a.status, round: a.round, wait: clone(age),
       ready_for_purchasing: a.status === STATUS.APPROVED,
@@ -86,19 +93,19 @@ export function createPRSession(seed) {
       feedback: owns(p) ? clone(feedback.get(id) ?? null) : null };
   }
   return Object.freeze({
-    context: () => ({ time: now, user_id: userId, budget_outcome: budget, unit_id: unitId, data_label: data.metadata.data_label }),
+    context: () => runtime.context(),
     setUser(id) {
       if (![requesterId, managerId].includes(id) || !data.reference_data.users.some(u => u.id === id)) return fail('INVALID_DEMO_USER');
-      userId = id; return { ok: true };
+      return runtime.setUser(id);
     },
     setBudget(outcome) {
       if (!['PASS', 'INSUFFICIENT', 'UNAVAILABLE'].includes(outcome)) return fail('INVALID_BUDGET_OUTCOME');
-      budget = outcome; return { ok: true };
+      return runtime.setBudget(outcome);
     },
     beginNew() {
       if (!isRequester()) return fail('FORBIDDEN');
       let id;
-      do { id = `PR-NEW-${nextPR++}`; } while (find(id) || forms.has(id) || data.events.some(e => e.pr_id === id));
+      do { id = runtime.nextId('PR-NEW-'); } while (find(id) || forms.has(id) || data.events.some(e => e.pr_id === id));
       const pr = { pr_id: id, requester_id: requesterId, unit_id: unitId, cost_center_id: '', business_reason: '',
         needed_by: '', item: { description: '', quantity: '', estimated_unit_price: '' } };
       forms.set(id, pr); explicitDrafts.add(id); completeIds.add(id);
@@ -122,7 +129,7 @@ export function createPRSession(seed) {
       const p = working(id);
       if (!p) return fail('NOT_EDITABLE_OR_FORBIDDEN');
       tick(); const saved = persist(p);
-      return { ok: true, time: now, status: analysis(saved).status };
+      return { ok: true, time: now(), status: analysis(saved).status };
     },
     submit(id) {
       const p = working(id);
@@ -131,12 +138,13 @@ export function createPRSession(seed) {
       tick(); let saved = persist(p);
       const validation = validatePR(saved, data.reference_data);
       if (!validation.valid) {
-        const result = { ok: false, code: 'VALIDATION_FAILED', time: now, errors: validation.errors, budget_checked: false };
+        const result = { ok: false, code: 'VALIDATION_FAILED', time: now(), errors: validation.errors, budget_checked: false };
         feedback.set(id, clone(result)); return result;
       }
+      const budget = runtime.context().budget_outcome;
       if (budget !== 'PASS') {
         const result = { ok: false, code: budget === 'INSUFFICIENT' ? 'INSUFFICIENT_BUDGET' : 'BUDGET_UNAVAILABLE',
-          time: now, budget_checked: true, budget_outcome: budget };
+          time: now(), budget_checked: true, budget_outcome: budget };
         feedback.set(id, clone(result)); return result;
       }
       saved = persist(validation.normalized);
@@ -146,7 +154,7 @@ export function createPRSession(seed) {
       data.historical_checks.push({ check_reference: event.check_reference, event_id: event.event_id,
         simulated: true, required_fields_passed: true, budget_check_passed: true });
       explicitDrafts.delete(id);
-      const result = { ok: true, time: now, event: clone(event), budget_checked: true, budget_outcome: 'PASS', status: STATUS.WAITING };
+      const result = { ok: true, time: now(), event: clone(event), budget_checked: true, budget_outcome: 'PASS', status: STATUS.WAITING };
       feedback.set(id, clone(result)); return result;
     },
     decide(id, type, { reason, confirmed = false } = {}) {
@@ -157,9 +165,18 @@ export function createPRSession(seed) {
       if (type === 'RETURN_FOR_EDIT' && !nonblank(reason)) return { ...fail('RETURN_REASON_REQUIRED'), errors: { return_reason: { field: 'return_reason', code: 'REQUIRED' } } };
       if (type === 'REJECT' && confirmed !== true) return fail('CONFIRMATION_REQUIRED');
       tick(); const event = append(p, type, a.round, type === 'RETURN_FOR_EDIT' ? { return_reason: reason.trim() } : {});
-      return { ok: true, time: now, event: clone(event), status: analysis(p).status, ready_for_purchasing: type === 'APPROVE' };
+      return { ok: true, time: now(), event: clone(event), status: analysis(p).status, ready_for_purchasing: type === 'APPROVE' };
     },
     detail,
+    approvedSource(id) {
+      const p = find(id);
+      if (!purchasingReader() || !p || p.unit_id !== unitId) return fail('NOT_FOUND_OR_FORBIDDEN');
+      const a = analysis(p);
+      const approval = a.events.at(-1);
+      if (a.status !== STATUS.APPROVED || approval?.event_type !== 'APPROVE' ||
+          approval.actor_id !== managerId || !nonblank(approval.event_id)) return fail('PR_NOT_APPROVED');
+      return { ok: true, pr: clone(p), approval_event: clone(approval) };
+    },
     history(id) {
       const p = find(id);
       return readable(p) ? { ok: true, events: clone(processHistory(p)), document_snapshots_available: false } : fail('NOT_FOUND_OR_FORBIDDEN');
@@ -174,11 +191,11 @@ export function createPRSession(seed) {
     },
     metrics() {
       if (!isManager()) return fail('FORBIDDEN');
-      return { ok: true, ...clone(calculateMetrics(data, now, { unitId, explicitDrafts: [...explicitDrafts] })) };
+      return { ok: true, ...clone(calculateMetrics(data, now(), { unitId, explicitDrafts: [...explicitDrafts] })) };
     },
     reset({ confirmed = false } = {}) {
       if (confirmed !== true) return fail('CONFIRMATION_REQUIRED');
-      initialize(); return { ok: true, time: now };
+      return runtime.reset({ confirmed });
     }
   });
 }

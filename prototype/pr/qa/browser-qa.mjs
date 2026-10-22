@@ -8,10 +8,10 @@ const dir=resolve(arg('output',resolve(tmpdir(),'pr-ui-browser-results')));
 mkdirSync(dir,{recursive:true});
 const endpoint=arg('cdp','http://127.0.0.1:9226');
 const baseUrl=arg('url','http://127.0.0.1:8080/');
-const evidence=fileURLToPath(new URL('../evidence/',import.meta.url));
+const evidence=resolve(arg('evidence-dir',fileURLToPath(new URL('../evidence/',import.meta.url))));
 mkdirSync(evidence,{recursive:true});
-const targets=await (await fetch(`${endpoint}/json/list`)).json();
-const target=targets.find(t=>t.type==='page');
+// Own a fresh page so Runtime.enable cannot replay exceptions from an earlier run.
+const target=await (await fetch(`${endpoint}/json/new?about:blank`,{method:'PUT'})).json();
 const ws=new WebSocket(target.webSocketDebuggerUrl); await new Promise(r=>ws.onopen=r);
 let next=1; const pending=new Map(),events=[];
 ws.onmessage=message=>{ const m=JSON.parse(message.data); if(m.id){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(new Error(JSON.stringify(m.error))):p.resolve(m.result);}else events.push(m); };
@@ -53,6 +53,10 @@ function pass(name,detail){report.checks.push({name,detail,at:stamp()});console.
 async function shot(name,scenario){await evaluate('window.scrollTo(0,0)');await evaluate('document.fonts.ready.then(()=>true)');const dims=await cdp('Page.getLayoutMetrics');const img=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip:{x:0,y:0,width:1440,height:Math.ceil(dims.cssContentSize.height),scale:1}});writeFileSync(`${evidence}/${name}.png`,Buffer.from(img.data,'base64'));report.screenshots.push({name:`${name}.png`,scenario,at:stamp(),tool:'Chrome DevTools Protocol Page.captureScreenshot',viewport:1440,simulatedTime:await clock(),role:await evaluate(`document.querySelector('#role').value`)});}
 async function metricStep(hour,count,ages,percent,context){await role('MGR-01');assert.equal(await clock(),`2026-10-10T${hour}:00:00+07:00`);assert.equal(await text('#queue-count'),`${count} PR`);assert.ok((await text('#return-rate')).startsWith(percent));const body=await text('#app');for(const age of ages)assert.ok(body.includes(age),age);assert.equal(await text('#cohort-context'),context);await reviewQueue();report.sequence.push({time:await clock(),count,ages,rate:await text('#return-rate'),context:await text('#cohort-context'),at:stamp()});}
 try{
+ if(arg('scope','pr')==='p2') {
+  const {runP2}=await import('./p2-scenarios.mjs');
+  await runP2({cdp,evaluate,wait,click,fill,select,text,clock,shot,pass,report,events,sleep,reset,dir,baseUrl});
+ } else {
  await cdp('Page.enable');await cdp('Runtime.enable');await cdp('Log.enable');await cdp('Network.enable');
  await cdp('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
  await cdp('Page.navigate',{url:baseUrl});await wait(`document.querySelector('#results tbody tr')`);
@@ -134,8 +138,10 @@ try{
  assert.ok((await text('#quality-current')).includes('PR-MET-01: 5'));
  await cdp('Fetch.disable');await cdp('Page.reload');await wait(`document.querySelector('#results tbody tr')`);
  pass('M1/M4 unknown/no-data fixture, visible quality warning, not-applicable detail and 16px controls','Test response copy only; real seed restored');
+ }
  report.consoleErrors=events.filter(e=>e.method==='Runtime.exceptionThrown'||(e.method==='Log.entryAdded'&&e.params.entry.level==='error'));
  assert.equal(report.consoleErrors.length,0,JSON.stringify(report.consoleErrors));
  report.finished=stamp();writeFileSync(`${dir}/browser-results.json`,JSON.stringify(report,null,2));console.log('BROWSER QA PASS',report.checks.length,report.screenshots.length,JSON.stringify(report.beforeunload));
 }catch(error){report.failure=String(error.stack);report.finished=stamp();writeFileSync(`${dir}/browser-results.json`,JSON.stringify(report,null,2));console.error(error);process.exitCode=1;}
 ws.close();
+await fetch(`${endpoint}/json/close/${target.id}`);

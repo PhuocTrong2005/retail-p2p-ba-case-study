@@ -34,7 +34,7 @@ export function createPRSession(seed, sharedContext = null) {
   const isRequester = () => userId() === requesterId && user()?.role_id === 'REQUESTER' && user()?.unit_id === unitId;
   const isManager = () => userId() === managerId && user()?.role_id === 'STORE_MANAGER' && user()?.unit_id === unitId;
   const owns = p => isRequester() && p.requester_id === userId() && p.unit_id === unitId;
-  const purchasingReader = () => ['PROCUREMENT_OFFICER', 'PROCUREMENT_MANAGER', 'FINANCE_MANAGER'].includes(runtime.actor()?.role_id) && runtime.actor()?.unit_id === unitId;
+  const purchasingReader = () => ['PROCUREMENT_OFFICER', 'PROCUREMENT_MANAGER', 'FINANCE_MANAGER', 'AP'].includes(runtime.actor()?.role_id) && runtime.actor()?.unit_id === unitId;
   const readable = p => p && (owns(p) || (isManager() && p.unit_id === unitId) ||
     (purchasingReader() && p.unit_id === unitId && analysis(p).status === STATUS.APPROVED));
   const find = id => data.purchase_requisitions.find(p => p.pr_id === id);
@@ -168,6 +168,14 @@ export function createPRSession(seed, sharedContext = null) {
       return { ok: true, time: now(), event: clone(event), status: analysis(p).status, ready_for_purchasing: type === 'APPROVE' };
     },
     detail,
+    // Internal link check for downstream domains; exposes no PR data to their UI.
+    approvedLink(id, eventId) {
+      const matches = data.purchase_requisitions.filter(p => p.pr_id === id && p.unit_id === unitId);
+      if (matches.length !== 1) return false;
+      const a = analysis(matches[0]), approval = a.events.at(-1);
+      return a.status === STATUS.APPROVED && approval?.event_type === 'APPROVE' &&
+        approval.actor_id === managerId && nonblank(approval.event_id) && approval.event_id === eventId;
+    },
     approvedSource(id) {
       const p = find(id);
       if (!purchasingReader() || !p || p.unit_id !== unitId) return fail('NOT_FOUND_OR_FORBIDDEN');

@@ -53,7 +53,10 @@ function pass(name,detail){report.checks.push({name,detail,at:stamp()});console.
 async function shot(name,scenario){await evaluate('window.scrollTo(0,0)');await evaluate('document.fonts.ready.then(()=>true)');const dims=await cdp('Page.getLayoutMetrics');const img=await cdp('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip:{x:0,y:0,width:1440,height:Math.ceil(dims.cssContentSize.height),scale:1}});writeFileSync(`${evidence}/${name}.png`,Buffer.from(img.data,'base64'));report.screenshots.push({name:`${name}.png`,scenario,at:stamp(),tool:'Chrome DevTools Protocol Page.captureScreenshot',viewport:1440,simulatedTime:await clock(),role:await evaluate(`document.querySelector('#role').value`)});}
 async function metricStep(hour,count,ages,percent,context){await role('MGR-01');assert.equal(await clock(),`2026-10-10T${hour}:00:00+07:00`);assert.equal(await text('#queue-count'),`${count} PR`);assert.ok((await text('#return-rate')).startsWith(percent));const body=await text('#app');for(const age of ages)assert.ok(body.includes(age),age);assert.equal(await text('#cohort-context'),context);await reviewQueue();report.sequence.push({time:await clock(),count,ages,rate:await text('#return-rate'),context:await text('#cohort-context'),at:stamp()});}
 try{
- if(arg('scope','pr')==='p2') {
+ if(arg('scope','pr')==='p3') {
+  const {runP3}=await import('./p3-scenarios.mjs');
+  await runP3({cdp,evaluate,wait,click,fill,select,text,clock,shot,pass,report,events,sleep,reset,dir,baseUrl});
+ } else if(arg('scope','pr')==='p2') {
   const {runP2}=await import('./p2-scenarios.mjs');
   await runP2({cdp,evaluate,wait,click,fill,select,text,clock,shot,pass,report,events,sleep,reset,dir,baseUrl});
  } else {

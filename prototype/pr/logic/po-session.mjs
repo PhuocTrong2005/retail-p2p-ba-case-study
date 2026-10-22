@@ -16,13 +16,13 @@ export function createPODomain(runtime, pr, seed, catalog) {
   runtime.onReset(() => { documents = []; });
   const role = () => runtime.actor()?.role_id;
   const isBuyer = () => role() === 'PROCUREMENT_OFFICER';
-  const mayRead = () => ['PROCUREMENT_OFFICER', 'PROCUREMENT_MANAGER', 'FINANCE_MANAGER'].includes(role());
+  const mayRead = () => ['PROCUREMENT_OFFICER', 'PROCUREMENT_MANAGER', 'FINANCE_MANAGER', 'AP', 'WAREHOUSE'].includes(role()) &&
+    runtime.actor()?.unit_id === runtime.context().unit_id;
   const find = id => documents.find(p => p.po_id === id && p.unit_id === runtime.context().unit_id);
-  const readable = p => p && mayRead();
-  const source = p => {
-    const result = pr.approvedSource(p.source_pr_id);
-    return result.ok && result.approval_event.event_id === p.source_approval_event_id;
-  };
+  const source = p => pr.approvedLink(p.source_pr_id, p.source_approval_event_id);
+  const approved = p => Boolean(p && source(p) && [PO_STATUS.ELIGIBLE, PO_STATUS.ISSUED].includes(p.status) &&
+    p.approvals.procurement?.round === p.round && (!p.finance_required || p.approvals.finance?.round === p.round));
+  const readable = p => p && mayRead() && (role() !== 'WAREHOUSE' || approved(p));
   const step = p => (p.status === PO_STATUS.PROCUREMENT && role() === 'PROCUREMENT_MANAGER') ||
     (p.status === PO_STATUS.FINANCE && p.finance_required && p.approvals.procurement && role() === 'FINANCE_MANAGER');
   function append(p, type, extra = {}) {
@@ -88,7 +88,7 @@ export function createPODomain(runtime, pr, seed, catalog) {
         [PO_STATUS.FINANCE]: 'Trưởng bộ phận tài chính phê duyệt bổ sung hoặc trả lại.',
         [PO_STATUS.RETURNED]: 'Mua hàng chỉnh sửa và gửi lại; vòng mới bắt đầu từ phê duyệt Mua hàng.',
         [PO_STATUS.ELIGIBLE]: 'Mua hàng có thể phát hành mô phỏng; PO chưa được phát hành.',
-        [PO_STATUS.ISSUED]: 'Phát hành mô phỏng đã ghi nhận; GR và hóa đơn chưa triển khai trong P2.' })[p.status] };
+        [PO_STATUS.ISSUED]: 'Phát hành mô phỏng đã ghi nhận; Kho ghi GR, AP ghi hóa đơn trong cùng phiên.' })[p.status] };
   }
   return Object.freeze({
     suppliers: () => mayRead() ? clone(suppliers) : [],
@@ -100,6 +100,8 @@ export function createPODomain(runtime, pr, seed, catalog) {
       })) };
     },
     detail,
+    // Internal domain API. Caller must still check its own write permission.
+    approved: id => readable(find(id)) && approved(find(id)),
     create(prId) {
       if (!isBuyer()) return fail('FORBIDDEN');
       const s = pr.approvedSource(prId);

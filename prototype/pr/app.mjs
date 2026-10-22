@@ -14,11 +14,12 @@ const names = { requester_id:'Người yêu cầu', unit_id:'Đơn vị yêu c�
   'item.quantity':'Số lượng', 'item.estimated_unit_price':'Đơn giá ước tính' };
 let screen = 'list', currentId = null, draft = null, baseline = null, errors = {}, notice = '', query = '', busy = false;
 let confirming = false;
-let formGeneration = session.generation(), sourceBack = null;
+let formGeneration = session.generation(), sourceBack = [];
 const clone = x => structuredClone(x);
-const dirty = () => ['form', 'po-form'].includes(screen) && JSON.stringify(draft) !== baseline;
+const dirty = () => ['form', 'po-form', 'gr-form', 'invoice-form'].includes(screen) && JSON.stringify(draft) !== baseline;
 const isManager = () => session.context().user_id === 'MGR-01';
-const isPurchasing = () => ['PROCUREMENT_OFFICER','PROCUREMENT_MANAGER','FINANCE_MANAGER'].includes(session.actor()?.role_id);
+const isPurchasing = () => ['PROCUREMENT_OFFICER','PROCUREMENT_MANAGER','FINANCE_MANAGER','WAREHOUSE','AP'].includes(session.actor()?.role_id);
+const isWarehouse = () => session.actor()?.role_id === 'WAREHOUSE';
 const isBuyer = () => session.actor()?.role_id === 'PROCUREMENT_OFFICER';
 const home = () => isPurchasing() ? 'po-list' : isManager() ? 'queue' : 'list';
 const command = (generation = session.generation()) => session.command(generation);
@@ -84,6 +85,13 @@ function route(next, id, generation = session.generation()) {
     const po=result.po;
     draft={supplier_id:po.supplier_id,unit_price:po.unit_price,delivery_terms:po.delivery_terms,commercial_terms:po.commercial_terms};
     screen='po-form';
+  } else if (next === 'gr-form' || next === 'invoice-form') {
+    const summary=session.documents.summary(id), isGR=next==='gr-form';
+    if (!summary.ok || !(isGR?summary.actions.record_gr:summary.actions.record_invoice||summary.actions.edit_invoice)) {screen=home();render();return;}
+    const existing=!isGR && summary.invoice_id ? session.documents.invoice(id).invoice : null;
+    draft=isGR?{received_on:'',quantity:''}:Object.fromEntries(invoiceKeys.map(k=>[k,existing?.[k] ?? '']));
+    if(existing) draft.invoice_on=date(draft.invoice_on);
+    screen=next;
   } else screen = next;
   formGeneration=generation;
   if (draft) { if(screen==='form') draft.needed_by = date(draft.needed_by); baseline = JSON.stringify(draft); }
@@ -153,7 +161,7 @@ function detailView() {
   const actions=el('div',{class:'actions'},d.actions.edit?button('Chỉnh sửa','form',currentId):null,
     d.actions.decide?button('Phê duyệt','approve',currentId):null,d.actions.decide?button('Trả lại để chỉnh sửa','return',currentId,true):null,
     d.actions.decide?button('Từ chối','reject',currentId,true):null);
-  return [sourceBack?back('← Quay lại ngữ cảnh PO','source-back'):back(isPurchasing()?'← Về PR đã duyệt và PO':isManager()?'← Về hàng đợi':'← Về PR của tôi',home()),heading(`${isManager()&&d.actions.decide?'Xem xét':'Chi tiết'} ${currentId}`),
+  return [sourceBack.length?back('← Quay lại ngữ cảnh trước','source-back'):back(isPurchasing()?'← Về PR đã duyệt và PO':isManager()?'← Về hàng đợi':'← Về PR của tôi',home()),heading(`${isManager()&&d.actions.decide?'Xem xét':'Chi tiết'} ${currentId}`),
     el('div',{class:'status-line'},badge(d.status),`Vòng ${d.round || 'chưa mở'}`),
     d.status==='Chờ chỉnh sửa'?el('div',{class:'callout warn'},el('strong',{},'Lý do trả lại'),p(d.return_reason ?? 'Không xác định do thiếu dữ liệu'),p(d.next_step)):null,
     panel(el('h2',{},'Thông tin yêu cầu'),el('dl',{class:'readonly-grid'},info.map(([name,value],i)=>el('div',{class:i===4?'wide':''},el('dt',{},name),el('dd',{},value || 'Chưa nhập')))),
@@ -195,30 +203,33 @@ function poListView() {
   return [heading('PR đã duyệt và đơn đặt hàng'),p(`${session.context().user_id} · Đơn vị mẫu · Một PO cho mỗi PR trong demo.`),metricLabel(),
     isBuyer()?panel(el('h2',{},'PR sẵn sàng lập PO'),sources.rows.length?table(['PR nguồn','Nhu cầu','Bước tiếp theo'],sources.rows.map(r=>el('tr',{},
       cell(button(r.pr_id,'po-source',r.pr_id,true)),cell(r.description),cell(r.po_id?button(`Mở ${r.po_id}`,'po-detail',r.po_id,true):button('Lập PO','po-create',r.pr_id))))):p('Chưa có PR đã duyệt. Tạo/gửi PR và Quản lý phê duyệt trong cùng phiên để tiếp tục.')):null,
-    panel(el('h2',{},'Đơn đặt hàng trong phiên'),docs.length?table(['Mã PO / PR nguồn','Tình trạng','Vòng / tuyến đã chốt','Bước tiếp theo','Thao tác'],docs.map(d=>el('tr',{},
+    panel(el('h2',{},isWarehouse()?'PO đã đủ phê duyệt để nhận hàng':'Đơn đặt hàng trong phiên'),docs.length?table(['Mã PO / PR nguồn','Tình trạng','Vòng / tuyến đã chốt','Bước tiếp theo','Thao tác'],docs.map(d=>el('tr',{},
       cell(`${d.po.po_id} / ${d.po.source_pr_id}`),cell(badge(d.po.status)),cell(`Vòng ${d.po.round || 'chưa gửi'} · ${d.po.finance_required===null?'Chưa chốt':d.po.finance_required?'Có Finance bổ sung':'Không Finance bổ sung'}`),
       cell(d.next_step),cell(button(d.actions.decide?'Xem xét':'Xem PO','po-detail',d.po.po_id,true))))):el('div',{class:'empty'},el('h3',{},'Chưa có PO trong phiên'),p(isBuyer()?'Chọn PR đã duyệt ở trên để lập PO.':'Mua hàng cần lập và gửi PO trước khi phê duyệt.')))
   ];
 }
 function poSourcePanel(po) {
   const s=po.source_snapshot;
-  return panel(el('h2',{},'Thông tin kế thừa từ PR · chỉ đọc'),button(`Mở PR nguồn ${po.source_pr_id}`,'po-source',po.source_pr_id,true),
+  return panel(el('h2',{},'Thông tin kế thừa từ PR · chỉ đọc'),isWarehouse()?p(`PR nguồn: ${po.source_pr_id} · Kho xem thông tin nhận hàng trên PO.`):button(`Mở PR nguồn ${po.source_pr_id}`,'po-source',po.source_pr_id,true),
     el('dl',{class:'readonly-grid'},[['Người yêu cầu',s.requester_id],['Đơn vị','Đơn vị mẫu'],['Trung tâm chi phí',s.cost_center_id],['Ngày cần hàng',date(s.needed_by)],['Lý do nghiệp vụ',s.business_reason]].map(([k,v])=>el('div',{},el('dt',{},k),el('dd',{},v)))),
     table(['Hàng hóa','Số lượng','Giá ước tính PR · VND'],[el('tr',{},cell(s.item.description),cell(s.item.quantity),cell(money(s.item.estimated_unit_price)))]),
     p(`Bản sao lúc lập PO · Phê duyệt nguồn ${po.source_approval_event_id} · ${po.source_approval.actor_id} · ${time(po.source_approval.occurred_at)}.`),
     p('Giá mua PO được nhập riêng; không thay đổi PR nguồn.'));
 }
 const poFieldLabels={supplier_id:'Nhà cung cấp',unit_price:'Giá mua · VND',delivery_terms:'Thông tin giao hàng',commercial_terms:'Thông tin thương mại'};
-function poField(key, tag='input') {
-  const id=`po-${key}`, required=['supplier_id','unit_price'].includes(key);
-  const control=el(tag,{id,name:key,value:draft[key],type:tag==='input'?'text':null,inputmode:key==='unit_price'?'decimal':null,
+function entryField(key, {tag='input',prefix='po',required=true,name=poFieldLabels[key],hint='',allowAllSuppliers=false}={}) {
+  const id=`${prefix}-${key}`;
+  const control=el(tag,{id,name:key,value:draft[key],type:tag==='input'?'text':null,inputmode:['quantity','unit_price','amount'].includes(key)?'decimal':null,
     'aria-required':String(required),'aria-invalid':errors[key]?'true':null,'aria-describedby':`${id}-hint${errors[key]?` ${id}-error`:''}`},
-    tag==='select'?[el('option',{value:''},'Chọn nhà cung cấp'),...session.po.suppliers().map(s=>el('option',{value:s.id,disabled:!s.active||!s.approved},s.name))]:[]);
+    tag==='select'?[el('option',{value:''},'Chọn nhà cung cấp'),...session.po.suppliers().map(s=>el('option',{value:s.id,disabled:!allowAllSuppliers&&(!s.active||!s.approved)},s.name))]:[]);
   control.value=draft[key] ?? '';
   control.addEventListener('input',()=>{draft[key]=control.value;});
-  return el('div',{class:`field${errors[key]?' has-error':''}`},el('label',{for:id},`${poFieldLabels[key]}${required?' *':' · tùy chọn'}`),control,
-    el('span',{class:'hint',id:`${id}-hint`},key==='unit_price'?'Số hữu hạn không âm, cho phép 0; dùng dấu chấm cho phần lẻ.':key==='supplier_id'?'Danh mục tổng hợp; NCC không đủ điều kiện không được chọn.':'Không bắt buộc.'),
+  return el('div',{class:`field${errors[key]?' has-error':''}`},el('label',{for:id},`${name}${required?' *':' · tùy chọn'}`),control,
+    el('span',{class:'hint',id:`${id}-hint`},hint),
     errors[key]?el('span',{class:'error-text',id:`${id}-error`},errors[key]):null);
+}
+function poField(key, tag='input') {
+  return entryField(key,{tag,required:['supplier_id','unit_price'].includes(key),hint:key==='unit_price'?'Số hữu hạn không âm, cho phép 0; dùng dấu chấm cho phần lẻ.':key==='supplier_id'?'Danh mục tổng hợp; NCC không đủ điều kiện không được chọn.':'Không bắt buộc.'});
 }
 function poFormView() {
   const result=session.po.detail(currentId);
@@ -243,7 +254,7 @@ function poDetailView() {
     const issue=button('Phát hành mô phỏng','po-issue',po.po_id); issue.disabled=!d.actions.issue; actions.append(issue);
   }
   const eventNames={CREATE:'Lập PO từ PR đã duyệt',SAVE:'Lưu nội dung PO',SUBMIT:'Gửi PO',APPROVE:'Phê duyệt PO',RETURN_FOR_EDIT:'Trả lại PO',ISSUE_SIMULATED:'Phát hành mô phỏng'};
-  return [back('← Về PR đã duyệt và PO','po-list'),heading(`Chi tiết ${po.po_id}`),metricLabel(),
+  return [sourceBack.length?back('← Quay lại ngữ cảnh trước','source-back'):back('← Về PR đã duyệt và PO','po-list'),heading(`Chi tiết ${po.po_id}`),metricLabel(),
     el('div',{class:'status-line'},badge(po.status),`Vòng ${po.round || 'chưa gửi'}`),el('div',{class:'callout',id:'po-next'},p(d.next_step)),
     po.return_reason?el('div',{class:'callout warn'},el('strong',{},'Lý do trả lại'),p(po.return_reason)):null,poSourcePanel(po),
     panel(el('h2',{},'Thông tin PO'),el('dl',{class:'readonly-grid'},[
@@ -256,7 +267,86 @@ function poDetailView() {
     panel(el('h2',{},'Lịch sử PO'),el('ol',{class:'history',id:'po-history'},po.history.map(e=>el('li',{},el('time',{datetime:e.occurred_at},time(e.occurred_at)),
       el('div',{},el('strong',{},`${e.actor_id} · ${eventNames[e.event_type]} · vòng ${e.review_round}`),e.reason?p(e.reason):null,
         e.event_type==='SUBMIT'?p(e.finance_required?'Tuyến đã chốt: Mua hàng → Tài chính bổ sung.':'Tuyến đã chốt: Mua hàng, không Tài chính bổ sung.'):null)))),
-      p('Lịch sử quy trình tối thiểu trong bộ nhớ; không phải audit store vận hành.'))];
+      p('Lịch sử quy trình tối thiểu trong bộ nhớ; không phải audit store vận hành.')),documentsPanel(po.po_id)];
+}
+const invoiceKeys=['number','invoice_on','supplier_id','description','quantity','unit_price','amount','note'];
+const documentLabels={received_on:'Ngày nhận hàng',quantity:'Số lượng',number:'Số hóa đơn nhà cung cấp',invoice_on:'Ngày hóa đơn',
+  supplier_id:'Nhà cung cấp trên hóa đơn',description:'Mô tả hàng trên hóa đơn',unit_price:'Đơn giá hóa đơn · VND',amount:'Số tiền hóa đơn · VND',note:'Ghi chú'};
+function documentsPanel(poId) {
+  const d=session.documents.summary(poId);
+  if(!d.ok) return null;
+  const links=el('div',{class:'actions'});
+  if(d.gr_id) links.append(button(`Xem ${d.gr_id}`,'gr-detail',poId,true));
+  else if(d.actions.record_gr) links.append(button('Ghi phiếu nhận hàng','gr-form',poId));
+  if(d.invoice_id) links.append(button(`Xem ${d.invoice_id}`,'invoice-detail',poId,true));
+  else if(d.actions.record_invoice) links.append(button('Ghi hóa đơn','invoice-form',poId));
+  return panel(el('h2',{},'Phiếu nhận hàng và hóa đơn'),
+    p(d.gr_id?`Phiếu nhận hàng: ${d.gr_id}`:'Chưa ghi phiếu nhận hàng.'),
+    !isWarehouse()?p(d.invoice_id?`Hóa đơn: ${d.invoice_id}`:'Chưa ghi hóa đơn. AP được ghi trước GR.'):null,
+    d.readiness?readinessPanel(d.readiness):p('Kho ghi nhận đủ một lần theo PO đã đủ phê duyệt, không cần phát hành trước. GR đã ghi chỉ đọc.'),links);
+}
+function readinessPanel(r) {
+  return el('div',{class:'callout',id:'input-readiness'},el('strong',{},r.label),
+    r.missing.length?el('ul',{},r.missing.map(m=>el('li',{},`Còn thiếu: ${m}`))):null,
+    p(`Phiên bản đầu vào giao dịch: ${r.input_revision}. Chưa thực hiện đối chiếu.`));
+}
+function documentSource(poId) {
+  const result=session.po.detail(poId);
+  if(!result.ok) return p('Không tìm thấy PO trong phạm vi được phép.');
+  const po=result.po;
+  return panel(el('h2',{},'PO nguồn · chỉ đọc'),button(`Mở ${poId}`,'document-source',poId,true),
+    p(`${po.source_pr_id} · ${po.status} · ${po.issued_at?'Đã phát hành (mô phỏng)':'Chưa phát hành'}`),
+    table(['Hàng hóa PO','Lượng đặt','Giá mua PO'],[el('tr',{},cell(po.source_snapshot.item.description),cell(po.source_snapshot.item.quantity),cell(money(po.unit_price)))]),
+    p(`Nhà cung cấp PO: ${session.po.suppliers().find(s=>s.id===po.supplier_id)?.name ?? 'Chưa chọn'}. Dữ liệu nguồn không sửa tại chứng từ này.`));
+}
+function documentFormView() {
+  const isGR=screen==='gr-form', summary=session.documents.summary(currentId);
+  if(!summary.ok || !(isGR?summary.actions.record_gr:summary.actions.record_invoice||summary.actions.edit_invoice)) return [heading('Không được phép ghi chứng từ trong ngữ cảnh này')];
+  const keys=isGR?['received_on','quantity']:invoiceKeys, prefix=isGR?'gr':'invoice';
+  return [back('← Về PO nguồn','document-source'),heading(isGR?'Ghi phiếu nhận hàng':summary.invoice_id?'Sửa hóa đơn':'Ghi hóa đơn'),metricLabel(),
+    documentSource(currentId),p(isGR?'Chỉ nhận đủ một lần. Ngày nhận là ngày nghiệp vụ, khác giờ ghi nhận.':'Dữ liệu hóa đơn nhập độc lập. Không tự tính tiền hoặc ép khớp PO; được ghi trước GR.'),
+    Object.keys(errors).length?el('div',{class:'callout error',role:'alert',tabindex:'-1',id:'document-errors'},el('strong',{},'Chưa ghi được. Kiểm tra các trường:'),
+      el('ul',{},Object.keys(errors).map(k=>el('li',{},el('a',{href:`#${prefix}-${k}`},errors[k]))))):null,
+    el('form',{id:'document-form',novalidate:true},panel(el('h2',{},'Thông tin nhập'),p('Dấu * là trường bắt buộc khi ghi/lưu. Phần nhập chưa lưu chỉ giữ trên màn hình.'),
+      el('div',{class:'request-grid'},keys.map(key=>entryField(key,{prefix,name:documentLabels[key],required:key!=='note',
+        tag:key==='supplier_id'?'select':['note','description'].includes(key)?'textarea':'input',allowAllSuppliers:true,
+        hint:key.includes('_on')?'DD/MM/YYYY hoặc YYYY-MM-DD; ngày lịch hợp lệ.':key==='quantity'?'Số hữu hạn > 0; dùng dấu chấm cho phần lẻ.':
+          ['unit_price','amount'].includes(key)?'Số hữu hạn ≥ 0, cho phép 0; nhập độc lập.':key==='supplier_id'?'Dùng danh mục P2; không ép trùng nhà cung cấp PO.':key==='note'?'Chỉ ghi chú không làm tăng revision đầu vào.':''}))),
+      el('div',{class:'action-bar'},p('Dữ liệu tổng hợp · chỉ giữ trong phiên.'),button(isGR?'Ghi GR':summary.invoice_id?'Lưu hóa đơn':'Ghi hóa đơn','document-save',currentId))))];
+}
+function documentDetailView() {
+  const isGR=screen==='gr-detail', result=isGR?session.documents.gr(currentId):session.documents.invoice(currentId);
+  if(!result.ok) return [heading('Không tìm thấy chứng từ trong phạm vi được phép')];
+  const doc=isGR?result.gr:result.invoice;
+  const fields=isGR?['received_on','quantity']:invoiceKeys;
+  return [sourceBack.length?back('← Quay lại ngữ cảnh trước','source-back'):back('← Về PO nguồn','document-source'),
+    heading(`${isGR?'Phiếu nhận hàng':'Hóa đơn'} ${doc.gr_id ?? doc.invoice_id}`),metricLabel(),
+    p(`Đã ghi nhận · ${doc.recorded_by} · ${time(doc.recorded_at)}. ${isGR?'Chỉ đọc; không sửa/xóa.':`Phiên bản hóa đơn: ${doc.invoice_revision}.`}`),
+    documentSource(currentId),!isGR?readinessPanel(result.readiness):null,
+    panel(el('h2',{},'Nội dung chứng từ'),el('dl',{class:'readonly-grid'},fields.map(key=>el('div',{},el('dt',{},documentLabels[key]),
+      el('dd',{},key.includes('_on')?date(doc[key]):key==='supplier_id'?session.po.suppliers().find(s=>s.id===doc[key])?.name:
+        ['unit_price','amount'].includes(key)?money(doc[key]):doc[key] === ''?'Chưa nhập':doc[key])))),
+      !isGR&&session.documents.summary(currentId).actions.edit_invoice?button('Sửa hóa đơn','invoice-form',currentId):null),
+    panel(el('h2',{},'Lịch sử ghi nhận'),el('ol',{class:'history',id:'document-history'},doc.history.map(e=>el('li',{},
+      el('time',{datetime:e.occurred_at},time(e.occurred_at)),el('div',{},el('strong',{},`${e.actor_id} · ${e.action==='SAVE_INVOICE'?'Lưu hóa đơn':isGR?'Ghi GR':'Ghi hóa đơn'}`),
+        p(`Phiên bản đầu vào: ${e.input_revision}${e.invoice_revision?` · hóa đơn: ${e.invoice_revision}`:''}`),
+        e.before?el('dl',{class:'readonly-grid'},fields.filter(k=>e.before[k]!==e.after[k]).map(k=>el('div',{},el('dt',{},documentLabels[k]),el('dd',{},`${e.before[k] === ''?'Trống':e.before[k]} → ${e.after[k] === ''?'Trống':e.after[k]}`)))):null,
+        e.before&&fields.every(k=>e.before[k]===e.after[k])?p('Lưu không đổi dữ liệu.'):null)))),p('Lịch sử trong phiên demo; chưa phải audit store vận hành.'))];
+}
+function mutateDocument(generation) {
+  if(busy) return;
+  if(generation!==session.generation() || !draft || !['gr-form','invoice-form'].includes(screen)) {notice='Biểu mẫu không còn thuộc phiên hiện tại.';render();return;}
+  busy=true;
+  try {
+    const isGR=screen==='gr-form', summary=session.documents.summary(currentId), token=command(generation);
+    const result=isGR?session.documents.recordGR(currentId,clone(draft),token):summary.invoice_id?
+      session.documents.saveInvoice(currentId,summary.invoice_id,clone(draft),token):session.documents.recordInvoice(currentId,clone(draft),token);
+    if(!result.ok) {
+      errors=result.errors ?? {};notice=result.code==='DOCUMENT_VALIDATION_FAILED'?'Thông tin chưa hợp lệ; phần nhập được giữ để sửa.':'Thao tác bị chặn. Mở lại đúng PO và kiểm tra vai trò, dữ liệu hiện tại.';
+      render();$('#document-errors')?.focus();return;
+    }
+    route(isGR?'gr-detail':'invoice-detail',currentId);notice='Đã ghi nhận trong phiên chung.';render();
+  } finally {setTimeout(()=>{busy=false;},400);}
 }
 function mutatePO(action, generation, id=currentId) {
   if(busy) return;
@@ -290,12 +380,13 @@ function render() {
   $('#clock').textContent=`${time(c.time)} (UTC+07:00)`; $('#clock').dateTime=c.time;
   $('#demo-state').textContent=`Kịch bản ngân sách: ${{PASS:'Đạt',INSUFFICIENT:'Không đủ ngân sách',UNAVAILABLE:'Nguồn dữ liệu ngân sách không khả dụng'}[c.budget_outcome]} · Chỉ áp dụng lần kiểm tra tiếp theo, giữ đến khi đổi.`;
   $('#module-nav').replaceChildren(button(isPurchasing()?'PR đã duyệt và PO':isManager()?'Hàng đợi PR':'PR của tôi',home(),null,true));
-  const content=screen==='po-list'?poListView():screen==='po-form'?poFormView():screen==='po-detail'?poDetailView():screen==='list'?listView():screen==='form'?formView():screen==='detail'?detailView():queueView();
-  root.replaceChildren(el('section',{class:'view','data-screen':{list:'PR-SCR-01',form:'PR-SCR-02',detail:'PR-SCR-03',queue:'PR-SCR-04','po-list':'PO-LIST','po-form':'PO-FORM','po-detail':'PO-DETAIL'}[screen]},
+  const content=['gr-form','invoice-form'].includes(screen)?documentFormView():['gr-detail','invoice-detail'].includes(screen)?documentDetailView():screen==='po-list'?poListView():screen==='po-form'?poFormView():screen==='po-detail'?poDetailView():screen==='list'?listView():screen==='form'?formView():screen==='detail'?detailView():queueView();
+  root.replaceChildren(el('section',{class:'view','data-screen':{list:'PR-SCR-01',form:'PR-SCR-02',detail:'PR-SCR-03',queue:'PR-SCR-04','po-list':'PO-LIST','po-form':'PO-FORM','po-detail':'PO-DETAIL','gr-form':'GR-FORM','gr-detail':'GR-DETAIL','invoice-form':'INVOICE-FORM','invoice-detail':'INVOICE-DETAIL'}[screen]},
     notice?el('div',{class:`callout${notice.includes('ngân sách')?' warn':''}`,role:'status',id:'notice'},notice):null,...content));
   const renderedGeneration=formGeneration;
   $('#pr-form')?.addEventListener('submit',event=>{event.preventDefault(); mutate('submit',renderedGeneration);});
   $('#po-form')?.addEventListener('submit',event=>{event.preventDefault(); mutatePO('po-submit',renderedGeneration);});
+  $('#document-form')?.addEventListener('submit',event=>{event.preventDefault();mutateDocument(renderedGeneration);});
 }
 function mutate(action, generation=formGeneration) {
   if (busy) return;
@@ -322,14 +413,21 @@ root.addEventListener('click',async event=>{
   const action=target.dataset.action, id=target.dataset.id;
   const generation=Number(target.dataset.generation ?? session.generation());
   if(generation!==session.generation()) {notice='Phiên đã được khôi phục. Mở lại hồ sơ hiện tại.';render();return;}
-  if(action==='po-source') {
-    await leave(()=>{sourceBack={screen,id:currentId,query};route('detail',id,generation);}); return;
+  if(action==='document-save') {mutateDocument(formGeneration);return;}
+  if(action==='document-source') {
+    await leave(()=>{sourceBack.push({screen,id:currentId,query});route('po-detail',id ?? currentId,generation);});return;
   }
-  if(action==='source-back' && sourceBack) {
-    const prior=sourceBack;sourceBack=null;query=prior.query;route(prior.screen,prior.id,generation);return;
+  if(['gr-form','gr-detail','invoice-form','invoice-detail'].includes(action)) {
+    await leave(()=>{sourceBack.push({screen,id:currentId,query});route(action,id,generation);});return;
+  }
+  if(action==='po-source') {
+    await leave(()=>{sourceBack.push({screen,id:currentId,query});route('detail',id,generation);}); return;
+  }
+  if(action==='source-back' && sourceBack.length) {
+    const prior=sourceBack.pop();query=prior.query;route(prior.screen,prior.id,generation);return;
   }
   if (['list','queue','new','form','detail','po-list','po-form','po-detail'].includes(action)) {
-    await leave(()=>{sourceBack=null;route(action,id ?? (['po-form','po-detail'].includes(action)?currentId:undefined),generation);}); return;
+    await leave(()=>{sourceBack=[];route(action,id ?? (['po-form','po-detail'].includes(action)?currentId:undefined),generation);}); return;
   }
   if(['po-create','po-save','po-submit','po-approve','po-return-confirm','po-issue'].includes(action)) {
     mutatePO(action,['po-save','po-submit'].includes(action)?formGeneration:generation,id); return;
@@ -364,17 +462,17 @@ root.addEventListener('click',async event=>{
 $('#role').addEventListener('change',async event=>{
   const next=event.target.value; event.target.value=session.context().user_id;
   if (busy || confirming) return;
-  await leave(()=>{ session.setUser(next,command()); query=''; sourceBack=null; route(home()); });
+  await leave(()=>{ session.setUser(next,command()); query=''; sourceBack=[]; route(home()); });
 });
 $('#budget').addEventListener('change',event=>{ session.setBudget(event.target.value,command()); const oldFocus=document.activeElement?.id; render(); if(oldFocus) document.getElementById(oldFocus)?.focus(); });
 $('#finance-route').addEventListener('change',event=>{session.setFinance(event.target.value==='true',command());render();});
 $('#module-nav').addEventListener('click',async event=>{
   const target=event.target.closest('[data-action]');if(!target||busy||confirming)return;
-  await leave(()=>{sourceBack=null;route(home());});
+  await leave(()=>{sourceBack=[];route(home());});
 });
 $('#reset').addEventListener('click',async()=>{
   if (busy || !await showDialog('Khôi phục dữ liệu mẫu?','Bỏ mọi thay đổi, phần nhập, lịch sử phát sinh và đưa vai trò, ngân sách, đồng hồ về ban đầu.','Khôi phục')) return;
-  session.reset({confirmed:true},command()); query=''; screen='list'; currentId=null; draft=null; baseline=null; errors={}; notice=''; sourceBack=null;formGeneration=session.generation();
+  session.reset({confirmed:true},command()); query=''; screen='list'; currentId=null; draft=null; baseline=null; errors={}; notice=''; sourceBack=[];formGeneration=session.generation();
   history.replaceState(null,'',location.pathname+location.search); window.scrollTo(0,0);
   document.querySelector('.demo').open=false; render(); root.querySelector('h1').focus();
 });

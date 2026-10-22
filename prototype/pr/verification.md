@@ -1,6 +1,6 @@
 # Kiểm chứng prototype PR — 3C
 
-Các mục 1–4 dưới đây là hồ sơ PR 3C theo phiên bản/thời điểm đã ghi, được bảo toàn. Phần mở rộng PR → PO local ngày 22/10/2026 có kết quả riêng tại [mục 5](#5-p2--liên-thông-pr--po-local); không suy kết quả P2 sang GR/hóa đơn/đề nghị hoặc demo Pages chưa được cập nhật.
+Các mục 1–4 dưới đây là hồ sơ PR 3C theo phiên bản/thời điểm đã ghi, được bảo toàn. Phần mở rộng PR → PO local ngày 22/10/2026 có kết quả riêng tại [mục 5](#5-p2--liên-thông-pr--po-local); không suy kết quả P2 sang GR/hóa đơn/đề nghị hoặc demo Pages chưa được cập nhật. P3 GR/hóa đơn có hồ sơ riêng tại [mục 6](#6-p3--liên-thông-gr-và-hóa-đơn-local), không thay kết quả lịch sử.
 
 ## 1. Phạm vi, phiên bản, môi trường và thời điểm kiểm chứng
 
@@ -413,3 +413,77 @@ Lượt `browser-attempt1` dừng ở hồi quy mở PR-B vì facade phiên chun
 SHA-256 bytes seed trong working tree ở đầu và cuối P2 cùng là `252d27b40eaa68f146ca34dc90b826a92b9c8e65ebd173eba5d5901ad4a1543f`; khớp snapshot đầu lượt. Không thay giá trị hash ghi cho phiên bản lịch sử 3C ở mục trước bằng hash working tree P2. Tests so cả object đầu vào và bytes file; kiểm tra hash cuối riêng xác nhận mọi nguồn ngoài `prototype/pr/` của 129 file tracked đầu lượt, ảnh/font/wireframe và baseline/metric/SIM/ERP không đổi. P1 chỉ cập nhật chấp thuận và commit đầu lượt, không ghi kết quả P2 ngược vào kế hoạch G; file thiết kế không đổi sau commit. `dist/` tự sinh/ignored, không stage/commit. Kết quả `git diff --check`, kiểm tra file mới và Git status cuối phản hồi trong chat; không lấy số liệu kiểm tra cũ làm kết quả mới.
 
 Giới hạn còn lại: quyền theo vai chỉ mô phỏng trong browser, một đơn vị, một dòng/một PO mỗi PR; snapshot PO chỉ từ lúc lập, không tái dựng PR lịch sử. Browser UI chỉ thử dữ liệu seed/PR mới của REQ-01; ngoài đơn vị và thiếu log bằng fixtures ở logic, chưa xác nhận UI lọc toàn bộ ma trận quyền. Chưa thử mọi trình duyệt, headful, mobile P2, công cụ trợ năng/UAT, beforeunload/đóng tab của P2 hoặc mọi tổ hợp trả lại trên UI. Không có backend/lưu bền/NCC thật/email; chưa P3/P4, chưa đối chiếu hay thanh toán, chưa kiểm chứng/công bố artifact đầy đủ P5. Không có lỗi kiểm soát trọng yếu còn biết trong phạm vi P2 đã chạy; không suy thành toàn bộ SRS/AC đạt.
+
+## 6. P3 — Liên thông GR và hóa đơn local
+
+**P3 hoàn tất trong phạm vi local đã kiểm tra dưới đây.** Hai thứ tự GR/hóa đơn nối cùng PO/PR vừa thao tác, chung actor/clock/reset. Chỉ có dữ liệu và revision cho P4; chưa đối chiếu, ngoại lệ, chuẩn bị/gửi/duyệt đề nghị. Không đánh dấu kịch bản xuyên suốt đến Payment Request là đạt; không tuyên bố toàn AC hoặc UAT hoàn tất.
+
+### Nguồn, thiết kế và thay đổi so với HEAD
+
+- Branch `p2p-prototype-design`, HEAD **`aec315c66ea57b678d369e8f0829a644629d4759`** (`feat: connect PR and PO workflow`); đầu lượt working tree sạch/index rỗng, không tìm thấy AGENTS.md áp dụng. P3 là working tree chưa commit trên HEAD này.
+- Snapshot trước sửa, đã đọc lại HEAD/hash/bản sao P1: `C:\Users\ASUS\AppData\Local\Temp\p2p-p3-5f5c3034-372c-4b41-ab23-7e89214fffa7`, có `head.txt`, `status.txt`, `index.txt`, `design.before.md`, SHA-256 của **139 file tracked**. Temp có thể bị dọn; không là phụ thuộc runtime. Log, ảnh thử và manifest cũng giữ ngoài repo tại đây.
+- Đọc [P1](../../06-system-analysis/p2p-prototype-design.md), [BR-13–17/25–27](../../04-to-be-design/business-rules.md), [G1-D01/02/05](../../08-traceability/baseline-decisions.md), [UC-05/06](../../06-system-analysis/use-case-specifications.md), [SRS](../../07-software-requirements/srs.md) FR-08/09/10/14/15, AC-10/11/29/31/32/33 và NFR liên quan; kế thừa logic/data/UI/test/server/build P2. Mapping này không khẳng định bao phủ đầy đủ AC/NFR.
+- P3A cụ thể hóa tại P1 C.1/C.2, D, DEC-01/03/04/06/07/09/10, E.2 và kịch bản G/H: hai trường GR, bảy trường hóa đơn nghiệp vụ cùng ghi chú tùy chọn, ngày bắt buộc, danh mục NCC P2, quyền Kho/AP, revision theo PO và hóa đơn. Tất cả CHK trong thiết kế vẫn **Chưa thực hiện** ở lớp kế hoạch. Giới hạn một dòng/một GR/một hóa đơn/nhận đủ là demo đã chấp thuận, không sửa policy/OD/baseline.
+- **15 file tracked khác HEAD:** P1; `prototype/pr/README.md`, `app.mjs`, `build-static.mjs`, `data/po-catalog.json`, `index.html`, `logic/p2p-session.mjs`, `logic/po-session.mjs`, `logic/pr-session.mjs`, `qa/browser-qa.mjs`, `serve.mjs`, `styles.css`, `test/package.test.mjs`, `test/server.test.mjs`, `verification.md`. **6 file mới:** `logic/receiving-invoice.mjs`, `test/receiving-invoice.test.mjs`, `qa/p3-scenarios.mjs` và ba ảnh P3 dưới đây, đều trong `prototype/pr/`.
+- Tái dùng một PR domain, PO domain, context/clock/counter/reset/generation và command guard; không app/session/seed PR mới. Module GR/hóa đơn giữ chứng từ/revision riêng, PO có kiểm tra phê duyệt vòng hiện hành và đọc theo vai, API kiểm tra liên kết PR nội bộ không cấp quyền đọc PR cho Kho. UI dùng lại DOM helper/bảng/panel/field/dialog/CSS/font và router; không đổi màn hình PR/PO ngoài bổ sung liên kết cần thiết.
+
+### Test Node, build và bảo toàn
+
+Windows/PowerShell, Node **v22.14.0** có sẵn; không thêm dependency. Lệnh cuối thực chạy từ root:
+
+```powershell
+$p3Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p3Tests = @(Get-ChildItem -LiteralPath prototype/pr/test -Filter '*.test.mjs' | ForEach-Object FullName)
+& $p3Node --test --test-reporter=spec @p3Tests
+& $p3Node prototype/pr/build-static.mjs
+```
+
+**77 test thực chạy, 77 đạt, 0 lỗi, 0 bỏ qua**; log `node-final.txt`. Gồm **63 test PR/PO cũ + 14 test P3**. Giữ bytes/assertion của `session.test.mjs`, `metrics.test.mjs`, `fixtures.mjs`, `p2p.test.mjs`; package/server test chỉ thêm tài nguyên `receiving-invoice.mjs`. Test mới kiểm tra cả thứ tự bằng PR mới thật, PO chưa đủ duyệt/Finance/vòng trả lại, ghi theo PO chưa phát hành, hóa đơn theo PO nháp còn thiếu, ngày/số/trường/NCC, lượng GR khác PO, tiền độc lập/giá và tiền 0, lượng lẻ, revision từng trường/no-op/ghi chú/hoàn nguyên, lịch sử/ID/nguồn bất biến, tham chiếu chéo giao dịch, sai vai/ngoài đơn vị, duplicate/replay/reset/thế hệ/actor cũ, input seed bất biến và metric chung.
+
+Build **18 file** trong `prototype/pr/dist/` ignored, danh sách tường minh đúng source và **18/18 khớp byte**; `artifact-manifest.json` ngoài repo giữ SHA-256. Test package giữ kiểm tra tái lập/loại file thừa/fail trước thay output khi thiếu nguồn; server vẫn loopback, read-only, allowlist hẹp và chặn repository/test/tài liệu/traversal. Chưa kiểm chứng artifact đầy đủ dưới Pages prefix trong P3; đường dẫn runtime vẫn tương đối. Workflow không đổi, còn kiểm tra gói PR cũ; P5 cần cập nhật trước công bố.
+
+Đối chiếu 139 hash đầu lượt: **124 không đổi, 15 thay đổi đúng phạm vi**, sáu file mới đúng danh sách trên. Seed PR giữ SHA-256 raw bytes `252d27b40eaa68f146ca34dc90b826a92b9c8e65ebd173eba5d5901ad4a1543f`. `logic/metrics.mjs`, `validation.mjs`, `time.mjs`, `session-context.mjs`, seed/checks, ảnh PR/PO cũ/font/wireframe, baseline/OD/SRS/RTM/SIM/ERP/workflow và mọi nguồn ngoài phạm vi giữ nguyên. Không reset/stash/clean/đổi branch/amend. Không stage/commit/push/merge/deploy.
+
+### Trình duyệt thực chạy, mong đợi và thực tế
+
+Chrome **155.0.8059.85 headless**, Windows, CDP qua Node WebSocket hiện có; profile riêng do tác vụ tạo. Server allowlist `http://127.0.0.1:8088/`, CDP `127.0.0.1:9238`; mỗi lượt QA tạo trang mới. Lượt P3 đạt cuối: **22/10/2026 10:44:16.524–10:45:01.635 UTC+07:00**. Lệnh:
+
+```powershell
+& $p3Node prototype/pr/serve.mjs --port=8088
+# Terminal khác:
+& $p3Node prototype/pr/qa/launch-browser.mjs --cdp-port=9238
+# Terminal kiểm tra:
+& $p3Node prototype/pr/qa/browser-qa.mjs --scope=p3 --cdp=http://127.0.0.1:9238 --url=http://127.0.0.1:8088/ --output=C:/Users/ASUS/AppData/Local/Temp/p2p-p3-5f5c3034-372c-4b41-ab23-7e89214fffa7/browser-final --evidence-dir=C:/Users/ASUS/AppData/Local/Temp/p2p-p3-5f5c3034-372c-4b41-ab23-7e89214fffa7/evidence-final
+```
+
+`browser-final/browser-results.json`: **21 mục đạt**, gồm 14 bố cục (7 ngữ cảnh × 1280/1440) và 7 nhóm chức năng/tài nguyên. Các nhóm không là số AC hoặc tuyên bố coverage đầy đủ. CDP dùng click chuột/input/select và kiểm tra kết quả UI thực; không truy cập session nội bộ. **Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.** Mọi giờ trong bảng là **10/10/2026 UTC+07:00 mô phỏng**, khác thời điểm chạy thực.
+
+| Kịch bản / vai trò | Mong đợi | Thực tế / kết luận |
+| --- | --- | --- |
+| GR trước hóa đơn từ PR mới; REQ-01/MGR-01/BUY-01/PM-01/WH-01/AP-01 | Liên thông nguồn thật; đủ duyệt không cần phát hành; mỗi chứng từ một ID | PR-NEW-1 gửi 13h/duyệt 14h; PO-DEMO-1 lập 15h/gửi 16h/PM duyệt 17h, chưa phát hành. Kho ghi GR-DEMO-1 lượng 1.5 lúc 18h, AP ghi INV-DEMO-1 lúc 19h, đúng PR/PO, input revision 2. **Đạt UI + Node** |
+| Hóa đơn trước GR; AP-01/WH-01 | Giữ hóa đơn chờ, GR sau không tạo Đạt hoặc đổi hóa đơn | Reset riêng; PO từ PR-D đủ duyệt 15h; AP ghi 16h, Chờ phiếu nhận hàng, input/invoice revision 1/1. Kho ghi GR 17h; AP xem đủ dữ liệu tối thiểu/chưa đối chiếu, input/invoice revision 2/1 và nội dung hóa đơn giữ nguyên. **Đạt UI + Node** |
+| Dữ liệu độc lập; AP-01 | Không ép NCC/lượng/giá/tiền bằng PO, không tự nhân thành tiền/Đạt | PO NCC A/lượng 40/giá 12.5; hóa đơn NCC C/lượng 2.5/giá 0/tiền 123.45 vẫn giữ đúng và chỉ báo đủ dữ liệu/chưa đối chiếu. **Đạt UI + Node** |
+| Validation và giữ nhập; WH-01/AP-01 | Trường bắt buộc/ngày/số, nhận khác lượng bị chặn; lỗi focus đúng | Từ reset riêng: GR gửi trống 16h focus tổng hợp/link focus ngày; ngày 31/02/2026 và lượng 39 chặn 17h, giữ cả hai, báo ngoài demo. Sửa nhận đủ ghi 18h. Hóa đơn trống 19h, tiền -1 chặn 20h giữ -1; lượng 0 chặn 21h, sửa 40/tiền 0 ghi 22h. **Đạt UI**; các NaN/vô cực/định dạng/ngày khác ở **Node** |
+| Sửa/ghi chú/no-op/hoàn nguyên; AP-01 | Giữ ID/PO, history before/after; revision chỉ tăng khi dữ liệu nghiệp vụ đổi | Ghi chú 18h giữ input/invoice 2/1; tiền 123.45→50 lúc 19h lên 3/2; lưu không đổi 20h giữ 3/2, history ghi không đổi; hoàn nguyên 21h lên 4/3, vẫn INV-DEMO-1/PO-DEMO-1. **Đạt UI + Node** |
+| Liên kết nguồn; AP-01 | Mở PO/PR/quay lại đúng hồ sơ, không đổi vai/T | Hóa đơn→PO→PR-D→PO→INV-DEMO-1 đúng ngữ cảnh, vẫn AP-01/21h. Kho không có đường mở PR/hóa đơn. **Đạt UI**; tham chiếu chéo/sai vai/ngoài đơn vị ở **Node** |
+| Cảnh báo phần nhập và lặp; AP-01/WH-01 | Hủy rời form giữ nhập/vai; lặp không tạo chứng từ/thêm giờ | Đổi vai AP→Kho khi form bẩn và mở nguồn bị cảnh báo; hủy giữ AP/-1/20h. Bấm ghi lặp GR/hóa đơn vẫn một mục lịch sử, T18h/T22h. **Đạt UI**; replay cùng command và tạo lại bằng command mới ở **Node** |
+| Reset đủ chuỗi và reload; WH-01/AP-01/REQ-01 | Xóa đồng bộ PR mới/PO/GR/hóa đơn/revision, mặc định T0 | Reset sau chuỗi PR-NEW-1→PO→GR→hóa đơn về 12h; PR mới không còn, AP/Kho không còn PO; reload về REQ/T0. **Đạt UI**; form/token trước reset với ID cấp lại bị chặn ở **Node**, chưa replay DOM cũ trên UI |
+| Đồng hồ/metric và chuỗi PR chuẩn; MGR-01/REQ-01 | Downstream cùng T, công thức/cohort giữ; reset tái lập PR riêng | P3 đến 22h: A205/C106 giờ, 2 chờ/25%. Reset rồi B nguồn lỗi 13h, B đạt 14h, trả A 15h: A/C 195/96→196/97→A197/B0/C98→B1/C99; cuối 2 chờ/50%. **Đạt UI + Node** |
+
+Bố cục kiểm tra ở GR form/detail, invoice form/waiting/ready, PO nguồn và queue hồi quy PR; 1280/1440 px, deviceScaleFactor=1, không cuộn ngang toàn trang. Kiểm tra kích thước/nội dung nút không bị cắt và xem ảnh thực tế, tiếng Việt/nhãn/nút rõ trong các ngữ cảnh đã kiểm tra. Font glyph thực dùng Be Vietnam Pro Bold/SemiBold/Regular qua `CSS.getPlatformFontsForNode`. **35 response**, toàn local HTTP200; **0 lỗi console** trong lượt P3 cuối.
+
+Hồi quy UI P2 riêng trên cùng source P3, trang mới: **10:45:19.353–10:45:53.401 UTC+07:00 ngày 22/10/2026**, lệnh cùng harness với `--scope=p2`, `--output=.../browser-p2-regression`, `--evidence-dir=.../evidence-p2-regression`: **15 mục đạt, 0 lỗi console**. Giữ nguyên `p2-scenarios.mjs`; không dùng ảnh hồi quy này ghi đè evidence P2 lịch sử.
+
+### Ảnh cuối, lượt thử và giới hạn
+
+Đúng ba PNG mới từ lượt P3 đạt cuối, `Page.captureScreenshot`, rộng 1440 px, sao chép byte và đã xem; ảnh/log thử nằm ngoài repo:
+
+| Ảnh | Giờ chụp thực 22/10/2026 UTC+07:00 | Vai trò / giờ mô phỏng / tình huống |
+| --- | --- | --- |
+| [p3-01-recorded-gr.png](./evidence/p3-01-recorded-gr.png) | 10:44:24.641 | WH-01 / 18h; GR từ PR mới/PO đủ duyệt chưa phát hành |
+| [p3-02-invoice-waiting-gr.png](./evidence/p3-02-invoice-waiting-gr.png) | 10:44:33.553 | AP-01 / 16h; hóa đơn giữ nguyên, chờ GR |
+| [p3-03-invoice-ready-unmatched.png](./evidence/p3-03-invoice-ready-unmatched.png) | 10:44:36.610 | AP-01 / 17h; đủ dữ liệu tối thiểu, chưa đối chiếu |
+
+Hai lượt thử giữ riêng: `browser-attempt1` dừng do helper tự đặt chiều cao tối thiểu 24px cho cả nút quay lại dạng chữ hiện hữu; đây không là yêu cầu được duyệt. Đổi kiểm tra sang kích thước dương/nội dung không bị cắt cùng kiểm tra ảnh. `browser-attempt2` đã chạy các nhánh chính nhưng helper chuyển vai ngay sau ghi lặp trong khoảng khóa 400ms hiện có, khiến vai chưa đổi. Helper chờ hết khoảng khóa rồi tiếp tục; không đổi logic sản phẩm hoặc assertion PR/PO để che lỗi. Lượt cuối chạy lại toàn bộ đạt như trên, chỉ lấy ảnh cuối làm bằng chứng.
+
+Giới hạn: một đơn vị/một dòng/một GR/một hóa đơn, không nhận phần/credit note/thuế/tích hợp/lưu bền. Quyền theo vai chỉ mô phỏng, không bảo mật server; ngoài đơn vị/tham chiếu sai/form token cũ kiểm tra ở logic, không bao phủ toàn ma trận UI. Chưa thử mobile/headful/trình duyệt khác/công cụ trợ năng/UAT, beforeunload/đóng tab P3 hoặc artifact đầy đủ Pages prefix. P4 chưa triển khai; không có kết quả Đạt/Không đạt/ngoại lệ/đề nghị, không có policy mới hoặc lợi ích vận hành được xác nhận. Không có lỗi chức năng/kiểm soát trọng yếu còn biết trong phạm vi P3 đã kiểm tra. Các tiến trình local do tác vụ tạo được dừng khi kết thúc; không dừng tiến trình khác.

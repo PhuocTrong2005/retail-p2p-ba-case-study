@@ -192,3 +192,4 @@ button.back { border: 0; background: transparent; padding: 0; text-decoration: u
 .status-line { margin-bottom: 16px; }
 .module-nav { padding-top: 10px; padding-bottom: 0; }
 [data-screen^='PO-'] dd { overflow-wrap: anywhere; }
+[data-screen^='GR-'] dd, [data-screen^='INVOICE-'] dd { overflow-wrap: anywhere; }

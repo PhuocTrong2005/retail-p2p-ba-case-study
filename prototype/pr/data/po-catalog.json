@@ -3,7 +3,9 @@
   "additional_users": [
     { "id": "BUY-01", "display_name": "Nhân viên mua hàng", "role_id": "PROCUREMENT_OFFICER", "unit_id": "UNIT-01" },
     { "id": "PM-01", "display_name": "Trưởng bộ phận mua hàng", "role_id": "PROCUREMENT_MANAGER", "unit_id": "UNIT-01" },
-    { "id": "FIN-01", "display_name": "Trưởng bộ phận tài chính", "role_id": "FINANCE_MANAGER", "unit_id": "UNIT-01" }
+    { "id": "FIN-01", "display_name": "Trưởng bộ phận tài chính", "role_id": "FINANCE_MANAGER", "unit_id": "UNIT-01" },
+    { "id": "WH-01", "display_name": "Nhân viên kho", "role_id": "WAREHOUSE", "unit_id": "UNIT-01" },
+    { "id": "AP-01", "display_name": "Kế toán công nợ phải trả", "role_id": "AP", "unit_id": "UNIT-01" }
   ],
   "suppliers": [
     { "id": "SUP-DEMO-01", "name": "NCC mẫu A — đủ điều kiện", "active": true, "approved": true },

@@ -1,10 +1,10 @@
-# Prototype yêu cầu mua hàng và đơn đặt hàng (PR → PO)
+# Prototype mua hàng liên thông (PR → PO → GR / hóa đơn)
 
 <a id="prototype-pr--tích-hợp-ui-3b2"></a>
 
 **Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](#hướng-dẫn-thử-nhanh)
 
-**P2 hiện có ở local, chưa công bố.** Liên kết Pages trên giữ bản PR đã công bố trước P2; chưa push/deploy thay đổi PR → PO. Xem [hướng dẫn PO local](#p2--thử-liên-thông-pr--po-trên-local) và [kết quả kiểm chứng P2](./verification.md#5-p2--liên-thông-pr--po-local). GR, hóa đơn, đối chiếu và đề nghị thanh toán chưa triển khai.
+**PR → PO → GR / hóa đơn hiện có ở local, chưa công bố.** Liên kết Pages trên giữ bản PR đã công bố trước P2/P3. Xem [hướng dẫn P3](#p3--ghi-gr-và-hóa-đơn-trong-cùng-phiên), [hướng dẫn PO](#p2--thử-liên-thông-pr--po-trên-local) và [kết quả P3](./verification.md#6-p3--liên-thông-gr-và-hóa-đơn-local). Chưa triển khai đối chiếu, ngoại lệ hoặc đề nghị thanh toán.
 
 **Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.**
 
@@ -49,11 +49,43 @@ Runtime được ghi nhận trong các lượt kiểm tra là Node **v22.14.0**.
 
 - Khởi tạo ở **Người yêu cầu · REQ-01**. PR của tôi có tìm mã/mô tả, trim và không phân biệt hoa/thường; có xóa tìm kiếm và thông báo rỗng. Tạo PR chỉ mở form chưa lưu. Lưu nháp thiếu trường rồi mở lại; PR trả lại dùng Lưu phần sửa/Gửi lại và giữ Chờ chỉnh sửa.
 - Tám trường dùng nội dung seed; người yêu cầu/đơn vị chỉ đọc. Không validation native chặn handler. Lỗi gửi giữ phần nhập, focus tổng hợp lỗi; liên kết dẫn tới trường có lỗi và thông báo cạnh trường. Không đủ ngân sách khác với nguồn không khả dụng; chỉ gọi kiểm tra ngân sách sau validation đạt.
-- **Điều khiển demo** giữ REQ-01/MGR-01 và ba kết quả ngân sách; P2 bổ sung BUY-01 (Nhân viên mua hàng), PM-01 (Trưởng bộ phận mua hàng), FIN-01 (Trưởng bộ phận tài chính) cùng lựa chọn tuyến PO. Đổi vai/ngân sách/tuyến không tăng giờ; tuyến chốt theo từng vòng gửi PO. Reset khôi phục cả PR/PO/clock/counter/cấu hình/UI; phân quyền chỉ mô phỏng, handler vẫn kiểm tra vai/ngữ cảnh/thế hệ phiên.
+- **Điều khiển demo** giữ REQ-01/MGR-01 và ba kết quả ngân sách; P2 bổ sung BUY-01 (Nhân viên mua hàng), PM-01 (Trưởng bộ phận mua hàng), FIN-01 (Trưởng bộ phận tài chính) cùng lựa chọn tuyến PO. Đổi vai/ngân sách/tuyến không tăng giờ; tuyến chốt theo từng vòng gửi PO. P3 thêm WH-01 (Kho) và AP-01 (Kế toán công nợ phải trả). Reset khôi phục cả PR/PO/GR/hóa đơn/revision/clock/counter/cấu hình/UI; phân quyền chỉ mô phỏng, handler vẫn kiểm tra vai/ngữ cảnh/thế hệ phiên.
 - **MGR-01** xem hàng đợi và chi tiết trong đơn vị mẫu, chỉ quyết định PR đủ điều kiện. Trả lại cần lý do; từ chối cần xác nhận hậu quả. Mở/hủy xác nhận không gọi quyết định hoặc tăng giờ. PR đã duyệt/từ chối không có hành động sửa/gửi lại/quyết định lần hai.
 - Rời form/đổi vai khi có phần nhập chưa lưu mở cảnh báo nội bộ: Tiếp tục chỉnh sửa hoặc Bỏ thay đổi. Hủy reset giữ nguyên dữ liệu/lựa chọn/giờ; xác nhận reset xóa cả trạng thái UI, tìm kiếm và phần nhập.
 - Chỉ handler sở hữu validation, sự kiện và tăng giờ. UI giữ phần nhập cục bộ trước thao tác, không tính metric hoặc thời gian nghiệp vụ bằng cách thứ hai. Có khóa xử lý và bỏ click thứ hai trong double-click; không tự retry ghi. Nội dung người dùng được tạo bằng DOM/textContent, không chèn HTML.
 - Nháp tạo mới có nguồn riêng; thiếu log không bị coi là nháp. Chi tiết chỉ là nội dung hiện tại. Ghi chú làm rõ C xuất hiện tại **C-3**, không ngụ ý có tại C-1 hoặc tái dựng snapshot quá khứ.
+
+## P3 — Ghi GR và hóa đơn trong cùng phiên
+
+Chạy local như phần dưới; dùng chính PO vừa lập/duyệt ở P2, không tải lại. Mỗi PO tối đa một GR và một hóa đơn trong demo; một dòng, nhận đủ một lần. Đây là giới hạn demo được chủ dự án chấp thuận, không phải policy doanh nghiệp.
+
+1. Đi từ PR mới: REQ-01 tạo/gửi PR → MGR-01 duyệt → BUY-01 lập/gửi PO → PM-01 duyệt, thêm FIN-01 nếu tuyến yêu cầu. PO đủ phê duyệt hiện hành là đủ để Kho nhận; không bắt buộc phát hành trước. PR-D chỉ là đường vào nhanh tùy chọn trên cùng seed.
+2. Chuyển **WH-01**, mở PO → **Ghi phiếu nhận hàng**. Nhập ngày nhận hợp lệ và lượng thực nhận đúng lượng PO. Ngày nhận là ngày nghiệp vụ, khác giờ ghi nhận. Lượng khác PO được giữ để sửa và báo ngoài phạm vi, không tự đổi thành nhận đủ. **Ghi GR** tạo một ID, người/giờ; GR đã ghi chỉ đọc, không sửa/xóa.
+3. Chuyển **AP-01**, mở PO → **Ghi hóa đơn**. Nhập số/ngày hóa đơn, NCC, mô tả, lượng, đơn giá và số tiền riêng; ghi chú tùy chọn. Chọn NCC trong chính danh mục P2 (cả ba NCC mẫu, không áp cổng chọn NCC của PO cho hóa đơn). Không tự ép dữ liệu khớp PO hoặc tính tiền bằng lượng × giá. Các trường ngoài ghi chú bắt buộc; lượng > 0, giá/tiền ≥ 0, số hữu hạn đúng định dạng; ngày lịch hợp lệ.
+4. Có thể làm bước hóa đơn trước GR, theo bất kỳ PO tồn tại trong phiên (kể cả PO đang soạn). Hóa đơn được giữ và hiển thị **Chờ phiếu nhận hàng**, liệt kê phần PO còn thiếu nếu có. Kho bổ sung GR khi PO đủ duyệt, AP mở lại hóa đơn: **Đủ dữ liệu tối thiểu — chưa đối chiếu**. Dữ liệu hóa đơn/revision hóa đơn không bị đổi bởi thêm GR.
+5. AP dùng **Sửa hóa đơn**; giữ ID/PO nguồn, cho sửa bảy trường nhập nghiệp vụ và ghi chú. Lưu có lịch sử trước/sau. `input_revision` theo từng PO tăng khi thêm GR, thêm hóa đơn hoặc đổi trường hóa đơn nghiệp vụ; `invoice_revision` chỉ tăng khi dữ liệu hóa đơn nghiệp vụ đổi. Sửa rồi lưu/hoàn nguyên rồi lưu tăng ở cả hai lần. Lưu không đổi hoặc chỉ sửa ghi chú vẫn +1 giờ nhưng không tăng revision.
+6. Mở PO nguồn và PR nguồn theo quyền, rồi **Quay lại ngữ cảnh trước**; không reload/đổi vai/tăng giờ. Kho chỉ xem PO đủ duyệt và GR liên quan, không có quyền xem hóa đơn/PR. Vai Mua hàng/Finance được đọc chứng từ liên quan; chỉ AP ghi/sửa hóa đơn, chỉ Kho ghi GR. Rời form bẩn/đổi vai có cảnh báo; hủy giữ phần nhập.
+
+Mở form/xem/liên kết/đổi vai không tăng T. Ghi/lưu được tiếp nhận xử lý tăng đúng một giờ, kể cả lỗi trường/GR khác lượng; lỗi giữ nhập và focus tổng hợp lỗi, liên kết tới trường. Sai vai/trạng thái/tham chiếu, tạo lặp hoặc command cũ/lặp không thêm giờ/chứng từ. Reset/reload xóa đồng bộ downstream, revision và UI, khởi tạo PR seed duy nhất; không dùng form cũ ghi vào dữ liệu mới dù ID được cấp lại.
+
+[receiving-invoice.mjs](./logic/receiving-invoice.mjs) quản lý GR/hóa đơn/revision, dùng chung context/clock/ID/reset và guard command của P2. UI dùng lại bảng/panel/field/dialog/font Be Vietnam Pro; [catalog P2](./data/po-catalog.json) chỉ thêm hai actor, không thêm dataset PR. Thao tác P3 làm tuổi chờ PR tăng theo cùng T; công thức/cohort/seed không đổi. Tái lập chuỗi PR chuẩn bằng reset rồi chỉ thao tác PR, không xen downstream.
+
+**Chưa có đối chiếu/ngoại lệ/đề nghị thanh toán:** đủ dữ liệu không là Đạt hoặc cấp quyền chuẩn bị/gửi. Không thuế/dung sai/credit note/nhận từng phần/backend/lưu bền. Quyền chỉ mô phỏng trong trình duyệt, chưa là bảo mật vận hành.
+
+### Kiểm tra P3
+
+Dùng `$p2Node` và lệnh toàn bộ test ở mục P2 dưới đây: **77/77 test đạt** (63 cũ + 14 mới), không đổi assertion PR/PO cũ. Build hiện tại **18 file**, giữ allowlist hẹp, từng byte khớp source. Các con số 17 file P2 và 13 file H1/H2 bên dưới là phiên bản lịch sử; workflow vẫn nguyên bản, để P5 trước công bố.
+
+```powershell
+$p3Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+& $p3Node prototype/pr/serve.mjs --port=8088
+# Terminal khác:
+& $p3Node prototype/pr/qa/launch-browser.mjs --cdp-port=9238
+# Terminal kiểm tra:
+& $p3Node prototype/pr/qa/browser-qa.mjs --scope=p3 --cdp=http://127.0.0.1:9238 --url=http://127.0.0.1:8088/ --output="$env:TEMP/p3-browser-results" --evidence-dir="$env:TEMP/p3-browser-evidence"
+```
+
+Dùng cổng trống, chỉ dừng tiến trình do mình mở. Lượt Chrome P3 đạt **21 mục**, hồi quy UI P2 riêng đạt **15 mục**; xem [verification mục 6](./verification.md#6-p3--liên-thông-gr-và-hóa-đơn-local) về môi trường, thời điểm, lệnh và giới hạn. Không ghi đè ảnh PR/PO cũ; ba ảnh cuối: [GR đã ghi](./evidence/p3-01-recorded-gr.png), [hóa đơn chờ GR](./evidence/p3-02-invoice-waiting-gr.png), [đủ dữ liệu nhưng chưa đối chiếu](./evidence/p3-03-invoice-ready-unmatched.png).
 
 ## P2 — Thử liên thông PR → PO trên local
 
@@ -78,7 +110,7 @@ PO chưa đầy đủ có thể lưu nháp; số/NCC đã nhập không hợp l�
 - [app.mjs](./app.mjs) tái dùng DOM helpers, bảng/panel/callout/dialog và bốn view PR hiện có, thêm ngữ cảnh danh sách/form/chi tiết PO. [po-catalog.json](./data/po-catalog.json) chỉ thêm ba actor PO và ba NCC tổng hợp; không sao chép PR/user/đơn vị seed gốc. Font/CSS nền, validation PR, time/metric và cohort cũ được giữ.
 - API đọc PR đã duyệt có kiểm tra vai/phạm vi và bằng chứng APPROVE; Mua hàng không giả danh REQ-01. PO giữ PR ID/APPROVE ID thật và snapshot lúc lập; không dựng snapshot PR ở các mốc quá khứ. Quyền/historical log chỉ là mô phỏng trong trình duyệt.
 - Cùng clock: reset rồi BUY-01 lập PO từ PR-D đưa T đến 13:00; A/C vẫn chờ và tuổi chờ thành 196/97 giờ, số chờ 2, tỷ lệ 25%. Chỉ kéo dài coverage cho lịch sử PR phiên biết đầy đủ; fixture thiếu vẫn không xác định. Muốn tái lập chuỗi PR 12/13/14/15, reset chung rồi chạy riêng chuỗi **Hướng dẫn thử nhanh**, không xen thao tác PO.
-- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** cho P2, cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Workflow chưa sửa, vẫn chứa kiểm tra gói PR cũ; cần cập nhật trong P5 trước công bố, không dùng workflow cũ làm bằng chứng P2 đã deploy.
+- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** ở mốc P2 (18 file ở P3 hiện tại), cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Workflow chưa sửa, vẫn chứa kiểm tra gói PR cũ; cần cập nhật trong P5 trước công bố, không dùng workflow cũ làm bằng chứng P2 đã deploy.
 
 ### Tái lập kiểm tra P2
 

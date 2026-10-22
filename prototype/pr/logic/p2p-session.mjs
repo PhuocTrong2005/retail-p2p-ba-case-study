@@ -1,12 +1,14 @@
 import { createSessionContext } from './session-context.mjs';
 import { createPRSession } from './pr-session.mjs';
 import { createPODomain } from './po-session.mjs';
+import { createReceivingInvoiceDomain } from './receiving-invoice.mjs';
 
 // Runtime has exactly one PR domain and one PO domain, sharing this context.
 export function createP2PSession(seed, catalog) {
   const runtime = createSessionContext(seed, catalog.additional_users);
   const pr = createPRSession(seed, runtime);
   const po = createPODomain(runtime, pr, seed, catalog);
+  const documents = createReceivingInvoiceDomain(runtime, po);
   let used = new Set();
   runtime.onReset(() => { used = new Set(); });
   function execute(command, action) {
@@ -38,6 +40,13 @@ export function createP2PSession(seed, catalog) {
     decide: (id, type, options, command) => execute(command, () => pr.decide(id, type, options)),
     reset: (options, command) => execute(command, () => runtime.reset(options)),
     detail: pr.detail, openForm: pr.openForm, history: pr.history, list: pr.list, queue: pr.queue, metrics: pr.metrics,
-    po: poAPI
+    po: poAPI,
+    documents: Object.freeze({
+      gr: documents.gr, invoice: documents.invoice, summary: documents.summary,
+      readiness: documents.readiness, revisionHistory: documents.revisionHistory,
+      recordGR: (poId, patch, command) => execute(command, () => documents.recordGR(poId, patch)),
+      recordInvoice: (poId, patch, command) => execute(command, () => documents.recordInvoice(poId, patch)),
+      saveInvoice: (poId, invoiceId, patch, command) => execute(command, () => documents.saveInvoice(poId, invoiceId, patch))
+    })
   });
 }

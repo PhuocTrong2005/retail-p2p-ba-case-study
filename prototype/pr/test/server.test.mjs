@@ -15,7 +15,7 @@ async function withServer(t) {
 }
 test('static server serves only listed application files with correct MIME',async t=>{
   const get=await withServer(t);
-  for (const [path,mime] of [['/','text/html'],['/styles.css','text/css'],['/app.mjs','text/javascript'],['/logic/pr-session.mjs','text/javascript'],['/logic/session-context.mjs','text/javascript'],['/logic/p2p-session.mjs','text/javascript'],['/logic/po-session.mjs','text/javascript'],['/data/seed.json','application/json'],['/data/po-catalog.json','application/json']]) {
+  for (const [path,mime] of [['/','text/html'],['/styles.css','text/css'],['/app.mjs','text/javascript'],['/logic/pr-session.mjs','text/javascript'],['/logic/session-context.mjs','text/javascript'],['/logic/p2p-session.mjs','text/javascript'],['/logic/po-session.mjs','text/javascript'],['/logic/receiving-invoice.mjs','text/javascript'],['/data/seed.json','application/json'],['/data/po-catalog.json','application/json']]) {
     const r=await get(path); assert.equal(r.status,200); assert.ok(r.headers['content-type'].startsWith(mime)); assert.ok(r.body.length);
   }
 });

@@ -7,7 +7,7 @@ const invoiceKeys = [...invoiceFields, 'note'];
 const readers = ['PROCUREMENT_OFFICER', 'PROCUREMENT_MANAGER', 'FINANCE_MANAGER', 'AP'];
 
 // Owns receipt/invoice records and input revisions, never assessments or payment.
-export function createReceivingInvoiceDomain(runtime, po) {
+export function createReceivingInvoiceDomain(runtime, po, { invoiceLocked = () => false } = {}) {
   let receipts, invoices, revisions, changes, attempts;
   function initialize() { receipts = []; invoices = []; revisions = new Map(); changes = []; attempts = []; }
   initialize(); runtime.onReset(initialize);
@@ -84,6 +84,14 @@ export function createReceivingInvoiceDomain(runtime, po) {
   }
   return Object.freeze({
     gr, invoice, readiness,
+    // Internal snapshot for P4; uses the existing validators and live records.
+    assessmentInput(poId) {
+      const r=readiness(poId);
+      if(!r.ok) return r;
+      const p=getPO(poId).po,g=receiptOf(poId),i=invoiceOf(poId),missing=[...r.missing];
+      if(g && (!po.approved(poId)||!parseDate(g.received_on)||!(parseNumber(g.quantity)>0))) missing.push('GR hợp lệ theo PO đã duyệt');
+      return {ok:true,po:copy(p),gr:copy(g ?? null),invoice:copy(i ?? null),input_revision:revision(poId),missing};
+    },
     summary(poId) {
       const source = getPO(poId);
       if (!mayGR() || !source.ok) return fail('NOT_FOUND_OR_FORBIDDEN');
@@ -92,7 +100,7 @@ export function createReceivingInvoiceDomain(runtime, po) {
         input_revision: mayInvoice() ? revision(poId) : null,
         readiness: mayInvoice() ? readiness(poId) : null,
         actions: { record_gr: is('WAREHOUSE') && po.approved(poId) && !receiptOf(poId),
-          record_invoice: is('AP') && !invoiceOf(poId), edit_invoice: is('AP') && Boolean(invoiceOf(poId)) } };
+          record_invoice: is('AP') && !invoiceOf(poId), edit_invoice: is('AP') && Boolean(invoiceOf(poId)) && !invoiceLocked(poId) } };
     },
     revisionHistory(poId) {
       if (!mayInvoice() || !getPO(poId).ok) return fail('NOT_FOUND_OR_FORBIDDEN');
@@ -134,6 +142,7 @@ export function createReceivingInvoiceDomain(runtime, po) {
     },
     saveInvoice(poId, invoiceId, patch) {
       if (!is('AP') || !invoice(poId, invoiceId).ok) return fail('NOT_FOUND_OR_FORBIDDEN');
+      if (invoiceLocked(poId)) return fail('TRANSACTION_LOCKED');
       if (!acceptPatch(patch, invoiceKeys)) return fail('INVALID_PATCH');
       const record = invoiceOf(poId), before = Object.fromEntries(invoiceKeys.map(k => [k, record[k]]));
       runtime.tick();

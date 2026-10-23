@@ -78,7 +78,8 @@ export async function runP3(h) {
   await click('[data-action="document-save"]');await hour(17);
   await openPO('AP-01');await click('[data-action="invoice-detail"]');await contains('Đủ dữ liệu tối thiểu — chưa đối chiếu');
   await contains('Phiên bản hóa đơn: 1');assert.equal(await text('[data-screen="INVOICE-DETAIL"] .readonly-grid'),invoiceBefore);
-  assert.equal(await evaluate(`!!document.querySelector('[data-action*="match"],[data-action*="payment"]')`),false);
+  // P4 now provides explicit actions; adding GR must still never run them automatically.
+  assert.equal(await evaluate(`document.querySelectorAll('#result-history li').length`),0);
   await layout('invoice-ready');await shot('p3-03-invoice-ready-unmatched','AP-01 xem INV-DEMO-1 sau Kho bổ sung GR; input revision 2, invoice revision 1; đủ dữ liệu tối thiểu, chưa đối chiếu; 17:00');
   await record('P3 invoice before GR stays intact; GR only changes completeness/revision','AP-01');
 
@@ -137,7 +138,7 @@ export async function runP3(h) {
     const font=await cdp('CSS.getPlatformFontsForNode',{nodeId});report.fonts.push({selector,...font});
     assert.ok(font.fonts.some(f=>f.isCustomFont&&f.familyName.includes('Be Vietnam')));
   }
-  await reset();await cdp('Page.reload');await wait(`document.querySelector('#results tbody tr')`);await hour(12);
+  await reset();await cdp('Page.reload');await wait(`document.querySelector('#results tbody tr') && document.querySelector('#clock').dateTime==='2026-10-10T12:00:00+07:00'`);await hour(12);
   const resources=events.filter(e=>e.method==='Network.responseReceived').map(e=>({url:e.params.response.url,status:e.params.response.status}));
   assert.ok(resources.every(r=>r.status===200&&r.url.startsWith(baseUrl)));report.resources=resources;
   pass('P3 font glyphs, local HTTP200 resources, reload defaults',{fonts:report.fonts,resourceCount:resources.length});

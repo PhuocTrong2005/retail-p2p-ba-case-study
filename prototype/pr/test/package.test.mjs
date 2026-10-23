@@ -12,7 +12,7 @@ test('static package is exact, reproducible, and fails before replacing output i
   t.after(() => rm(root, { recursive: true, force: true }));
   const app = ['index.html', 'styles.css', 'app.mjs', 'data/seed.json',
     'data/po-catalog.json', 'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs',
-    'logic/session-context.mjs', 'logic/p2p-session.mjs', 'logic/po-session.mjs', 'logic/receiving-invoice.mjs'];
+    'logic/session-context.mjs', 'logic/p2p-session.mjs', 'logic/po-session.mjs', 'logic/receiving-invoice.mjs', 'logic/matching-payment.mjs', 'data/matching-scenarios.json'];
   const fonts = ['BeVietnamPro-Regular.ttf', 'BeVietnamPro-Medium.ttf',
     'BeVietnamPro-SemiBold.ttf', 'BeVietnamPro-Bold.ttf', 'OFL.txt'];
   for (const name of ['build-static.mjs', ...app, ...fonts.map(n => `../../wireframes/pr/${n}`)]) {

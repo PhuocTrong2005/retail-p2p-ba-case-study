@@ -1,0 +1,32 @@
+{
+  "data_label": "Kết quả định trước để kiểm chứng cổng demo; không phải thuật toán đối chiếu, giá thị trường hay chính sách dung sai.",
+  "source_id": "P4-SYNTHETIC",
+  "versions": ["v1", "v2"],
+  "scenarios": [{"id":"PASS","label":"Đạt (mô phỏng)"},{"id":"FAIL","label":"Không đạt (mô phỏng)"}],
+  "examples": [
+    {
+      "id": "USB-1.5",
+      "po": {"description":"Máy quét USB tổng hợp","quantity":1.5,"supplier_id":"SUP-DEMO-01","unit_price":12.5},
+      "gr_quantity": 1.5,
+      "variants": {
+        "FAIL": [
+          {"unit_price":15,"amount":22.5,"attributes":["Đơn giá hóa đơn","Số tiền hóa đơn"],"reason":"Tình huống tổng hợp minh họa sai giá và tiền; AP chỉnh dữ liệu rồi chạy lại."},
+          {"unit_price":12.5,"amount":22.5,"attributes":["Số tiền hóa đơn"],"reason":"Tình huống tổng hợp sau sửa giá, tiền hóa đơn vẫn cần khắc phục và chạy lại."}
+        ],
+        "PASS": [{"unit_price":12.5,"amount":18.75,"attributes":[],"reason":"Đạt được định trước cho đúng tuple minh họa USB-1.5; không phải kết quả thuật toán matching."}]
+      }
+    },
+    {
+      "id": "PAPER-40",
+      "po": {"description":"Cuộn giấy in nhiệt K80, khổ 80 mm, dài 45 m","quantity":40,"supplier_id":"SUP-DEMO-01","unit_price":12.5},
+      "gr_quantity": 40,
+      "variants": {
+        "FAIL": [
+          {"unit_price":15,"amount":600,"attributes":["Đơn giá hóa đơn","Số tiền hóa đơn"],"reason":"Tình huống tổng hợp minh họa sai giá và tiền; AP chỉnh dữ liệu rồi chạy lại."},
+          {"unit_price":12.5,"amount":600,"attributes":["Số tiền hóa đơn"],"reason":"Tình huống tổng hợp sau sửa giá, tiền hóa đơn vẫn cần khắc phục và chạy lại."}
+        ],
+        "PASS": [{"unit_price":12.5,"amount":500,"attributes":[],"reason":"Đạt được định trước cho đúng tuple minh họa PAPER-40; không phải kết quả thuật toán matching."}]
+      }
+    }
+  ]
+}

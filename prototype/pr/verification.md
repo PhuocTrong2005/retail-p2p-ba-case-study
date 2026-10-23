@@ -1,6 +1,6 @@
 # Kiểm chứng prototype PR — 3C
 
-Các mục 1–4 dưới đây là hồ sơ PR 3C theo phiên bản/thời điểm đã ghi, được bảo toàn. Phần mở rộng PR → PO local ngày 22/10/2026 có kết quả riêng tại [mục 5](#5-p2--liên-thông-pr--po-local); không suy kết quả P2 sang GR/hóa đơn/đề nghị hoặc demo Pages chưa được cập nhật. P3 GR/hóa đơn có hồ sơ riêng tại [mục 6](#6-p3--liên-thông-gr-và-hóa-đơn-local), không thay kết quả lịch sử.
+Các mục 1–4 dưới đây là hồ sơ PR 3C theo phiên bản/thời điểm đã ghi, được bảo toàn. Phần mở rộng PR → PO local ngày 22/10/2026 có kết quả riêng tại [mục 5](#5-p2--liên-thông-pr--po-local); không suy kết quả P2 sang GR/hóa đơn/đề nghị hoặc demo Pages chưa được cập nhật. P3 GR/hóa đơn có hồ sơ riêng tại [mục 6](#6-p3--liên-thông-gr-và-hóa-đơn-local), không thay kết quả lịch sử. P4 có kết quả riêng tại [mục 7](#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local).
 
 ## 1. Phạm vi, phiên bản, môi trường và thời điểm kiểm chứng
 
@@ -487,3 +487,72 @@ Hồi quy UI P2 riêng trên cùng source P3, trang mới: **10:45:19.353–10:4
 Hai lượt thử giữ riêng: `browser-attempt1` dừng do helper tự đặt chiều cao tối thiểu 24px cho cả nút quay lại dạng chữ hiện hữu; đây không là yêu cầu được duyệt. Đổi kiểm tra sang kích thước dương/nội dung không bị cắt cùng kiểm tra ảnh. `browser-attempt2` đã chạy các nhánh chính nhưng helper chuyển vai ngay sau ghi lặp trong khoảng khóa 400ms hiện có, khiến vai chưa đổi. Helper chờ hết khoảng khóa rồi tiếp tục; không đổi logic sản phẩm hoặc assertion PR/PO để che lỗi. Lượt cuối chạy lại toàn bộ đạt như trên, chỉ lấy ảnh cuối làm bằng chứng.
 
 Giới hạn: một đơn vị/một dòng/một GR/một hóa đơn, không nhận phần/credit note/thuế/tích hợp/lưu bền. Quyền theo vai chỉ mô phỏng, không bảo mật server; ngoài đơn vị/tham chiếu sai/form token cũ kiểm tra ở logic, không bao phủ toàn ma trận UI. Chưa thử mobile/headful/trình duyệt khác/công cụ trợ năng/UAT, beforeunload/đóng tab P3 hoặc artifact đầy đủ Pages prefix. P4 chưa triển khai; không có kết quả Đạt/Không đạt/ngoại lệ/đề nghị, không có policy mới hoặc lợi ích vận hành được xác nhận. Không có lỗi chức năng/kiểm soát trọng yếu còn biết trong phạm vi P3 đã kiểm tra. Các tiến trình local do tác vụ tạo được dừng khi kết thúc; không dừng tiến trình khác.
+
+
+## 7. P4 — Đối chiếu mô phỏng và đề nghị thanh toán local
+
+P4 hoàn tất trong phạm vi local ghi dưới đây; không kết luận triển khai thuật toán đối chiếu, toàn AC đạt hoặc UAT. Điểm cuối là đề nghị được duyệt, không phải thanh toán. P5 chưa bắt đầu; không stage/commit/push/merge/deploy.
+
+### Nguồn và thiết kế
+
+Branch `p2p-prototype-design`, HEAD `0f5ab9da85d9fc28113095eff1e5ddc70e31e392`; đầu lượt working tree sạch, index rỗng, không AGENTS.md áp dụng. Snapshot đọc lại được tại `C:\Users\ASUS\AppData\Local\Temp\p2p-p4-49d1f398-c36c-406a-b049-4ebcead52cbf`, gồm HEAD/status/index, bản sao P1 và 145 hash nguồn. Lượt tiếp tục ngày 23/10/2026 bảo toàn công việc cũ, không triển khai lại.
+
+Đã đọc P1, G1-D01/05/06, BR-16–24/27, UC-06–09 và FR-10–15/AC-12–18/29/30/35–37 liên quan. [P1](../../06-system-analysis/p2p-prototype-design.md) C/E cụ thể hóa trước code: trường nội dung/giải trình, dữ liệu hỗ trợ RO, bảy trường hóa đơn P3 và revision, điều kiện áp dụng kết quả, hiệu lực/dấu vừa xem, ngoại lệ, quyền/khóa theo giao dịch và clock. Các CHK thiết kế giữ Chưa thực hiện; kết quả thực thi chỉ ghi tại đây, chưa xác nhận artifact đầy đủ P5.
+
+Thêm [matching-payment.mjs](./logic/matching-payment.mjs), [matching-scenarios.json](./data/matching-scenarios.json), [test P4](./test/matching-payment.test.mjs), [QA P4](./qa/p4-scenarios.mjs) và bốn PNG. Tái dùng app/UI/font/parser/context/clock/reset/ID/command guard và chứng từ thực tế P2/P3; không dataset/session mới. Sửa P1, README/verification, app, index, facade phiên, receiving-invoice để khóa/đọc đầu vào, server/build/package/server test, browser harness và một assertion P3. Assertion P3 được giữ ở ý nghĩa nghiệp vụ: thêm GR không tự sinh kết quả (`result-history` rỗng); không còn cấm nút P4 vì P4 đã được giao. Không đổi assertion Node PR/PO/GR/hóa đơn cũ.
+
+Bộ `P4-SYNTHETIC` v1/v2 là dữ liệu tổng hợp tra đúng tuple, không matching tổng quát hoặc dung sai 0. Hai ví dụ: USB mô tả Máy quét USB tổng hợp/lượng 1.5, và giấy PR-D/lượng 40; PO NCC A/giá12.5. FAIL: giá15/tiền22.5 hoặc600, sau sửa giá12.5 vẫn tiền cũ thì FAIL; PASS: giá12.5/tiền18.75 hoặc500. NCC/mô tả/lượng hóa đơn theo ví dụ. Đầu vào ngoài tuple bị chặn, không ép PASS; thiếu dữ liệu thực ưu tiên WAIT, không tạo ngoại lệ mới. Chi tiết nhập trong [README P4](./README.md#p4--đối-chiếu-định-trước-và-đề-nghị-thanh-toán).
+
+### Lệnh và kết quả
+
+Node v22.14.0 có sẵn, không dependency mới. Lệnh thực chạy từ root:
+
+```powershell
+$p4Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p4Tests = @(Get-ChildItem -LiteralPath prototype/pr/test -Filter '*.test.mjs' | ForEach-Object FullName)
+& $p4Node --test --test-reporter=spec @p4Tests
+& $p4Node prototype/pr/build-static.mjs
+& $p4Node prototype/pr/qa/browser-qa.mjs --scope=p4 --cdp=http://127.0.0.1:9239 --url=http://127.0.0.1:8089/ --output=<snapshot>/browser-final --evidence-dir=<snapshot>/evidence-final
+```
+
+Đường dẫn `<snapshot>` ở trên thay bằng snapshot đầy đủ đã ghi. Node **94/94 đạt**, 0 fail/skipped (77 cũ +17 mới), log `node-final.txt`. Kiểm tra mới gồm WAIT/FAIL/PASS, hai cổng độc lập, revision cũ/hoàn nguyên, version lựa chọn, dấu xem sai/cũ/khác đề nghị, chuẩn bị cũ/gửi mới, hai nhánh trả lại, khóa X không khóa Y, sai vai/liên kết, replay/reset, lịch sử, seed/metric. Fixture bất thường thiếu GR sau chuẩn bị hoặc thay revision sau gửi chỉ ở logic; không có đường UI tạo trạng thái đó.
+
+Chrome 155.0.8059.85 headless/Windows/CDP: P4 cuối **22/10/2026 11:21:15.531–11:22:19.164 UTC+07**, `browser-final/browser-results.json`: **19 mục đạt**, gồm 12 bố cục (6 ngữ cảnh ×1280/1440) và 7 nhóm chức năng/tài nguyên; 39 response local HTTP200, 0 console errors. Font glyph Be Vietnam Pro thực, nút/focus/lỗi/dirty warning, không cuộn ngang toàn trang; bốn ảnh cuối đã xem. Không suy số nhóm thành coverage AC.
+
+| Kịch bản / vai trò | Mong đợi | Thực tế / kết luận (giờ mô phỏng UTC+07) |
+| --- | --- | --- |
+| PR thật đến duyệt đề nghị; tất cả bảy vai | Cùng phiên/nguồn, FAIL khắc phục mới PASS | 10/10 PR gửi13h/duyệt14h; PO lập15h/gửi16h/duyệt17h/phát hành18h; GR19h/hóa đơn20h; FAIL21h, chuẩn bị chặn22h; ghi chú23h; sửa giá 11/10 00h, FAIL01h; sửa tiền02h/PASS03h/chuẩn bị04h. Đạt |
+| AP gửi, Finance trả, AP gửi lại/Finance duyệt | Nội dung/giải trình bắt buộc, cùng ID, không Paid | Gửi trống05h bị chặn/focus; gửi06h; trả thiếu lý do không tick, đủ lý do07h; gửi thiếu giải trình08h chặn; gửi lại09h/duyệt10h. Hai vòng PAYMENT-1, prepared RESULT-3 giữ nguyên. Đạt |
+| Hóa đơn trước GR; AP/Kho | WAIT không ngoại lệ/đề nghị | Reset riêng: hóa đơn16h, WAIT17h, chuẩn bị chặn18h; GR19h, chạy PASS20h. Đạt |
+| Chuẩn bị cũ, nguồn mới; AP | Chặn riêng tại gửi, xem lại không mất nhập | Chuẩn bị RESULT-2/v1 lúc21h; đổi v2, gửi22h chặn stale; PASS RESULT-3 lúc23h, gửi 11/10 00h chặn dấu xem cũ; xem lại 00h/gửi01h dùng RESULT-3, không chuẩn bị lại. Đạt |
+| Sau Finance trả, sửa hóa đơn; AP/Finance | FAIL chặn gửi lại, PASS mới cho gửi | Trả02h/sửa tiền03h/FAIL04h/gửi chặn05h; lưu06h/sửa tiền07h/PASS08h/gửi09h/duyệt10h, cùng PAYMENT-1. Đạt |
+| Ngoài tuple, chọn PASS; AP | Không công bố giả | Đủ GR, tiền123: chạy18h chặn không có tình huống, 0 kết quả; chuẩn bị19h chặn. Đạt |
+| Khóa/lặp/reset | Chờ/duyệt chỉ đọc, không thao tác thêm | UI chờ không có sửa/chạy, selector khóa; gửi/duyệt lặp chỉ một lần; reset về12h, queue và downstream rỗng. X/Y và guard sau duyệt ở Node. Đạt theo từng lớp |
+
+Ảnh mới từ `Page.captureScreenshot`, rộng1440, byte khớp `evidence-final`, không ghi đè ảnh cũ:
+
+| Ảnh | Giờ chụp thực 22/10/2026 UTC+07 | Vai / giờ mô phỏng |
+| --- | --- | --- |
+| [FAIL/ngoại lệ](./evidence/p4-01-fail-exception.png) | 11:21:27.386 | AP-01 / 10/10 21h |
+| [Chờ dữ liệu](./evidence/p4-02-waiting-data.png) | 11:21:49.977 | AP-01 / 10/10 18h |
+| [Gửi cần xem lại](./evidence/p4-03-send-blocked-review.png) | 11:21:55.838 | AP-01 / 11/10 00h |
+| [Đề nghị đã duyệt](./evidence/p4-04-approved-request.png) | 11:21:43.452 | FIN-01 / 11/10 10h |
+
+Hai lượt P4 thử tách biệt: attempt1 bị lỗi JS helper khai báo lại `const target` ở global; sửa IIFE. Attempt2 bị dừng ở tình huống ngoài tuple vì helper thiếu bước GR nên sản phẩm trả WAIT đúng; sửa điều kiện đầu. Đã sửa lỗi trình bày `null` trên nav và lịch sử ngoại lệ hẹp trước lượt cuối. Chỉ ảnh/lượt cuối được dùng kết luận.
+
+### Hồi quy tiếp tục và giới hạn
+
+Lượt cũ chạy song song P2/P3 không dùng kết luận: P3 dừng vì vai còn REQ, P2 dừng vì không có queue. Log không ghi thời điểm timer `busy` nên không chứng minh tuyệt đối nguyên nhân lịch sử. Code sản phẩm giữ vai cũ nếu `busy`/dialog, khóa bằng timer400ms; harness chờ cố định460ms sau click, nên chưa bảo đảm timer đã chạy ở trang nền. Hai lượt tuần tự cũ đã đạt P3 21/P2 15 mục ngày22/10; lượt tiếp tục bên dưới kiểm tra riêng theo yêu cầu mới. Không mặc định lỗi sản phẩm đã được loại chỉ từ nhận định harness.
+
+Build **20/20 file** byte khớp nguồn và `artifact-manifest.json` ngoài repo, không test/log/tài liệu/evidence trong gói. Server loopback/read-only/allowlist, không phục vụ repo. Chưa full artifact Pages prefix/hosting/workflow (P5). Chưa mobile/headful/trình duyệt khác/trợ năng/UAT, đa tab/giao dịch server/beforeunload P4. Quyền browser chỉ mô phỏng; không backend/lưu bền/ngân hàng/policy doanh nghiệp. Không có lỗi kiểm soát trọng yếu còn biết trong phạm vi đã thử; giới hạn tuple chủ ý còn giữ.
+
+Lượt tiếp tục **23/10/2026**, chạy tuần tự, mỗi scope tạo/đóng trang độc lập trong profile Chrome mới:
+
+- P2: **15/15 mục đạt**, 2026-10-23T22:00:06.964+07:00 đến 2026-10-23T22:00:41.119+07:00; log `resume-p2/browser-results.json`. Lệnh cùng harness/server/CDP nêu trên, đổi `--scope=p2`, `--output=<snapshot>/resume-p2` và evidence-dir riêng ngoài repo.
+- P3: **21/21 mục đạt**, 2026-10-23T22:02:36.319+07:00 đến 2026-10-23T22:03:21.496+07:00; log `resume-p3-final/browser-results.json`. Lệnh cùng harness/server/CDP nêu trên, đổi `--scope=p3`, `--output=<snapshot>/resume-p3-final` và evidence-dir riêng ngoài repo.
+
+Lượt `resume-p3` đã qua nghiệp vụ nhưng lỗi ở reload cuối: điều kiện chờ hàng cũ có thể đúng trước khi navigation khởi tạo trang mới, clock đọc được rỗng. Sửa riêng QA chờ cả hàng và clock T0 rồi giữ assertion giờ; `resume-p3-final` chạy lại toàn bộ đạt. Không sửa runtime hoặc hạ kỳ vọng nghiệp vụ; assertion thêm GR không sinh kết quả vẫn giữ. Không chạy lại Node/P4 vì runtime và cấu hình/gói không đổi.
+
+`role-diagnosis.json` từ script CDP ngoài repo: trên trang mới, lưu PR và đổi vai ngay khi timer400ms chưa chạy giữ REQ-01/T13h; timer chạy khoảng409ms sau, đổi vai sau đó thành MGR-01/queue đúng, vẫn T13h. Đây là kiểm tra guard thực tế, không giả định chỉ lỗi harness. Không có bằng chứng timer của lượt song song cũ nên nguyên nhân chính xác lịch sử chưa xác định tuyệt đối; không tái hiện lỗi vai còn kẹt sau hết guard ở các lượt tuần tự hoàn tất. Bốn ảnh P4 không bị ảnh hưởng bởi thay đổi QA/tài liệu, byte giữ đúng lượt cuối22/10.
+
+Bảo toàn cuối: 145 tracked đầu lượt, **132 không đổi/13 thay đổi** đúng phạm vi; **8 file mới** (bốn module/data/QA/test và bốn PNG). Chỉ P1 nằm ngoài prototype/pr. Seed PR, metric/parser/time/context, assertion Node PR/PO/P3, QA P2, baseline/OD/SRS/RTM/SIM/ERP/wireframe/font/ảnh cũ/workflow giữ hash đầu lượt. Index rỗng/HEAD không đổi. Không stage/commit/push/merge/deploy/P5. Đã kiểm tra liên kết/anchor, bảng/ID/whitespace, file untracked và git diff --check.

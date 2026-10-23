@@ -1,10 +1,10 @@
-# Prototype mua hàng liên thông (PR → PO → GR / hóa đơn)
+# Prototype P2P liên thông (PR → đề nghị thanh toán được duyệt)
 
 <a id="prototype-pr--tích-hợp-ui-3b2"></a>
 
 **Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](#hướng-dẫn-thử-nhanh)
 
-**PR → PO → GR / hóa đơn hiện có ở local, chưa công bố.** Liên kết Pages trên giữ bản PR đã công bố trước P2/P3. Xem [hướng dẫn P3](#p3--ghi-gr-và-hóa-đơn-trong-cùng-phiên), [hướng dẫn PO](#p2--thử-liên-thông-pr--po-trên-local) và [kết quả P3](./verification.md#6-p3--liên-thông-gr-và-hóa-đơn-local). Chưa triển khai đối chiếu, ngoại lệ hoặc đề nghị thanh toán.
+**P4 hiện có ở local, chưa công bố.** Liên kết Pages trên vẫn giữ bản PR trước P2–P4. Luồng local đến đề nghị thanh toán được Finance phê duyệt, không có thực hiện thanh toán. Xem [hướng dẫn P4](#p4--đối-chiếu-định-trước-và-đề-nghị-thanh-toán), [P3](#p3--ghi-gr-và-hóa-đơn-trong-cùng-phiên) và [kết quả P4](./verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local).
 
 **Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.**
 
@@ -55,6 +55,43 @@ Runtime được ghi nhận trong các lượt kiểm tra là Node **v22.14.0**.
 - Chỉ handler sở hữu validation, sự kiện và tăng giờ. UI giữ phần nhập cục bộ trước thao tác, không tính metric hoặc thời gian nghiệp vụ bằng cách thứ hai. Có khóa xử lý và bỏ click thứ hai trong double-click; không tự retry ghi. Nội dung người dùng được tạo bằng DOM/textContent, không chèn HTML.
 - Nháp tạo mới có nguồn riêng; thiếu log không bị coi là nháp. Chi tiết chỉ là nội dung hiện tại. Ghi chú làm rõ C xuất hiện tại **C-3**, không ngụ ý có tại C-1 hoặc tái dựng snapshot quá khứ.
 
+## P4 — Đối chiếu định trước và đề nghị thanh toán
+
+**Kết quả định trước để kiểm chứng cơ chế kiểm soát, không phải thuật toán đối chiếu ba bên.** Logic thực kiểm tra dữ liệu bắt buộc, quan hệ, revision, hiệu lực, quyền và hai cổng chuẩn bị/gửi. Chỉ những tuple tổng hợp trong [matching-scenarios.json](./data/matching-scenarios.json) có kết quả định trước; ngoài tuple thì chặn công bố, không chọn PASS để vượt qua. Không có dung sai/policy hoặc giá thị trường được suy từ các số này.
+
+Từ luồng PR/PO/GR/hóa đơn hiện có, dùng **NCC mẫu A**, giá PO **12.5** và một trong hai ví dụ:
+
+| Ví dụ trên chứng từ thật | Mô tả / lượng PO, GR, hóa đơn | Hóa đơn FAIL: giá / tiền | Hóa đơn PASS: giá / tiền |
+| --- | --- | --- | --- |
+| PR mới nhập qua UI | Máy quét USB tổng hợp / 1.5 | 15 / 22.5 hoặc đã sửa giá 12.5 / 22.5 | 12.5 / 18.75 |
+| Vào nhanh PR-D, cùng phiên | Cuộn giấy in nhiệt K80, khổ 80 mm, dài 45 m / 40 | 15 / 600 hoặc đã sửa giá 12.5 / 600 | 12.5 / 500 |
+
+Đây là các giá trị nhập riêng để tra tình huống, không tự nhân lượng × giá. Mô tả/NCC/lượng hóa đơn theo đúng ví dụ; số/ngày hóa đơn nhập hợp lệ theo P3. Có thể ghi hóa đơn trước GR: lần chạy sẽ Chờ dữ liệu và chỉ rõ thiếu GR; không ngoại lệ sai lệch mới, không chuẩn bị được đề nghị.
+
+1. AP mở hóa đơn. Trong **Điều khiển demo**, chọn **Không đạt (mô phỏng)** và nguồn `P4-SYNTHETIC / v1`; đóng panel rồi **Chạy đối chiếu mô phỏng**. Tuple FAIL phù hợp mở ngoại lệ có AP phụ trách, thuộc tính/lý do; thử **Chuẩn bị đề nghị** sẽ bị chặn.
+2. Ghi chú điều tra hoặc sửa hóa đơn trong phạm vi P3. Ghi chú không cấp điều kiện; sửa dữ liệu làm kết quả cũ hết hiệu lực. Chỉ sửa giá rồi chạy FAIL vẫn giữ ngoại lệ mở. Sửa tiền đúng tuple PASS, chọn PASS rồi chạy mới; lúc này mới ghi xử lý ngoại lệ cùng Result ID mới. Không có nút tự đóng ngoại lệ hoặc sửa PO/GR đã hoàn tất.
+3. **Chuẩn bị đề nghị** tạo một hồ sơ. AP nhập nội dung; NCC/tiền/tham chiếu là RO từ hóa đơn. **Gửi đề nghị** kiểm tra độc lập lại dữ liệu và PASS hiện hành. Nội dung bắt buộc khi gửi; lưu được chưa đầy đủ. Chỉ có một đề nghị mỗi giao dịch; bấm chuẩn bị lại mở cùng ID.
+4. Đổi kịch bản/version của đúng giao dịch không tăng giờ nhưng làm kết quả cũ hết hiệu lực; đổi rồi đổi về không hồi sinh kết quả. v2 dùng cùng số tổng hợp, provenance khác. Nếu chạy PASS mới sau chuẩn bị, gửi bằng dấu xem cũ bị chặn. Bấm **Xem lại dữ liệu hiện hành**: không tăng giờ, giữ nội dung AP nhập; gửi lại dùng Result ID mới và giữ nguyên bằng chứng chuẩn bị cũ.
+5. Chuyển **FIN-01** → **Hàng đợi đề nghị** → **Xem xét đề nghị**. Finance chỉ quyết định hồ sơ đang chờ: phê duyệt hoặc trả lại có lý do không trống. AP mở lại cùng ID, sửa nội dung/nhập giải trình bắt buộc rồi gửi lại. Chỉ sửa giải trình không tự làm kết quả hết hiệu lực; nếu sửa hóa đơn sau trả lại phải chạy lại PASS phù hợp trước gửi.
+6. Khi đề nghị chờ Finance/đã duyệt, mọi sửa hóa đơn (cả ghi chú), đổi nguồn/kịch bản và chạy mới bị khóa tại handler và UI của đúng giao dịch. Giao dịch khác và chỉ đọc vẫn dùng được. Sau duyệt chỉ xem, kết thúc tại phê duyệt đề nghị; không mở lại/từ chối/thanh toán.
+
+Mỗi lần chạy có kết quả tạo Result ID/order mới; trường hợp không có tình huống chỉ ghi attempt bị chặn. Lịch sử cũ không sửa/chọn lại làm hiện hành. Run/prepare/send/lưu được tiếp nhận +1 giờ (kể cả lỗi nội dung/stale/thiếu dữ liệu); duyệt/trả hợp lệ +1 giờ; trả thiếu lý do, sai vai/trạng thái/tham chiếu, khóa, token lặp/cũ không tick. Xem lại/đọc/đổi lựa chọn không tick. Reset/reload xóa kết quả/ngoại lệ/đề nghị/dấu xem và về PASS/v1 chưa có kết quả, giữ cùng cơ chế PR/PO/GR/hóa đơn; công thức metric và seed PR không đổi.
+
+[matching-payment.mjs](./logic/matching-payment.mjs) dùng context/clock/ID/reset/command guard và dữ liệu P3 thực; không tạo app/session/dataset thứ hai. [P1 C/E](../../06-system-analysis/p2p-prototype-design.md) quản lý chi tiết thiết kế; [verification mục 7](./verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local) ghi phạm vi thực chạy và giới hạn. Bộ test cuối **94/94 đạt** (77 cũ + 17 mới). Gói hiện tại **20 file**, khớp nguồn; workflow giữ nguyên cho P5, chưa công bố.
+
+```powershell
+$p4Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p4Tests = @(Get-ChildItem -LiteralPath prototype/pr/test -Filter '*.test.mjs' | ForEach-Object FullName)
+& $p4Node --test --test-reporter=spec @p4Tests
+& $p4Node prototype/pr/build-static.mjs
+# Các terminal riêng, chọn cổng trống:
+& $p4Node prototype/pr/serve.mjs --port=8089
+& $p4Node prototype/pr/qa/launch-browser.mjs --cdp-port=9239
+& $p4Node prototype/pr/qa/browser-qa.mjs --scope=p4 --cdp=http://127.0.0.1:9239 --url=http://127.0.0.1:8089/ --output="$env:TEMP/p4-browser-results" --evidence-dir="$env:TEMP/p4-browser-evidence"
+```
+
+Chạy từng scope trình duyệt riêng, không song song trên cùng browser. Dừng đúng tiến trình do mình tạo. Bốn ảnh cuối P4: [Không đạt/ngoại lệ](./evidence/p4-01-fail-exception.png), [chờ dữ liệu](./evidence/p4-02-waiting-data.png), [gửi bị chặn cần xem lại](./evidence/p4-03-send-blocked-review.png), [Finance đã duyệt](./evidence/p4-04-approved-request.png). Các mục PR/P2/P3 bên dưới giữ kết quả đúng phiên bản, không chứng minh toàn AC/UAT hoặc P5.
+
 ## P3 — Ghi GR và hóa đơn trong cùng phiên
 
 Chạy local như phần dưới; dùng chính PO vừa lập/duyệt ở P2, không tải lại. Mỗi PO tối đa một GR và một hóa đơn trong demo; một dòng, nhận đủ một lần. Đây là giới hạn demo được chủ dự án chấp thuận, không phải policy doanh nghiệp.
@@ -70,11 +107,11 @@ Mở form/xem/liên kết/đổi vai không tăng T. Ghi/lưu được tiếp nh
 
 [receiving-invoice.mjs](./logic/receiving-invoice.mjs) quản lý GR/hóa đơn/revision, dùng chung context/clock/ID/reset và guard command của P2. UI dùng lại bảng/panel/field/dialog/font Be Vietnam Pro; [catalog P2](./data/po-catalog.json) chỉ thêm hai actor, không thêm dataset PR. Thao tác P3 làm tuổi chờ PR tăng theo cùng T; công thức/cohort/seed không đổi. Tái lập chuỗi PR chuẩn bằng reset rồi chỉ thao tác PR, không xen downstream.
 
-**Chưa có đối chiếu/ngoại lệ/đề nghị thanh toán:** đủ dữ liệu không là Đạt hoặc cấp quyền chuẩn bị/gửi. Không thuế/dung sai/credit note/nhận từng phần/backend/lưu bền. Quyền chỉ mô phỏng trong trình duyệt, chưa là bảo mật vận hành.
+**Ở mốc P3 chưa có đối chiếu/ngoại lệ/đề nghị thanh toán:** đủ dữ liệu không là Đạt hoặc cấp quyền chuẩn bị/gửi. Không thuế/dung sai/credit note/nhận từng phần/backend/lưu bền. Quyền chỉ mô phỏng trong trình duyệt, chưa là bảo mật vận hành.
 
 ### Kiểm tra P3
 
-Dùng `$p2Node` và lệnh toàn bộ test ở mục P2 dưới đây: **77/77 test đạt** (63 cũ + 14 mới), không đổi assertion PR/PO cũ. Build hiện tại **18 file**, giữ allowlist hẹp, từng byte khớp source. Các con số 17 file P2 và 13 file H1/H2 bên dưới là phiên bản lịch sử; workflow vẫn nguyên bản, để P5 trước công bố.
+Dùng `$p2Node` và lệnh toàn bộ test ở mục P2 dưới đây: **77/77 test đạt** (63 cũ + 14 mới), không đổi assertion PR/PO cũ. Build ở mốc P3 **18 file** (P4 hiện tại 20 file), giữ allowlist hẹp, từng byte khớp source. Các con số 17 file P2 và 13 file H1/H2 bên dưới là phiên bản lịch sử; workflow vẫn nguyên bản, để P5 trước công bố.
 
 ```powershell
 $p3Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
@@ -110,7 +147,7 @@ PO chưa đầy đủ có thể lưu nháp; số/NCC đã nhập không hợp l�
 - [app.mjs](./app.mjs) tái dùng DOM helpers, bảng/panel/callout/dialog và bốn view PR hiện có, thêm ngữ cảnh danh sách/form/chi tiết PO. [po-catalog.json](./data/po-catalog.json) chỉ thêm ba actor PO và ba NCC tổng hợp; không sao chép PR/user/đơn vị seed gốc. Font/CSS nền, validation PR, time/metric và cohort cũ được giữ.
 - API đọc PR đã duyệt có kiểm tra vai/phạm vi và bằng chứng APPROVE; Mua hàng không giả danh REQ-01. PO giữ PR ID/APPROVE ID thật và snapshot lúc lập; không dựng snapshot PR ở các mốc quá khứ. Quyền/historical log chỉ là mô phỏng trong trình duyệt.
 - Cùng clock: reset rồi BUY-01 lập PO từ PR-D đưa T đến 13:00; A/C vẫn chờ và tuổi chờ thành 196/97 giờ, số chờ 2, tỷ lệ 25%. Chỉ kéo dài coverage cho lịch sử PR phiên biết đầy đủ; fixture thiếu vẫn không xác định. Muốn tái lập chuỗi PR 12/13/14/15, reset chung rồi chạy riêng chuỗi **Hướng dẫn thử nhanh**, không xen thao tác PO.
-- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** ở mốc P2 (18 file ở P3 hiện tại), cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Workflow chưa sửa, vẫn chứa kiểm tra gói PR cũ; cần cập nhật trong P5 trước công bố, không dùng workflow cũ làm bằng chứng P2 đã deploy.
+- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** ở mốc P2 (18 file ở P3; 20 file ở P4 hiện tại), cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Workflow chưa sửa, vẫn chứa kiểm tra gói PR cũ; cần cập nhật trong P5 trước công bố, không dùng workflow cũ làm bằng chứng P2 đã deploy.
 
 ### Tái lập kiểm tra P2
 

@@ -2,15 +2,27 @@
 
 <a id="prototype-pr--tích-hợp-ui-3b2"></a>
 
-**Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](#hướng-dẫn-thử-nhanh)
+**Demo công khai:** [https://phuoctrong2005.github.io/retail-p2p-ba-case-study/](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Thử nhanh P2P](#thử-nhanh-p2p-liên-thông)
 
-**P4 hiện có ở local, chưa công bố.** Liên kết Pages trên vẫn giữ bản PR trước P2–P4. Luồng local đến đề nghị thanh toán được Finance phê duyệt, không có thực hiện thanh toán. Xem [hướng dẫn P4](#p4--đối-chiếu-định-trước-và-đề-nghị-thanh-toán), [P3](#p3--ghi-gr-và-hóa-đơn-trong-cùng-phiên) và [kết quả P4](./verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local).
+Một ứng dụng, một phiên dữ liệu và một đồng hồ từ PR đến Finance phê duyệt đề nghị thanh toán. Bản P5 dùng artifact 20 tệp; [verification P5](./verification.md#8-p5--artifact-và-công-bố-portfolio) phân biệt kiểm tra mới và bằng chứng kế thừa. Không thực hiện thanh toán.
 
-**Prototype PR — dữ liệu tổng hợp, không phải hệ thống vận hành.**
+**Prototype P2P — dữ liệu tổng hợp, chưa phải hệ thống vận hành.**
 
 **Dữ liệu tổng hợp — minh họa cách đo, không phải kết quả vận hành thực tế.**
 
 [Câu chuyện portfolio](../../case-study.md) · [Kết quả kiểm chứng prototype](./verification.md) · [Đọc sâu: triển khai và kiểm tra](#đọc-sâu-triển-khai-và-kiểm-tra-đã-ghi-nhận)
+
+## Thử nhanh P2P liên thông
+
+Mở demo, mở **Điều khiển demo** và chuyển vai theo từng bước. Mỗi trang mới bắt đầu tại T0 **10/10/2026 12:00 UTC+07**; tránh tải lại giữa luồng vì dữ liệu chỉ ở bộ nhớ trang.
+
+1. **BUY-01:** vào PR đã duyệt, chọn **PR-D**, lập PO với **NCC mẫu A**, giá mua **12.5**; giữ tuyến không cần Finance bổ sung, gửi duyệt. **PM-01:** mở hàng đợi PO và duyệt. Đây là đường vào nhanh trên cùng seed; để đi toàn luồng, dùng REQ-01 tạo PR mô tả **Máy quét USB tổng hợp**, lượng **1.5**, giá ước tính **0**, điền các trường bắt buộc, gửi và để MGR-01 duyệt trước khi BUY-01 lập PO giá **12.5**.
+2. **WH-01:** mở PO đủ duyệt, ghi GR nhận đủ (PR-D là **40**, PR mới ở trên là **1.5**) và ngày hợp lệ. **AP-01:** ghi hóa đơn cùng NCC/mô tả/lượng, số/ngày hợp lệ, giá **15**, tiền **600** (hoặc **22.5** cho PR mới). Tiền nhập độc lập, không tự tính/ép khớp PO.
+3. Chọn kịch bản **FAIL**, version **v1**, chạy đối chiếu mô phỏng: thấy **Không đạt** và ngoại lệ, chưa chuẩn bị được. Sửa giá thành **12.5**, tiền thành **500** (hoặc **18.75**), lưu; chọn **PASS**, chạy lại: kết quả hiện hành **Đạt** mới cho chuẩn bị.
+4. **AP-01:** chuẩn bị đề nghị, nhập nội dung, gửi. **FIN-01:** vào hàng đợi đề nghị, trả lại với lý do. **AP-01:** mở cùng đề nghị, bổ sung giải trình và gửi lại. **FIN-01:** duyệt; kết quả **Đã phê duyệt**, chưa thanh toán. Khi chờ/đã duyệt, đầu vào và nguồn kết quả của giao dịch này bị khóa; sau duyệt chỉ xem.
+5. Mở **Điều khiển demo → Khôi phục dữ liệu mẫu → Khôi phục**: PR seed, clock T0 và vai REQ-01 phục hồi; PO/GR/hóa đơn/kết quả/ngoại lệ/đề nghị vừa làm đều bị xóa.
+
+Matching chỉ công bố kết quả định trước khi đầu vào khớp tuple tổng hợp; chọn PASS không bỏ qua điều kiện. Hóa đơn trước GR trả **WAIT**, chưa phải Đạt. Xem [hướng dẫn chi tiết P4](#p4--đối-chiếu-định-trước-và-đề-nghị-thanh-toán) và [verification](./verification.md#8-p5--artifact-và-công-bố-portfolio) cho các nhánh stale, khóa và giới hạn. Chuỗi PR riêng dưới đây vẫn được bảo toàn để tái lập metric; reset trước và không xen thao tác downstream.
 
 ## Hướng dẫn thử nhanh
 
@@ -43,7 +55,7 @@ node prototype/pr/serve.mjs
 
 Mở **http://127.0.0.1:8080/**. Nếu cổng bận, dùng `node prototype/pr/serve.mjs --port=8081` và mở **http://127.0.0.1:8081/**. Dừng server bằng Ctrl+C khi xong; không dừng tiến trình khác để lấy cổng. Không hỗ trợ mở prototype qua `file://`.
 
-Runtime được ghi nhận trong các lượt kiểm tra là Node **v22.14.0**. Đường dẫn Node riêng của máy tác giả và cấu hình máy chủ nằm trong [ghi nhận môi trường](#môi-trường-và-máy-chủ-local-của-lượt-tích-hợp).
+Runtime được ghi nhận trong các lượt kiểm tra là Node **v22.14.0**. Hướng dẫn tái lập và cấu hình máy chủ nằm trong [ghi nhận môi trường](#môi-trường-và-máy-chủ-local-của-lượt-tích-hợp).
 
 ## Sử dụng
 
@@ -77,17 +89,17 @@ Từ luồng PR/PO/GR/hóa đơn hiện có, dùng **NCC mẫu A**, giá PO **12
 
 Mỗi lần chạy có kết quả tạo Result ID/order mới; trường hợp không có tình huống chỉ ghi attempt bị chặn. Lịch sử cũ không sửa/chọn lại làm hiện hành. Run/prepare/send/lưu được tiếp nhận +1 giờ (kể cả lỗi nội dung/stale/thiếu dữ liệu); duyệt/trả hợp lệ +1 giờ; trả thiếu lý do, sai vai/trạng thái/tham chiếu, khóa, token lặp/cũ không tick. Xem lại/đọc/đổi lựa chọn không tick. Reset/reload xóa kết quả/ngoại lệ/đề nghị/dấu xem và về PASS/v1 chưa có kết quả, giữ cùng cơ chế PR/PO/GR/hóa đơn; công thức metric và seed PR không đổi.
 
-[matching-payment.mjs](./logic/matching-payment.mjs) dùng context/clock/ID/reset/command guard và dữ liệu P3 thực; không tạo app/session/dataset thứ hai. [P1 C/E](../../06-system-analysis/p2p-prototype-design.md) quản lý chi tiết thiết kế; [verification mục 7](./verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local) ghi phạm vi thực chạy và giới hạn. Bộ test cuối **94/94 đạt** (77 cũ + 17 mới). Gói hiện tại **20 file**, khớp nguồn; workflow giữ nguyên cho P5, chưa công bố.
+[matching-payment.mjs](./logic/matching-payment.mjs) dùng context/clock/ID/reset/command guard và dữ liệu P3 thực; không tạo app/session/dataset thứ hai. [P1 C/E](../../06-system-analysis/p2p-prototype-design.md) quản lý chi tiết thiết kế; [verification mục 7](./verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local) ghi phạm vi thực chạy và giới hạn. Bộ test cuối **94/94 đạt** (77 cũ + 17 mới). Gói hiện tại **20 file**, khớp nguồn; workflow P5 đã cập nhật danh sách 20 tệp và trigger dữ liệu; kết quả artifact ở verification mục 8.
 
 ```powershell
-$p4Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p4Node = 'node'
 $p4Tests = @(Get-ChildItem -LiteralPath prototype/pr/test -Filter '*.test.mjs' | ForEach-Object FullName)
 & $p4Node --test --test-reporter=spec @p4Tests
 & $p4Node prototype/pr/build-static.mjs
 # Các terminal riêng, chọn cổng trống:
 & $p4Node prototype/pr/serve.mjs --port=8089
 & $p4Node prototype/pr/qa/launch-browser.mjs --cdp-port=9239
-& $p4Node prototype/pr/qa/browser-qa.mjs --scope=p4 --cdp=http://127.0.0.1:9239 --url=http://127.0.0.1:8089/ --output="$env:TEMP/p4-browser-results" --evidence-dir="$env:TEMP/p4-browser-evidence"
+& $p4Node prototype/pr/qa/browser-qa.mjs --scope=p4 --cdp=http://127.0.0.1:9239 --url=http://127.0.0.1:8089/ --output="<thư-mục-kết-quả-ngoài-repo>" --evidence-dir="<thư-mục-ảnh-ngoài-repo>"
 ```
 
 Chạy từng scope trình duyệt riêng, không song song trên cùng browser. Dừng đúng tiến trình do mình tạo. Bốn ảnh cuối P4: [Không đạt/ngoại lệ](./evidence/p4-01-fail-exception.png), [chờ dữ liệu](./evidence/p4-02-waiting-data.png), [gửi bị chặn cần xem lại](./evidence/p4-03-send-blocked-review.png), [Finance đã duyệt](./evidence/p4-04-approved-request.png). Các mục PR/P2/P3 bên dưới giữ kết quả đúng phiên bản, không chứng minh toàn AC/UAT hoặc P5.
@@ -111,15 +123,15 @@ Mở form/xem/liên kết/đổi vai không tăng T. Ghi/lưu được tiếp nh
 
 ### Kiểm tra P3
 
-Dùng `$p2Node` và lệnh toàn bộ test ở mục P2 dưới đây: **77/77 test đạt** (63 cũ + 14 mới), không đổi assertion PR/PO cũ. Build ở mốc P3 **18 file** (P4 hiện tại 20 file), giữ allowlist hẹp, từng byte khớp source. Các con số 17 file P2 và 13 file H1/H2 bên dưới là phiên bản lịch sử; workflow vẫn nguyên bản, để P5 trước công bố.
+Dùng `$p2Node` và lệnh toàn bộ test ở mục P2 dưới đây: **77/77 test đạt** (63 cũ + 14 mới), không đổi assertion PR/PO cũ. Build ở mốc P3 **18 file** (P4 hiện tại 20 file), giữ allowlist hẹp, từng byte khớp source. Các con số 17 file P2 và 13 file H1/H2 bên dưới là phiên bản lịch sử; ở mốc đó workflow chưa mở rộng; P5 cập nhật kiểm tra gói đầy đủ.
 
 ```powershell
-$p3Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p3Node = 'node'
 & $p3Node prototype/pr/serve.mjs --port=8088
 # Terminal khác:
 & $p3Node prototype/pr/qa/launch-browser.mjs --cdp-port=9238
 # Terminal kiểm tra:
-& $p3Node prototype/pr/qa/browser-qa.mjs --scope=p3 --cdp=http://127.0.0.1:9238 --url=http://127.0.0.1:8088/ --output="$env:TEMP/p3-browser-results" --evidence-dir="$env:TEMP/p3-browser-evidence"
+& $p3Node prototype/pr/qa/browser-qa.mjs --scope=p3 --cdp=http://127.0.0.1:9238 --url=http://127.0.0.1:8088/ --output="<thư-mục-kết-quả-ngoài-repo>" --evidence-dir="<thư-mục-ảnh-ngoài-repo>"
 ```
 
 Dùng cổng trống, chỉ dừng tiến trình do mình mở. Lượt Chrome P3 đạt **21 mục**, hồi quy UI P2 riêng đạt **15 mục**; xem [verification mục 6](./verification.md#6-p3--liên-thông-gr-và-hóa-đơn-local) về môi trường, thời điểm, lệnh và giới hạn. Không ghi đè ảnh PR/PO cũ; ba ảnh cuối: [GR đã ghi](./evidence/p3-01-recorded-gr.png), [hóa đơn chờ GR](./evidence/p3-02-invoice-waiting-gr.png), [đủ dữ liệu nhưng chưa đối chiếu](./evidence/p3-03-invoice-ready-unmatched.png).
@@ -147,14 +159,14 @@ PO chưa đầy đủ có thể lưu nháp; số/NCC đã nhập không hợp l�
 - [app.mjs](./app.mjs) tái dùng DOM helpers, bảng/panel/callout/dialog và bốn view PR hiện có, thêm ngữ cảnh danh sách/form/chi tiết PO. [po-catalog.json](./data/po-catalog.json) chỉ thêm ba actor PO và ba NCC tổng hợp; không sao chép PR/user/đơn vị seed gốc. Font/CSS nền, validation PR, time/metric và cohort cũ được giữ.
 - API đọc PR đã duyệt có kiểm tra vai/phạm vi và bằng chứng APPROVE; Mua hàng không giả danh REQ-01. PO giữ PR ID/APPROVE ID thật và snapshot lúc lập; không dựng snapshot PR ở các mốc quá khứ. Quyền/historical log chỉ là mô phỏng trong trình duyệt.
 - Cùng clock: reset rồi BUY-01 lập PO từ PR-D đưa T đến 13:00; A/C vẫn chờ và tuổi chờ thành 196/97 giờ, số chờ 2, tỷ lệ 25%. Chỉ kéo dài coverage cho lịch sử PR phiên biết đầy đủ; fixture thiếu vẫn không xác định. Muốn tái lập chuỗi PR 12/13/14/15, reset chung rồi chạy riêng chuỗi **Hướng dẫn thử nhanh**, không xen thao tác PO.
-- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** ở mốc P2 (18 file ở P3; 20 file ở P4 hiện tại), cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Workflow chưa sửa, vẫn chứa kiểm tra gói PR cũ; cần cập nhật trong P5 trước công bố, không dùng workflow cũ làm bằng chứng P2 đã deploy.
+- [Server local](./serve.mjs) và [build](./build-static.mjs) có allowlist/gói **17 file** ở mốc P2 (18 file ở P3; 20 file ở P4 hiện tại), cùng package test kiểm tra tên/byte/tái lập và fail khi thiếu nguồn. Chỉ phục vụ tài nguyên ứng dụng được phép, không toàn repository. Ở mốc P2 workflow vẫn kiểm tra gói PR cũ; P5 đã mở rộng thành 20 tệp, không dùng kết quả lịch sử P2 làm bằng chứng deploy hiện hành.
 
 ### Tái lập kiểm tra P2
 
-Dùng Node v22.14.0 có sẵn (đường dẫn thực đã ghi ở phần đọc sâu), không cài dependency:
+Dùng Node v22.14.0 trong PATH hoặc đặt biến thành executable đã cài, không cần dependency mới:
 
 ```powershell
-$p2Node = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$p2Node = 'node'
 $p2Tests = @(Get-ChildItem prototype/pr/test/*.test.mjs | ForEach-Object FullName)
 & $p2Node --test --test-reporter=spec @p2Tests
 ```
@@ -168,7 +180,7 @@ Chạy server ở terminal riêng, rồi dùng helper trình duyệt hiện có;
 # Terminal khác:
 & $p2Node prototype/pr/qa/launch-browser.mjs --cdp-port=9237
 # Terminal kiểm tra:
-& $p2Node prototype/pr/qa/browser-qa.mjs --scope=p2 --cdp=http://127.0.0.1:9237 --url=http://127.0.0.1:8087/ --output="$env:TEMP/p2-browser-results" --evidence-dir="$env:TEMP/p2-browser-evidence"
+& $p2Node prototype/pr/qa/browser-qa.mjs --scope=p2 --cdp=http://127.0.0.1:9237 --url=http://127.0.0.1:8087/ --output="<thư-mục-kết-quả-ngoài-repo>" --evidence-dir="<thư-mục-ảnh-ngoài-repo>"
 ```
 
 [browser-qa.mjs](./qa/browser-qa.mjs) dùng lại CDP client/click/fill/screenshot hiện có; [p2-scenarios.mjs](./qa/p2-scenarios.mjs) chỉ chứa kịch bản mới. Mỗi lượt mở/đóng một trang riêng để không nhận lại exception cũ từ trang khác. `--evidence-dir` cho phép giữ ảnh thử ngoài repo; không ghi đè ảnh PR lịch sử. Dừng đúng server/browser do mình mở sau kiểm tra.
@@ -193,16 +205,16 @@ Một bộ chín PNG từ `Page.captureScreenshot`, Chrome 155/CDP, viewport 144
 
 ## Đọc sâu: triển khai và kiểm tra đã ghi nhận
 
-Các mục dưới đây bảo toàn hồ sơ theo từng giai đoạn, phiên bản và ngày kiểm tra. Branch, HEAD, Git status, đường dẫn Temp và các câu “chưa push/hosting/3C” mô tả **thời điểm của lượt được ghi nhận**, không phải trạng thái repository hiện tại. Prototype hiện đã có demo công khai ở đầu trang. Log Temp có thể đã bị dọn; kết quả lịch sử không phải kết quả vừa chạy lại trong lượt biên tập portfolio.
+Các mục dưới đây bảo toàn hồ sơ theo từng giai đoạn, phiên bản và ngày kiểm tra. Các lệnh tái lập dùng `node` và placeholder thư mục ngoài repo thay đường dẫn riêng của máy tác giả; kết quả và thời điểm lịch sử giữ nguyên. Branch, HEAD, Git status, đường dẫn Temp và các câu “chưa push/hosting/3C” mô tả **thời điểm của lượt được ghi nhận**, không phải trạng thái repository hiện tại. Prototype hiện đã có demo công khai ở đầu trang. Log Temp có thể đã bị dọn; kết quả lịch sử không phải kết quả vừa chạy lại trong lượt biên tập portfolio.
 
 Bốn màn hình HTML/CSS/ES modules nối với lớp logic 3B.1. Dữ liệu chỉ tồn tại trong bộ nhớ trang, không localStorage/sessionStorage, backend hoặc database. Tải lại/reset phục hồi seed, lịch sử, ID, vai trò REQ-01, ngân sách Đạt và 10/10/2026 12:00 UTC+07:00. Kiểm tra tích hợp 3B.2 không thay thế [kiểm chứng 3C](./verification.md) hoặc UAT; không tuyên bố AC đã pass. OD-03/06/07 vẫn mở.
 
 ### Môi trường và máy chủ local của lượt tích hợp
 
-Node trong lượt tích hợp đã ghi nhận: **v22.14.0**, có sẵn của IntelliJ, không có trong PATH; không cài/nâng cấp công cụ. Từ root repo, PowerShell:
+Node của lượt lịch sử: **v22.14.0**. Để chạy lại, dùng Node 22.14.0 trong PATH (hoặc đặt biến Node thành executable đã cài). Từ root repo, PowerShell; các placeholder thư mục QA bên trên cần thay bằng đường dẫn ngoài repo:
 
 ```powershell
-$prNode = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$prNode = 'node'
 & $prNode prototype/pr/serve.mjs
 ```
 
@@ -225,7 +237,7 @@ Branch `pr-prototype`, HEAD `e72287ecf1ede6d7a88ddb3560e5dc81f7c639a1`; không d
 
 `b579cdc` và `b9232f3` đều tồn tại, là tổ tiên của HEAD. Seed và README dữ liệu khớp `b9232f3`; ba tài liệu thiết kế khớp `b579cdc`. Nguồn tham chiếu: [2A](../../06-system-analysis/pr-behavior-analysis.md), [SIM/2B](../../06-system-analysis/pr-prototype-decisions.md), [metric](../../08-traceability/pr-metrics-design.md), [wireframe](../../wireframes/pr/README.md), [HTML nguồn](../../wireframes/pr/index.html), [CSS nguồn](../../wireframes/pr/styles.css), [seed 3A](./data/seed.json), [giới hạn dữ liệu](./data/README.md). Thứ tự sự kiện là `(occurred_at, event_order)` trong từng PR; không ưu tiên loại sự kiện.
 
-Snapshot đọc lại thành công trước khi sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-snapshot-wmyg96ub\snapshot.json`. Có branch/HEAD/status, danh sách tám file commit, SHA-256 mọi file tracked và bản sao trước sửa của tám file logic/test/README. Các log Node/CDP nằm cùng thư mục tạm; không tạo báo cáo bàn giao riêng trong repo.
+Snapshot đọc lại thành công trước khi sửa: `<bằng chứng ngoài repo của lượt lịch sử>`. Có branch/HEAD/status, danh sách tám file commit, SHA-256 mọi file tracked và bản sao trước sửa của tám file logic/test/README. Các log Node/CDP nằm cùng thư mục tạm; không tạo báo cáo bàn giao riêng trong repo.
 
 ### Module và kiểm tra
 
@@ -241,7 +253,7 @@ Kết quả cuối: **49 test, 49 đạt, 0 lỗi, 0 bỏ qua**: 45 test logic �
 
 #### Trình duyệt và cách tái lập
 
-Windows, **Chrome/155.0.8059.40 headless**, Chrome DevTools Protocol qua Node WebSocket có sẵn, không Playwright/dependency mới. Phiên sau review dùng profile tạm `C:\Users\ASUS\AppData\Local\Temp\pr-browser-ZwKkIy`, CDP `127.0.0.1:9226`. Các lần Chrome/Edge khởi động ban đầu chưa mở được CDP; phiên kiểm tra thành công dùng `--headless=new --no-sandbox --disable-gpu --disable-software-rasterizer --in-process-gpu --no-first-run`, chỉ truy cập prototype local.
+Windows, **Chrome/155.0.8059.40 headless**, Chrome DevTools Protocol qua Node WebSocket có sẵn, không Playwright/dependency mới. Phiên sau review dùng profile tạm `<bằng chứng ngoài repo của lượt lịch sử>`, CDP `127.0.0.1:9226`. Các lần Chrome/Edge khởi động ban đầu chưa mở được CDP; phiên kiểm tra thành công dùng `--headless=new --no-sandbox --disable-gpu --disable-software-rasterizer --in-process-gpu --no-first-run`, chỉ truy cập prototype local.
 
 Để tái lập với runtime/trình duyệt có sẵn, mở server ở terminal thứ nhất. Terminal thứ hai:
 
@@ -255,7 +267,7 @@ Helper [launch-browser.mjs](./qa/launch-browser.mjs) tạo profile tạm mới v
 & $prNode prototype/pr/qa/browser-qa.mjs --cdp=http://127.0.0.1:9226 --url=http://127.0.0.1:8080/
 ```
 
-[browser-qa.mjs](./qa/browser-qa.mjs) thao tác DOM/input chuột thực qua CDP, assert kết quả hiển thị, chụp ảnh trực tiếp vào `evidence/`, ghi log vào thư mục Temp (`--output=<thư-mục>` tùy chọn). Lệnh thực chạy sau review dùng thêm `--output=C:/Users/ASUS/AppData/Local/Temp/pr-ui-review-ifsd27so`. Chạy lại sẽ thay bộ ảnh hiện hành. Fixture thiếu log được thực hiện bằng chặn một phản hồi seed trong phiên QA và cấp bản sao riêng; sau kiểm tra khôi phục tải seed thật, không sửa file/server dữ liệu.
+[browser-qa.mjs](./qa/browser-qa.mjs) thao tác DOM/input chuột thực qua CDP, assert kết quả hiển thị, chụp ảnh trực tiếp vào `evidence/`, ghi log vào thư mục Temp (`--output=<thư-mục>` tùy chọn). Lệnh thực chạy sau review dùng thêm `--output=<thư-mục-kết-quả-ngoài-repo>`. Chạy lại sẽ thay bộ ảnh hiện hành. Fixture thiếu log được thực hiện bằng chặn một phản hồi seed trong phiên QA và cấp bản sao riêng; sau kiểm tra khôi phục tải seed thật, không sửa file/server dữ liệu.
 
 Phiên cuối từ **16/10/2026 10:38:46.044 đến 10:39:35.942 UTC+07:00**, 21 mục kiểm tra trình duyệt và tám lượt kiểm tra hàng đợi sau review đạt, không lỗi console trang. Thời gian thực dưới đây khác thời gian mô phỏng 10/10/2026:
 
@@ -320,7 +332,7 @@ Giới hạn còn lại: chưa thử trình duyệt khác/headful, đóng tab/c�
 
 ### Hai điểm UI đã sửa sau review
 
-Snapshot trước sửa: `C:\Users\ASUS\AppData\Local\Temp\pr-ui-review-ifsd27so\snapshot.json`. Không đổi module tính toán, phạm vi dữ liệu, seed hoặc các số đo.
+Snapshot trước sửa: `<bằng chứng ngoài repo của lượt lịch sử>`. Không đổi module tính toán, phạm vi dữ liệu, seed hoặc các số đo.
 
 - Cột thao tác rộng 128 px; nút Xem xét dùng chữ một dòng và padding phù hợp. Tại 1280/1440 px, cả bốn mốc mô phỏng 12:00/13:00/14:00/15:00 đều đạt: chữ một dòng, nút cao 46 px, nằm trong ô, không cuộn ngang toàn trang. Có tám bản ghi kiểm tra kích thước thực trong log CDP; ảnh kiểm tra 1280 px để ngoài repo, bộ ảnh hiện hành giữ 1440 px.
 - Vùng chính dùng “Nhóm PR trong kỳ”, giữ kỳ, thời điểm báo cáo, tỷ lệ/tử/mẫu số và số PR chờ xem xét/chờ sửa. ID metric và chi tiết chẩn đoán, gồm các số 0, nằm trong Cách tính và chất lượng dữ liệu. Chi tiết PR cũng chuyển dòng chẩn đoán vào phần mở rộng. Khi fixture có năm hồ sơ không xác định, cảnh báo ngắn vẫn nhìn thấy bên ngoài; mở phần chi tiết thấy đúng số lượng. Không ẩn số PR chờ sửa bằng 0 vì đó là thông tin nghiệp vụ cần giữ.
@@ -334,7 +346,7 @@ Nguồn H1: `main` tại `ec1bcbaeece2adefbe78e16f4d87a7afaa5f4d0f`; đã xác m
 Đóng gói từ root repo bằng Node có sẵn (H1 thực dùng **v22.14.0**):
 
 ```powershell
-$prNode = 'C:\Users\ASUS\AppData\Roaming\JetBrains\IntelliJIdea2024.3\node\versions\22.14.0\node.exe'
+$prNode = 'node'
 & $prNode prototype/pr/build-static.mjs
 ```
 
@@ -382,7 +394,7 @@ Lệnh build từ root repo:
 
 `$prNode` dùng executable đã ghi ở H1. Chỉ script build tạo lại `prototype/pr/dist/`, không xóa thủ công. Build A có đúng **13 file** theo danh sách H1, từng byte khớp nguồn: HTML/CSS/app, bốn module logic, seed, bốn TTF và OFL; không test/QA/server/tài liệu/ảnh. Manifest gắn commit nguồn và SHA-256 từng file nguồn/artifact. Sau toàn bộ thao tác trình duyệt, **13/13 file khớp manifest Build A; file khác: không có**. Toàn bộ 119 file tracked khớp snapshot trước khi bổ sung mục README này; không sửa seed, logic, nguồn ứng dụng, QA trong repo, wireframe hoặc `verification.md`.
 
-Snapshot, manifest đầy đủ, helper/server tạm, log CDP và ảnh bố cục thử nằm ngoài repo tại `C:\Users\ASUS\AppData\Local\Temp\pr-static-h2-64ae55aa24c94bff92dcc1d28c32cefc\`: `snapshot.json` (đã đọc lại trước build), `build-a-manifest.json`, `build-a-after-browser.json`, `h2-browser-results.json`, `network-audit.json`, `cdp-events.json`, `server-requests.ndjson`. Temp có thể bị hệ điều hành dọn; năm ảnh chuỗi chuẩn bên dưới được giữ trong repo.
+Snapshot, manifest đầy đủ, helper/server tạm, log CDP và ảnh bố cục thử nằm ngoài repo tại `<bằng chứng ngoài repo của lượt lịch sử>`: `snapshot.json` (đã đọc lại trước build), `build-a-manifest.json`, `build-a-after-browser.json`, `h2-browser-results.json`, `network-audit.json`, `cdp-events.json`, `server-requests.ndjson`. Temp có thể bị hệ điều hành dọn; năm ảnh chuỗi chuẩn bên dưới được giữ trong repo.
 
 Server thử `serve-artifact.mjs` nằm trong thư mục Temp trên, dùng `node:http` và `node:fs`, bind loopback/cổng khả dụng, chỉ ánh xạ `/retail-p2p-ba-case-study/` đến **trực tiếp `prototype/pr/dist/`**. Không khởi động/import `serve.mjs`, không lấy tài nguyên từ wireframe, không fallback hoặc rewrite. Helper QA chỉ kết nối URL server đã khởi động độc lập. URL thực tế: **http://127.0.0.1:50838/retail-p2p-ba-case-study/**. Server và trình duyệt do lượt H2 tạo đã dừng sau kiểm tra; URL này không còn được phục vụ.
 

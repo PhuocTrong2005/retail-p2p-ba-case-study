@@ -1,16 +1,16 @@
-# NovaRetail — Phân tích quy trình P2P và prototype yêu cầu mua hàng
+# NovaRetail — Phân tích quy trình P2P và prototype P2P liên thông
 
 ## 1. Giới thiệu bài toán và sản phẩm
 
 NovaRetail là doanh nghiệp bán lẻ giả lập tại Việt Nam. Thông tin mua hàng nằm trong bảng tính, email và hồ sơ riêng, khiến các bộ phận phải hỏi lại trạng thái, có thể phải nhập lại dữ liệu và thu thập chứng từ để đối chiếu.
 
-Tôi phân tích quy trình mua hàng đến thanh toán (P2P), từ tạo yêu cầu mua hàng (PR) đến phê duyệt đề nghị thanh toán. Prototype chỉ minh họa PR.
+Tôi phân tích quy trình mua hàng đến thanh toán (P2P), từ tạo yêu cầu mua hàng (PR) đến phê duyệt đề nghị thanh toán. Prototype mở rộng từ PR đến đề nghị thanh toán được phê duyệt trong cùng một phiên dữ liệu.
 
 Phần ERP đã hoàn tất ở phạm vi phân tích và thiết kế: phân tích mức phù hợp của Odoo Community, thiết kế phần bổ sung cho kiểm soát G1-D01 và xây dựng 30 kịch bản kiểm chứng. Chưa triển khai hoặc kiểm chứng trên ERP; [README ERP lab](./10-erp-lab/README.md) ghi phạm vi và giới hạn, còn [thiết kế chi tiết](./10-erp-lab/lab-design.md) giữ các kết quả mong đợi chưa thực hiện.
 
 Tôi thực hiện phân tích nghiệp vụ, xây dựng và rà soát tài liệu, vẽ sơ đồ, thiết kế UI và các hoạt động kiểm tra. Codex hỗ trợ triển khai code theo yêu cầu và các quyết định đã thống nhất.
 
-[Thử demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh) · [Tài liệu kiểm chứng](./prototype/pr/verification.md)
+[Thử demo P2P](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn thử nhanh](./prototype/pr/README.md#thử-nhanh-p2p-liên-thông) · [Tài liệu kiểm chứng](./prototype/pr/verification.md)
 
 ## 2. Bối cảnh, người sử dụng và phạm vi
 
@@ -18,7 +18,7 @@ Trong [quy trình To-Be](./04-to-be-design/README.md#5-mô-hình-bpmn-to-be), Ng
 
 Phân tích chỉ bao gồm hàng hóa hữu hình. Mua dịch vụ, thanh toán ngân hàng và thay thế toàn bộ hệ thống hoạch định nguồn lực doanh nghiệp (ERP) nằm ngoài phạm vi. Phê duyệt đề nghị thanh toán chưa có nghĩa nhà cung cấp đã nhận tiền.
 
-Theo [quy ước vai trò và phạm vi demo](./06-system-analysis/pr-prototype-decisions.md#sim-03--hai-vai-trò-và-phạm-vi-dữ-liệu-demo), demo chỉ dùng Người yêu cầu REQ-01 và Quản lý MGR-01 trong một đơn vị mẫu. Chuyển vai giúp thử tình huống, không phải đăng nhập hoặc phân quyền thực tế.
+Demo dùng bảy vai REQ-01, MGR-01, BUY-01, PM-01, WH-01, AP-01 và FIN-01 trong đơn vị tổng hợp. [Thiết kế P2P](./06-system-analysis/p2p-prototype-design.md) mô tả quyền và giới hạn demo; chuyển vai giúp thử quy trình, chưa phải đăng nhập hoặc phân quyền production.
 
 ## 3. Phân tích và ba quyết định quan trọng
 
@@ -34,13 +34,21 @@ Bấm Gửi chưa đồng nghĩa PR đã đến người xem xét. Chỉ khi tr�
 
 [Thiết kế metric](./08-traceability/pr-metrics-design.md#nguồn-và-ranh-giới) lấy mốc gửi hợp lệ để đo thời gian chờ vòng hiện tại. Tỷ lệ từng bị trả lại dùng nhóm PR theo lần gửi hợp lệ đầu tiên. Thiếu bằng chứng không được mặc định thành 0; ngân sách trong demo chỉ là kết quả định trước theo [quy ước mô phỏng ngân sách](./06-system-analysis/pr-prototype-decisions.md#sim-01--ngân-sách-mô-phỏng-có-thể-tái-lập).
 
-### Giữ prototype trong phạm vi PR
+### Mở rộng từng bước trên cùng nguồn chứng từ
 
-Tôi giữ prototype trong phạm vi vừa sức: PR đủ để minh họa validation, quyết định, vòng chỉnh sửa và metric. Phân tích P2P vẫn giữ bức tranh liên kết chứng từ và kiểm soát ở các bước sau.
+Từ bốn màn hình PR, tôi thiết kế phần mở rộng theo PR → PO → GR/hóa đơn → đề nghị thanh toán, giữ một phiên và một đồng hồ. PR được duyệt bằng thao tác thực tế dùng ngay để tạo PO; dữ liệu mẫu chỉ là cách vào nhanh. Các cổng kiểm tra lại đầu vào, hiệu lực kết quả và dữ liệu vừa xem tại lúc gửi để tránh dùng kết quả cũ.
 
-[Bốn màn hình PR](./06-system-analysis/pr-behavior-analysis.md#danh-mục-màn-hình-đề-xuất) nối yêu cầu với thao tác. PR đã duyệt chỉ sẵn sàng chuyển sang Mua hàng; prototype chưa tạo PO, GR, hóa đơn hoặc báo cáo P2P đầy đủ. Ranh giới này được ghi trong [phạm vi kiểm chứng](./prototype/pr/verification.md#phạm-vi-và-phiên-bản).
+[Thiết kế P1](./06-system-analysis/p2p-prototype-design.md) quản lý các quyết định demo trước triển khai. [Kiểm chứng P4](./prototype/pr/verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local) kiểm tra FAIL → sửa → PASS, Finance trả lại và AP gửi lại. Matching là kết quả định trước theo tuple tổng hợp, chưa phải thuật toán đối chiếu ba bên; không suy các lần đạt này thành toàn bộ AC đạt.
 
 ## 4. Giải pháp và bằng chứng kiểm chứng
+
+Trong luồng liên thông, AP thấy ngoại lệ khi kết quả mô phỏng Không đạt; sửa hóa đơn rồi chạy lại kết quả hiện hành Đạt mới chuẩn bị và gửi được. Finance có thể trả lại có lý do, AP giải trình và gửi lại trên cùng đề nghị; sau phê duyệt chỉ xem. Khi chờ Finance hoặc đã duyệt, khóa sửa hóa đơn/đổi nguồn/chạy kết quả mới của đúng giao dịch; giao dịch khác và chỉ đọc vẫn được phép.
+
+![Ngoại lệ sau kết quả mô phỏng Không đạt](./prototype/pr/evidence/p4-01-fail-exception.png)
+
+![Finance phê duyệt đề nghị trên chuỗi chứng từ liên thông](./prototype/pr/evidence/p4-04-approved-request.png)
+
+Hai ảnh P4 dùng dữ liệu tổng hợp, chụp ngày 22/10/2026; [nguồn và giờ chụp](./prototype/pr/verification.md#7-p4--đối-chiếu-mô-phỏng-và-đề-nghị-thanh-toán-local). [Kịch bản ngắn](./prototype/pr/README.md#thử-nhanh-p2p-liên-thông) chỉ cách thử; [kiểm chứng P5](./prototype/pr/verification.md#8-p5--artifact-và-công-bố-portfolio) ghi kết quả trên artifact. Phần dưới giữ ví dụ PR lịch sử để đối chiếu metric, không phải ảnh vừa chụp lại.
 
 PR-B đã bị trả lại để làm rõ nhu cầu. Theo [chuỗi thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh), gửi lại khi nguồn ngân sách không khả dụng giữ PR ở Chờ chỉnh sửa, chưa mở vòng. Đổi sang Đạt rồi gửi lại mới đưa B vào hàng đợi vòng 2.
 
@@ -60,7 +68,7 @@ PR-B đã bị trả lại để làm rõ nhu cầu. Theo [chuỗi thử nhanh](
 
 Kết quả hiện có gồm tài liệu nghiệp vụ, sơ đồ, thiết kế UI, prototype và bằng chứng kiểm chứng. [Ma trận truy vết yêu cầu (RTM)](./08-traceability/requirements-traceability-matrix.md) giúp lần theo yêu cầu và nhận diện khoảng thiếu; chưa đo lợi ích vận hành.
 
-Dữ liệu là giả lập; chưa có ký duyệt của các bên liên quan hoặc UAT. Prototype lưu trong bộ nhớ trang, chưa chứng minh bảo mật hoặc lịch sử kiểm toán đầy đủ. Các quyết định còn mở (OD-01–08) và khoảng trống bao phủ yêu cầu vẫn còn. [Giới hạn kiểm chứng](./prototype/pr/verification.md#4-vấn-đề-phát-hiện-và-giới-hạn) nêu rõ phần chưa được chứng minh.
+Dữ liệu là giả lập; chưa có ký duyệt của các bên liên quan hoặc UAT. Prototype lưu trong bộ nhớ trang; chưa có backend, kiểm chứng đa tab, bảo mật production hoặc audit bất biến. Điểm cuối là đề nghị được duyệt, chưa thanh toán. Các quyết định còn mở (OD-01–08) và khoảng trống bao phủ yêu cầu vẫn còn. [Giới hạn kiểm chứng](./prototype/pr/verification.md#4-vấn-đề-phát-hiện-và-giới-hạn) nêu rõ phần chưa được chứng minh.
 
 Ba bài học tôi rút ra:
 
@@ -74,4 +82,4 @@ Tôi đã đối chiếu tài liệu và source Odoo Community 19.0 để phân 
 
 Chủ dự án chọn [chốt phần ERP ở phạm vi phân tích và thiết kế](./10-erp-lab/README.md) cho phiên bản portfolio này, sau kiểm kê cho thấy tài nguyên local hạn chế. Đây là quyết định phạm vi, không phải kết luận máy chắc chắn không chạy được Odoo. Triển khai và kiểm chứng thực tế là hướng mở rộng tùy chọn, cần được đánh giá và giao việc riêng; không còn là công việc bắt buộc đang chờ. Các đề xuất có điều kiện trong hồ sơ thiết kế/đánh giá được giữ nguyên như lịch sử phân tích, không phải kết quả đã chạy hoặc quyết định mua/triển khai ERP.
 
-Toàn chuỗi P2P vẫn là bản đồ đối chiếu thiết kế; dữ liệu lab dự kiến là tổng hợp và không đòi hỏi có hệ thống kế toán/ngân sách thật. Chuẩn hóa công cụ hiện có có thể hỗ trợ chuyển tiếp nhưng chưa chứng minh đáp ứng các yêu cầu hệ thống tự kiểm tra/chặn. Các OD và khoảng trống bao phủ yêu cầu vẫn còn mở; kết quả prototype PR giữ nguyên phạm vi đã kiểm chứng riêng.
+Prototype hiện liên thông từ PR đến đề nghị được duyệt; hồ sơ P2P và ERP vẫn là căn cứ đối chiếu thiết kế. Dữ liệu lab dự kiến là tổng hợp và không đòi hỏi có hệ thống kế toán/ngân sách thật. Chuẩn hóa công cụ hiện có có thể hỗ trợ chuyển tiếp nhưng chưa chứng minh đáp ứng các yêu cầu hệ thống tự kiểm tra/chặn. Các OD và khoảng trống bao phủ yêu cầu vẫn còn mở; kết quả PR lịch sử và các phần P2P mở rộng được ghi riêng theo phiên bản, không thay coverage SRS/RTM.

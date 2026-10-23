@@ -1,4 +1,4 @@
-name: Deploy PR demo to Pages
+name: Deploy P2P demo to Pages
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'prototype/pr/styles.css'
       - 'prototype/pr/app.mjs'
       - 'prototype/pr/logic/**'
-      - 'prototype/pr/data/seed.json'
+      - 'prototype/pr/data/**'
       - 'prototype/pr/build-static.mjs'
       - 'prototype/pr/serve.mjs'
       - 'prototype/pr/test/**'
@@ -56,6 +56,8 @@ jobs:
           const root = 'prototype/pr/dist/';
           const expected = ['index.html', 'styles.css', 'app.mjs', 'data/seed.json',
             'logic/pr-session.mjs', 'logic/validation.mjs', 'logic/metrics.mjs', 'logic/time.mjs',
+            'data/po-catalog.json', 'data/matching-scenarios.json', 'logic/session-context.mjs',
+            'logic/p2p-session.mjs', 'logic/po-session.mjs', 'logic/receiving-invoice.mjs', 'logic/matching-payment.mjs',
             'fonts/BeVietnamPro-Regular.ttf', 'fonts/BeVietnamPro-Medium.ttf',
             'fonts/BeVietnamPro-SemiBold.ttf', 'fonts/BeVietnamPro-Bold.ttf', 'fonts/OFL.txt'].sort();
           const actual = [];
@@ -81,7 +83,7 @@ jobs:
             assert.deepEqual(bytes, await readFile(source), `Source mismatch: ${name}`);
             console.log(createHash('sha256').update(bytes).digest('hex'), name);
           }
-          console.log('Verified 13/13 artifact paths and source bytes');
+          console.log('Verified 20/20 artifact paths and source bytes');
           NODE
       - name: Upload only the static package
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0

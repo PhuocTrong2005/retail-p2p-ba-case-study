@@ -556,3 +556,49 @@ Lượt `resume-p3` đã qua nghiệp vụ nhưng lỗi ở reload cuối: đi�
 `role-diagnosis.json` từ script CDP ngoài repo: trên trang mới, lưu PR và đổi vai ngay khi timer400ms chưa chạy giữ REQ-01/T13h; timer chạy khoảng409ms sau, đổi vai sau đó thành MGR-01/queue đúng, vẫn T13h. Đây là kiểm tra guard thực tế, không giả định chỉ lỗi harness. Không có bằng chứng timer của lượt song song cũ nên nguyên nhân chính xác lịch sử chưa xác định tuyệt đối; không tái hiện lỗi vai còn kẹt sau hết guard ở các lượt tuần tự hoàn tất. Bốn ảnh P4 không bị ảnh hưởng bởi thay đổi QA/tài liệu, byte giữ đúng lượt cuối22/10.
 
 Bảo toàn cuối: 145 tracked đầu lượt, **132 không đổi/13 thay đổi** đúng phạm vi; **8 file mới** (bốn module/data/QA/test và bốn PNG). Chỉ P1 nằm ngoài prototype/pr. Seed PR, metric/parser/time/context, assertion Node PR/PO/P3, QA P2, baseline/OD/SRS/RTM/SIM/ERP/wireframe/font/ảnh cũ/workflow giữ hash đầu lượt. Index rỗng/HEAD không đổi. Không stage/commit/push/merge/deploy/P5. Đã kiểm tra liên kết/anchor, bảng/ID/whitespace, file untracked và git diff --check.
+
+## 8. P5 — Artifact và công bố portfolio
+
+### Phiên bản và phạm vi
+
+Ngày 23/10/2026, đầu lượt branch `p2p-prototype-design`, HEAD `dc6e64f467bd0e69b10d3f1f4ae0a1c886a41dd1`, working tree sạch/index rỗng. Snapshot ngoài repo `p2p-p5-999efce6-4c3d-4aa4-bede-911d01e9ecf4` gồm HEAD/status và 153 hash tracked, đã đọc lại. Sau fetch, `main` và `origin/main` cùng `7b9ee2a`, là tổ tiên cách nhánh P1–P4 bốn commit. Brief P5 cho phép commit, fast-forward main, push main đúng một lần và theo dõi deploy.
+
+Không thay runtime, seed, UI, font hoặc test chức năng. Sửa README chính, case study, README prototype, trạng thái giao P5 trong P1 và mục này. Tái dùng hai ảnh P4 trong case study, giữ mọi ảnh/bằng chứng lịch sử. Workflow cũ đòi đúng 13 tệp trong khi build P4 tạo 20: chỉ mở rộng danh sách bảy module/JSON còn thiếu, trigger toàn bộ data và tên workflow; giữ action pin, quyền, concurrency và cách upload riêng dist.
+
+### Kiểm tra mới trên artifact
+
+Build thực chạy bằng Node 22.14.0: `node prototype/pr/build-static.mjs`. Kết quả **20 tệp**. Chạy chính đoạn verifier Node trích từ workflow đã sửa: **20/20 tên, byte nguồn và SHA-256 khớp**; không symlink/tệp lạ, chỉ thư mục data/logic/fonts. Manifest và helper QA lưu ngoài repo. Ảnh Markdown là tài liệu portfolio, không phải tài nguyên runtime cần đóng vào artifact.
+
+Phục vụ riêng dist qua loopback tại prefix `/retail-p2p-ba-case-study/`, không phục vụ repo. Lệnh QA thực chạy (các placeholder chỉ thư mục kết quả/ảnh ngoài repo):
+
+```text
+node prototype/pr/qa/browser-qa.mjs --scope=p4 --cdp=http://127.0.0.1:9240 --url=http://127.0.0.1:8090/retail-p2p-ba-case-study/ --output=<artifact-p4> --evidence-dir=<artifact-images>
+```
+
+Chrome 155.0.8059.85 headless/Windows; `artifact-p4/browser-results.json` ghi 2026-10-23T22:19:37.919+07:00 đến 2026-10-23T22:20:41.444+07:00: **19/19 mục đạt**, gồm 12 bố cục ở 1280/1440 và bảy nhóm nghiệp vụ/tài nguyên; 39 response HTTP200, không console errors. Bốn ảnh thử ngoài repo, không ghi đè ảnh P4. Đây là QA artifact mới, không ghi lại thành kết quả Node/P2/P3 mới.
+
+| Kịch bản | Mong đợi | Thực tế / kết luận |
+| --- | --- | --- |
+| PR mới → PO → GR/hóa đơn → FAIL → sửa → PASS | Dùng chứng từ vừa thao tác trong cùng phiên | PR-NEW-1/PO-DEMO-1; FAIL/EXCEPTION-1, sửa giá rồi tiền, RESULT-3 PASS; chuẩn bị PAYMENT-1. Đạt |
+| Gửi → Finance trả → AP gửi lại → duyệt | Nội dung/giải trình bắt buộc; cùng hồ sơ, chưa Paid | Thiếu nội dung/lý do/giải trình bị chặn đúng mốc; gửi lại vòng 2 và duyệt cùng PAYMENT-1. Đạt |
+| Hóa đơn trước GR | WAIT, chưa Đạt; thêm GR không tự công bố kết quả | WAIT và chặn chuẩn bị; ghi GR rồi phải chạy PASS mới. Đạt |
+| Đổi version sau chuẩn bị; có PASS mới nhưng dấu xem cũ | Gửi kiểm tra độc lập, cần xem lại | Chặn stale và dấu xem cũ; xem lại không mất nội dung, gửi dùng RESULT mới. Đạt |
+| Finance trả rồi sửa đầu vào | Kết quả cũ hết hiệu lực; FAIL chưa gửi lại được | FAIL chặn, PASS mới cho gửi lại cùng hồ sơ. Đạt |
+| Chọn PASS với đầu vào ngoài tuple | Không công bố Đạt giả | Không có kết quả, chặn chuẩn bị. Đạt |
+| Khóa và reset | Giao dịch chờ/duyệt chỉ đọc; reset đồng bộ về T0 | UI chờ khóa sửa/chạy/selector; duyệt không lặp; reset xóa downstream/queue, về REQ-01/T0. Đạt theo lớp UI; X/Y kế thừa Node |
+
+Helper CDP bổ sung ngoài repo mở trực tiếp prefix gốc, `index.html`, `?demo=p5`, `#prototype` và reload riêng từng URL: **4/4 đạt**, PR seed/T0/REQ-01 phục hồi, Be Vietnam Pro tải được, không console exception/request lỗi. Không có deep route riêng cho chứng từ; điều hướng module diễn ra trong cùng trang. QA nghiệp vụ trên kiểm tra liên kết/đổi vai không mất phiên, reload mới reset.
+
+### Bằng chứng kế thừa và giới hạn
+
+Kế thừa đúng mốc P4: Node **94/94**, gồm khóa X không khóa Y, guard sai lệch sau gửi bằng fixture logic; P2 UI **15/15** và P3 UI **21/21** chạy tuần tự ngày 23/10, bốn ảnh P4 cuối ngày 22/10. Không chạy lại toàn bộ các bộ này vì nguồn liên quan không đổi. Giữ assertion thêm GR không tự sinh kết quả. Không sửa baseline/OD/SRS/RTM/metric/SIM/ERP hoặc nâng coverage từ kết quả artifact.
+
+Matching là kết quả định trước theo tuple, không phải thuật toán ba bên; vai/clock/quyết định nhập liệu chỉ phục vụ demo. Chưa backend/lưu bền, đa tab, bảo mật production, audit bất biến, mobile/trình duyệt khác/trợ năng/UAT, thanh toán hoặc ERP thực chạy. Metric PR không đổi định nghĩa; downstream dùng cùng clock làm tuổi chờ PR tăng, reset và chạy riêng chuỗi PR để tái lập bằng chứng cũ.
+
+### Rà soát trước công bố
+
+262 liên kết local/anchor và ảnh tham chiếu trong năm tài liệu đã kiểm tra, không lỗi; bảng Markdown và ID P1 giữ hợp lệ. YAML workflow đọc được, branch/job/đích upload đúng; verifier mới thực chạy đạt 20/20. `git diff --check` đạt. Đối chiếu snapshot: 153 tracked, 147 nguyên hash và đúng sáu tệp P5 thay đổi, không file mới. Runtime/seed/metric/ảnh/font và nguồn ngoài phạm vi giữ nguyên; không có đường dẫn máy cá nhân trong README/case study dành cho người xem.
+
+### Mốc công bố
+
+Tài liệu được chốt trước push: kết quả ở trên là local artifact. Deploy và smoke công khai chưa chạy tại thời điểm commit P5; không dùng push thành công làm bằng chứng triển khai. Sau push một lần, cần theo dõi workflow đúng SHA, kiểm tra byte công khai/font/console, smoke PR mới đến Finance duyệt, reset và nhánh chặn. Run URL/SHA và kết quả thực tế sẽ được báo trực tiếp trong bàn giao P5 sau deploy, không ghi trước thành đạt trong commit này.

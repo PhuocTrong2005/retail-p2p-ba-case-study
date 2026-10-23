@@ -6,9 +6,9 @@ NovaRetail JSC là **doanh nghiệp bán lẻ giả lập tại Việt Nam** tro
 
 Tôi phân tích quy trình hiện tại, đề xuất cách xử lý từng bước và viết yêu cầu phần mềm kèm tiêu chí chấp nhận.
 
-[Đọc case study](./case-study.md) · [Mở demo PR](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn sử dụng](prototype/pr/README.md#hướng-dẫn-thử-nhanh) · [Kết quả kiểm chứng](prototype/pr/verification.md)
+[Đọc case study](./case-study.md) · [Mở demo P2P](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) · [Hướng dẫn sử dụng](prototype/pr/README.md#thử-nhanh-p2p-liên-thông) · [Kết quả kiểm chứng](prototype/pr/verification.md)
 
-Prototype minh họa việc tạo, gửi và xem xét yêu cầu mua hàng, xử lý trả lại và theo dõi ba chỉ số PR bằng dữ liệu tổng hợp.
+Prototype P2P liên thông dùng một ứng dụng, một phiên dữ liệu và một đồng hồ: PR mới được duyệt dùng ngay để lập PO, ghi GR/hóa đơn, chạy đối chiếu mô phỏng, xử lý ngoại lệ và trình Finance phê duyệt đề nghị thanh toán.
 
 Phần ERP đã hoàn tất ở phạm vi phân tích và thiết kế: phân tích mức phù hợp của Odoo Community, thiết kế phần bổ sung cho kiểm soát G1-D01 và xây dựng 30 kịch bản kiểm chứng. Chưa triển khai hoặc kiểm chứng trên ERP; xem [phạm vi ERP](./10-erp-lab/README.md) và [thiết kế chi tiết](./10-erp-lab/lab-design.md).
 
@@ -55,7 +55,7 @@ Xem [sơ đồ To-Be](./assets/diagrams/exports/to-be/p2p-to-be.png), [nguồn D
 
 **Wireframe tĩnh.** Bộ [wireframe PR](./wireframes/pr/README.md) có bốn màn hình: danh sách của Người yêu cầu, tạo/chỉnh sửa, chi tiết PR và hàng đợi của Quản lý cửa hàng. Tải repository về máy, sau đó mở [wireframes/pr/index.html](./wireframes/pr/index.html) bằng trình duyệt; các nút lưu, gửi và quyết định là mẫu tĩnh. Có thể xem nhanh qua [ảnh hàng đợi](./wireframes/pr/previews/pr-04-queue.png) hoặc [các ảnh tiêu biểu](./wireframes/pr/README.md#ảnh-tiêu-biểu). Hướng dẫn mở, ảnh và phạm vi kiểm tra được ghi trong [README wireframe](./wireframes/pr/README.md#kiểm-tra-và-giới-hạn).
 
-**Prototype tương tác.** Bản [prototype PR](./prototype/pr/README.md) cho phép tạo và lưu PR, gửi và gửi lại, phê duyệt, trả lại, từ chối và xem lịch sử quy trình. Ba chỉ số thể hiện số PR đang chờ xem xét, thời gian chờ theo vòng và tỷ lệ PR từng bị trả lại. Mở [demo công khai](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) và làm theo [hướng dẫn thử nhanh](./prototype/pr/README.md#hướng-dẫn-thử-nhanh); nếu muốn chạy trên máy, xem [hướng dẫn chạy local](./prototype/pr/README.md#chạy-local). Dữ liệu chỉ tồn tại trong bộ nhớ trang; tải lại hoặc khôi phục sẽ đưa về dữ liệu mẫu.
+**Prototype tương tác.** Bản [prototype P2P](./prototype/pr/README.md) mở rộng từ PR đến đề nghị thanh toán được duyệt, dùng chung chứng từ và lịch sử trong một phiên. Mở [demo công khai](https://phuoctrong2005.github.io/retail-p2p-ba-case-study/) và làm theo [kịch bản ngắn](./prototype/pr/README.md#thử-nhanh-p2p-liên-thông); [verification](./prototype/pr/verification.md#8-p5--artifact-và-công-bố-portfolio) ghi kiểm tra artifact và bằng chứng kế thừa. Có thể [chạy local](./prototype/pr/README.md#chạy-local). Tải lại hoặc khôi phục sẽ xóa tiến trình và đưa về dữ liệu mẫu. Ba metric PR giữ nguyên định nghĩa; thao tác downstream dùng chung clock nên tuổi chờ PR tiếp tục tăng. Chạy riêng chuỗi PR sau reset để tái lập các ví dụ cũ.
 
 Xem [tình huống trả lại và gửi lại trong case study](./case-study.md#4-giải-pháp-và-bằng-chứng-kiểm-chứng) hoặc [bộ ảnh prototype và nguồn ghi nhận](./prototype/pr/README.md#ảnh-trực-tiếp-hiện-hành). Ảnh minh họa dữ liệu tổng hợp, không phản ánh trạng thái phiên demo hiện tại.
 
@@ -63,10 +63,11 @@ Tra thuật ngữ tại [glossary](./glossary.md). [Các quyết định nghiệ
 
 ## 7. Trạng thái và giới hạn
 
-- Đã có prototype PR truy cập công khai; chưa phải hệ thống vận hành. [Kết quả kiểm chứng](./prototype/pr/verification.md) chỉ xác nhận phạm vi prototype, không đồng nghĩa toàn bộ tiêu chí chấp nhận đã được kiểm thử đạt.
+- Đã có prototype P2P liên thông dành cho công bố qua GitHub Pages; chưa phải hệ thống vận hành. [Kết quả kiểm chứng](./prototype/pr/verification.md) chỉ xác nhận phạm vi prototype, không đồng nghĩa toàn bộ tiêu chí chấp nhận đã được kiểm thử đạt.
+- Matching dùng kết quả định trước có điều kiện áp dụng, chưa triển khai thuật toán đối chiếu ba bên. Điểm kết thúc là đề nghị được phê duyệt, chưa thanh toán.
 - Dữ liệu và kết quả nghiệp vụ là mô phỏng bằng **dữ liệu tổng hợp**. Các chỉ tiêu trong [mục tiêu dự án](./01-business-context/project-objectives.md) là **mục tiêu giả định**, chưa phải kết quả đo lợi ích vận hành.
 - UI chỉ chứng minh phạm vi dữ liệu mẫu của Người yêu cầu REQ-01; chưa kiểm tra với PR của người khác.
-- Kiểm tra công khai thực hiện trên Chrome headless, bản desktop. Phân quyền demo, lịch sử quy trình và đồng hồ mô phỏng không chứng minh bảo mật, lịch sử kiểm toán đầy đủ hoặc thời gian xử lý thực tế.
+- Kiểm tra công khai thực hiện trên Chrome headless, bản desktop. Phân quyền demo, lịch sử quy trình và đồng hồ mô phỏng không chứng minh backend, an toàn đa tab, bảo mật production, audit bất biến hoặc thời gian xử lý thực tế.
 - Vai trò và nhu cầu của các bên liên quan được giả định cho nghiên cứu tình huống. Chưa có phỏng vấn, kiểm thử chấp nhận người dùng (UAT) hoặc stakeholder sign-off; [khung ký duyệt BRD](./05-brd/approval-and-signoff.md) chỉ mô tả việc cần làm.
 - Các quyết định còn mở (Open Decision — OD) từ OD-01 đến OD-08 vẫn được ghi tại [RTM](./08-traceability/requirements-traceability-matrix.md), gồm chính sách ngân sách, phê duyệt tài chính bổ sung, dung sai đối chiếu và quyền chi tiết theo vai trò.
 - Các khoảng trống bao phủ yêu cầu trong RTM vẫn còn mở. Phần được kiểm chứng một phần hoặc ngoài phạm vi prototype được ghi riêng trong tài liệu kiểm chứng; kết quả prototype không thay đổi coverage của SRS/RTM.
